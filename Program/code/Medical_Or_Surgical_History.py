@@ -35,6 +35,8 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
     for sujeto in lista_sujetos:
         sujeto_principal = df[df['Participante']==sujeto]
 
+        lista_comprobacion_overlap = []
+
         for visita in sujeto_principal.Visit.unique():
             pru_1 = sujeto_principal[sujeto_principal['Visit']==visita]
             pru = pru_1
@@ -182,10 +184,22 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
                                         lista_revision.append(error)
                             except Exception as e:
                                 lista_logs.append(f'Revision MS0050 --> {e}')
+                            
+                            # Revision MS0060
+                            try:
+                                medical_date_history = (medical_surgical_pure, onset_date_pure, end_date_pure)
 
+                                if medical_date_history in lista_comprobacion_overlap:
+                                        error = [subject, visit, 'Medical/Surgical History/ Current Condition', medical_surgical_form_field_instance , \
+                                                 'The Medica/Surgical History/ Current Condition shuold not be enter twice if the dates overlap2' , medical_surgical_pure, 'MS0060']
+                                        lista_revision.append(error)
+                                else:
+                                    lista_comprobacion_overlap.append(medical_date_history)
+                            except Exception as e:
+                                lista_logs.append(f'Revision MS0060 --> {e}')
         
                     except Exception as e:
-                        lista_logs.append(f'Revision desde MS0040 hasta MS0070 --> {e}')
+                        lista_logs.append(f'Revision desde MS0040 hasta MS0060 --> {e}')
 
 
     excel_writer = load_workbook(path_excel_writer)
