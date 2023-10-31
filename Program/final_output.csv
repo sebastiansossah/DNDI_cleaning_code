@@ -1,0 +1,117 @@
+id,FormFieldInstance_id,comment
+0,2448,Value is not a valid date
+1,612,Visit date must be greater than the previous visit date
+2,1289,Visit date must be greater than the previous visit date
+3,1616,Visit date must be greater than the previous visit date
+4,21,The subject AGE at consent doesnt match the AGE according to the month and year of birth
+5,34,Value is not a valid date
+6,32,SEC - In order to comply with the correct date format the date will be changed to 01-AUG-Year
+7,45,The participant cant be eligible because he/she has trace/positive results in the urinary drug screen
+8,1247,End date must be after Onset Date/First Diagnosis/Surgery.
+9,1245,The year and month of  Onset Date/First taken must be equal or after the month and year of birth in DEMOGRAPHIC Diagnosis/Surgery.
+10,629,The date must be the same as the date of visit date
+11,57,The date must be the same as the date of visit date
+12,57,The date of assessment cant be before the informed consent date
+13,633,The date must be the same as the date of visit date
+14,61,The date must be the same as the date of visit date
+15,61,The date of test performed cant be before the informed consent date
+16,643,The date must be the same as the date of visit date
+17,71,The date must be the same as the date of visit date
+18,71,The date of test performed cant be before the informed consent date
+19,648,"The date should be the same as the visit date in the ""Date of Visit"" Form"
+20,2827,"The date should be the same as the visit date in the ""Date of Visit"" Form"
+21,76,"The date should be the same as the visit date in the ""Date of Visit"" Form"
+22,76,The date/time of test performed cant be before the informed consent date/time
+23,127,According to the result the value is not out of range please review.
+24,732,"The date should be the same as the visit date in the ""Date of Visit"" Form"
+25,160,"The date should be the same as the visit date in the ""Date of Visit"" Form"
+26,160,The date/time of test performed cant be before the informed consent date/time
+27,204,According to the result the value is out of range please review.
+28,208,According to the result the value is not out of range please review.
+29,845,"The date should be the same as the visit date in the ""Date of Visit"" Form"
+30,253,"The date should be the same as the visit date in the ""Date of Visit"" Form"
+31,256,According to the result the value is not out of range please review.
+32,269,"The date should be the same as the visit date in the ""Date of Visit"" Form"
+33,271,It doesnt seem right that the TSH was not done but the sample was collected please review
+34,861,"The date should be the same as the visit date in the ""Date of Visit"" form"
+35,277,"The date should be the same as the visit date in the ""Date of Visit"" form"
+36,277,The date/time of test performed cant be before the informed consent date/time
+37,893,None of the result of the urinalysis form is >=+ therefore this examination is not required
+38,1668,None of the result of the urinalysis form is >=+ therefore this examination is not required
+39,3036,None of the result of the urinalysis form is >=+ therefore this examination is not required
+40,309,None of the result of the urinalysis form is >=+ therefore this examination is not required
+41,337,"The date should be the same as the visit date in the ""Date of Visit"" form"
+42,337,The date/time of test performed cant be before the informed consent date/time
+43,3062,"If answer is ""No"" no ""Lesion"" section must be added"
+44,3067,"The date should be the same as the visit date in the ""Date of Visit"" Form"
+45,352,"The date should be the same as the visit date in the ""Date of Visit"" Form"
+46,352,The date/time of test performed cant be before the informed consent date/time
+47,This field doesnt have any data,Only at Screening
+48,985,Only at Screening
+49,This field doesnt have any data,Only at Screening
+50,1719,Only at Screening
+51,1720,Only at Screening
+52,This field doesnt have any data,Only at Screening
+53,2174,Only at Screening
+54,2175,Only at Screening
+55,3088,"The date should be the same as the visit date in the ""Date of Visit"" Form"
+56,3093,Only at Screening
+57,3090,Only at Screening
+58,3091,Only at Screening
+59,3101,The Pulse rate is not within expected range (45 to 100) therefore the Interpretation cant be Normal.
+60,373,"The date should be the same as the visit date in the ""Date of Visit"" Form"
+61,373,The date/time of test performed cant be before the informed consent date/time
+62,1474,The date of ECG must be the same as the visit date
+63,533,The date of ECG must be the same as the visit date
+64,533,The date/time of ECG cant be before the informed consent date/time
+65,43,"The date should be the same as the visit date in the ""Date of Visit"" Form"
+66,43,Date of test performed should be after the date of informed consent.
+67,637,"The date should be the same as the visit date in the ""Date of Visit"" Form"
+68,65,"The date should be the same as the visit date in the ""Date of Visit"" Form"
+69,65,The date of test performed cant be before the informed consent date
+70,825,"The date should be the same as the visit date in the ""Date of Visit"" Form"
+71,823,The Clinical chemistry  D-1 form should not  be completed if the Clinical chemistry form was completed
+72,924,"The date should be the same as the visit date in the ""Date of Visit"" Form"
+73,934,"The date should be the same as the visit date in the ""Date of Visit"" Form"
+74,1556,"The date should be the same as the visit date in the ""Date of Visit"" Form"
+75,3251,"The date should be the same as the visit date in the ""Date of Visit"" Form"
+76,1894,"The date should be the same as the visit date in the ""Date of Visit"" form"
+77,9357,The date/time of dosing cant be before the randomization date/time
+78,9497,The date must not be before the informed consent date
+79,1220,End of study/Early withdrawal date cant be before the informed consent date
+80,1222,The Primary reason for not completing the study is SAE or intolerable AE that prevents the participant from continuing but there are no  adverse events reported with Caused study discontinuation Yes.
+81,9481,"The AE started before the first administration of CpG ODN D35 therefore the causal relationship cant be different from ""Not Related"""
+82,9483,"The AE started before the first administration of CpG ODN D35 therefore the action taken cant be different from ""not applicable"""
+83,9484,"The AE started before the first administration of Miltefosine therefore the action taken cant be different from ""not applicable"""
+84,9469,"Taking into account that the subject has finished the study please verify if the outcome is truly ""Unknown"" or not"
+85,9465,There are two adverse events that have the same term and the dates overlap
+86,9481,"The AE started before the first administration of CpG ODN D35 therefore the causal relationship cant be different from ""Not Related"""
+87,9483,"The AE started before the first administration of CpG ODN D35 therefore the action taken cant be different from ""not applicable"""
+88,9484,"The AE started before the first administration of Miltefosine therefore the action taken cant be different from ""not applicable"""
+89,9469,"Taking into account that the subject has finished the study please verify if the outcome is truly ""Unknown"" or not"
+90,9465,There are two adverse events that have the same term and the dates overlap
+91,9481,"The AE started before the first administration of CpG ODN D35 therefore the causal relationship cant be different from ""Not Related"""
+92,9483,"The AE started before the first administration of CpG ODN D35 therefore the action taken cant be different from ""not applicable"""
+93,9469,"Taking into account that the subject has finished the study please verify if the outcome is truly ""Unknown"" or not"
+94,9465,There are two adverse events that have the same term and the dates overlap
+95,9481,"The AE started before the first administration of CpG ODN D35 therefore the causal relationship cant be different from ""Not Related"""
+96,9483,"The AE started before the first administration of CpG ODN D35 therefore the action taken cant be different from ""not applicable"""
+97,9469,"Taking into account that the subject has finished the study please verify if the outcome is truly ""Unknown"" or not"
+98,9465,There are two adverse events that have the same term and the dates overlap
+99,9481,"The AE started before the first administration of CpG ODN D35 therefore the causal relationship cant be different from ""Not Related"""
+100,9483,"The AE started before the first administration of CpG ODN D35 therefore the action taken cant be different from ""not applicable"""
+101,9484,"The AE started before the first administration of Miltefosine therefore the action taken cant be different from ""not applicable"""
+102,9469,"Taking into account that the subject has finished the study please verify if the outcome is truly ""Unknown"" or not"
+103,9465,There are two adverse events that have the same term and the dates overlap
+104,9481,"The AE started before the first administration of CpG ODN D35 therefore the causal relationship cant be different from ""Not Related"""
+105,9483,"The AE started before the first administration of CpG ODN D35 therefore the action taken cant be different from ""not applicable"""
+106,9484,"The AE started before the first administration of Miltefosine therefore the action taken cant be different from ""not applicable"""
+107,9469,"Taking into account that the subject has finished the study please verify if the outcome is truly ""Unknown"" or not"
+108,9465,There are two adverse events that have the same term and the dates overlap
+109,9481,"The AE started before the first administration of CpG ODN D35 therefore the causal relationship cant be different from ""Not Related"""
+110,9483,"The AE started before the first administration of CpG ODN D35 therefore the action taken cant be different from ""not applicable"""
+111,9469,"Taking into account that the subject has finished the study please verify if the outcome is truly ""Unknown"" or not"
+112,9465,There are two adverse events that have the same term and the dates overlap
+113,9481,"The AE started before the first administration of CpG ODN D35 therefore the causal relationship cant be different from ""Not Related"""
+114,9483,"The AE started before the first administration of CpG ODN D35 therefore the action taken cant be different from ""not applicable"""
+115,9469,"Taking into account that the subject has finished the study please verify if the outcome is truly ""Unknown"" or not"

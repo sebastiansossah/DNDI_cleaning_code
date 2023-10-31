@@ -1,0 +1,166 @@
+----------------------------------------------------------
+Date of visit
+-----------------------------
+Revision VS0050 --> time data 'NaN-undefined-NaN' does not match format '%d-%b-%Y' 
+Revision VS0030 --> time data 'NaN-undefined-NaN' does not match format '%d-%b-%Y' 
+Revision VS0050 --> time data 'NaN-undefined-NaN' does not match format '%d-%b-%Y' 
+----------------------------------------------------------
+Informed Consent
+-----------------------------
+----------------------------------------------------------
+Demographics
+-----------------------------
+Revision DM0030 --> invalid literal for int() with base 10: 'NaN'
+----------------------------------------------------------
+Child Bearing Potential
+-----------------------------
+----------------------------------------------------------
+History of cutaneous leishmaniasis
+-----------------------------
+----------------------------------------------------------
+Eligibility
+-----------------------------
+----------------------------------------------------------
+Medical Or Surgical History (other than Leishmaniasis)
+-----------------------------
+----------------------------------------------------------
+Vein Assesment
+-----------------------------
+----------------------------------------------------------
+Urinary drug screen
+-----------------------------
+----------------------------------------------------------
+Pregnancy test
+-----------------------------
+----------------------------------------------------------
+Clinical Laboratory - Test Hematology
+-----------------------------
+----------------------------------------------------------
+Clinical Laboratory Test - Clinical Chemistry
+-----------------------------
+----------------------------------------------------------
+Clinical Laboratory Test - Coagulation
+-----------------------------
+----------------------------------------------------------
+Immunoassay (Thyroid Stimulating Hormone)
+-----------------------------
+----------------------------------------------------------
+Urinalysis
+-----------------------------
+----------------------------------------------------------
+Urine Microscopic Examination
+-----------------------------
+----------------------------------------------------------
+Virology
+-----------------------------
+----------------------------------------------------------
+Lesion Measurement
+-----------------------------
+----------------------------------------------------------
+Physical Examination
+-----------------------------
+Revision PE0020 --> time data 'NaN-undefined-NaN' does not match format '%d-%b-%Y'
+Revision PE0030 --> time data 'NaN-undefined-NaN' does not match format '%d-%b-%Y'
+Revision PE0040 --> time data 'NaN-undefined-NaN' does not match format '%d-%b-%Y' 
+Revision PE0110 --> could not convert string to float: ''
+----------------------------------------------------------
+Vital Signs
+-----------------------------
+Revision VS0020--> time data 'NaN-undefined-NaN' does not match format '%d-%b-%Y'
+Revision VS0030--> time data '\\N' does not match format '%d-%b-%Y'
+Revision VS0040 --> time data 'nan' does not match format '%d-%b-%Y' 
+Revision VS0090--> could not convert string to float: ''
+Revision VS0100--> could not convert string to float: ''
+Revision VS0110--> could not convert string to float: ''
+Revision VS0120--> could not convert string to float: ''
+Revision VS0130--> could not convert string to float: ''
+Revision VS0140--> could not convert string to float: ''
+Revision VS0150--> could not convert string to float: ''
+Revision VS0160--> could not convert string to float: ''
+Revision VS0280--> could not convert string to float: ''
+Revision VS0270--> could not convert string to float: ''
+Revision VS0290--> could not convert string to float: ''
+Revision VS0300--> could not convert string to float: ''
+Revision VS0310--> could not convert string to float: ''
+Revision VS0330--> could not convert string to float: ''
+Revision VS0320--> could not convert string to float: ''
+Revision VS0340--> could not convert string to float: ''
+Revision VS0450--> could not convert string to float: ''
+Revision VS0460--> could not convert string to float: ''
+Revision VS0470--> could not convert string to float: ''
+Revision VS0480--> could not convert string to float: ''
+Revision VS0490--> could not convert string to float: ''
+Revision VS0490--> could not convert string to float: ''
+Revision VS0500--> could not convert string to float: ''
+Revision VS0510--> could not convert string to float: ''
+Revision VS0520--> could not convert string to float: ''
+Revision VS0630--> could not convert string to float: ''
+Revision VS0640--> could not convert string to float: ''
+Revision VS0650--> could not convert string to float: ''
+Revision VS0660--> could not convert string to float: ''
+Revision VS0670--> could not convert string to float: ''
+Revision VS0680--> could not convert string to float: ''
+Revision VS0690--> could not convert string to float: ''
+Revision VS0700--> could not convert string to float: ''
+Revision VS0890--> could not convert string to float: ''
+Revision VS0820--> could not convert string to float: ''
+Revision VS0830--> could not convert string to float: ''
+Revision VS0840--> could not convert string to float: ''
+Revision VS0850--> could not convert string to float: ''
+Revision VS0860--> could not convert string to float: ''
+Revision VS0870--> could not convert string to float: ''
+Revision VS0880--> could not convert string to float: ''
+----------------------------------------------------------
+12-Lead ECG
+-----------------------------
+----------------------------------------------------------
+Covid 19 testing
+-----------------------------
+----------------------------------------------------------
+Alcohol Screen
+-----------------------------
+----------------------------------------------------------
+Clinical Laboratory Test - Clinical Chemistry D-1
+-----------------------------
+----------------------------------------------------------
+Interleukin-6
+-----------------------------
+----------------------------------------------------------
+Titration Of Auto-Antibodies
+-----------------------------
+----------------------------------------------------------
+Injection Site Examination
+-----------------------------
+----------------------------------------------------------
+PBMC Isolate
+-----------------------------
+----------------------------------------------------------
+Pharmacokinetic Blood Sampling (PK)
+-----------------------------
+----------------------------------------------------------
+Pharmacodynamic Blood Sampling (PD) -Cytokines/Chemokines
+-----------------------------
+----------------------------------------------------------
+mRNA Markers
+-----------------------------
+----------------------------------------------------------
+CpG ODN D35 Administration
+-----------------------------
+----------------------------------------------------------
+Miltefosine Administration
+-----------------------------
+----------------------------------------------------------
+Prior And Concomitant Medications
+-----------------------------
+----------------------------------------------------------
+Prior And Concomitant Procedures
+-----------------------------
+----------------------------------------------------------
+Ev, Med, Proc And Study Treatment Summary
+-----------------------------
+----------------------------------------------------------
+End of Study Treatment
+-----------------------------
+----------------------------------------------------------
+Adverse Events
+-----------------------------

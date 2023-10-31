@@ -1,0 +1,340 @@
+import numpy as np
+import pandas as pd
+from datetime import datetime
+from revision_fechas import revision_fecha
+import warnings
+from log_writer import log_writer
+from openpyxl import load_workbook
+from openpyxl.utils.dataframe import dataframe_to_rows
+warnings.filterwarnings('ignore')
+
+def injection_site_examination(df_root, path_excel_writer):
+    '''
+    Esta funcion tiene como finalidad la revision de cada uno de los puntos 
+    del edit check para el formulario de Injection Site Examination
+    '''
+
+    df= df_root[df_root['name']== 'Injection Site Examination']
+    lista_sujetos = df['Participante'].unique()
+    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
+    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)
+
+    df_visit_date = df_root[df_root['name']=='Date of visit']
+    df_visit_date = df_visit_date[['Visit','Participante', 'Campo', 'Valor']]
+    df_visit_date = df_visit_date[df_visit_date['Campo']=='Visit Date']
+    df_visit_date = df_visit_date[['Visit','Participante','Valor']]
+    df_visit_date = df_visit_date.rename(columns={'Participante':'Subject', 'Valor': 'Date_of_visit'})
+
+    df_informed = df_root[df_root['name']=='Informed Consent']
+    df_informed = df_informed[['Visit','Participante', 'Campo', 'Valor']]
+    df_informed = df_informed[df_informed['Campo']=='Informed consent signature date']
+    df_informed = df_informed[['Visit','Participante','Valor']]
+    df_informed = df_informed.rename(columns={'Participante':'Subject', 'Valor':'Informed_consent_date'})
+
+    df_end_study_general = df_root[df_root['name']== 'End of Study Treatment (Miltefosine)']
+    df_end_study_general = df_end_study_general[['Visit','Participante', 'Campo', 'Valor', 'Variable' ]]
+    df_end_study_general = df_end_study_general[df_end_study_general['Variable'] == 'DSDAT']
+    df_end_study_general = df_end_study_general[['Participante', 'Valor']]
+    df_end_study_general = df_end_study_general.rename(columns={'Participante':'Subject', 'Valor':'end_study_date'})
+
+    lista_logs = ['Injection Site Examination']
+    lista_revision = []
+
+    # fecha_inicio = datetime.strptime('19-06-2023', "%d-%m-%Y")
+    # fecha_fin =  datetime.strptime('31-10-2023', "%d-%m-%Y")
+
+    for sujeto in lista_sujetos:
+        sujeto_principal = df[df['Participante']==sujeto]
+
+        lista_validacion_predose = []
+        lista_validacion_2_hours = []
+        lista_validacion_4_hours = []
+        lista_validacion_8_hours = []
+
+        for visita in sujeto_principal.Visit.unique():
+            pru_1 = sujeto_principal[sujeto_principal['Visit']==visita]
+            pru = pru_1
+            pru = pru[['Campo', 'Value_id']].T
+            new_columns = pru.iloc[0]
+            pru = pru[1:].set_axis(new_columns, axis=1)
+            pru['Subject'] = sujeto
+            pru['Visit'] = visita
+            pru['status'] = pru_1['activityState'].unique()
+            pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
+            pru = pru.merge(df_informed, on=['Subject', 'Visit'], how='left')
+            pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
+
+            for index, row in pru.iterrows():
+                status = row['status']
+                subject = row['Subject']
+                visit = row['Visit']
+
+                date_of_visit = row['Date_of_visit']
+                date_inform_consent = row['Informed_consent_date']
+                end_study_date = row['end_study_date']
+
+                if status == 'DATA_ENTRY_COMPLETE':
+                    try:
+                        was_injection_performed = row['Was the Injection site examination performed?']
+                        was_injection_performed_pure = was_injection_performed.split('|')[0]
+                        was_injection_performed_form_field_instance = was_injection_performed.split('|')[1]
+                    except Exception as e:
+                        was_injection_performed_pure = ''
+                        was_injection_performed_form_field_instance = 'This field doesnt have any data'
+
+                    try:
+                        provide_the_reason = row['Provide the reason']
+                        provide_the_reason_pure = provide_the_reason.split('|')[0]
+                        provide_the_reason_form_field_instance = provide_the_reason.split('|')[1]
+                    except Exception as e:
+                        provide_the_reason_pure = ''
+                        provide_the_reason_form_field_instance = 'This field doesnt have any data'
+
+                    try:
+                        date_injection = row['Date of the Injection site examination']
+                        date_injection_pure = date_injection.split('|')[0]
+                        date_injection_form_field_instace = date_injection.split('|')[1]
+                    except Exception as e:
+                        date_injection_pure = ''
+                        date_injection_form_field_instace = 'This field doesnt have any data'
+
+                    try:
+                        predose_injection_site = row['Predose, Injection site']
+                        predose_injection_site_pure = predose_injection_site.split('|')[0]
+                        predose_injection_site_form_field_instance = predose_injection_site.split('|')[1]
+                    except Exception as e:
+                        predose_injection_site_pure = ''
+                        predose_injection_site_form_field_instance = 'This field doesnt have any data'
+
+                    try:
+                        post_dose_2_hours = row['2-hours post dose, Injection site']
+                        post_dose_2_hours_pure = post_dose_2_hours.split('|')[0]
+                        post_dose_2_hours_form_field_instance = post_dose_2_hours.split('|')[1]
+                    except Exception as e:
+                        post_dose_2_hours_pure = ''
+                        post_dose_2_hours_form_field_instance = 'This field doesnt have any data'
+                        
+                    try:
+                        post_dose_4_hours = row['4-hours post dose, Injection site']
+                        post_dose_4_hours_pure = post_dose_4_hours.split('|')[0]
+                        post_dose_4_hours_form_field_instance = post_dose_4_hours.split('|')[1]
+                    except Exception as e:
+                        post_dose_4_hours_pure = ''
+                        post_dose_4_hours_form_field_instance = 'This field doesnt have any data'
+
+                    try:
+                        post_dose_8_hours = row['8-hours post dose, Injection site']
+                        post_dose_8_hours_pure = post_dose_8_hours.split('|')[0]
+                        post_dose_8_hours_form_field_instance = post_dose_8_hours.split('|')[1]
+                    except Exception as e:
+                        post_dose_8_hours_pure = ''
+                        post_dose_8_hours_form_field_instance = 'This field doesnt have any data'
+
+                    # ---------------------------------------------------------------------------------------------
+                    try:
+                        # Primera  revision general de formato de fecha ->GE0020
+                        f = revision_fecha(date_injection_pure)
+                        if f == None:
+                            pass
+                        else:
+                            error = [subject, visit, 'Date of the Injection site examination', date_injection_form_field_instace,\
+                                     f , date_injection_pure, 'GE0020']
+                            lista_revision.append(error)     
+
+                    except Exception as e:
+                        lista_logs.append(f'Revision GE0020 --> {e}')
+
+                    # Revision IS0020
+                    try:
+                        date_format = '%d-%b-%Y'
+                        date_of_test_f = datetime.strptime(date_injection_pure, date_format)
+                        date_of_visit_f = datetime.strptime(date_of_visit, date_format)
+
+                        if date_of_test_f != date_of_visit_f:
+                            error = [subject, visit, 'Date of the Injection site examination', date_injection_form_field_instace ,\
+                                     'the date should be the same as the visit date' , f'{date_injection_pure} - {date_of_visit}', 'IS0020']
+                            lista_revision.append(error)
+                        else:
+                            pass
+
+                    except Exception as e:
+                        lista_logs.append(f'Revision IS0020--> {e}')
+
+                    # Revision IS0030
+                    try:
+                        date_format = '%d-%b-%Y'
+                        date_of_test_f = datetime.strptime(date_injection_pure, date_format)
+                        date_inform_consent_f = datetime.strptime(date_inform_consent, date_format)
+
+                        if date_of_test_f < date_inform_consent_f:
+                            error = [subject, visit, 'Date of the Injection site examination', date_injection_form_field_instace ,\
+                                      'The date/time of the Injection site cant be before the informed consent date/time', f'{date_injection_pure} - {date_inform_consent}', 'IS0030']
+                            lista_revision.append(error)
+                        else:
+                            pass
+                    except Exception as e:
+                        lista_logs.append(f'Revision IS0030--> {e}')
+
+                    # Revision -> IS0040
+                    try:
+                        if datetime.strptime(str(date_injection_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
+                            pass
+                        else: 
+                            error = [subject, visit, 'Date of the Injection site examination', date_injection_form_field_instace ,\
+                                     'Date of the Injection site examination must be before the End of study/Early withdrawal date. ', date_injection_pure, 'IS0040']
+                            lista_revision.append(error)
+                    except Exception as e:
+                        lista_logs.append(f'Revision IS0040 --> {e} ')
+
+
+                    lista_validacion =[ 'Undefined',
+                                        'Undefined, Injection site',
+                                        'Undefined, Pain grade',
+                                        'Undefined, Tenderness grade',
+                                        'Undefined, Erythema/Redness grade',
+                                        'Undefined, Erythema/Redness diameter (cm)',
+                                        'Undefined, Induration/Swelling grade',
+                                        'Undefined, Induration/Swelling diameter (cm)',
+                                        'Undefined, Warmth',
+                                        'Undefined, Lesion photograph taken?',
+                                        'Undefined, Provide the reason',
+                                        'Predose, Injection site',
+                                        'Predose, Pain grade',
+                                        'Predose, Tenderness grade',
+                                        'Predose, Erythema/Redness grade',
+                                        'Predose, Erythema/Redness diameter (cm)',
+                                        'Predose, Induration/Swelling grade',
+                                        'Predose, Induration/Swelling diameter (cm)',
+                                        'Predose, Warmth',
+                                        'Predose, Lesion photograph taken?',
+                                        'Predose, Provide the reason',
+                                        '2-hours post dose, Injection site',
+                                        '2-hours post dose, Pain grade',
+                                        '2-hours post dose, Tenderness grade',
+                                        '2-hours post dose, Erythema/Redness grade',
+                                        '2-hours post dose, Erythema/Redness diameter (cm)',
+                                        '2-hours post dose, Induration/Swelling grade',
+                                        '2-hours post dose, Induration/Swelling diameter (cm)',
+                                        '2-hours post dose, Warmth',
+                                        '2-hours post dose, Lesion photograph taken?',
+                                        '2-hours post dose, Provide the reason',
+                                        '4-hours post dose, Injection site',
+                                        '4-hours post dose, Pain grade',
+                                        '4-hours post dose, Tenderness grade',
+                                        '4-hours post dose, Erythema/Redness grade',
+                                        '4-hours post dose, Erythema/Redness diameter (cm)',
+                                        '4-hours post dose, Induration/Swelling grade',
+                                        '4-hours post dose, Induration/Swelling diameter (cm)',
+                                        '4-hours post dose, Warmth',
+                                        '4-hours post dose, Lesion photograph taken?',
+                                        '4-hours post dose, Provide the reason',
+                                        '8-hours post dose',
+                                        '8-hours post dose, Injection site',
+                                        '8-hours post dose, Pain grade',
+                                        '8-hours post dose, Tenderness grade',
+                                        '8-hours post dose, Erythema/Redness grade',
+                                        '8-hours post dose, Erythema/Redness diameter (cm)',
+                                        '8-hours post dose, Induration/Swelling grade',
+                                        '8-hours post dose, Induration/Swelling diameter (cm)',
+                                        '8-hours post dose, Warmth',
+                                        '8-hours post dose, Lesion photograph taken?',
+                                        '8-hours post dose, Provide the reason']
+                    
+                    mi_cuenta= 0
+                    for validador_raw in lista_validacion:
+                        try:
+                            validador = row[validador_raw].split('|')[0]
+                        except:
+                            validador = ''
+
+                        
+                        if validador != '-' or validador != np.nan or  str(validador) != 'nan' or float(validador) !=0.0 or str(validador) != '':
+                            mi_cuenta+=1
+                        else:
+                            pass
+
+                    # ----------------------------------------------------------------------
+                    # Revision IS0050
+                    try:
+                        if float(was_injection_performed_pure) ==1.0: 
+                            if mi_cuenta != 0:
+                                pass
+                            else:
+                                error = [subject, visit, 'Was the Injection site examination performed?', was_injection_performed_form_field_instance ,\
+                                         'If, Was the Injection site examination performed?="Yes" at least one section per time point must be added' , was_injection_performed_pure, 'IS0050']
+                                lista_revision.append(error)
+                    except Exception as e:
+                        lista_logs.append(f'Revision IS0050--> {e}')
+                    
+                    # Revision IS0100
+                    try:
+                        validador_predose = (predose_injection_site_pure, visit)
+
+                        if validador_predose in lista_validacion_predose:
+                                error = [subject, visit, 'Predose, Injection site', predose_injection_site_form_field_instance ,\
+                                         'The injection site should no be reported more than once' , predose_injection_site_pure, 'IS0100']
+                                lista_revision.append(error)
+                        else:
+                            lista_validacion_predose.append(validador_predose)
+                    except Exception as e:
+                        lista_logs.append(f'Revision IS0100--> {e}')
+
+                    # Revision IS0110
+                    try:
+                        validador_2_post_dose = (post_dose_2_hours_pure, visit)
+
+                        if validador_2_post_dose in lista_validacion_2_hours:
+                                error = [subject, visit, '2-hours post dose, Injection site', post_dose_2_hours_form_field_instance ,\
+                                         'The injection site should no be reported more than once' , post_dose_2_hours_pure, 'IS0110']
+                                lista_revision.append(error)
+                        else:
+                            lista_validacion_2_hours.append(validador_2_post_dose)
+                    except Exception as e:
+                        lista_logs.append(f'Revision IS0110--> {e}')
+
+                    # Revision IS0120
+                    try:
+                        validador_4_post_dose = (post_dose_4_hours_pure, visit)
+
+                        if validador_4_post_dose in lista_validacion_4_hours:
+                                error = [subject, visit, '4-hours post dose, Injection site', post_dose_4_hours_form_field_instance ,\
+                                         'The injection site should no be reported more than once' , post_dose_4_hours_pure, 'IS0120']
+                                lista_revision.append(error)
+                        else:
+                            lista_validacion_4_hours.append(validador_4_post_dose)
+                    except Exception as e:
+                        lista_logs.append(f'Revision IS0120--> {e}')
+
+                    # Revision IS0130
+                    try:
+                        validador_8_post_dose = (post_dose_8_hours_pure, visit)
+
+                        if validador_8_post_dose in lista_validacion_8_hours:
+                                error = [subject, visit, '8-hours post dose, Injection site', post_dose_8_hours_form_field_instance ,\
+                                         'The injection site should no be reported more than once', post_dose_8_hours_pure, 'IS0130']
+                                lista_revision.append(error)
+                        else:
+                            lista_validacion_8_hours.append(validador_8_post_dose)
+                    except Exception as e:
+                        lista_logs.append(f'Revision IS0130--> {e}')
+
+
+
+    excel_writer = load_workbook(path_excel_writer)
+    column_names = ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']
+    injection_site_examination_output = pd.DataFrame(lista_revision, columns=column_names)
+    
+    sheet = excel_writer.create_sheet("Injection Site Examination")
+
+    for row in dataframe_to_rows(injection_site_examination_output, index=False, header=True):
+        sheet.append(row)
+
+    excel_writer.save(path_excel_writer)
+    log_writer(lista_logs)
+
+    return injection_site_examination_output[['Form Field Instance ID' ,'Standard Error Message']].replace({',': '', ';': ''}, regex=True)
+
+if __name__ == '__main__':
+    path_excel = r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\Program\output\prueba.xlsx"
+    df_root = pd.read_excel(r'C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\data\newDNDI_v2.xlsx')
+    injection_site_examination(df_root, path_excel )

@@ -1,0 +1,1860 @@
+import numpy as np
+import pandas as pd
+from datetime import datetime
+from revision_fechas import revision_fecha
+import warnings
+from log_writer import log_writer
+from openpyxl import load_workbook
+from openpyxl.utils.dataframe import dataframe_to_rows
+warnings.filterwarnings('ignore')
+
+
+def vital_signs(df_root, path_excel_writer):
+    '''
+    Esta funcion tiene como finalidad la revision de cada uno de los puntos 
+    del edit check para el formulario de Vital Signs
+    '''
+
+    df= df_root[df_root['name']== 'Vital Signs']
+    lista_sujetos = df['Participante'].unique()
+    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
+    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)
+
+    df_visit_date = df_root[df_root['name']=='Date of visit']
+    df_visit_date = df_visit_date[['Visit','Participante', 'Campo', 'Valor']]
+    df_visit_date = df_visit_date[df_visit_date['Campo']=='Visit Date']
+    df_visit_date = df_visit_date[['Visit','Participante','Valor']]
+    df_visit_date = df_visit_date.rename(columns={'Participante':'Subject', 'Valor': 'Date_of_visit'})
+
+    df_informed = df_root[df_root['name']=='Informed Consent']
+    df_informed = df_informed[['Visit','Participante', 'Campo', 'Valor']]
+    df_informed = df_informed[df_informed['Campo']=='Informed consent signature date']
+    df_informed = df_informed[['Visit','Participante','Valor']]
+    df_informed = df_informed.rename(columns={'Participante':'Subject', 'Valor':'Informed_consent_date'})
+
+    df_end_study_general = df_root[df_root['name']== 'End of Study Treatment (Miltefosine)']
+    df_end_study_general = df_end_study_general[['Visit','Participante', 'Campo', 'Valor', 'Variable' ]]
+    df_end_study_general = df_end_study_general[df_end_study_general['Variable'] == 'DSDAT']
+    df_end_study_general = df_end_study_general[['Participante', 'Valor']]
+    df_end_study_general = df_end_study_general.rename(columns={'Participante':'Subject', 'Valor':'end_study_date'})
+    
+    lista_revision = []
+    lista_logs = ['Vital Signs']
+
+    # fecha_inicio = datetime.strptime('19-06-2023', "%d-%m-%Y")
+    # fecha_fin =  datetime.strptime('31-10-2023', "%d-%m-%Y")
+
+    for sujeto in lista_sujetos:
+        sujeto_principal = df[df['Participante']==sujeto]
+
+        for visita in sujeto_principal.Visit.unique():
+            pru_1 = sujeto_principal[sujeto_principal['Visit']==visita]
+            pru = pru_1
+            pru = pru[['Campo', 'Value_id']].T
+            new_columns = pru.iloc[0]
+            pru = pru[1:].set_axis(new_columns, axis=1)
+            pru['Subject'] = sujeto
+            pru['Visit'] = visita
+            pru['status'] = pru_1['activityState'].unique()
+            pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
+            pru = pru.merge(df_informed, on=['Subject', 'Visit'], how='left')
+            pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
+
+            for index, row in pru.iterrows():
+                status = row['status']
+                subject = row['Subject']
+                visit = row['Visit']
+
+                date_of_visit = row['Date_of_visit']
+                date_inform_consent = row['Informed_consent_date']
+                end_study_date = row['end_study_date']
+
+                
+                if status == 'DATA_ENTRY_COMPLETE':
+                    try: 
+                        was_vital_signs_performed = row['Was the vital signs assessment performed?']
+                        was_vital_signs_performed_pure = was_vital_signs_performed.split('|')[0]
+                        was_vital_signs_performed_form_field_instance = was_vital_signs_performed.split('|')[1]
+                    except Exception as e:
+                        was_vital_signs_performed_pure = ''
+                        was_vital_signs_performed_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        date_assesment = row['Date of assessment performed']
+                        date_assesment_pure = date_assesment.split('|')[0]
+                        date_assesment_form_field_instance = date_assesment.split('|')[1]
+                    except Exception as e:
+                        date_assesment_pure = ''
+                        date_assesment_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        BMI = row['Undefined, BMI']
+                        BMI_pure = BMI.split('|')[0]
+                        BMI_form_field_instance = BMI.split('|')[1]
+                    except Exception as e:
+                        BMI_pure = ''
+                        BMI_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        height = row['Undefined, Height (cm)']
+                        height_pure = height.split('|')[0]
+                        height_form_field_instance = height.split('|')[1]
+                    except Exception as e:
+                        height_pure = ''
+                        height_form_field_instance = 'This field doesnt have any data'
+                    
+                    try: 
+                        weight = row['Undefined, Weight (kg)']
+                        weight_pure = weight.split('|')[0]
+                        weight_form_field_instance = weight.split('|')[1]                    
+                    except Exception as e: 
+                        weight_pure = ''
+                        weight_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        Pre_dose_Diastolic_Blood_Pressure = row["Pre dose, Diastolic Blood Pressure"]
+                        Pre_dose_Diastolic_Blood_Pressure_pure = Pre_dose_Diastolic_Blood_Pressure.split('|')[0]
+                        Pre_dose_Diastolic_Blood_Pressure_form_field_insntance = Pre_dose_Diastolic_Blood_Pressure.split('|')[1]
+                    except Exception as e:
+                        Pre_dose_Diastolic_Blood_Pressure_pure = ''
+                        Pre_dose_Diastolic_Blood_Pressure_form_field_insntance = 'This field doesnt have any data'
+                    
+                    try:
+                        Pre_dose_Diastolic_Blood_Pressure_value = row["Pre dose, Diastolic Blood Pressure (Sitting) (mmHg)"]
+                        Pre_dose_Diastolic_Blood_Pressure_value_pure = Pre_dose_Diastolic_Blood_Pressure_value.split('|')[0]
+                        Pre_dose_Diastolic_Blood_Pressure_value_form_field_instance = Pre_dose_Diastolic_Blood_Pressure_value.split('|')[1]
+                    except Exception as e:
+                        Pre_dose_Diastolic_Blood_Pressure_value_pure = ''
+                        Pre_dose_Diastolic_Blood_Pressure_value_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        mins_60_post_dose_Respiratory_rate = row["60-mins post dose, Respiratory rate"]
+                        mins_60_post_dose_Respiratory_rate_pure = mins_60_post_dose_Respiratory_rate.split('|')[0]
+                        mins_60_post_dose_Respiratory_rate_form_field_instance = mins_60_post_dose_Respiratory_rate.split('|')[1]
+                    except Exception as e:
+                        mins_60_post_dose_Respiratory_rate_pure = ''
+                        mins_60_post_dose_Respiratory_rate_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        mins_60_post_dose_Respiratory_rate_value = row["60-mins post dose, Respiratory rate (breaths/min)"]
+                        mins_60_post_dose_Respiratory_rate_value_pure = mins_60_post_dose_Respiratory_rate_value.split('|')[0]
+                        mins_60_post_dose_Respiratory_rate_value_form_field_instance = mins_60_post_dose_Respiratory_rate_value.split('|')[1]
+                    except Exception as e:
+                        mins_60_post_dose_Respiratory_rate_value_pure = ''
+                        mins_60_post_dose_Respiratory_rate_value_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        Undefined_Respiratory_rate = row["Undefined, Respiratory rate"]
+                        Undefined_Respiratory_rate_pure = Undefined_Respiratory_rate.split('|')[0]
+                        Undefined_Respiratory_rate_form_field_isntance = Undefined_Respiratory_rate.split('|')[1]
+                    except Exception as e:
+                        Undefined_Respiratory_rate_pure = ''
+                        Undefined_Respiratory_rate_form_field_isntance = 'This field doesnt have any data'
+                    
+                    try:
+                        Undefined_Respiratory_rate_value = row["Undefined, Respiratory rate (breaths/min)"]
+                        Undefined_Respiratory_rate_value_pure = Undefined_Respiratory_rate_value.split('|')[0]
+                        Undefined_Respiratory_rate_value_form_field_instance = Undefined_Respiratory_rate_value.split('|')[1]
+                    except Exception as e:
+                        Undefined_Respiratory_rate_value_pure = ''
+                        Undefined_Respiratory_rate_value_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        Pre_dose_Oral_Temperature = row["Pre dose, Body Temperature"]
+                        Pre_dose_Oral_Temperature_pure = Pre_dose_Oral_Temperature.split('|')[0]
+                        Pre_dose_Oral_Temperature_form_field_instance = Pre_dose_Oral_Temperature.split('|')[1]
+                    except Exception as e:
+                        Pre_dose_Oral_Temperature_pure = ''
+                        Pre_dose_Oral_Temperature_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        Pre_dose_Oral_Temperature_value = row["Pre dose, Oral Temperature (°C)"]
+                        Pre_dose_Oral_Temperature_value_pure = Pre_dose_Oral_Temperature_value.split('|')[0]
+                        Pre_dose_Oral_Temperature_value_form_field_instance = Pre_dose_Oral_Temperature_value.split('|')[1]
+                    except Exception as e:
+                        Pre_dose_Oral_Temperature_value_pure = ''
+                        Pre_dose_Oral_Temperature_value_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        hours_2_post_dose_Respiratory_rate = row["2-hours post dose, Respiratory rate"]
+                        hours_2_post_dose_Respiratory_rate_pure = hours_2_post_dose_Respiratory_rate.split('|')[0]
+                        hours_2_post_dose_Respiratory_rate_form_field_instance = hours_2_post_dose_Respiratory_rate.split('|')[1]
+                    except Exception as e:
+                        hours_2_post_dose_Respiratory_rate_pure = ''
+                        hours_2_post_dose_Respiratory_rate_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        hours_2_post_dose_Respiratory_rate_value = row["2-hours post dose, Respiratory rate (breaths/min)"]
+                        hours_2_post_dose_Respiratory_rate_value_pure = hours_2_post_dose_Respiratory_rate_value.split('|')[0]
+                        hours_2_post_dose_Respiratory_rate_value_form_field_instance = hours_2_post_dose_Respiratory_rate_value.split('|')[1]
+                    except Exception as e:
+                        hours_2_post_dose_Respiratory_rate_value_pure = ''
+                        hours_2_post_dose_Respiratory_rate_value_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        hours_8_post_dose_Diastolic_Blood_Pressure = row["8-hours post dose, Diastolic Blood Pressure"]
+                        hours_8_post_dose_Diastolic_Blood_Pressure_pure = hours_8_post_dose_Diastolic_Blood_Pressure.split('|')[0]
+                        hours_8_post_dose_Diastolic_Blood_Pressure_form_field_instance = hours_8_post_dose_Diastolic_Blood_Pressure.split('|')[1]
+                    except Exception as e:
+                        hours_8_post_dose_Diastolic_Blood_Pressure_pure = '' 
+                        hours_8_post_dose_Diastolic_Blood_Pressure_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        hours_8_post_dose_Diastolic_Blood_Pressure_value = row["8-hours post dose, Diastolic Blood Pressure (Sitting) (mmHg)"]
+                        hours_8_post_dose_Diastolic_Blood_Pressure_value_pure = hours_8_post_dose_Diastolic_Blood_Pressure_value.split('|')[0]
+                        hours_8_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = hours_8_post_dose_Diastolic_Blood_Pressure_value.split('|')[1]
+                    except Exception as e:
+                        hours_8_post_dose_Diastolic_Blood_Pressure_value_pure = ''
+                        hours_8_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        mins_15_post_dose_Diastolic_Blood_Pressure = row["15-mins post dose, Diastolic Blood Pressure"]
+                        mins_15_post_dose_Diastolic_Blood_Pressure_pure = mins_15_post_dose_Diastolic_Blood_Pressure.split('|')[0]
+                        mins_15_post_dose_Diastolic_Blood_Pressure_form_field_instance = mins_15_post_dose_Diastolic_Blood_Pressure.split('|')[1]
+                    except Exception as e:
+                        mins_15_post_dose_Diastolic_Blood_Pressure_pure = ''
+                        mins_15_post_dose_Diastolic_Blood_Pressure_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        mins_15_post_dose_Diastolic_Blood_Pressure_value = row["15-mins post dose, Diastolic Blood Pressure (Sitting) (mmHg)"]
+                        mins_15_post_dose_Diastolic_Blood_Pressure_value_pure = mins_15_post_dose_Diastolic_Blood_Pressure_value.split('|')[0]
+                        mins_15_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = mins_15_post_dose_Diastolic_Blood_Pressure_value.split('|')[1]
+                    except Exception as e:
+                        mins_15_post_dose_Diastolic_Blood_Pressure_value_pure = ''
+                        mins_15_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        Undefined_Diastolic_Blood_Pressure = row["Undefined, Diastolic Blood Pressure"]
+                        Undefined_Diastolic_Blood_Pressure_pure = Undefined_Diastolic_Blood_Pressure.split('|')[0]
+                        Undefined_Diastolic_Blood_Pressure_form_field_instance = Undefined_Diastolic_Blood_Pressure.split('|')[1]
+                    except Exception as e:
+                        Undefined_Diastolic_Blood_Pressure_pure = ''
+                        Undefined_Diastolic_Blood_Pressure_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        Undefined_Diastolic_Blood_Pressure_value = row['Undefined, Diastolic Blood Pressure (mmHg)']
+                        Undefined_Diastolic_Blood_Pressure_value_pure = Undefined_Diastolic_Blood_Pressure_value.split('|')[0]
+                        Undefined_Diastolic_Blood_Pressure_value_form_field_instance = Undefined_Diastolic_Blood_Pressure_value.split('|')[1]
+                    except Exception as e:
+                        Undefined_Diastolic_Blood_Pressure_value_pure = ''
+                        Undefined_Diastolic_Blood_Pressure_value_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        mins_60_post_dose_Diastolic_Blood_Pressure = row["60-mins post dose, Diastolic Blood Pressure"]
+                        mins_60_post_dose_Diastolic_Blood_Pressure_pure = mins_60_post_dose_Diastolic_Blood_Pressure.split('|')[0]
+                        mins_60_post_dose_Diastolic_Blood_Pressure_form_field_instance = mins_60_post_dose_Diastolic_Blood_Pressure.split('|')[1]
+                    except Exception as e:
+                        mins_60_post_dose_Diastolic_Blood_Pressure_pure = '' 
+                        mins_60_post_dose_Diastolic_Blood_Pressure_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        mins_60_post_dose_Diastolic_Blood_Pressure_value = row["60-mins post dose, Diastolic Blood Pressure (Sitting) (mmHg)"]
+                        mins_60_post_dose_Diastolic_Blood_Pressure_value_pure = mins_60_post_dose_Diastolic_Blood_Pressure_value.split('|')[0]
+                        mins_60_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = mins_60_post_dose_Diastolic_Blood_Pressure_value.split('|')[1]
+                    except Exception as e:
+                        mins_60_post_dose_Diastolic_Blood_Pressure_value_pure = ''
+                        mins_60_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        hours_8_post_dose_Pulse_rate = row["8-hours post dose, Pulse rate"]
+                        hours_8_post_dose_Pulse_rate_pure = hours_8_post_dose_Pulse_rate.split('|')[0]
+                        hours_8_post_dose_Pulse_rate_form_field_instance = hours_8_post_dose_Pulse_rate.split('|')[1]
+                    except Exception as e:
+                        hours_8_post_dose_Pulse_rate_pure = ''
+                        hours_8_post_dose_Pulse_rate_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        hours_8_post_dose_Pulse_rate_value = row["8-hours post dose, Pulse rate (beats/min)"]
+                        hours_8_post_dose_Pulse_rate_value_pure = hours_8_post_dose_Pulse_rate_value.split('|')[0]
+                        hours_8_post_dose_Pulse_rate_value_form_field_instance = hours_8_post_dose_Pulse_rate_value.split('|')[1]
+                    except Exception as e:
+                        hours_8_post_dose_Pulse_rate_value_pure = ''
+                        hours_8_post_dose_Pulse_rate_value_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        Undefined_Systolic_Blood_Pressure = row["Undefined, Systolic Blood Pressure"]
+                        Undefined_Systolic_Blood_Pressure_pure = Undefined_Systolic_Blood_Pressure.split('|')[0]
+                        Undefined_Systolic_Blood_Pressure_form_field_instance = Undefined_Systolic_Blood_Pressure.split('|')[1]
+                    except Exception as e:
+                        Undefined_Systolic_Blood_Pressure_pure = ''
+                        Undefined_Systolic_Blood_Pressure_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        Undefined_Systolic_Blood_Pressure_value = row["Undefined, Systolic Blood Pressure  (mmHg)"]
+                        Undefined_Systolic_Blood_Pressure_value_pure = Undefined_Systolic_Blood_Pressure_value.split('|')[0]
+                        Undefined_Systolic_Blood_Pressure_value_form_field_instance = Undefined_Systolic_Blood_Pressure_value.split('|')[1]
+                    except Exception as e:
+                        Undefined_Systolic_Blood_Pressure_value_pure = ''
+                        Undefined_Systolic_Blood_Pressure_value_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        hours_2_post_dose_Diastolic_Blood_Pressure = row["2-hours post dose, Diastolic Blood Pressure"]
+                        hours_2_post_dose_Diastolic_Blood_Pressure_pure = hours_2_post_dose_Diastolic_Blood_Pressure.split('|')[0]
+                        hours_2_post_dose_Diastolic_Blood_Pressure_form_field_instance = hours_2_post_dose_Diastolic_Blood_Pressure.split('|')[1]
+                    except Exception as e:
+                        hours_2_post_dose_Diastolic_Blood_Pressure_pure = ''
+                        hours_2_post_dose_Diastolic_Blood_Pressure_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        hours_2_post_dose_Diastolic_Blood_Pressure_value = row["2-hours post dose, Diastolic Blood Pressure (Sitting) (mmHg)"]
+                        hours_2_post_dose_Diastolic_Blood_Pressure_value_pure = hours_2_post_dose_Diastolic_Blood_Pressure_value.split('|')[0]
+                        hours_2_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = hours_2_post_dose_Diastolic_Blood_Pressure_value.split('|')[1]
+                    except Exception as e:
+                        hours_2_post_dose_Diastolic_Blood_Pressure_value_pure = ''
+                        hours_2_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        hours_2_post_dose_Pulse_rate = row["2-hours post dose, Pulse rate"]
+                        hours_2_post_dose_Pulse_rate_pure = hours_2_post_dose_Pulse_rate.split('|')[0]
+                        hours_2_post_dose_Pulse_rate_form_field_instance = hours_2_post_dose_Pulse_rate.split('|')[1]
+                    except Exception as e:
+                        hours_2_post_dose_Pulse_rate_pure = ''
+                        hours_2_post_dose_Pulse_rate_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        hours_2_post_dose_Pulse_rate_value = row["2-hours post dose, Pulse rate (beats/min)"]
+                        hours_2_post_dose_Pulse_rate_value_pure = hours_2_post_dose_Pulse_rate_value.split('|')[0]
+                        hours_2_post_dose_Pulse_rate_value_form_field_instance = hours_2_post_dose_Pulse_rate_value.split('|')[1]
+                    except Exception as e:
+                        hours_2_post_dose_Pulse_rate_value_pure = ''
+                        hours_2_post_dose_Pulse_rate_value_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        mins_60_post_dose_Pulse_rate = row["60-mins post dose, Pulse rate"]
+                        mins_60_post_dose_Pulse_rate_pure = mins_60_post_dose_Pulse_rate.split('|')[0]
+                        mins_60_post_dose_Pulse_rate_form_field_instance = mins_60_post_dose_Pulse_rate.split('|')[1]
+                    except Exception as e:
+                        mins_60_post_dose_Pulse_rate_pure = ''
+                        mins_60_post_dose_Pulse_rate_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        mins_60_post_dose_Pulse_rate_value = row["60-mins post dose, Pulse rate (beats/min)"]
+                        mins_60_post_dose_Pulse_rate_value_pure = mins_60_post_dose_Pulse_rate_value.split('|')[0]
+                        mins_60_post_dose_Pulse_rate_value_form_field_instance = mins_60_post_dose_Pulse_rate_value.split('|')[1]
+                    except Exception as e:
+                        mins_60_post_dose_Pulse_rate_value_pure = ''
+                        mins_60_post_dose_Pulse_rate_value_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        Undefined_Oral_Temperature = row["Undefined, Body Temperature"]
+                        Undefined_Oral_Temperature_pure = Undefined_Oral_Temperature.split('|')[0]
+                        Undefined_Oral_Temperature_form_field_instance = Undefined_Oral_Temperature.split('|')[1]
+                    except Exception as e:
+                        Undefined_Oral_Temperature_pure = ''
+                        Undefined_Oral_Temperature_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        Undefined_Oral_Temperature_value = row["Undefined, Oral Temperature (°C)"]
+                        Undefined_Oral_Temperature_value_pure = Undefined_Oral_Temperature_value.split('|')[0]
+                        Undefined_Oral_Temperature_value_form_field_instance = Undefined_Oral_Temperature_value.split('|')[1]
+                    except Exception as e:
+                        Undefined_Oral_Temperature_value_pure = ''
+                        Undefined_Oral_Temperature_value_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        hours_2_post_dose_Oral_Temperature = row["2-hours post dose, Body Temperature"]
+                        hours_2_post_dose_Oral_Temperature_pure = hours_2_post_dose_Oral_Temperature.split('|')[0]
+                        hours_2_post_dose_Oral_Temperature_form_field_instance = hours_2_post_dose_Oral_Temperature.split('|')[1]
+                    except Exception as e:
+                        hours_2_post_dose_Oral_Temperature_pure = ''
+                        hours_2_post_dose_Oral_Temperature_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        hours_2_post_dose_Oral_Temperature_value = row["2-hours post dose, Oral Temperature (°C)"]
+                        hours_2_post_dose_Oral_Temperature_value_pure = hours_2_post_dose_Oral_Temperature_value.split('|')[0]
+                        hours_2_post_dose_Oral_Temperature_value_form_field_instance = hours_2_post_dose_Oral_Temperature_value.split('|')[1]
+                    except Exception as e:
+                        hours_2_post_dose_Oral_Temperature_value_pure = ''
+                        hours_2_post_dose_Oral_Temperature_value_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        mins_60_post_dose_Oral_Temperature = row["60-mins post dose, Body Temperature"]
+                        mins_60_post_dose_Oral_Temperature_pure = mins_60_post_dose_Oral_Temperature.split('|')[0]
+                        mins_60_post_dose_Oral_Temperature_form_field_instance = mins_60_post_dose_Oral_Temperature.split('|')[1]
+                    except Exception as e:
+                        mins_60_post_dose_Oral_Temperature_pure = ''
+                        mins_60_post_dose_Oral_Temperature_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        mins_60_post_dose_Oral_Temperature_value = row["60-mins post dose, Oral Temperature (°C)"]
+                        mins_60_post_dose_Oral_Temperature_value_pure = mins_60_post_dose_Oral_Temperature_value.split('|')[0]
+                        mins_60_post_dose_Oral_Temperature_value_form_field_instance = mins_60_post_dose_Oral_Temperature_value.split('|')[1]
+                    except Exception as e:
+                        mins_60_post_dose_Oral_Temperature_value_pure = ''
+                        mins_60_post_dose_Oral_Temperature_value_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        hours_8_post_dose_Respiratory_rate = row["8-hours post dose, Respiratory rate"]
+                        hours_8_post_dose_Respiratory_rate_pure = hours_8_post_dose_Respiratory_rate.split('|')[0]
+                        hours_8_post_dose_Respiratory_rate_form_field_instance = hours_8_post_dose_Respiratory_rate.split('|')[1]
+                    except Exception as e:
+                        hours_8_post_dose_Respiratory_rate_pure = ''
+                        hours_8_post_dose_Respiratory_rate_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        hours_8_post_dose_Respiratory_rate_value = row["8-hours post dose, Respiratory rate (breaths/min)"]
+                        hours_8_post_dose_Respiratory_rate_value_pure = hours_8_post_dose_Respiratory_rate_value.split('|')[0]
+                        hours_8_post_dose_Respiratory_rate_value_form_field_instance = hours_8_post_dose_Respiratory_rate_value.split('|')[1]
+                    except Exception as e:
+                        hours_8_post_dose_Respiratory_rate_value_pure = ''
+                        hours_8_post_dose_Respiratory_rate_value_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        hours_12_post_dose_Oral_Temperature = row["12-hours post dose, Body Temperature"]
+                        hours_12_post_dose_Oral_Temperature_pure = hours_12_post_dose_Oral_Temperature.split('|')[0]
+                        hours_12_post_dose_Oral_Temperature_form_field_instance = hours_12_post_dose_Oral_Temperature.split('|')[1]
+                    except Exception as e:
+                        hours_12_post_dose_Oral_Temperature_pure = ''
+                        hours_12_post_dose_Oral_Temperature_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        hours_12_post_dose_Oral_Temperature_value = row["12-hours post dose, Oral Temperature (°C)"]
+                        hours_12_post_dose_Oral_Temperature_value_pure = hours_12_post_dose_Oral_Temperature_value.split('|')[0]
+                        hours_12_post_dose_Oral_Temperature_value_form_field_instance = hours_12_post_dose_Oral_Temperature_value.split('|')[1]
+                    except Exception as e:
+                        hours_12_post_dose_Oral_Temperature_value_pure = ''
+                        hours_12_post_dose_Oral_Temperature_value_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        Pre_dose_Pulse_rate = row["Pre dose, Pulse rate"]
+                        Pre_dose_Pulse_rate_pure = Pre_dose_Pulse_rate.split('|')[0]
+                        Pre_dose_Pulse_rate_form_field_instance = Pre_dose_Pulse_rate.split('|')[1]
+                    except Exception as e:
+                        Pre_dose_Pulse_rate_pure = ''
+                        Pre_dose_Pulse_rate_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        Pre_dose_Pulse_rate_value = row["Pre dose, Pulse rate (beats/min)"]
+                        Pre_dose_Pulse_rate_value_pure = Pre_dose_Pulse_rate_value.split('|')[0]
+                        Pre_dose_Pulse_rate_value_form_field_instance = Pre_dose_Pulse_rate_value.split('|')[1]
+                    except Exception as e:
+                        Pre_dose_Pulse_rate_value_pure = ''
+                        Pre_dose_Pulse_rate_value_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        hours_8_post_dose_Systolic_Blood_Pressure = row["8-hours post dose, Systolic Blood Pressure"]
+                        hours_8_post_dose_Systolic_Blood_Pressure_pure = hours_8_post_dose_Systolic_Blood_Pressure.split('|')[0]
+                        hours_8_post_dose_Systolic_Blood_Pressure_form_field_instance = hours_8_post_dose_Systolic_Blood_Pressure.split('|')[1]
+                    except Exception as e:
+                        hours_8_post_dose_Systolic_Blood_Pressure_pure = ''
+                        hours_8_post_dose_Systolic_Blood_Pressure_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        hours_8_post_dose_Systolic_Blood_Pressure_value = row["8-hours post dose, Systolic Blood Pressure  (Sitting) (mmHg)"]
+                        hours_8_post_dose_Systolic_Blood_Pressure_value_pure = hours_8_post_dose_Systolic_Blood_Pressure_value.split('|')[0]
+                        hours_8_post_dose_Systolic_Blood_Pressure_value_form_field_instance = hours_8_post_dose_Systolic_Blood_Pressure_value.split('|')[1]
+                    except Exception as e:
+                        hours_8_post_dose_Systolic_Blood_Pressure_value_pure = ''
+                        hours_8_post_dose_Systolic_Blood_Pressure_value_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        mins_30_post_dose_Systolic_Blood_Pressure = row["30-mins post dose, Systolic Blood Pressure"]
+                        mins_30_post_dose_Systolic_Blood_Pressure_pure = mins_30_post_dose_Systolic_Blood_Pressure.split('|')[0]
+                        mins_30_post_dose_Systolic_Blood_Pressure_form_field_instance = mins_30_post_dose_Systolic_Blood_Pressure.split('|')[1]
+                    except Exception as e:
+                        mins_30_post_dose_Systolic_Blood_Pressure_pure = ''
+                        mins_30_post_dose_Systolic_Blood_Pressure_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        mins_30_post_dose_Systolic_Blood_Pressure_value = row["30-mins post dose, Systolic Blood Pressure  (Sitting) (mmHg)"]
+                        mins_30_post_dose_Systolic_Blood_Pressure_value_pure = mins_30_post_dose_Systolic_Blood_Pressure_value.split('|')[0]
+                        mins_30_post_dose_Systolic_Blood_Pressure_value_form_field_instance = mins_30_post_dose_Systolic_Blood_Pressure_value.split('|')[1]
+                    except Exception as e:
+                        mins_30_post_dose_Systolic_Blood_Pressure_value_pure = ''
+                        mins_30_post_dose_Systolic_Blood_Pressure_value_form_field_instance = 'This field doesnt have any data'
+ 
+                    try:
+                        hours_4_post_dose_Respiratory_rate = row["4-hours post dose, Respiratory rate"]
+                        hours_4_post_dose_Respiratory_rate_pure = hours_4_post_dose_Respiratory_rate.split('|')[0]
+                        hours_4_post_dose_Respiratory_rate_form_field_instance = hours_4_post_dose_Respiratory_rate.split('|')[1]
+                    except Exception as e:
+                        hours_4_post_dose_Respiratory_rate_pure = ''
+                        hours_4_post_dose_Respiratory_rate_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        hours_4_post_dose_Respiratory_rate_value = row["4-hours post dose, Respiratory rate (breaths/min)"]
+                        hours_4_post_dose_Respiratory_rate_value_pure = hours_4_post_dose_Respiratory_rate_value.split('|')[0]
+                        hours_4_post_dose_Respiratory_rate_value_form_field_instance = hours_4_post_dose_Respiratory_rate_value.split('|')[1]
+                    except Exception as e:
+                        hours_4_post_dose_Respiratory_rate_value_pure = ''
+                        hours_4_post_dose_Respiratory_rate_value_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        mins_30_post_dose_Diastolic_Blood_Pressure = row["30-mins post dose, Diastolic Blood Pressure"]
+                        mins_30_post_dose_Diastolic_Blood_Pressure_pure = mins_30_post_dose_Diastolic_Blood_Pressure.split('|')[0]
+                        mins_30_post_dose_Diastolic_Blood_Pressure_form_field_instance = mins_30_post_dose_Diastolic_Blood_Pressure.split('|')[1]
+                    except Exception as e:
+                        mins_30_post_dose_Diastolic_Blood_Pressure_pure = ''
+                        mins_30_post_dose_Diastolic_Blood_Pressure_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        mins_30_post_dose_Diastolic_Blood_Pressure_value = row["30-mins post dose, Diastolic Blood Pressure (Sitting) (mmHg)"]
+                        mins_30_post_dose_Diastolic_Blood_Pressure_value_pure = mins_30_post_dose_Diastolic_Blood_Pressure_value.split('|')[0]
+                        mins_30_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = mins_30_post_dose_Diastolic_Blood_Pressure_value.split('|')[1]
+                    except Exception as e:
+                        mins_30_post_dose_Diastolic_Blood_Pressure_value_pure = ''
+                        mins_30_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        mins_30_post_dose_Pulse_rate = row["30-mins post dose, Pulse rate"]
+                        mins_30_post_dose_Pulse_rate_pure = mins_30_post_dose_Pulse_rate.split('|')[0]
+                        mins_30_post_dose_Pulse_rate_form_field_instance = mins_30_post_dose_Pulse_rate.split('|')[1]
+                    except Exception as e:
+                        mins_30_post_dose_Pulse_rate_pure = ''
+                        mins_30_post_dose_Pulse_rate_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        mins_30_post_dose_Pulse_rate_value = row["30-mins post dose, Pulse rate (beats/min)"]
+                        mins_30_post_dose_Pulse_rate_value_pure = mins_30_post_dose_Pulse_rate_value.split('|')[0]
+                        mins_30_post_dose_Pulse_rate_value_form_field_instance = mins_30_post_dose_Pulse_rate_value.split('|')[1]
+                    except Exception as e:
+                        mins_30_post_dose_Pulse_rate_value_pure = ''
+                        mins_30_post_dose_Pulse_rate_value_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        Pre_dose_Respiratory_rate = row["Pre dose, Respiratory rate"]
+                        Pre_dose_Respiratory_rate_pure = Pre_dose_Respiratory_rate.split('|')[0]
+                        Pre_dose_Respiratory_rate_form_field_instance = Pre_dose_Respiratory_rate.split('|')[1]
+                    except Exception as e:
+                        Pre_dose_Respiratory_rate_pure = ''
+                        Pre_dose_Respiratory_rate_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        Pre_dose_Respiratory_rate_value = row["Pre dose, Respiratory rate (breaths/min)"]
+                        Pre_dose_Respiratory_rate_value_pure = Pre_dose_Respiratory_rate_value.split('|')[0]
+                        Pre_dose_Respiratory_rate_value_form_field_instance = Pre_dose_Respiratory_rate_value.split('|')[1]
+                    except Exception as e:
+                        Pre_dose_Respiratory_rate_value_pure = ''
+                        Pre_dose_Respiratory_rate_value_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        hours_12_post_dose_Respiratory_rate = row["12-hours post dose, Respiratory rate"]
+                        hours_12_post_dose_Respiratory_rate_pure = hours_12_post_dose_Respiratory_rate.split('|')[0]
+                        hours_12_post_dose_Respiratory_rate_form_field_instance = hours_12_post_dose_Respiratory_rate.split('|')[1]
+                    except Exception as e:
+                        hours_12_post_dose_Respiratory_rate_pure = ''
+                        hours_12_post_dose_Respiratory_rate_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        hours_12_post_dose_Respiratory_rate_value = row["12-hours post dose, Respiratory rate (breaths/min)"]
+                        hours_12_post_dose_Respiratory_rate_value_pure = hours_12_post_dose_Respiratory_rate_value.split('|')[0]
+                        hours_12_post_dose_Respiratory_rate_value_form_field_instance = hours_12_post_dose_Respiratory_rate_value.split('|')[1]
+                    except Exception as e:
+                        hours_12_post_dose_Respiratory_rate_value_pure = ''
+                        hours_12_post_dose_Respiratory_rate_value_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        hours_12_post_dose_Pulse_rate = row["12-hours post dose, Pulse rate"]
+                        hours_12_post_dose_Pulse_rate_pure = hours_12_post_dose_Pulse_rate.split('|')[0]
+                        hours_12_post_dose_Pulse_rate_form_field_instance = hours_12_post_dose_Pulse_rate.split('|')[1]
+                    except Exception as e:
+                        hours_12_post_dose_Pulse_rate_pure = ''
+                        hours_12_post_dose_Pulse_rate_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        hours_12_post_dose_Pulse_rate_value = row["12-hours post dose, Pulse rate (beats/min)"]
+                        hours_12_post_dose_Pulse_rate_value_pure = hours_12_post_dose_Pulse_rate_value.split('|')[0]
+                        hours_12_post_dose_Pulse_rate_value_form_field_instance = hours_12_post_dose_Pulse_rate_value.split('|')[1]
+                    except Exception as e:
+                        hours_12_post_dose_Pulse_rate_value_pure = ''
+                        hours_12_post_dose_Pulse_rate_value_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        hours_2_post_dose_Systolic_Blood_Pressure = row["2-hours post dose, Systolic Blood Pressure"]
+                        hours_2_post_dose_Systolic_Blood_Pressure_pure = hours_2_post_dose_Systolic_Blood_Pressure.split('|')[0]
+                        hours_2_post_dose_Systolic_Blood_Pressure_form_field_instance = hours_2_post_dose_Systolic_Blood_Pressure.split('|')[1]
+                    except Exception as e:
+                        hours_2_post_dose_Systolic_Blood_Pressure_pure = ''
+                        hours_2_post_dose_Systolic_Blood_Pressure_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        hours_2_post_dose_Systolic_Blood_Pressure_value = row["2-hours post dose, Systolic Blood Pressure  (Sitting) (mmHg)"]
+                        hours_2_post_dose_Systolic_Blood_Pressure_value_pure = hours_2_post_dose_Systolic_Blood_Pressure_value.split('|')[0]
+                        hours_2_post_dose_Systolic_Blood_Pressure_value_form_field_instance = hours_2_post_dose_Systolic_Blood_Pressure_value.split('|')[1]
+                    except Exception as e:
+                        hours_2_post_dose_Systolic_Blood_Pressure_value_pure = ''
+                        hours_2_post_dose_Systolic_Blood_Pressure_value_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        hours_8_post_dose_Oral_Temperature = row["8-hours post dose, Body Temperature"]
+                        hours_8_post_dose_Oral_Temperature_pure = hours_8_post_dose_Oral_Temperature.split('|')[0]
+                        hours_8_post_dose_Oral_Temperature_form_field_instance = hours_8_post_dose_Oral_Temperature.split('|')[1]
+                    except Exception as e:
+                        hours_8_post_dose_Oral_Temperature_pure = '' 
+                        hours_8_post_dose_Oral_Temperature_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        hours_8_post_dose_Oral_Temperature_value = row["8-hours post dose, Oral Temperature (°C)"]
+                        hours_8_post_dose_Oral_Temperature_value_pure = hours_8_post_dose_Oral_Temperature_value.split('|')[0]
+                        hours_8_post_dose_Oral_Temperature_value_form_field_instance = hours_8_post_dose_Oral_Temperature_value.split('|')[1]
+                    except Exception as e:
+                        hours_8_post_dose_Oral_Temperature_value_pure = ''
+                        hours_8_post_dose_Oral_Temperature_value_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        mins_60_post_dose_Systolic_Blood_Pressure = row["60-mins post dose, Systolic Blood Pressure"]
+                        mins_60_post_dose_Systolic_Blood_Pressure_pure = mins_60_post_dose_Systolic_Blood_Pressure.split('|')[0]
+                        mins_60_post_dose_Systolic_Blood_Pressure_form_field_instance = mins_60_post_dose_Systolic_Blood_Pressure.split('|')[1]
+                    except Exception as e:
+                        mins_60_post_dose_Systolic_Blood_Pressure_pure = ''
+                        mins_60_post_dose_Systolic_Blood_Pressure_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        mins_60_post_dose_Systolic_Blood_Pressure_value = row["60-mins post dose, Systolic Blood Pressure  (Sitting) (mmHg)"]
+                        mins_60_post_dose_Systolic_Blood_Pressure_value_pure = mins_60_post_dose_Systolic_Blood_Pressure_value.split('|')[0]
+                        mins_60_post_dose_Systolic_Blood_Pressure_value_form_field_instance = mins_60_post_dose_Systolic_Blood_Pressure_value.split('|')[1]
+                    except Exception as e:
+                        mins_60_post_dose_Systolic_Blood_Pressure_value_pure = ''
+                        mins_60_post_dose_Systolic_Blood_Pressure_value_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        mins_15_post_dose_Oral_Temperature = row["15-mins post dose, Body Temperature"]
+                        mins_15_post_dose_Oral_Temperature_pure = mins_15_post_dose_Oral_Temperature.split('|')[0]
+                        mins_15_post_dose_Oral_Temperature_form_field_instance = mins_15_post_dose_Oral_Temperature.split('|')[1]
+                    except Exception as e:
+                        mins_15_post_dose_Oral_Temperature_pure = ''
+                        mins_15_post_dose_Oral_Temperature_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        mins_15_post_dose_Oral_Temperature_value = row["15-mins post dose, Oral Temperature (°C)"]
+                        mins_15_post_dose_Oral_Temperature_value_pure = mins_15_post_dose_Oral_Temperature_value.split('|')[0]
+                        mins_15_post_dose_Oral_Temperature_value_form_field_instance = mins_15_post_dose_Oral_Temperature_value.split('|')[1]
+                    except Exception as e:
+                        mins_15_post_dose_Oral_Temperature_value_pure = ''
+                        mins_15_post_dose_Oral_Temperature_value_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        hours_4_post_dose_Pulse_rate = row["4-hours post dose, Pulse rate"]
+                        hours_4_post_dose_Pulse_rate_pure = hours_4_post_dose_Pulse_rate.split('|')[0]
+                        hours_4_post_dose_Pulse_rate_form_field_instance = hours_4_post_dose_Pulse_rate.split('|')[1]
+                    except Exception as e:
+                        hours_4_post_dose_Pulse_rate_pure = ''
+                        hours_4_post_dose_Pulse_rate_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        hours_4_post_dose_Pulse_rate_value = row["4-hours post dose, Pulse rate (beats/min)"]
+                        hours_4_post_dose_Pulse_rate_value_pure = hours_4_post_dose_Pulse_rate_value.split('|')[0]
+                        hours_4_post_dose_Pulse_rate_value_form_field_instance = hours_4_post_dose_Pulse_rate_value.split('|')[1]
+                    except Exception as e:
+                        hours_4_post_dose_Pulse_rate_value_pure = ''
+                        hours_4_post_dose_Pulse_rate_value_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        Pre_dose_Systolic_Blood_Pressure = row["Pre dose, Systolic Blood Pressure"]
+                        Pre_dose_Systolic_Blood_Pressure_pure = Pre_dose_Systolic_Blood_Pressure.split('|')[0]
+                        Pre_dose_Systolic_Blood_Pressure_form_field_instance = Pre_dose_Systolic_Blood_Pressure.split('|')[1]
+                    except Exception as e:
+                        Pre_dose_Systolic_Blood_Pressure_pure = ''
+                        Pre_dose_Systolic_Blood_Pressure_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        Pre_dose_Systolic_Blood_Pressure_value = row["Pre dose, Systolic Blood Pressure  (Sitting) (mmHg)"]
+                        Pre_dose_Systolic_Blood_Pressure_value_pure = Pre_dose_Systolic_Blood_Pressure_value.split('|')[0]
+                        Pre_dose_Systolic_Blood_Pressure_value_form_field_instance = Pre_dose_Systolic_Blood_Pressure_value.split('|')[1]
+                    except Exception as e:
+                        Pre_dose_Systolic_Blood_Pressure_value_pure = ''
+                        Pre_dose_Systolic_Blood_Pressure_value_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        hours_12_post_dose_Systolic_Blood_Pressure = row["12-hours post dose, Systolic Blood Pressure"]
+                        hours_12_post_dose_Systolic_Blood_Pressure_pure = hours_12_post_dose_Systolic_Blood_Pressure.split('|')[0]
+                        hours_12_post_dose_Systolic_Blood_Pressure_form_field_instance = hours_12_post_dose_Systolic_Blood_Pressure.split('|')[1]
+                    except Exception as e:
+                        hours_12_post_dose_Systolic_Blood_Pressure_pure = ''
+                        hours_12_post_dose_Systolic_Blood_Pressure_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        hours_12_post_dose_Systolic_Blood_Pressure_value = row["12-hours post dose, Systolic Blood Pressure  (Sitting) (mmHg)"]
+                        hours_12_post_dose_Systolic_Blood_Pressure_value_pure = hours_12_post_dose_Systolic_Blood_Pressure_value.split('|')[0]
+                        hours_12_post_dose_Systolic_Blood_Pressure_value_form_field_instance = hours_12_post_dose_Systolic_Blood_Pressure_value.split('|')[1]
+                    except Exception as e:
+                        hours_12_post_dose_Systolic_Blood_Pressure_value_pure = ''
+                        hours_12_post_dose_Systolic_Blood_Pressure_value_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        mins_30_post_dose_Oral_Temperature = row["30-mins post dose, Body Temperature"]
+                        mins_30_post_dose_Oral_Temperature_pure = mins_30_post_dose_Oral_Temperature.split('|')[0]
+                        mins_30_post_dose_Oral_Temperature_form_field_instance = mins_30_post_dose_Oral_Temperature.split('|')[1]
+                    except Exception as e:
+                        mins_30_post_dose_Oral_Temperature_pure = '' 
+                        mins_30_post_dose_Oral_Temperature_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        mins_30_post_dose_Oral_Temperature_value = row["30-mins post dose, Oral Temperature (°C)"]
+                        mins_30_post_dose_Oral_Temperature_value_pure = mins_30_post_dose_Oral_Temperature_value.split('|')[0]
+                        mins_30_post_dose_Oral_Temperature_value_form_field_instance = mins_30_post_dose_Oral_Temperature_value.split('|')[1]
+                    except Exception as e:
+                        mins_30_post_dose_Oral_Temperature_value_pure = ''
+                        mins_30_post_dose_Oral_Temperature_value_form_field_instance = 'This field doesnt have any data'
+                   
+                    try:
+                        hours_4_post_dose_Oral_Temperature = row["4-hours post dose, Body Temperature"]
+                        hours_4_post_dose_Oral_Temperature_pure = hours_4_post_dose_Oral_Temperature.split('|')[0]
+                        hours_4_post_dose_Oral_Temperature_form_field_instance = hours_4_post_dose_Oral_Temperature.split('|')[1]
+                    except Exception as e:
+                        hours_4_post_dose_Oral_Temperature_pure = ''
+                        hours_4_post_dose_Oral_Temperature_form_field_instance = 'This field doesnt have any data'
+                   
+                    try:
+                        hours_4_post_dose_Oral_Temperature_value = row["4-hours post dose, Oral Temperature (°C)"]
+                        hours_4_post_dose_Oral_Temperature_value_pure = hours_4_post_dose_Oral_Temperature_value.split('|')[0]
+                        hours_4_post_dose_Oral_Temperature_value_form_field_instance = hours_4_post_dose_Oral_Temperature_value.split('|')[1]
+                    except Exception as e:
+                        hours_4_post_dose_Oral_Temperature_value_pure = ''
+                        hours_4_post_dose_Oral_Temperature_value_form_field_instance = 'This field doesnt have any data'
+                   
+                    try:
+                        hours_12_post_dose_Diastolic_Blood_Pressure = row["12-hours post dose, Diastolic Blood Pressure"]
+                        hours_12_post_dose_Diastolic_Blood_Pressure_pure = hours_12_post_dose_Diastolic_Blood_Pressure.split('|')[0]
+                        hours_12_post_dose_Diastolic_Blood_Pressure_form_field_instance = hours_12_post_dose_Diastolic_Blood_Pressure.split('|')[1]
+                    except Exception as e:
+                        hours_12_post_dose_Diastolic_Blood_Pressure_pure = '' 
+                        hours_12_post_dose_Diastolic_Blood_Pressure_form_field_instance = 'This field doesnt have any data'
+                   
+                    try:
+                        hours_12_post_dose_Diastolic_Blood_Pressure_value = row["12-hours post dose, Diastolic Blood Pressure (Sitting) (mmHg)"]
+                        hours_12_post_dose_Diastolic_Blood_Pressure_value_pure = hours_12_post_dose_Diastolic_Blood_Pressure_value.split('|')[0]
+                        hours_12_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = hours_12_post_dose_Diastolic_Blood_Pressure_value.split('|')[1]
+                    except Exception as e:
+                        hours_12_post_dose_Diastolic_Blood_Pressure_value_pure = ''
+                        hours_12_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = 'This field doesnt have any data'
+                   
+                    try:
+                        mins_15_post_dose_Systolic_Blood_Pressure = row["15-mins post dose, Systolic Blood Pressure"]
+                        mins_15_post_dose_Systolic_Blood_Pressure_pure = mins_15_post_dose_Systolic_Blood_Pressure.split('|')[0]
+                        mins_15_post_dose_Systolic_Blood_Pressure_form_field_instance = mins_15_post_dose_Systolic_Blood_Pressure.split('|')[1]
+                    except Exception as e:
+                        mins_15_post_dose_Systolic_Blood_Pressure_pure = ''
+                        mins_15_post_dose_Systolic_Blood_Pressure_form_field_instance = 'This field doesnt have any data'
+                   
+                    try:
+                        mins_15_post_dose_Systolic_Blood_Pressure_value = row["15-mins post dose, Systolic Blood Pressure  (Sitting) (mmHg)"]
+                        mins_15_post_dose_Systolic_Blood_Pressure_value_pure = mins_15_post_dose_Systolic_Blood_Pressure_value.split('|')[0]
+                        mins_15_post_dose_Systolic_Blood_Pressure_value_form_field_instance = mins_15_post_dose_Systolic_Blood_Pressure_value.split('|')[1]
+                    except Exception as e:
+                        mins_15_post_dose_Systolic_Blood_Pressure_value_pure = ''
+                        mins_15_post_dose_Systolic_Blood_Pressure_value_form_field_instance = 'This field doesnt have any data'
+                   
+                    try:
+                        hours_4_post_dose_Diastolic_Blood_Pressure = row["4-hours post dose, Diastolic Blood Pressure"]
+                        hours_4_post_dose_Diastolic_Blood_Pressure_pure = hours_4_post_dose_Diastolic_Blood_Pressure.split('|')[0]
+                        hours_4_post_dose_Diastolic_Blood_Pressure_form_field_instance = hours_4_post_dose_Diastolic_Blood_Pressure.split('|')[1]
+                    except Exception as e:
+                        hours_4_post_dose_Diastolic_Blood_Pressure_pure =''
+                        hours_4_post_dose_Diastolic_Blood_Pressure_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        hours_4_post_dose_Diastolic_Blood_Pressure_value = row["4-hours post dose, Diastolic Blood Pressure (Sitting) (mmHg)"]
+                        hours_4_post_dose_Diastolic_Blood_Pressure_value_pure = hours_4_post_dose_Diastolic_Blood_Pressure_value.split('|')[0]
+                        hours_4_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = hours_4_post_dose_Diastolic_Blood_Pressure_value.split('|')[1]
+                    except Exception as e:
+                        hours_4_post_dose_Diastolic_Blood_Pressure_value_pure = '' 
+                        hours_4_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = 'This field doesnt have any data'
+                  
+                    try:
+                        Undefined_Pulse_rate = row["Undefined, Pulse rate"]
+                        Undefined_Pulse_rate_pure = Undefined_Pulse_rate.split('|')[0]
+                        Undefined_Pulse_rate_form_field_instance = Undefined_Pulse_rate.split('|')[1]
+                    except Exception as e:
+                        Undefined_Pulse_rate_pure = ''
+                        Undefined_Pulse_rate_form_field_instance = 'This field doesnt have any data'
+                   
+                    try:
+                        Undefined_Pulse_rate_value = row["Undefined, Pulse rate (beats/min)"]
+                        Undefined_Pulse_rate_value_pure = Undefined_Pulse_rate_value.split('|')[0]
+                        Undefined_Pulse_rate_value_form_field_instance = Undefined_Pulse_rate_value.split('|')[1]
+                    except Exception as e:
+                        Undefined_Pulse_rate_value_pure = ''
+                        Undefined_Pulse_rate_value_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        hours_4_post_dose_Systolic_Blood_Pressure = row["4-hours post dose, Systolic Blood Pressure"]
+                        hours_4_post_dose_Systolic_Blood_Pressure_pure = hours_4_post_dose_Systolic_Blood_Pressure.split('|')[0]
+                        hours_4_post_dose_Systolic_Blood_Pressure_form_field_instance = hours_4_post_dose_Systolic_Blood_Pressure.split('|')[1]
+                    except Exception as e:
+                        hours_4_post_dose_Systolic_Blood_Pressure_pure = ''
+                        hours_4_post_dose_Systolic_Blood_Pressure_form_field_instance = 'This field doesnt have any data'
+                   
+                    try:
+                        hours_4_post_dose_Systolic_Blood_Pressure_value = row["4-hours post dose, Systolic Blood Pressure  (Sitting) (mmHg)"]
+                        hours_4_post_dose_Systolic_Blood_Pressure_value_pure = hours_4_post_dose_Systolic_Blood_Pressure_value.split('|')[0]
+                        hours_4_post_dose_Systolic_Blood_Pressure_value_form_field_instance = hours_4_post_dose_Systolic_Blood_Pressure_value.split('|')[1]
+                    except Exception as e:
+                        hours_4_post_dose_Systolic_Blood_Pressure_value_pure = ''
+                        hours_4_post_dose_Systolic_Blood_Pressure_value_form_field_instance = 'This field doesnt have any data'
+                  
+                    try:
+                        mins_15_post_dose_Respiratory_rate = row["15-mins post dose, Respiratory rate"]
+                        mins_15_post_dose_Respiratory_rate_pure = mins_15_post_dose_Respiratory_rate.split('|')[0]
+                        mins_15_post_dose_Respiratory_rate_form_field_instance = mins_15_post_dose_Respiratory_rate.split('|')[1]
+                    except Exception as e:
+                        mins_15_post_dose_Respiratory_rate_pure = ''
+                        mins_15_post_dose_Respiratory_rate_form_field_instance = 'This field doesnt have any data'
+                  
+                    try:
+                        mins_15_post_dose_Respiratory_rate_value = row["15-mins post dose, Respiratory rate (breaths/min)"]
+                        mins_15_post_dose_Respiratory_rate_value_pure = mins_15_post_dose_Respiratory_rate_value.split('|')[0]
+                        mins_15_post_dose_Respiratory_rate_value_form_field_instance = mins_15_post_dose_Respiratory_rate_value.split('|')[1]
+                    except Exception as e:
+                        mins_15_post_dose_Respiratory_rate_value_pure = ''
+                        mins_15_post_dose_Respiratory_rate_value_form_field_instance = 'This field doesnt have any data'
+                   
+                    try:
+                        mins_30_post_dose_Respiratory_rate = row["30-mins post dose, Respiratory rate"]
+                        mins_30_post_dose_Respiratory_rate_pure = mins_30_post_dose_Respiratory_rate.split('|')[0]
+                        mins_30_post_dose_Respiratory_rate_form_field_instance = mins_30_post_dose_Respiratory_rate.split('|')[1]
+                    except Exception as e:
+                        mins_30_post_dose_Respiratory_rate_pure = ''
+                        mins_30_post_dose_Respiratory_rate_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        mins_30_post_dose_Respiratory_rate_value = row["30-mins post dose, Respiratory rate (breaths/min)"]
+                        mins_30_post_dose_Respiratory_rate_value_pure = mins_30_post_dose_Respiratory_rate_value.split('|')[0]
+                        mins_30_post_dose_Respiratory_rate_value_form_field_instance = mins_30_post_dose_Respiratory_rate_value.split('|')[1]
+                    except Exception as e:
+                        mins_30_post_dose_Respiratory_rate_value_pure = ''
+                        mins_30_post_dose_Respiratory_rate_value_form_field_instance = 'This field doesnt have any data'
+                              
+                    try:
+                        mins_15_post_dose_Pulse_rate = row["15-mins post dose, Pulse rate"]
+                        mins_15_post_dose_Pulse_rate_pure = mins_15_post_dose_Pulse_rate.split('|')[0]
+                        mins_15_post_dose_Pulse_rate_form_field_instance = mins_15_post_dose_Pulse_rate.split('|')[1]
+                    except Exception as e:
+                        mins_15_post_dose_Pulse_rate_pure = '' 
+                        mins_15_post_dose_Pulse_rate_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        mins_15_post_dose_Pulse_rate_value = row["15-mins post dose, Pulse rate (beats/min)"]
+                        mins_15_post_dose_Pulse_rate_value_pure = mins_15_post_dose_Pulse_rate_value.split('|')[0]
+                        mins_15_post_dose_Pulse_rate_value_form_field_instance = mins_15_post_dose_Pulse_rate_value.split('|')[1]
+                    except Exception as e:
+                        mins_15_post_dose_Pulse_rate_value_pure = ''
+                        mins_15_post_dose_Pulse_rate_value_form_field_instance = 'This field doesnt have any data'
+
+
+                    # --------------------------------------------------------------------------------------------------------   
+                    try:
+                        # Primera  revision general de formato de fecha ->GE0020
+                        f = revision_fecha(date_assesment_pure)
+                        if f == None:
+                            pass
+                        else:
+                            error = [subject, visit, 'Date of assessment performed', date_assesment_form_field_instance ,f , date_assesment_pure, 'GE0020']
+                            lista_revision.append(error)     
+
+                    except Exception as e:
+                        lista_logs.append(f'Revision GE0020 --> {e}')
+
+                    # Revision VS0020
+                    try:
+                        date_format = '%d-%b-%Y'
+                        date_of_test_f = datetime.strptime(date_assesment_pure, date_format)
+                        date_of_visit_f = datetime.strptime(date_of_visit, date_format)
+
+                        if date_of_test_f != date_of_visit_f:
+                            error = [subject, visit, 'Date of assessment performed', date_assesment_form_field_instance,\
+                                     'The date should be the same as the visit date in the "Date of Visit" Form', f'{date_assesment_pure} - {date_of_visit}', 'VS0020']
+                            lista_revision.append(error)
+                        else:
+                            pass
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0020--> {e}')
+
+                    # Revision VS0030
+                    try:
+                        date_format = '%d-%b-%Y'
+                        date_of_test_f = datetime.strptime(date_assesment_pure, date_format)
+                        date_inform_consent_f = datetime.strptime(date_inform_consent, date_format)
+
+                        if date_of_test_f < date_inform_consent_f:
+                            error = [subject, visit, 'Date of assessment performed', date_assesment_form_field_instance,\
+                                     'The date/time of test performed cant be before the informed consent date/time', f'{date_assesment_pure} - {date_inform_consent}', 'VS0030']
+                            lista_revision.append(error)
+                        else:
+                            pass
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0030--> {e}')
+
+                    # Revision -> VS0040
+                    try:
+                        if datetime.strptime(str(date_assesment_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
+                            pass
+                        else: 
+                            error = [subject, visit, 'Date of assessment performed', date_assesment_form_field_instance ,'Visit Date must be before the End of study/Early withdrawal date. ', date_assesment_pure, 'VS0040']
+                            lista_revision.append(error)
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0040 --> {e} ')
+                    
+                    # Revision VS0050
+                    try:
+                        if  BMI_pure != '-' or BMI_pure != np.nan or  str(BMI_pure) != 'nan' or str(BMI_pure) != '':
+                            if visita == 'Screening Visit':
+                                pass
+                            else:
+                                error = [subject, visit, 'Undefined, BMI', BMI_form_field_instance, 'Only at Screening', BMI_pure, 'VS0050']
+                                lista_revision.append(error)
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0050--> {e}')
+                    
+                    # Revision VS0060
+                    try:
+                        if  height_pure != '-' or height_pure != np.nan or  str(height_pure) != 'nan' or str(height_pure) != '':
+                            if visita == 'Screening Visit':
+                                pass
+                            else:
+                                error = [subject, visit, 'Undefined, Height (cm)', height_form_field_instance,'Only at Screening', height_pure, 'VS0060']
+                                lista_revision.append(error)
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0060--> {e}')
+                    
+                    # Revision VS0070
+                    try:
+                        if  weight_pure != '-' or weight_pure != np.nan or  str(weight_pure) != 'nan' or str(weight_pure) != '':
+                            if visita == 'Screening Visit' or visita == 'D-1' or visita == 'D42' or visita == 'Unscheduled':
+                                pass
+                            else:
+                                error = [subject, visit, 'Undefined, Weight (kg)', weight_form_field_instance, 'Only at Screening', weight_pure, 'VS0070']
+                                lista_revision.append(error)
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0070--> {e}')
+
+
+                    try:
+                        # Revision VS0080
+                        if float(Undefined_Diastolic_Blood_Pressure_pure) == 1.0:
+                            if float(Undefined_Diastolic_Blood_Pressure_value_pure) > 50.0 and float(Undefined_Diastolic_Blood_Pressure_value_pure) < 90.0 :
+                                pass
+                            else:
+                                error = [subject, visit, 'Undefined, Diastolic Blood Pressure', Undefined_Diastolic_Blood_Pressure_value_form_field_instance,\
+                                         'The Diastolic Blood Pressure is not within expected range (50 to 90), therefore the Interpretation cant be Normal.', \
+                                            Undefined_Diastolic_Blood_Pressure_value_pure, 'VS0080']
+                                lista_revision.append(error)
+
+                        # Revision VS0170
+                        elif float(Undefined_Diastolic_Blood_Pressure_pure) == 2.0:
+                            if float(Undefined_Diastolic_Blood_Pressure_value_pure) <  50.0 or float(Undefined_Diastolic_Blood_Pressure_value_pure) > 90.0  :
+                                error = [subject, visit, 'Undefined, Diastolic Blood Pressure', Undefined_Diastolic_Blood_Pressure_value_form_field_instance,\
+                                         'The Diastolic Blood Pressure is within expected range (50 to 90), the Interpretation should not be Abnormal.', \
+                                            Undefined_Diastolic_Blood_Pressure_value_pure, 'VS0170']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0080--> {e}')
+
+                    try:
+                        # Revision VS0090
+                        if float(Pre_dose_Diastolic_Blood_Pressure_pure) == 1.0:
+                            if float(Pre_dose_Diastolic_Blood_Pressure_value_pure) > 50.0 and float(Pre_dose_Diastolic_Blood_Pressure_value_pure) < 90.0 :
+                                pass
+                            else:
+                                error = [subject, visit, 'Pre dose, Diastolic Blood Pressure', Pre_dose_Diastolic_Blood_Pressure_value_form_field_instance ,\
+                                         'The Diastolic Blood Pressure is not within expected range (50 to 90), therefore the Interpretation cant be Normal.', Pre_dose_Diastolic_Blood_Pressure_value_pure, 'VS0090']
+                                lista_revision.append(error)
+
+                        # Revision VS0180
+                        elif float(Pre_dose_Diastolic_Blood_Pressure_pure) == 2.0:
+                            if float(Pre_dose_Diastolic_Blood_Pressure_value_pure) <  50.0 or float(Pre_dose_Diastolic_Blood_Pressure_value_pure) > 90.0  :
+                                error = [subject, visit, 'Pre dose, Diastolic Blood Pressure', Pre_dose_Diastolic_Blood_Pressure_value_form_field_instance ,\
+                                         'The Diastolic Blood Pressure is within expected range (50 to 90), the Interpretation should not be Abnormal.', Pre_dose_Diastolic_Blood_Pressure_value_pure, 'VS0180']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0090--> {e}')
+
+                    try:
+                        # Revision VS0100
+                        if float(mins_15_post_dose_Diastolic_Blood_Pressure_pure) == 1.0:
+                            if float(mins_15_post_dose_Diastolic_Blood_Pressure_value_pure) > 50.0 and float(mins_15_post_dose_Diastolic_Blood_Pressure_value_pure) < 90.0 :
+                                pass
+                            else:
+                                error = [subject, visit, '15-mins post dose, Diastolic Blood Pressure', mins_15_post_dose_Diastolic_Blood_Pressure_value_form_field_instance,\
+                                         'The Diastolic Blood Pressure is not within expected range (50 to 90), therefore the Interpretation cant be Normal.', \
+                                            mins_15_post_dose_Diastolic_Blood_Pressure_value_pure, 'VS0100']
+                                lista_revision.append(error)
+
+                        # Revision VS0190
+                        elif float(mins_15_post_dose_Diastolic_Blood_Pressure_pure) == 2.0:
+                            if float(mins_15_post_dose_Diastolic_Blood_Pressure_value_pure) <  50.0 or float(mins_15_post_dose_Diastolic_Blood_Pressure_value_pure) > 90.0  :
+                                error = [subject, visit, '15-mins post dose, Diastolic Blood Pressure', mins_15_post_dose_Diastolic_Blood_Pressure_value_form_field_instance,\
+                                         'The Diastolic Blood Pressure is within expected range (50 to 90), the Interpretation should not be Abnormal.', \
+                                            mins_15_post_dose_Diastolic_Blood_Pressure_value_pure, 'VS0190']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0100--> {e}')
+
+                    try:
+                        # Revision VS0110
+                        if float(mins_30_post_dose_Diastolic_Blood_Pressure_pure) == 1.0:
+                            if float(mins_30_post_dose_Diastolic_Blood_Pressure_value_pure) > 50.0 and float(mins_30_post_dose_Diastolic_Blood_Pressure_value_pure) < 90.0 :
+                                pass
+                            else:
+                                error = [subject, visit, '30-mins post dose, Diastolic Blood Pressure', mins_30_post_dose_Diastolic_Blood_Pressure_value_form_field_instance,\
+                                         'The Diastolic Blood Pressure is not within expected range (50 to 90), therefore the Interpretation cant be Normal.', \
+                                            mins_30_post_dose_Diastolic_Blood_Pressure_value_pure, 'VS0110']
+                                lista_revision.append(error)
+
+                        # Revision VS0200
+                        elif float(mins_30_post_dose_Diastolic_Blood_Pressure_value_pure) == 2.0:
+                            if float(mins_30_post_dose_Diastolic_Blood_Pressure_value_pure) <  50.0 or float(mins_30_post_dose_Diastolic_Blood_Pressure_value_pure) > 90.0  :
+                                error = [subject, visit, '30-mins post dose, Diastolic Blood Pressure', mins_30_post_dose_Diastolic_Blood_Pressure_value_form_field_instance ,\
+                                         'The Diastolic Blood Pressure is within expected range (50 to 90), the Interpretation should not be Abnormal.', \
+                                            mins_30_post_dose_Diastolic_Blood_Pressure_value_pure, 'VS0200']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0110--> {e}')
+
+                    try:
+                        # Revision VS0120
+                        if float(mins_60_post_dose_Diastolic_Blood_Pressure_pure) == 1.0:
+                            if float(mins_60_post_dose_Diastolic_Blood_Pressure_value_pure) > 50.0 and float(mins_60_post_dose_Diastolic_Blood_Pressure_value_pure) < 90.0 :
+                                pass
+                            else:
+                                error = [subject, visit, '30-mins post dose, Diastolic Blood Pressure', mins_60_post_dose_Diastolic_Blood_Pressure_value_form_field_instance ,\
+                                         'The Diastolic Blood Pressure is not within expected range (50 to 90), therefore the Interpretation cant be Normal.', \
+                                            mins_60_post_dose_Diastolic_Blood_Pressure_value_pure, 'VS0120']
+                                lista_revision.append(error)
+
+                        # Revision VS0210
+                        elif float(mins_60_post_dose_Diastolic_Blood_Pressure_pure) == 2.0:
+                            if float(mins_60_post_dose_Diastolic_Blood_Pressure_value_pure) <  50.0 or float(mins_60_post_dose_Diastolic_Blood_Pressure_value_pure) > 90.0  :
+                                error = [subject, visit, '30-mins post dose, Diastolic Blood Pressure', mins_60_post_dose_Diastolic_Blood_Pressure_value_form_field_instance,\
+                                         'The Diastolic Blood Pressure is within expected range (50 to 90), the Interpretation should not be Abnormal.', \
+                                            mins_60_post_dose_Diastolic_Blood_Pressure_value_pure, 'VS0210']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0120--> {e}')
+
+                    try:
+                        # Revision VS0130
+                        if float(hours_2_post_dose_Diastolic_Blood_Pressure_pure) == 1.0:
+                            if float(hours_2_post_dose_Diastolic_Blood_Pressure_value_pure) > 50.0 and float(hours_2_post_dose_Diastolic_Blood_Pressure_value_pure) < 90.0 :
+                                pass
+                            else:
+                                error = [subject, visit, '2-hours post dose, Diastolic Blood Pressure', hours_2_post_dose_Diastolic_Blood_Pressure_value_form_field_instance ,\
+                                         'The Diastolic Blood Pressure is not within expected range (50 to 90), therefore the Interpretation cant be Normal.', \
+                                            hours_2_post_dose_Diastolic_Blood_Pressure_value_pure, 'VS0130']
+                                lista_revision.append(error)
+
+                        # Revision VS0220
+                        elif float(hours_2_post_dose_Diastolic_Blood_Pressure_pure) == 2.0:
+                            if float(hours_2_post_dose_Diastolic_Blood_Pressure_value_pure) <  50.0 or float(hours_2_post_dose_Diastolic_Blood_Pressure_value_pure) > 90.0  :
+                                error = [subject, visit, '2-hours post dose, Diastolic Blood Pressure', hours_2_post_dose_Diastolic_Blood_Pressure_value_form_field_instance,\
+                                         'The Diastolic Blood Pressure is within expected range (50 to 90), the Interpretation should not be Abnormal.', \
+                                            hours_2_post_dose_Diastolic_Blood_Pressure_value_pure, 'VS0220']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0130--> {e}')
+
+                    try:
+                        # Revision VS0140
+                        if float(hours_4_post_dose_Diastolic_Blood_Pressure_pure) == 1.0:
+                            if float(hours_4_post_dose_Diastolic_Blood_Pressure_value_pure) > 50.0 and float(hours_4_post_dose_Diastolic_Blood_Pressure_value_pure) < 90.0 :
+                                pass
+                            else:
+                                error = [subject, visit, '4-hours post dose, Diastolic Blood Pressure', hours_4_post_dose_Diastolic_Blood_Pressure_value_form_field_instance,\
+                                         'The Diastolic Blood Pressure is not within expected range (50 to 90), therefore the Interpretation cant be Normal.', \
+                                            hours_4_post_dose_Diastolic_Blood_Pressure_value_pure, 'VS0140']
+                                lista_revision.append(error)
+
+                        # Revision VS0230
+                        elif float(hours_4_post_dose_Diastolic_Blood_Pressure_pure) == 2.0:
+                            if float(hours_4_post_dose_Diastolic_Blood_Pressure_value_pure) <  50.0 or float(hours_4_post_dose_Diastolic_Blood_Pressure_value_pure) > 90.0  :
+                                error = [subject, visit, '4-hours post dose, Diastolic Blood Pressure', hours_4_post_dose_Diastolic_Blood_Pressure_value_form_field_instance ,\
+                                         'The Diastolic Blood Pressure is within expected range (50 to 90), the Interpretation should not be Abnormal.', \
+                                            hours_4_post_dose_Diastolic_Blood_Pressure_value_pure, 'VS0230']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0140--> {e}')
+
+                    try:
+                        # Revision VS0150
+                        if float(hours_8_post_dose_Diastolic_Blood_Pressure_pure) == 1.0:
+                            if float(hours_8_post_dose_Diastolic_Blood_Pressure_value_pure) > 50.0 and float(hours_8_post_dose_Diastolic_Blood_Pressure_value_pure) < 90.0 :
+                                pass
+                            else:
+                                error = [subject, visit, '8-hours post dose, Diastolic Blood Pressure', hours_8_post_dose_Diastolic_Blood_Pressure_value_form_field_instance ,\
+                                         'The Diastolic Blood Pressure is not within expected range (50 to 90), therefore the Interpretation cant be Normal.', \
+                                            hours_8_post_dose_Diastolic_Blood_Pressure_value_pure, 'VS0150']
+                                lista_revision.append(error)
+
+                        # Revision VS0240
+                        elif float(hours_8_post_dose_Diastolic_Blood_Pressure_pure) == 2.0:
+                            if float(hours_8_post_dose_Diastolic_Blood_Pressure_value_pure) <  50.0 or float(hours_8_post_dose_Diastolic_Blood_Pressure_value_pure) > 90.0  :
+                                error = [subject, visit, '8-hours post dose, Diastolic Blood Pressure', hours_8_post_dose_Diastolic_Blood_Pressure_value_form_field_instance ,\
+                                         'The Diastolic Blood Pressure is within expected range (50 to 90), the Interpretation should not be Abnormal.', \
+                                            hours_8_post_dose_Diastolic_Blood_Pressure_value_pure, 'VS0240']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0150--> {e}')
+
+                    try:
+                        # Revision VS0160
+                        if float(hours_12_post_dose_Diastolic_Blood_Pressure_pure) == 1.0:
+                            if float(hours_12_post_dose_Diastolic_Blood_Pressure_value_pure) > 50.0 and float(hours_12_post_dose_Diastolic_Blood_Pressure_value_pure) < 90.0 :
+                                pass
+                            else:
+                                error = [subject, visit, '12-hours post dose, Diastolic Blood Pressure', hours_12_post_dose_Diastolic_Blood_Pressure_value_form_field_instance ,\
+                                         'The Diastolic Blood Pressure is not within expected range (50 to 90), therefore the Interpretation cant be Normal.', \
+                                            hours_12_post_dose_Diastolic_Blood_Pressure_value_pure, 'VS0160']
+                                lista_revision.append(error)
+
+                        # Revision VS0250
+                        elif float(hours_12_post_dose_Diastolic_Blood_Pressure_pure) == 2.0:
+                            if float(hours_12_post_dose_Diastolic_Blood_Pressure_value_pure) <  50.0 or float(hours_12_post_dose_Diastolic_Blood_Pressure_value_pure) > 90.0  :
+                                error = [subject, visit, '12-hours post dose, Diastolic Blood Pressure', hours_12_post_dose_Diastolic_Blood_Pressure_value_form_field_instance ,\
+                                         'The Diastolic Blood Pressure is within expected range (50 to 90), the Interpretation should not be Abnormal.', \
+                                            hours_12_post_dose_Diastolic_Blood_Pressure_value_pure, 'VS0250']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0160--> {e}')
+# ---------------------------------------------------------------------------------------------
+
+                    try:
+                        # Revision VS0260
+                        if float(Undefined_Oral_Temperature_pure) == 1.0:
+                            if float(Undefined_Oral_Temperature_value_pure) > 35.0 and float(Undefined_Oral_Temperature_value_pure) < 37.5 :
+                                pass
+                            else:
+                                error = [subject, visit, 'Undefined, Oral Temperature', Undefined_Oral_Temperature_value_form_field_instance ,\
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', Undefined_Oral_Temperature_value_pure, 'VS0260']
+                                lista_revision.append(error)
+
+                        # Revision VS0350
+                        elif float(Undefined_Oral_Temperature_pure) == 2.0:
+                            if float(Undefined_Oral_Temperature_value_pure) <  35.0 or float(Undefined_Oral_Temperature_value_pure) > 37.5 :
+                                error = [subject, visit, 'Undefined, Oral Temperature', Undefined_Oral_Temperature_value_form_field_instance ,\
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', Undefined_Oral_Temperature_value_pure, 'VS0350']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0260--> {e}')
+
+                    try:
+                        # Revision VS0280
+                        if float(mins_15_post_dose_Oral_Temperature_pure) == 1.0:
+                            if float(mins_15_post_dose_Oral_Temperature_value_pure) > 35.0 and float(mins_15_post_dose_Oral_Temperature_value_pure) < 37.5 :
+                                pass
+                            else:
+                                error = [subject, visit, '15-mins post dose, Body Temperature', mins_15_post_dose_Oral_Temperature_value_form_field_instance ,\
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', mins_15_post_dose_Oral_Temperature_value_pure, 'VS0280']
+                                lista_revision.append(error)
+
+                        # Revision VS0370
+                        elif float(mins_15_post_dose_Oral_Temperature_pure) == 2.0:
+                            if float(mins_15_post_dose_Oral_Temperature_value_pure) <  35.0 or float(mins_15_post_dose_Oral_Temperature_value_pure) > 37.5  :
+                                error = [subject, visit, '15-mins post dose, Body Temperature', mins_15_post_dose_Oral_Temperature_value_form_field_instance,\
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', mins_15_post_dose_Oral_Temperature_value_pure, 'VS0370']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0280--> {e}')
+
+                    try:
+                        # Revision VS0270
+                        if float(Pre_dose_Oral_Temperature_pure) == 1.0:
+                            if float(Pre_dose_Oral_Temperature_value_pure) > 35.0 and float(Pre_dose_Oral_Temperature_value_pure) < 37.5 :
+                                pass
+                            else:
+                                error = [subject, visit, 'Pre dose, Body Temperature', Pre_dose_Oral_Temperature_value_form_field_instance ,\
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', Pre_dose_Oral_Temperature_value_pure, 'VS0270']
+                                lista_revision.append(error)
+
+                        # Revision VS0360
+                        elif float(Pre_dose_Oral_Temperature_pure) == 2.0:
+                            if float(Pre_dose_Oral_Temperature_value_pure) <  35.0 or float(Pre_dose_Oral_Temperature_value_pure) > 37.5 :
+                                error = [subject, visit, 'Pre dose, Body Temperature', Pre_dose_Oral_Temperature_value_form_field_instance ,\
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', Pre_dose_Oral_Temperature_value_pure, 'VS0360']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0270--> {e}')
+
+                    try:
+                        # Revision VS0290
+                        if float(mins_30_post_dose_Oral_Temperature_pure) == 1.0:
+                            if float(mins_30_post_dose_Oral_Temperature_value_pure) > 35.0 and float(mins_30_post_dose_Oral_Temperature_value_pure) < 37.5 :
+                                pass
+                            else:
+                                error = [subject, visit, '30-mins post dose, Body Temperature', mins_30_post_dose_Oral_Temperature_value_form_field_instance ,\
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', mins_30_post_dose_Oral_Temperature_value_pure, 'VS0290']
+                                lista_revision.append(error)
+
+                        # Revision VS0380
+                        elif float(mins_30_post_dose_Oral_Temperature_pure) == 2.0:
+                            if float(mins_30_post_dose_Oral_Temperature_value_pure) <  35.0 or float(mins_30_post_dose_Oral_Temperature_value_pure) > 37.5  :
+                                error = [subject, visit, '30-mins post dose, Body Temperature', mins_30_post_dose_Oral_Temperature_value_form_field_instance ,\
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', mins_30_post_dose_Oral_Temperature_value_pure, 'VS0380']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0290--> {e}')
+
+                    try:
+                        # Revision VS0300
+                        if float(mins_60_post_dose_Oral_Temperature_pure) == 1.0:
+                            if float(mins_60_post_dose_Oral_Temperature_value_pure) > 35.0 and float(mins_60_post_dose_Oral_Temperature_value_pure) < 37.5 :
+                                pass
+                            else:
+                                error = [subject, visit, '60-mins post dose, Oral Temperature', mins_60_post_dose_Oral_Temperature_value_form_field_instance ,\
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', mins_60_post_dose_Oral_Temperature_value_pure, 'VS0300']
+                                lista_revision.append(error)
+
+                        # Revision VS0390
+                        elif float(mins_60_post_dose_Oral_Temperature_pure) == 2.0:
+                            if float(mins_60_post_dose_Oral_Temperature_value_pure) <  35.0 or float(mins_60_post_dose_Oral_Temperature_value_pure) > 37.5  :
+                                error = [subject, visit, '60-mins post dose, Oral Temperature', mins_60_post_dose_Oral_Temperature_value_form_field_instance ,\
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', mins_60_post_dose_Oral_Temperature_value_pure, 'VS0390']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0300--> {e}')
+
+                    try:
+                        # Revision VS0310
+                        if float(hours_2_post_dose_Oral_Temperature_pure) == 1.0:
+                            if float(hours_2_post_dose_Oral_Temperature_value_pure) > 35.0 and float(hours_2_post_dose_Oral_Temperature_value_pure) < 37.5 :
+                                pass
+                            else:
+                                error = [subject, visit, '2-hours post dose, Oral Temperature', hours_2_post_dose_Oral_Temperature_value_form_field_instance ,\
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', hours_2_post_dose_Oral_Temperature_value_pure, 'VS0310']
+                                lista_revision.append(error)
+
+                        # Revision VS0400
+                        elif float(hours_2_post_dose_Oral_Temperature_pure) == 2.0:
+                            if float(hours_2_post_dose_Oral_Temperature_value_pure) <  35.0 or float(hours_2_post_dose_Oral_Temperature_value_pure) > 37.5  :
+                                error = [subject, visit, '2-hours post dose, Oral Temperature', hours_2_post_dose_Oral_Temperature_value_form_field_instance ,\
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', hours_2_post_dose_Oral_Temperature_value_pure, 'VS0400']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0310--> {e}')
+
+                    try:
+                        # Revision VS0330
+                        if float(hours_8_post_dose_Oral_Temperature_pure) == 1.0:
+                            if float(hours_8_post_dose_Oral_Temperature_value_pure) > 35.0 and float(hours_8_post_dose_Oral_Temperature_value_pure) < 37.5 :
+                                pass
+                            else:
+                                error = [subject, visit, '8-hours post dose, Oral Temperature', hours_8_post_dose_Oral_Temperature_value_form_field_instance ,\
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', hours_8_post_dose_Oral_Temperature_value_pure, 'VS0330']
+                                lista_revision.append(error)
+
+                        # Revision VS0420
+                        elif float(hours_8_post_dose_Oral_Temperature_pure) == 2.0:
+                            if float(hours_8_post_dose_Oral_Temperature_value_pure) <  35.0 or float(hours_8_post_dose_Oral_Temperature_value_pure) > 37.5  :
+                                error = [subject, visit, '8-hours post dose, Oral Temperature', hours_8_post_dose_Oral_Temperature_value_form_field_instance ,\
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', hours_8_post_dose_Oral_Temperature_value_pure, 'VS0420']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0330--> {e}')
+
+                    try:
+                        # Revision VS0320
+                        if float(hours_4_post_dose_Oral_Temperature_pure) == 1.0:
+                            if float(hours_4_post_dose_Oral_Temperature_value_pure) > 35.0 and float(hours_4_post_dose_Oral_Temperature_value_pure) < 37.5 :
+                                pass
+                            else:
+                                error = [subject, visit, '4-hours post dose, Oral Temperature', hours_4_post_dose_Oral_Temperature_value_form_field_instance,\
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', hours_4_post_dose_Oral_Temperature_value_pure, 'VS0320']
+                                lista_revision.append(error)
+
+                        # Revision VS0410
+                        elif float(hours_4_post_dose_Oral_Temperature_pure) == 2.0:
+                            if float(hours_4_post_dose_Oral_Temperature_value_pure) <  35.0 or float(hours_4_post_dose_Oral_Temperature_value_pure) > 37.5  :
+                                error = [subject, visit, '4-hours post dose, Oral Temperature', hours_4_post_dose_Oral_Temperature_value_form_field_instance,\
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', hours_4_post_dose_Oral_Temperature_value_pure, 'VS0410']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0320--> {e}')
+
+                    try:
+                        # Revision VS0340
+                        if float(hours_12_post_dose_Oral_Temperature_pure) == 1.0:
+                            if float(hours_12_post_dose_Oral_Temperature_value_pure) > 35.0 and float(hours_12_post_dose_Oral_Temperature_value_pure) < 37.5 :
+                                pass
+                            else:
+                                error = [subject, visit, '12-hours post dose, Oral Temperature', hours_12_post_dose_Oral_Temperature_value_form_field_instance,\
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', hours_12_post_dose_Oral_Temperature_value_pure, 'VS0340']
+                                lista_revision.append(error)
+
+                        # Revision VS0430
+                        elif float(hours_12_post_dose_Oral_Temperature_pure) == 2.0:
+                            if float(hours_12_post_dose_Oral_Temperature_value_pure) <  35.0 or float(hours_12_post_dose_Oral_Temperature_value_pure) > 37.5  :
+                                error = [subject, visit, '12-hours post dose, Oral Temperature', hours_12_post_dose_Oral_Temperature_value_form_field_instance ,\
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', hours_12_post_dose_Oral_Temperature_value_pure, 'VS0430']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0340--> {e}')
+
+# -----------------------------------
+                    try:
+                        # Revision VS0440
+                        if float(Undefined_Pulse_rate_pure) == 1.0:
+                            if float(Undefined_Pulse_rate_value_pure) > 45.0 and float(Undefined_Pulse_rate_value_pure) < 100.5 :
+                                pass
+                            else:
+                                error = [subject, visit, 'Undefined, Pulse rate', Undefined_Pulse_rate_value_form_field_instance ,\
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', Undefined_Pulse_rate_value_pure, 'VS0440']
+                                lista_revision.append(error)
+
+                        # Revision VS0530
+                        elif float(Undefined_Pulse_rate_pure) == 2.0:
+                            if float(Undefined_Pulse_rate_value_pure) <  45.0 or float(Undefined_Pulse_rate_value_pure) > 100.5  :
+                                error = [subject, visit, 'Undefined, Pulse rate', Undefined_Pulse_rate_value_form_field_instance,\
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', Undefined_Pulse_rate_value_pure, 'VS0530']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0440--> {e}')
+
+                    try:
+                        # Revision VS0450
+                        if float(Pre_dose_Pulse_rate_pure) == 1.0:
+                            if float(Pre_dose_Pulse_rate_value_pure) > 45.0 and float(Pre_dose_Pulse_rate_value_pure) < 100.5 :
+                                pass
+                            else:
+                                error = [subject, visit, 'Pre dose, Pulse rate', Pre_dose_Pulse_rate_value_form_field_instance ,\
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', Pre_dose_Pulse_rate_value_pure, 'VS0450']
+                                lista_revision.append(error)
+
+                        # Revision VS0540
+                        elif float(Pre_dose_Pulse_rate_pure) == 2.0:
+                            if float(Pre_dose_Pulse_rate_value_pure) <  45.0 or float(Pre_dose_Pulse_rate_value_pure) > 100.5  :
+                                error = [subject, visit, 'Pre dose, Pulse rate', Pre_dose_Pulse_rate_value_form_field_instance,\
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', Pre_dose_Pulse_rate_value_pure, 'VS0540']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0450--> {e}')
+
+                    try:
+                        # Revision VS0460
+                        if float(mins_15_post_dose_Pulse_rate_pure) == 1.0:
+                            if float(mins_15_post_dose_Pulse_rate_value_pure) > 45.0 and float(mins_15_post_dose_Pulse_rate_value_pure) < 100.5 :
+                                pass
+                            else:
+                                error = [subject, visit, '15-mins post dose, Pulse rate', mins_15_post_dose_Pulse_rate_value_form_field_instance ,\
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', mins_15_post_dose_Pulse_rate_value_pure, 'VS0460']
+                                lista_revision.append(error)
+
+                        # Revision VS0550
+                        elif float(mins_15_post_dose_Pulse_rate_pure) == 2.0:
+                            if float(mins_15_post_dose_Pulse_rate_value_pure) <  45.0 or float(mins_15_post_dose_Pulse_rate_value_pure) > 100.5  :
+                                error = [subject, visit, '15-mins post dose, Pulse rate', mins_15_post_dose_Pulse_rate_value_form_field_instance ,\
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', mins_15_post_dose_Pulse_rate_value_pure, 'VS0550']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0460--> {e}')
+
+                    try:
+                        # Revision VS0470
+                        if float(mins_30_post_dose_Pulse_rate_pure) == 1.0:
+                            if float(mins_30_post_dose_Pulse_rate_value_pure) > 45.0 and float(mins_30_post_dose_Pulse_rate_value_pure) < 100.5 :
+                                pass
+                            else:
+                                error = [subject, visit, '15-mins post dose, Pulse rate', mins_30_post_dose_Pulse_rate_value_form_field_instance,\
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', mins_30_post_dose_Pulse_rate_value_pure, 'VS0470']
+                                lista_revision.append(error)
+
+                        # Revision VS0560
+                        elif float(mins_30_post_dose_Pulse_rate_pure) == 2.0:
+                            if float(mins_30_post_dose_Pulse_rate_value_pure) <  45.0 or float(mins_30_post_dose_Pulse_rate_value_pure) > 100.5  :
+                                error = [subject, visit, '15-mins post dose, Pulse rate', mins_30_post_dose_Pulse_rate_value_form_field_instance ,\
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', mins_30_post_dose_Pulse_rate_value_pure, 'VS0560']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0470--> {e}')
+
+                    try:
+                        # Revision VS0480
+                        if float(mins_60_post_dose_Pulse_rate_pure) == 1.0:
+                            if float(mins_60_post_dose_Pulse_rate_value_pure) > 45.0 and float(mins_60_post_dose_Pulse_rate_value_pure) < 100.5 :
+                                pass
+                            else:
+                                error = [subject, visit, '60-mins post dose, Pulse rate', mins_60_post_dose_Pulse_rate_value_form_field_instance ,\
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', mins_60_post_dose_Pulse_rate_value_pure, 'VS0480']
+                                lista_revision.append(error)
+
+                        # Revision VS0570
+                        elif float(mins_60_post_dose_Pulse_rate_pure) == 2.0:
+                            if float(mins_60_post_dose_Pulse_rate_value_pure) <  45.0 or float(mins_60_post_dose_Pulse_rate_value_pure) > 100.5  :
+                                error = [subject, visit, '60-mins post dose, Pulse rate', mins_60_post_dose_Pulse_rate_value_form_field_instance,\
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', mins_60_post_dose_Pulse_rate_value_pure, 'VS0570']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0480--> {e}')
+
+                    try:
+                        # Revision VS0490
+                        if float(hours_2_post_dose_Pulse_rate_pure) == 1.0:
+                            if float(hours_2_post_dose_Pulse_rate_value_pure) > 45.0 and float(hours_2_post_dose_Pulse_rate_value_pure) < 100.5 :
+                                pass
+                            else:
+                                error = [subject, visit, '2-hours post dose, Pulse rate', hours_2_post_dose_Pulse_rate_value_form_field_instance ,\
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', hours_2_post_dose_Pulse_rate_value_pure, 'VS0490']
+                                lista_revision.append(error)
+
+                        # Revision VS0580
+                        elif float(hours_2_post_dose_Pulse_rate_pure) == 2.0:
+                            if float(hours_2_post_dose_Pulse_rate_value_pure) <  45.0 or float(hours_2_post_dose_Pulse_rate_value_pure) > 100.5  :
+                                error = [subject, visit, '2-hours post dose, Pulse rate', hours_2_post_dose_Pulse_rate_value_form_field_instance ,\
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', hours_2_post_dose_Pulse_rate_value_pure, 'VS0580']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0490--> {e}')
+
+                    try:
+                        # Revision VS0490
+                        if float(hours_2_post_dose_Pulse_rate_pure) == 1.0:
+                            if float(hours_2_post_dose_Pulse_rate_value_pure) > 45.0 and float(hours_2_post_dose_Pulse_rate_value_pure) < 100.5 :
+                                pass
+                            else:
+                                error = [subject, visit, '2-hours post dose, Pulse rate', hours_2_post_dose_Pulse_rate_value_form_field_instance ,\
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', hours_2_post_dose_Pulse_rate_value_pure, 'VS0490']
+                                lista_revision.append(error)
+
+                        # Revision VS0580
+                        elif float(hours_2_post_dose_Pulse_rate_pure) == 2.0:
+                            if float(hours_2_post_dose_Pulse_rate_value_pure) <  45.0 or float(hours_2_post_dose_Pulse_rate_value_pure) > 100.5  :
+                                error = [subject, visit, '2-hours post dose, Pulse rate', hours_2_post_dose_Pulse_rate_value_form_field_instance ,\
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', hours_2_post_dose_Pulse_rate_value_pure, 'VS0580']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0490--> {e}')
+
+                    try:
+                        # Revision VS0500
+                        if float(hours_4_post_dose_Pulse_rate_pure) == 1.0:
+                            if float(hours_4_post_dose_Pulse_rate_value_pure) > 45.0 and float(hours_4_post_dose_Pulse_rate_value_pure) < 100.5 :
+                                pass
+                            else:
+                                error = [subject, visit, '4-hours post dose, Pulse rate', hours_4_post_dose_Pulse_rate_value_form_field_instance ,\
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', hours_4_post_dose_Pulse_rate_value_pure, 'VS0500']
+                                lista_revision.append(error)
+
+                        # Revision VS0590
+                        elif float(hours_4_post_dose_Pulse_rate_pure) == 2.0:
+                            if float(hours_4_post_dose_Pulse_rate_value_pure) <  45.0 or float(hours_4_post_dose_Pulse_rate_value_pure) > 100.5  :
+                                error = [subject, visit, '4-hours post dose, Pulse rate', hours_4_post_dose_Pulse_rate_value_form_field_instance ,\
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', hours_4_post_dose_Pulse_rate_value_pure, 'VS0590']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0500--> {e}')
+
+                    try:
+                        # Revision VS0510
+                        if float(hours_8_post_dose_Pulse_rate_pure) == 1.0:
+                            if float(hours_8_post_dose_Pulse_rate_value_pure) > 45.0 and float(hours_8_post_dose_Pulse_rate_value_pure) < 100.5 :
+                                pass
+                            else:
+                                error = [subject, visit, '8-hours post dose, Pulse rate', hours_8_post_dose_Pulse_rate_value_form_field_instance ,\
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', hours_8_post_dose_Pulse_rate_value_pure, 'VS0510']
+                                lista_revision.append(error)
+
+                        # Revision VS0600
+                        elif float(hours_8_post_dose_Pulse_rate_pure) == 2.0:
+                            if float(hours_4_post_dose_Pulse_rate_value_pure) <  45.0 or float(hours_8_post_dose_Pulse_rate_value_pure) > 100.5  :
+                                error = [subject, visit, '8-hours post dose, Pulse rate', hours_8_post_dose_Pulse_rate_value_form_field_instance ,\
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', hours_8_post_dose_Pulse_rate_value_pure, 'VS0600']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0510--> {e}')
+
+                    try:
+                        # Revision VS0520
+                        if float(hours_12_post_dose_Pulse_rate_pure) == 1.0:
+                            if float(hours_12_post_dose_Pulse_rate_value_pure) > 45.0 and float(hours_12_post_dose_Pulse_rate_value_pure) < 100.5 :
+                                pass
+                            else:
+                                error = [subject, visit, '12-hours post dose, Pulse rate', hours_12_post_dose_Pulse_rate_value_form_field_instance ,\
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', hours_12_post_dose_Pulse_rate_value_pure, 'VS0520']
+                                lista_revision.append(error)
+
+                        # Revision VS0610
+                        elif float(hours_12_post_dose_Pulse_rate_pure) == 2.0:
+                            if float(hours_12_post_dose_Pulse_rate_value_pure) <  45.0 or float(hours_12_post_dose_Pulse_rate_value_pure) > 100.5  :
+                                error = [subject, visit, '12-hours post dose, Pulse rate', hours_12_post_dose_Pulse_rate_value_form_field_instance ,\
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', hours_12_post_dose_Pulse_rate_value_pure, 'VS0610']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0520--> {e}')
+# -----------------------------------
+
+                    try:
+                        # Revision VS0620
+                        if float(Undefined_Respiratory_rate_pure) == 1.0:
+                            if float(Undefined_Respiratory_rate_value_pure) > 12.0 and float(Undefined_Respiratory_rate_value_pure) < 18.0 :
+                                pass
+                            else:
+                                error = [subject, visit, 'Undefined, Respiratory rate', Undefined_Respiratory_rate_value_form_field_instance ,\
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', \
+                                            Undefined_Respiratory_rate_value_pure, 'VS0620']
+                                lista_revision.append(error)
+
+                        # Revision VS0710
+                        elif float(Undefined_Respiratory_rate_pure) == 2.0:
+                            if float(Undefined_Respiratory_rate_value_pure) <  12.0 or float(Undefined_Respiratory_rate_value_pure) > 18.0  :
+                                error = [subject, visit, 'Undefined, Respiratory rate', Undefined_Respiratory_rate_value_form_field_instance ,\
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', Undefined_Respiratory_rate_value_pure, 'VS0710']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0620--> {e}')
+
+                    try:
+                        # Revision VS0630
+                        if float(Pre_dose_Respiratory_rate_pure) == 1.0:
+                            if float(Pre_dose_Respiratory_rate_value_pure) > 12.0 and float(Pre_dose_Respiratory_rate_value_pure) < 18.0 :
+                                pass
+                            else:
+                                error = [subject, visit, 'Pre dose, Respiratory rate', Pre_dose_Respiratory_rate_value_form_field_instance ,\
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', Pre_dose_Respiratory_rate_value_pure, 'VS0630']
+                                lista_revision.append(error)
+
+                        # Revision VS0720
+                        elif float(Pre_dose_Respiratory_rate_pure) == 2.0:
+                            if float(Pre_dose_Respiratory_rate_value_pure) <  12.0 or float(Pre_dose_Respiratory_rate_value_pure) > 18.0  :
+                                error = [subject, visit, 'Pre dose, Respiratory rate', Pre_dose_Respiratory_rate_value_form_field_instance ,\
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', Pre_dose_Respiratory_rate_value_pure, 'VS0720']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0630--> {e}')
+
+                    try:
+                        # Revision VS0640
+                        if float(mins_15_post_dose_Respiratory_rate_pure) == 1.0:
+                            if float(mins_15_post_dose_Respiratory_rate_value_pure) > 12.0 and float(mins_15_post_dose_Respiratory_rate_value_pure) < 18.0 :
+                                pass
+                            else:
+                                error = [subject, visit, '15-mins post dose, Respiratory rate', mins_15_post_dose_Respiratory_rate_value_form_field_instance ,\
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', mins_15_post_dose_Respiratory_rate_value_pure, 'VS0640']
+                                lista_revision.append(error)
+
+                        # Revision VS0730
+                        elif float(mins_15_post_dose_Respiratory_rate_pure) == 2.0:
+                            if float(mins_15_post_dose_Respiratory_rate_value_pure) <  12.0 or float(mins_15_post_dose_Respiratory_rate_value_pure) > 18.0  :
+                                error = [subject, visit, '15-mins post dose, Respiratory rate', mins_15_post_dose_Respiratory_rate_value_form_field_instance ,\
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', mins_15_post_dose_Respiratory_rate_value_pure, 'VS0730']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0640--> {e}')
+
+                    try:
+                        # Revision VS0650
+                        if float(mins_30_post_dose_Respiratory_rate_pure) == 1.0:
+                            if float(mins_30_post_dose_Respiratory_rate_value_pure) > 12.0 and float(mins_30_post_dose_Respiratory_rate_value_pure) < 18.0 :
+                                pass
+                            else:
+                                error = [subject, visit, '30-mins post dose, Respiratory rate', mins_30_post_dose_Respiratory_rate_value_form_field_instance ,\
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', mins_30_post_dose_Respiratory_rate_value_pure, 'VS0650']
+                                lista_revision.append(error)
+
+                        # Revision VS0740
+                        elif float(mins_30_post_dose_Respiratory_rate_pure) == 2.0:
+                            if float(mins_30_post_dose_Respiratory_rate_value_pure) <  12.0 or float(mins_30_post_dose_Respiratory_rate_value_pure) > 18.0  :
+                                error = [subject, visit, '30-mins post dose, Respiratory rate', mins_30_post_dose_Respiratory_rate_value_form_field_instance ,\
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', mins_30_post_dose_Respiratory_rate_value_pure, 'VS0740']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0650--> {e}')
+
+                    try:
+                        # Revision VS0660
+                        if float(mins_60_post_dose_Respiratory_rate_pure) == 1.0:
+                            if float(mins_60_post_dose_Respiratory_rate_value_pure) > 12.0 and float(mins_60_post_dose_Respiratory_rate_value_pure) < 18.0 :
+                                pass
+                            else:
+                                error = [subject, visit, '60-mins post dose, Respiratory rate', mins_60_post_dose_Respiratory_rate_value_form_field_instance ,\
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', mins_60_post_dose_Respiratory_rate_value_pure, 'VS0660']
+                                lista_revision.append(error)
+
+                        # Revision VS0750
+                        elif float(mins_60_post_dose_Respiratory_rate_pure) == 2.0:
+                            if float(mins_60_post_dose_Respiratory_rate_value_pure) <  12.0 or float(mins_60_post_dose_Respiratory_rate_value_pure) > 18.0  :
+                                error = [subject, visit, '60-mins post dose, Respiratory rate', mins_60_post_dose_Respiratory_rate_value_form_field_instance ,\
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', mins_60_post_dose_Respiratory_rate_value_pure, 'VS0750']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0660--> {e}')
+
+                    try:
+                        # Revision VS0670
+                        if float(hours_2_post_dose_Respiratory_rate_pure) == 1.0:
+                            if float(hours_2_post_dose_Respiratory_rate_value_pure) > 12.0 and float(hours_2_post_dose_Respiratory_rate_value_pure) < 18.0 :
+                                pass
+                            else:
+                                error = [subject, visit, '2-hours post dose, Respiratory rate', hours_2_post_dose_Respiratory_rate_value_form_field_instance ,\
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', hours_2_post_dose_Respiratory_rate_value_pure, 'VS0670']
+                                lista_revision.append(error)
+
+                        # Revision VS0760
+                        elif float(hours_2_post_dose_Respiratory_rate_pure) == 2.0:
+                            if float(hours_2_post_dose_Respiratory_rate_value_pure) <  12.0 or float(hours_2_post_dose_Respiratory_rate_value_pure) > 18.0  :
+                                error = [subject, visit, '2-hours post dose, Respiratory rate', hours_2_post_dose_Respiratory_rate_value_form_field_instance ,\
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', hours_2_post_dose_Respiratory_rate_value_pure, 'VS0760']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0670--> {e}')
+
+                    try:
+                        # Revision VS0680
+                        if float(hours_4_post_dose_Respiratory_rate_pure) == 1.0:
+                            if float(hours_4_post_dose_Respiratory_rate_value_pure) > 12.0 and float(hours_4_post_dose_Respiratory_rate_value_pure) < 18.0 :
+                                pass
+                            else:
+                                error = [subject, visit, '4-hours post dose, Respiratory rate', hours_4_post_dose_Respiratory_rate_value_form_field_instance ,\
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', hours_4_post_dose_Respiratory_rate_value_pure, 'VS0680']
+                                lista_revision.append(error)
+
+                        # Revision VS0770
+                        elif float(hours_4_post_dose_Respiratory_rate_pure) == 2.0:
+                            if float(hours_4_post_dose_Respiratory_rate_value_pure) <  12.0 or float(hours_4_post_dose_Respiratory_rate_value_pure) > 18.0  :
+                                error = [subject, visit, '4-hours post dose, Respiratory rate', hours_4_post_dose_Respiratory_rate_value_form_field_instance ,\
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', hours_4_post_dose_Respiratory_rate_value_pure, 'VS0770']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0680--> {e}')
+
+                    try:
+                        # Revision VS0690
+                        if float(hours_8_post_dose_Respiratory_rate_pure) == 1.0:
+                            if float(hours_8_post_dose_Respiratory_rate_value_pure) > 12.0 and float(hours_8_post_dose_Respiratory_rate_value_pure) < 18.0 :
+                                pass
+                            else:
+                                error = [subject, visit, '8-hours post dose, Respiratory rate', hours_8_post_dose_Respiratory_rate_value_form_field_instance ,\
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', hours_8_post_dose_Respiratory_rate_value_pure, 'VS0690']
+                                lista_revision.append(error)
+
+                        # Revision VS0780
+                        elif float(hours_8_post_dose_Respiratory_rate_pure) == 2.0:
+                            if float(hours_8_post_dose_Respiratory_rate_value_pure) <  12.0 or float(hours_8_post_dose_Respiratory_rate_value_pure) > 18.0  :
+                                error = [subject, visit, '8-hours post dose, Respiratory rate', hours_8_post_dose_Respiratory_rate_value_form_field_instance ,\
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', hours_8_post_dose_Respiratory_rate_value_pure, 'VS0780']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0690--> {e}')
+
+                    try:
+                        # Revision VS0700
+                        if float(hours_12_post_dose_Respiratory_rate_pure) == 1.0:
+                            if float(hours_12_post_dose_Respiratory_rate_value_pure) > 12.0 and float(hours_12_post_dose_Respiratory_rate_value_pure) < 18.0 :
+                                pass
+                            else:
+                                error = [subject, visit, '12-hours post dose, Respiratory rate', hours_12_post_dose_Respiratory_rate_value_form_field_instance ,\
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', hours_12_post_dose_Respiratory_rate_value_pure, 'VS0700']
+                                lista_revision.append(error)
+
+                        # Revision VS0790
+                        elif float(hours_12_post_dose_Respiratory_rate_pure) == 2.0:
+                            if float(hours_12_post_dose_Respiratory_rate_value_pure) <  12.0 or float(hours_12_post_dose_Respiratory_rate_value_pure) > 18.0  :
+                                error = [subject, visit, '12-hours post dose, Respiratory rate', hours_12_post_dose_Respiratory_rate_value_form_field_instance ,\
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', hours_12_post_dose_Respiratory_rate_value_pure, 'VS0790']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0700--> {e}')
+#---------------------------------------------------------------------------
+
+                    try:
+                        # Revision VS0800
+                        if float(Undefined_Systolic_Blood_Pressure_pure) == 1.0:
+                            if float(Undefined_Systolic_Blood_Pressure_value_pure) > 100.0 and float(Undefined_Systolic_Blood_Pressure_value_pure) < 140.0 :
+                                pass
+                            else:
+                                error = [subject, visit, 'Undefined, Systolic Blood Pressure', Undefined_Systolic_Blood_Pressure_value_form_field_instance ,\
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation cant be Normal.' , Undefined_Systolic_Blood_Pressure_value_pure, 'VS0800']
+                                lista_revision.append(error)
+
+                        # Revision VS0890
+                        elif float(Undefined_Systolic_Blood_Pressure_pure) == 2.0:
+                            if float(Undefined_Systolic_Blood_Pressure_value_pure) <  100.0 or float(Undefined_Systolic_Blood_Pressure_value_pure) > 140.0  :
+                                error = [subject, visit, 'Undefined, Systolic Blood Pressure', Undefined_Systolic_Blood_Pressure_value_form_field_instance ,\
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation cant be Normal.', Undefined_Systolic_Blood_Pressure_value_pure, 'VS0890']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0800--> {e}')
+
+                    try:
+                        # # Revision VS0800
+                        # if float(Pre_dose_Systolic_Blood_Pressure) == 1.0:
+                        #     if float(Pre_dose_Systolic_Blood_Pressure_value) > 12.0 and float(Pre_dose_Systolic_Blood_Pressure_value) < 18.0 :
+                        #         error = [subject, visit, 'Pre dose, Systolic Blood Pressure' ,'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation cant be Normal.' , Pre_dose_Systolic_Blood_Pressure_value, 'VS0800']
+                        #         lista_revision.append(error)
+
+                        # Revision VS0890
+                        if float(Pre_dose_Systolic_Blood_Pressure_pure) == 2.0:
+                            if float(Pre_dose_Systolic_Blood_Pressure_value_pure) <  12.0 or float(Pre_dose_Systolic_Blood_Pressure_value_pure) > 18.0  :
+                                error = [subject, visit, 'Pre dose, Systolic Blood Pressure', Pre_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation cant be Normal.', Pre_dose_Systolic_Blood_Pressure_value_pure, 'VS0890']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0890--> {e}')
+
+                    try:
+                        # Revision VS0820
+                        if float(mins_15_post_dose_Systolic_Blood_Pressure_pure) == 1.0:
+                            if float(mins_15_post_dose_Systolic_Blood_Pressure_value_pure) > 100.0 and float(mins_15_post_dose_Systolic_Blood_Pressure_value_pure) < 140.0 :
+                                pass
+                            else:
+                                error = [subject, visit, '15-mins post dose, Systolic Blood Pressure', mins_15_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation cant be Normal.',\
+                                              mins_15_post_dose_Systolic_Blood_Pressure_value_pure, 'VS0820']
+                                lista_revision.append(error)
+
+                        # Revision VS0910
+                        elif float(mins_15_post_dose_Systolic_Blood_Pressure_pure) == 2.0:
+                            if float(mins_15_post_dose_Systolic_Blood_Pressure_value_pure) <  100.0 or float(mins_15_post_dose_Systolic_Blood_Pressure_value_pure) > 140.0  :
+                                error = [subject, visit, '15-mins post dose, Systolic Blood Pressure', mins_15_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation cant be Normal.', \
+                                            mins_15_post_dose_Systolic_Blood_Pressure_value_pure, 'VS0910']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0820--> {e}')
+
+                    try:
+                        # Revision VS0830
+                        if float(mins_30_post_dose_Systolic_Blood_Pressure_pure) == 1.0:
+                            if float(mins_30_post_dose_Systolic_Blood_Pressure_value_pure) > 100.0 and float(mins_30_post_dose_Systolic_Blood_Pressure_value_pure) < 140.0 :
+                                pass
+                            else:
+                                error = [subject, visit, '30-mins post dose, Systolic Blood Pressure', mins_30_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation cant be Normal.', \
+                                            mins_30_post_dose_Systolic_Blood_Pressure_value_pure, 'VS0830']
+                                lista_revision.append(error)
+
+                        # Revision VS0920
+                        elif float(mins_30_post_dose_Systolic_Blood_Pressure_pure) == 2.0:
+                            if float(mins_30_post_dose_Systolic_Blood_Pressure_value_pure) <  100.0 or float(mins_30_post_dose_Systolic_Blood_Pressure_value_pure) > 140.0  :
+                                error = [subject, visit, '30-mins post dose, Systolic Blood Pressure', mins_30_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation cant be Normal.', \
+                                            mins_30_post_dose_Systolic_Blood_Pressure_value_pure, 'VS0920']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0830--> {e}')
+
+                    try:
+                        # Revision VS0840
+                        if float(mins_60_post_dose_Systolic_Blood_Pressure_pure) == 1.0:
+                            if float(mins_60_post_dose_Systolic_Blood_Pressure_value_pure) > 100.0 and float(mins_60_post_dose_Systolic_Blood_Pressure_value_pure) < 140.0 :
+                                pass
+                            else:
+                                error = [subject, visit, '60-mins post dose, Systolic Blood Pressure', mins_60_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation cant be Normal.', \
+                                            mins_60_post_dose_Systolic_Blood_Pressure_value_pure, 'VS0840']
+                                lista_revision.append(error)
+
+                        # Revision VS0930
+                        elif float(mins_60_post_dose_Systolic_Blood_Pressure_pure) == 2.0:
+                            if float(mins_60_post_dose_Systolic_Blood_Pressure_value_pure) <  100.0 or float(mins_60_post_dose_Systolic_Blood_Pressure_value_pure) > 140.0  :
+                                error = [subject, visit, '60-mins post dose, Systolic Blood Pressure', mins_60_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation cant be Normal.', \
+                                            mins_60_post_dose_Systolic_Blood_Pressure_value_pure, 'VS0930']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0840--> {e}')
+
+                    try:
+                        # Revision VS0850
+                        if float(hours_2_post_dose_Systolic_Blood_Pressure_pure) == 1.0:
+                            if float(hours_2_post_dose_Systolic_Blood_Pressure_value_pure) > 100.0 and float(hours_2_post_dose_Systolic_Blood_Pressure_value_pure) < 140.0 :
+                                pass
+                            else:
+                                error = [subject, visit, '2-hours post dose, Systolic Blood Pressure', hours_2_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation cant be Normal.', \
+                                            hours_2_post_dose_Systolic_Blood_Pressure_value_pure, 'VS0850']
+                                lista_revision.append(error)
+
+                        # Revision VS0940
+                        elif float(hours_2_post_dose_Systolic_Blood_Pressure_pure) == 2.0:
+                            if float(hours_2_post_dose_Systolic_Blood_Pressure_value_pure) <  100.0 or float(hours_2_post_dose_Systolic_Blood_Pressure_value_pure) > 140.0  :
+                                error = [subject, visit, '2-hours post dose, Systolic Blood Pressure', hours_2_post_dose_Systolic_Blood_Pressure_value_form_field_instance,\
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation cant be Normal.', \
+                                            hours_2_post_dose_Systolic_Blood_Pressure_value_pure, 'VS0940']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0850--> {e}')
+
+                    try:
+                        # Revision VS0860
+                        if float(hours_4_post_dose_Systolic_Blood_Pressure_pure) == 1.0:
+                            if float(hours_4_post_dose_Systolic_Blood_Pressure_value_pure) > 100.0 and float(hours_4_post_dose_Systolic_Blood_Pressure_value_pure) < 140.0 :
+                                pass
+                            else:
+                                error = [subject, visit, '4-hours post dose, Systolic Blood Pressure', hours_4_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation cant be Normal.', \
+                                            hours_4_post_dose_Systolic_Blood_Pressure_value_pure, 'VS0860']
+                                lista_revision.append(error)
+
+                        # Revision VS0950
+                        elif float(hours_4_post_dose_Systolic_Blood_Pressure_pure) == 2.0:
+                            if float(hours_4_post_dose_Systolic_Blood_Pressure_value_pure) <  100.0 or float(hours_4_post_dose_Systolic_Blood_Pressure_value_pure) > 140.0  :
+                                error = [subject, visit, '4-hours post dose, Systolic Blood Pressure', hours_4_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation cant be Normal.', \
+                                            hours_4_post_dose_Systolic_Blood_Pressure_value_pure, 'VS0950']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0860--> {e}')
+
+                    try:
+                        # Revision VS0870
+                        if float(hours_8_post_dose_Systolic_Blood_Pressure_pure) == 1.0:
+                            if float(hours_8_post_dose_Systolic_Blood_Pressure_value_pure) > 100.0 and float(hours_8_post_dose_Systolic_Blood_Pressure_value_pure) < 140.0 :
+                                pass
+                            else:
+                                error = [subject, visit, '8-hours post dose, Systolic Blood Pressure', hours_8_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation cant be Normal.', \
+                                            hours_8_post_dose_Systolic_Blood_Pressure_value_pure, 'VS0870']
+                                lista_revision.append(error)
+
+                        # Revision VS0960
+                        elif float(hours_8_post_dose_Systolic_Blood_Pressure_pure) == 2.0:
+                            if float(hours_8_post_dose_Systolic_Blood_Pressure_value_pure) <  100.0 or float(hours_8_post_dose_Systolic_Blood_Pressure_value_pure) > 140.0  :
+                                error = [subject, visit, '8-hours post dose, Systolic Blood Pressure', hours_8_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation cant be Normal.', \
+                                            hours_8_post_dose_Systolic_Blood_Pressure_value_pure, 'VS0960']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0870--> {e}')
+
+                    try:
+                        # Revision VS0880
+                        if float(hours_12_post_dose_Systolic_Blood_Pressure_pure) == 1.0:
+                            if float(hours_12_post_dose_Systolic_Blood_Pressure_value_pure) > 100.0 and float(hours_12_post_dose_Systolic_Blood_Pressure_value_pure) < 140.0 :
+                                pass
+                            else:
+                                error = [subject, visit, '12-hours post dose, Systolic Blood Pressure', hours_12_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation cant be Normal.', \
+                                            hours_12_post_dose_Systolic_Blood_Pressure_value_pure, 'VS0880']
+                                lista_revision.append(error)
+
+                        # Revision VS0970
+                        elif float(hours_12_post_dose_Systolic_Blood_Pressure_pure) == 2.0:
+                            if float(hours_12_post_dose_Systolic_Blood_Pressure_value_pure) <  100.0 or float(hours_12_post_dose_Systolic_Blood_Pressure_value_pure) > 140.0  :
+                                error = [subject, visit, '12-hours post dose, Systolic Blood Pressure', hours_12_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation cant be Normal.', \
+                                            hours_12_post_dose_Systolic_Blood_Pressure_value_pure, 'VS0970']
+                                lista_revision.append(error)                     
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0880--> {e}')
+
+
+                    # Revision VS0980
+                    try:
+                        if  float(was_vital_signs_performed_pure) == 9.0: 
+                            if visita == 'D-1':
+                                pass
+                            else:
+                                error = [subject, visit, 'Was the vital signs assessment performed?', was_vital_signs_performed_form_field_instance ,\
+                                         'The "Not Required" option can only be selected if visit is D-1 and D-1 date=Screening visit date', was_vital_signs_performed_pure, 'VS0980']
+                                lista_revision.append(error)
+                    except Exception as e:
+                        lista_logs.append(f'Revision VS0980--> {e}')
+
+
+
+    excel_writer = load_workbook(path_excel_writer)
+    column_names =  ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']
+    vital_signs_output = pd.DataFrame(lista_revision, columns=column_names)
+    
+    sheet = excel_writer.create_sheet("Vital Signs")
+
+    for row in dataframe_to_rows(vital_signs_output, index=False, header=True):
+        sheet.append(row)
+
+    excel_writer.save(path_excel_writer)
+    log_writer(lista_logs)
+
+    return vital_signs_output[['Form Field Instance ID' ,'Standard Error Message']].replace({',': '', ';': ''}, regex=True)
+
+if __name__ == '__main__':
+    path_excel = r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\Program\output\prueba.xlsx"
+    df_root = pd.read_excel(r'C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\data\newDNDI_v2.xlsx')
+    vital_signs(df_root, path_excel)

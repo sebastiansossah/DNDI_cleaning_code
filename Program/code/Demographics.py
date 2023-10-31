@@ -1,0 +1,113 @@
+import pandas as pd
+from datetime import datetime
+from revision_fechas import revision_fecha
+from log_writer import log_writer
+import warnings
+
+from openpyxl import load_workbook
+from openpyxl.utils.dataframe import dataframe_to_rows
+
+
+warnings.filterwarnings('ignore')
+
+def demographic(df_root, path_excel_writer):
+    '''
+    Esta funcion tiene como finalidad la revision de cada uno de los puntos 
+    del edit check para el formulario de Demographic
+    '''
+
+    df= df_root[df_root['name']=='Demographics'] 
+    lista_sujetos = df['Participante'].unique()
+    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
+    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)
+
+
+    df_visit_date = df_root[df_root['name']=='Date of visit']
+    df_visit_date = df_visit_date[['Visit','Participante', 'Campo', 'Valor']]
+    df_visit_date = df_visit_date[df_visit_date['Campo']=='Visit Date']
+    df_visit_date = df_visit_date[['Visit','Participante','Valor']]
+    df_visit_date = df_visit_date.rename(columns={'Participante':'Subject'})
+
+    lista_revision = []
+    lista_logs = ['Demographics']
+
+    # fecha_inicio = datetime.strptime('19-06-2023', "%d-%m-%Y")
+    # fecha_fin =  datetime.strptime('31-10-2023', "%d-%m-%Y")
+
+    for sujeto in lista_sujetos:
+        sujeto_principal = df[df['Participante']==sujeto]
+        for visita in sujeto_principal.Visit.unique():
+            pru_1 = sujeto_principal[sujeto_principal['Visit']==visita]
+            pru = pru_1
+            pru = pru[['Campo', 'Value_id']].T
+            new_columns = pru.iloc[0]
+            pru = pru[1:].set_axis(new_columns, axis=1)
+            pru['Subject'] = sujeto
+            pru['Visit'] = visita
+            pru['status'] = pru_1['activityState'].unique()
+            pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
+
+            for index, row in pru.iterrows():
+                status = row['status']
+
+                if status == 'DATA_ENTRY_COMPLETE':
+                    subject = row['Subject']
+                    visit = row['Visit']
+
+                    try:
+                        birth_year = row['Birth Year']
+                        birth_year_pure = birth_year.split('|')[0]
+                        birth_year_form_field_instance = birth_year.split('|')[1]
+                    except:
+                        birth_year = ''
+                        birth_year_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        age_at_consent =  row['Age at consent']
+                        age_at_consent_pure = int(age_at_consent.split('|')[0])
+                        age_at_consent_form_field_instance = age_at_consent.split('|')[1]   
+                    except:
+                        age_at_consent_pure = ''
+                        age_at_consent_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        año_visita = row['Valor'].split('-')[2]
+                    except:
+                        año_visita = ''
+                    
+                    # Revision for DM0030
+                    try:
+
+
+                        año_calculado = int(año_visita) - int(birth_year_pure)
+
+                        if age_at_consent_pure >= año_calculado -1 and age_at_consent_pure <= año_calculado + 1:
+                            pass
+                        else:
+                            error = [subject, visit, 'Age at consent', age_at_consent_form_field_instance ,'The subject AGE at consent doesnt match the AGE according to the month and year of birth' ,\
+                                      f'{age_at_consent_pure} - {año_calculado}', 'DM0030']
+                            lista_revision.append(error)
+                    except Exception as e:
+                        lista_logs.append(f'Revision DM0030 --> {e}')
+
+    excel_writer = load_workbook(path_excel_writer)
+    column_names = ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']
+    Informed_Consent_output = pd.DataFrame(lista_revision, columns=column_names)
+
+    
+    sheet = excel_writer.create_sheet("Demographic")
+
+    for row in dataframe_to_rows(Informed_Consent_output, index=False, header=True):
+        sheet.append(row)
+
+    excel_writer.save(path_excel_writer)
+    log_writer(lista_logs)
+
+    return Informed_Consent_output[['Form Field Instance ID' ,'Standard Error Message']].replace({',': '', ';': ''}, regex=True)
+
+
+if __name__ == '__main__':
+    path_excel = r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\Program\output\prueba.xlsx"
+    df_root = pd.read_excel(r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\data\newDNDI.xlsx")
+    demographic(df_root, path_excel ) 
+
