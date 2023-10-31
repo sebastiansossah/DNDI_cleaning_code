@@ -1,73 +1,98 @@
 ----------------------------------------------------------
 Date of visit
 -----------------------------
-Revision VS0050 --> time data 'NaN-undefined-NaN' does not match format '%d-%b-%Y' 
-Revision VS0030 --> time data 'NaN-undefined-NaN' does not match format '%d-%b-%Y' 
-Revision VS0050 --> time data 'NaN-undefined-NaN' does not match format '%d-%b-%Y' 
+Revision VS0030 --> time data 'nan' does not match format '%d-%b-%Y' 
+Revision VS0050 --> time data '' does not match format '%d-%b-%Y' 
 ----------------------------------------------------------
 Informed Consent
 -----------------------------
 ----------------------------------------------------------
 Demographics
 -----------------------------
-Revision DM0030 --> invalid literal for int() with base 10: 'NaN'
 ----------------------------------------------------------
 Child Bearing Potential
 -----------------------------
 ----------------------------------------------------------
 History of cutaneous leishmaniasis
 -----------------------------
+Revision CL0010--> 'str' object is not callable
+Revision CL0020--> 'str' object is not callable
+Revision CL0030--> 'str' object is not callable
+Revision CL0050--> could not convert string to float: ''
+Revision CL0100--> 'str' object is not callable
+Revision CL0110--> 'str' object is not callable
 ----------------------------------------------------------
 Eligibility
 -----------------------------
+Revision IE0180 --> could not convert string to float: ''
+Revision IE0190 --> could not convert string to float: ''
+Revision IE0020 --> could not convert string to float: ''
+Revision IE0030 --> could not convert string to float: ''
+Revision IE0468 --> could not convert string to float: ''
+Revision IE0180 --> could not convert string to float: ''
+Revision IE0190 --> could not convert string to float: ''
+Revision IE0020 --> could not convert string to float: ''
+Revision IE0030 --> could not convert string to float: ''
+Revision IE0468 --> could not convert string to float: ''
 ----------------------------------------------------------
 Medical Or Surgical History (other than Leishmaniasis)
 -----------------------------
 ----------------------------------------------------------
 Vein Assesment
 -----------------------------
+Revision VA0050 --> time data 'nan' does not match format '%d-%b-%Y' 
 ----------------------------------------------------------
 Urinary drug screen
 -----------------------------
+Revision UD0060 --> time data 'nan' does not match format '%d-%b-%Y' 
 ----------------------------------------------------------
 Pregnancy test
 -----------------------------
 ----------------------------------------------------------
 Clinical Laboratory - Test Hematology
 -----------------------------
+Revision LBT0040 --> time data 'nan' does not match format '%d-%b-%Y' 
+Revision LBT0140--> could not convert string to float: ''
+Revision LBT0240--> could not convert string to float: ''
 ----------------------------------------------------------
 Clinical Laboratory Test - Clinical Chemistry
 -----------------------------
+Revision LBC0040 --> time data 'nan' does not match format '%d-%b-%Y' 
+Revision LBC0410--> could not convert string to float: ''
 ----------------------------------------------------------
 Clinical Laboratory Test - Coagulation
 -----------------------------
+Revision LBO0030 --> time data 'nan' does not match format '%d-%b-%Y' 
 ----------------------------------------------------------
 Immunoassay (Thyroid Stimulating Hormone)
 -----------------------------
+Revision IM0030 --> time data 'nan' does not match format '%d-%b-%Y' 
+Revision IM0050--> could not convert string to float: ''
 ----------------------------------------------------------
 Urinalysis
 -----------------------------
+Revision UR0040 --> time data 'nan' does not match format '%d-%b-%Y' 
 ----------------------------------------------------------
 Urine Microscopic Examination
 -----------------------------
 ----------------------------------------------------------
 Virology
 -----------------------------
+Revision VR0030 --> time data 'nan' does not match format '%d-%b-%Y' 
 ----------------------------------------------------------
 Lesion Measurement
 -----------------------------
+Revision LM0030--> time data '' does not match format '%d-%b-%Y'
+Revision LM0040--> time data '' does not match format '%d-%b-%Y'
+Revision LM0050 --> time data '' does not match format '%d-%b-%Y' 
 ----------------------------------------------------------
 Physical Examination
 -----------------------------
-Revision PE0020 --> time data 'NaN-undefined-NaN' does not match format '%d-%b-%Y'
-Revision PE0030 --> time data 'NaN-undefined-NaN' does not match format '%d-%b-%Y'
-Revision PE0040 --> time data 'NaN-undefined-NaN' does not match format '%d-%b-%Y' 
+Revision PE0040 --> time data 'nan' does not match format '%d-%b-%Y' 
 Revision PE0110 --> could not convert string to float: ''
 ----------------------------------------------------------
 Vital Signs
 -----------------------------
-Revision VS0020--> time data 'NaN-undefined-NaN' does not match format '%d-%b-%Y'
-Revision VS0030--> time data '\\N' does not match format '%d-%b-%Y'
 Revision VS0040 --> time data 'nan' does not match format '%d-%b-%Y' 
 Revision VS0090--> could not convert string to float: ''
 Revision VS0100--> could not convert string to float: ''
@@ -113,12 +138,61 @@ Revision VS0880--> could not convert string to float: ''
 ----------------------------------------------------------
 12-Lead ECG
 -----------------------------
+Revision LE0010--> could not convert string to float: ''
+Revision LE0020--> could not convert string to float: ''
+Revision LE0060 --> time data 'nan' does not match format '%d-%b-%Y' 
+Revision LE0080--> could not convert string to float: ''
+Revision LE0150--> could not convert string to float: ''
+Revision LE0290--> could not convert string to float: ''
+Revision LE0360--> could not convert string to float: ''
+Revision LE0440--> could not convert string to float: '-'
+Revision LE0630--> could not convert string to float: ''
+Revision LE0090--> could not convert string to float: ''
+Revision LE0160--> could not convert string to float: ''
+Revision LE0230--> could not convert string to float: ''
+Revision LE0300--> could not convert string to float: ''
+Revision LE0370--> could not convert string to float: ''
+Revision LE0460--> could not convert string to float: '-'
+Revision LE0640--> could not convert string to float: ''
+Revision LE00100--> could not convert string to float: ''
+Revision LE0170--> could not convert string to float: ''
+Revision LE0240--> could not convert string to float: ''
+Revision LE0310--> could not convert string to float: ''
+Revision LE0380--> could not convert string to float: ''
+Revision LE0480--> could not convert string to float: '-'
+Revision LE0650--> could not convert string to float: ''
+Revision LE00110--> could not convert string to float: ''
+Revision LE0180--> could not convert string to float: ''
+Revision LE0250--> could not convert string to float: ''
+Revision LE0320--> could not convert string to float: ''
+Revision LE0390--> could not convert string to float: ''
+Revision LE0500--> could not convert string to float: '-'
+Revision LE0660--> could not convert string to float: ''
+Revision LE00120--> could not convert string to float: ''
+Revision LE0190--> could not convert string to float: ''
+Revision LE0260--> could not convert string to float: ''
+Revision LE0330--> could not convert string to float: ''
+Revision LE0400--> could not convert string to float: ''
+Revision LE0520--> could not convert string to float: '-'
+Revision LE0670--> could not convert string to float: ''
+Revision LE00130--> could not convert string to float: ''
+Revision LE0200--> could not convert string to float: ''
+Revision LE0270--> could not convert string to float: ''
+Revision LE0340--> could not convert string to float: ''
+Revision LE0410--> could not convert string to float: ''
+Revision LE0540--> could not convert string to float: '-'
+Revision LE0680--> could not convert string to float: ''
 ----------------------------------------------------------
 Covid 19 testing
 -----------------------------
+Revision LBCOV0050 --> time data 'nan' does not match format '%d-%b-%Y' 
 ----------------------------------------------------------
 Alcohol Screen
 -----------------------------
+Revision AS0040--> could not convert string to float: '-'
+Revision AS0050--> could not convert string to float: '-'
+Revision LBCOV0060--> could not convert string to float: '-'
+Revision AS0080 --> time data 'nan' does not match format '%d-%b-%Y' 
 ----------------------------------------------------------
 Clinical Laboratory Test - Clinical Chemistry D-1
 -----------------------------

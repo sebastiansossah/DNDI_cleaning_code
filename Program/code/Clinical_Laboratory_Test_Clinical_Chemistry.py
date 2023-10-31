@@ -368,7 +368,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                     try:
                         Sodium_result = row['Sodium, Result (mmol/L)']
                         Sodium_result_pure = Sodium_result.split('|')[0]
-                        Sodium_result_form_field_instance = Sodium_result.split('|')
+                        Sodium_result_form_field_instance = Sodium_result.split('|')[1]
                     except Exception as e:
                         Sodium_result_pure = ''
                         Sodium_result_form_field_instance = 'This field doesnt have any data'

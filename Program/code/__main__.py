@@ -51,8 +51,9 @@ from Adverse_events import adverse_events
 
 
 if __name__ == '__main__':
-    path = r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\data\dndiProduccion.csv"
-    df_root = pd.read_csv(path, sep=';')
+    path = r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\Program\data\e20a4988-5795-44ba-b378-4b52bd58260f.xlsx"
+    df_root = pd.read_excel(path)
+    df_root.rename(columns = {'Instancia':'FormFieldInstance Id'}, inplace = True)
     path_excel_writer = r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\Program\output\limpieza.xlsx"
     log_file = r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\Program\output\log.txt"
     df_csv_final_output  = pd.DataFrame()
