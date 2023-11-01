@@ -1,4 +1,5 @@
 import pandas as pd
+import os
 
 # Importing forms from screening visit--------------------------------------------------------------------------------
 from Date_of_visit import date_of_visit
@@ -51,13 +52,30 @@ from Adverse_events import adverse_events
 
 
 if __name__ == '__main__':
-    path = r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\Program\data\e20a4988-5795-44ba-b378-4b52bd58260f.xlsx"
+
+    script_directory = os.path.dirname(os.path.abspath(__file__)) if '__file__' in locals() else os.getcwd()
+    relative_folder_path = "data"
+    folder_path = os.path.join(script_directory.replace('\code', ''), relative_folder_path)
+    file = os.listdir(folder_path)
+    path = f"{folder_path}\{file[0]}"
+    
     df_root = pd.read_excel(path)
+    df_root = df_root[(df_root['visible'] == 1.0) | (df_root['visible'] == 1) | (df_root['visible'] == 1.)]
+
     df_root.rename(columns = {'Instancia':'FormFieldInstance Id'}, inplace = True)
     path_excel_writer = r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\Program\output\limpieza.xlsx"
     log_file = r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\Program\output\log.txt"
-    df_csv_final_output  = pd.DataFrame()
     
+    df_csv_final_output  = pd.DataFrame()
+
+    df_excel_initializer = pd.DataFrame()
+    excel_file_path_initializer = f"{script_directory.replace('code', '')}output\limpieza.xlsx"
+    df_excel_initializer.to_excel(excel_file_path_initializer, index=False)
+
+    with open(f"{script_directory.replace('code', '')}output\log.txt", 'w') as file:
+        # Writing an empty string to create an empty file
+        file.write("")
+
     # --------------------- Screening visit --------------------------------------38
 
     date_of_visit = date_of_visit(df_root, path_excel_writer)

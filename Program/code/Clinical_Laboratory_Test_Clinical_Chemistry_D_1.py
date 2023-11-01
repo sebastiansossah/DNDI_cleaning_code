@@ -351,7 +351,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                         try:
                             validador = row[validador_raw].split('|')[0]
                         except:
-                            validador = row[validador_raw].split('|')[1]
+                            validador = ''
      
                         if validador != '-' or validador != np.nan or  str(validador) != 'nan' or float(validador) !=0.0 or str(validador) != '':
                             mi_cuenta+=1
