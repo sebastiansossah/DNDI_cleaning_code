@@ -88,9 +88,9 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer):
                         Provide_the_reason_form_field_instance = 'This field doesnt have any data'
 
                     try:
-                        Date_of_blood_sample_collected = row["Date of blood sample collected"]
+                        Date_of_blood_sample_collected = row['Date of blood sample collected']
                         Date_of_blood_sample_collected_pure = Date_of_blood_sample_collected.split('|')[0]
-                        Date_of_blood_sample_collected_form_field_instance = Date_of_blood_sample_collected.splti('|')[1]
+                        Date_of_blood_sample_collected_form_field_instance = Date_of_blood_sample_collected.split('|')[1]
                     except Exception as e:
                         Date_of_blood_sample_collected_pure = ''
                         Date_of_blood_sample_collected_form_field_instance = 'This field doesnt have any data'
@@ -131,6 +131,7 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer):
                     try:
                         # Primera  revision general de formato de fecha ->GE0020
                         f = revision_fecha(Date_of_blood_sample_collected_pure)
+                     
                         if f == None:
                             pass
                         else:
@@ -216,7 +217,7 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer):
     column_names = ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']
     pharmacodynamic_blood_sampling_blood_sampling_output = pd.DataFrame(lista_revision, columns=column_names)
     
-    sheet = excel_writer.create_sheet("Pharmacodynamic BS(PK)")
+    sheet = excel_writer.create_sheet("Pharmacodynamic BS(PD)")
 
     for row in dataframe_to_rows(pharmacodynamic_blood_sampling_blood_sampling_output, index=False, header=True):
         sheet.append(row)

@@ -621,7 +621,7 @@ def lead_ECG(df_root, path_excel_writer):
                     try: 
                         if float(Undefined_Interpretation_pure) == 1.0:
                             if float(Undefined_PR_msec_pure) < 120.0 or float(Undefined_PR_msec_pure) > 200.0 :
-                                error = [subject, visit, 'Undefined, PR (msec)', Undefined_RR_msec_form_field_instance,\
+                                error = [subject, visit, 'Undefined, PR (msec)', Undefined_PR_msec_form_field_instance,\
                                          'The PR is not within expected range (120 to 200), therefore the Interpretation cant be Normal.', Undefined_PR_msec_pure, 'LE0210']
                                 lista_revision.append(error)
                     except Exception as e:

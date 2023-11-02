@@ -82,7 +82,7 @@ def lesion_measurement(df_root, path_excel_writer):
                     try:
                         Date_of_assessment_performed = row["Date of assessment performed"]
                         Date_of_assessment_performed_pure = Date_of_assessment_performed.split('|')[0]
-                        Date_of_assessment_performed_form_field_instance = Date_of_assessment_performed_pure.split('|')[1]
+                        Date_of_assessment_performed_form_field_instance = Date_of_assessment_performed.split('|')[1]
                     except Exception as e:
                         Date_of_assessment_performed_pure = ''
                         Date_of_assessment_performed_form_field_instance = 'This field doesnt have any data'

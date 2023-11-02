@@ -1,4 +1,5 @@
 from datetime import datetime
+import numpy as np
 import pandas as pd
 from revision_fechas import revision_fecha
 from log_writer import log_writer
@@ -193,7 +194,7 @@ def eligibility(df_root, path_excel_writer):
                         subject_eligible_for_study_pure = subject_eligible_for_study.split('|')[0]
                         subject_eligible_for_study_form_field_instance = subject_eligible_for_study.split('|')[1]
                     except Exception as e:
-                        subject_eligible_for_study_pure = ''
+                        subject_eligible_for_study_pure = np.nan
                         subject_eligible_for_study_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -201,7 +202,7 @@ def eligibility(df_root, path_excel_writer):
                         participant_randomization_pure = participant_randomization.split('|')[0]
                         participant_randomization_form_field_instance = participant_randomization.split('|')[1]
                     except Exception as e:
-                        participant_randomization_pure = ''
+                        participant_randomization_pure = np.nan
                         participant_randomization_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -209,8 +210,8 @@ def eligibility(df_root, path_excel_writer):
                         will_randomized_pure = will_randomized.split('|')[0]
                         will_randomized_form_field_instance = will_randomized.split('|')[1]
                     except Exception as e:
-                            will_randomized_pure = ''
-                            will_randomized_form_field_instance = 'This field doesnt have any data'
+                        will_randomized_pure = ''
+                        will_randomized_form_field_instance = 'This field doesnt have any data'
 
                     try:
                         subject_enrolled_study = row['Is the subject enrolled in the study?']
@@ -279,18 +280,18 @@ def eligibility(df_root, path_excel_writer):
                         eligibility_specify_form_field_instance = 'This field doesnt have any data'
 
                     #---------------------------------------------------------------------------
+                    if float(participant_randomization_pure) == 0.0 or float(subject_eligible_for_study_pure) == 0.0:
+                        try:
+                            # Primera  revision general de formato de fecha ->GE0020
+                            f = revision_fecha(date_of_decision_pure)
+                            if f == None:
+                                pass
+                            else:
+                                error = [subject, visit, 'Date of decision to not go beyond screening', date_of_decision_form_field_instance ,f , date_of_decision_pure, 'GE0020']
+                                lista_revision.append(error)     
 
-                    try:
-                        # Primera  revision general de formato de fecha ->GE0020
-                        f = revision_fecha(date_of_decision_pure)
-                        if f == None:
-                            pass
-                        else:
-                            error = [subject, visit, 'Date of decision to not go beyond screening', date_of_decision_form_field_instance ,f , date_of_decision_pure, 'GE0020']
-                            lista_revision.append(error)     
-
-                    except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e}')
+                        except Exception as e:
+                            lista_logs.append(f'Revision GE0020 --> {e}')
 
                     #Revision para los que son solo de screening visit -----------------------------------------------------------------------------------------------
                     if visit == 'Screening Visit':
@@ -446,6 +447,7 @@ def eligibility(df_root, path_excel_writer):
 
                     # Revision para los que son solo D-1 ---------------------------------------------------------------------------------------------------------
                     if visit == 'D-1':
+
 
                         try:
                             # IE0100
@@ -618,7 +620,10 @@ def eligibility(df_root, path_excel_writer):
                                      'The same criteria (Inclusion, Exclusion) and number, must not be duplicated', eligibility_criteria_number_pure, 'IE0040']
                             lista_revision.append(error)
                         else:
-                            lista_revision_I_E.append(tuple_review_inclusion_exclusion)
+                            if '' in tuple_review_inclusion_exclusion:
+                                pass
+                            else:
+                                lista_revision_I_E.append(tuple_review_inclusion_exclusion)
                     except Exception as e:
                         lista_logs.append(f'Revision IE0040 --> {e}')
 
