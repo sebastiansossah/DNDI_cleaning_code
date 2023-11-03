@@ -55,6 +55,7 @@ def adminsitration_CpG_ODN(df_root, path_excel_writer):
         sujeto_principal = sujeto_principal.reset_index(drop=True)
 
         # Los formularios que estan clasificados como unscheduled, no se pueden iterar con la visita, por lo que usamos el siguiente codigo para realizar la particion
+        #p
         date_indices = sujeto_principal.index[sujeto_principal['Campo'] == 'Date of dosing'].tolist()
         subdatasets = [sujeto_principal.iloc[start:end] for start, end in zip(date_indices, date_indices[1:] + [None])]
 
