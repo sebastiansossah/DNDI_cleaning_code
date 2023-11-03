@@ -1,5 +1,6 @@
 import pandas as pd
 import os
+from datetime import datetime
 
 # Importing forms from screening visit--------------------------------------------------------------------------------
 from Date_of_visit import date_of_visit
@@ -58,21 +59,23 @@ if __name__ == '__main__':
     folder_path = os.path.join(script_directory.replace('\code', ''), relative_folder_path)
     file = os.listdir(folder_path)
     path = f"{folder_path}\{file[0]}"
+    current_date = datetime.now().strftime("%Y%m%d")
     
     df_root = pd.read_excel(path)
     df_root = df_root[(df_root['visible'] == 1.0) | (df_root['visible'] == 1) | (df_root['visible'] == 1.)]
 
     df_root.rename(columns = {'Instancia':'FormFieldInstance Id'}, inplace = True)
-    path_excel_writer = r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\Program\output\limpieza.xlsx"
-    log_file = r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\Program\output\log.txt"
+    path_excel_writer = r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\Program\output\DNDi_cleaning_yyyymmdd.xlsx".replace('yyyymmdd', current_date)
+    log_file = r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\Program\output\DNDi_log_yyyymmdd.txt".replace('yyyymmdd', current_date)
     
     df_csv_final_output  = pd.DataFrame()
-
     df_excel_initializer = pd.DataFrame()
-    excel_file_path_initializer = f"{script_directory.replace('code', '')}output\limpieza.xlsx"
+    
+    excel_file_path_initializer = f"{script_directory.replace('code', '')}output\DNDi_cleaning_{current_date}.xlsx"
     df_excel_initializer.to_excel(excel_file_path_initializer, index=False)
 
-    with open(f"{script_directory.replace('code', '')}output\log.txt", 'w') as file:
+
+    with open(f"{script_directory.replace('code', '')}output\DNDi_log_{current_date}.txt", 'w') as file:
         # Writing an empty string to create an empty file
         file.write("")
 
@@ -173,5 +176,5 @@ df_csv_final_output = df_csv_final_output.rename(columns={'Form Field Instance I
 df_csv_final_output = df_csv_final_output.replace({'"': ''}, regex=True)
 df_csv_final_output = df_csv_final_output.reset_index().rename(columns={'index': 'id'})
 
-df_csv_final_output.to_csv(r'C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\Program\output\final_output.csv', index=False, sep=';')
+df_csv_final_output.to_csv(r'C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\Program\output\DNDi_querys_yyyymmdd.csv'.replace('yyyymmdd', current_date), index=False, sep=';')
 

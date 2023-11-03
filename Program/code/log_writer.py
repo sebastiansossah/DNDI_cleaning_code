@@ -1,10 +1,11 @@
+from datetime import datetime
 
 def log_writer(list_log):
     '''
     Esta funcion tiene como funcion principal, escribir el reporte de todos los errores  que se presentan
     '''
-
-    path_log_txt  = r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\Program\output\log.txt"
+    current_date = datetime.now().strftime("%Y%m%d")
+    path_log_txt  = r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\Program\output\DNDi_log_yyyymmdd.txt".replace('yyyymmdd', current_date)
 
     opener = open(path_log_txt, 'a+')
 
