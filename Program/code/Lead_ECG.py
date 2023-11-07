@@ -70,6 +70,7 @@ def lead_ECG(df_root, path_excel_writer):
                 date_of_visit = row['Date_of_visit']
                 date_inform_consent = row['Informed_consent_date']
                 end_study_date = row['end_study_date']
+                time_format = '%H:%M'
 
                 
                 if status == 'DATA_ENTRY_COMPLETE':
@@ -373,7 +374,7 @@ def lead_ECG(df_root, path_excel_writer):
                     try:
                         min_60_post_dose_QT_msec = row["60-min post dose, QT (msec)"]
                         min_60_post_dose_QT_msec_pure = min_60_post_dose_QT_msec.split('|')[0]
-                        min_60_post_dose_QT_msec_form_field_instance = min_60_post_dose_QT_msec.splti('|')[1]
+                        min_60_post_dose_QT_msec_form_field_instance = min_60_post_dose_QT_msec.split('|')[1]
                     except Exception as e:
                         min_60_post_dose_QT_msec_pure = ''
                         min_60_post_dose_QT_msec_form_field_instance = 'This field doesnt have any data'
@@ -489,6 +490,76 @@ def lead_ECG(df_root, path_excel_writer):
                     except Exception as e:
                         min_60_post_dose_Interpretation_pure = ''
                         min_60_post_dose_Interpretation_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        undefined_time = row['Undefined, Interpretation', 'Pre dose triplicate 1, Time 24 hrs']
+                        undefined_time_pure = undefined_time.split('|')[0]
+                        undefined_time_form_field_instance = undefined_time.split('|')[1]
+                        undefined_time_formated = datetime.strptime(undefined_time_pure, time_format)
+                    except:
+                        undefined_time_pure = np.nan
+                        undefined_time_form_field_instance = 'This field doesnt have any data'
+                        undefined_time_formated = np.nan
+                    
+                    try:
+                        predose_triplicate_1_time = row['Pre dose triplicate 1, Time 24 hrs']
+                        predose_triplicate_1_time_pure = predose_triplicate_1_time.split('|')[0]
+                        predose_triplicate_1_time_form_field_instance =  predose_triplicate_1_time.split('|')[1]
+                        predose_triplicate_1_time_formated = datetime.strptime(predose_triplicate_1_time_pure, time_format)
+                    except:
+                        predose_triplicate_1_time_pure = np.nan
+                        predose_triplicate_1_time_form_field_instance = 'This field doesnt have any data'
+                        predose_triplicate_1_time_formated = np.nan
+
+                    try:
+                        predose_triplicate_2_time = row['Pre dose triplicate 2, Time 24 hrs']
+                        predose_triplicate_2_time_pure = predose_triplicate_2_time.split('|')[0]
+                        predose_triplicate_2_time_form_field_instance =  predose_triplicate_2_time.split('|')[1]
+                        predose_triplicate_2_time_formated = datetime.strptime(predose_triplicate_2_time_pure, time_format)
+                    except:
+                        predose_triplicate_2_time_pure = np.nan
+                        predose_triplicate_2_time_form_field_instance = 'This field doesnt have any data'
+                        predose_triplicate_2_time_formated = np.nan
+
+                    try:
+                        predose_triplicate_3_time = row['Pre dose triplicate 3, Time 24 hrs']
+                        predose_triplicate_3_time_pure = predose_triplicate_3_time.split('|')[0]
+                        predose_triplicate_3_time_form_field_instance =  predose_triplicate_3_time.split('|')[1]
+                        predose_triplicate_3_time_formated = datetime.strptime(predose_triplicate_3_time_pure, time_format)
+                    except:
+                        predose_triplicate_3_time_pure = np.nan
+                        predose_triplicate_3_time_form_field_instance = 'This field doesnt have any data'
+                        predose_triplicate_3_time_formated = np.nan
+                    
+                    try:
+                        min_15_time  = row['15-min post dose, Time 24 hrs']
+                        min_15_time_pure = min_15_time.split('|')[0]
+                        min_15_time_form_field_instance = min_15_time.split('|')[1]
+                        min_15_time_time_formated = datetime.strptime(min_15_time_pure, time_format)
+                    except:
+                        min_15_time_pure = np.nan
+                        min_15_time_form_field_instance = 'This field doesnt have any data'
+                        min_15_time_time_formated = np.nan
+
+                    try:
+                        min_30_time  = row['30-min post dose, Time 24 hrs']
+                        min_30_time_pure = min_30_time.split('|')[0]
+                        min_30_time_form_field_instance = min_30_time.split('|')[1]
+                        min_30_time_time_formated = datetime.strptime(min_30_time_pure, time_format)
+                    except:
+                        min_30_time_pure = np.nan
+                        min_30_time_form_field_instance = 'This field doesnt have any data'
+                        min_30_time_time_formated = np.nan
+
+                    try:
+                        min_60_time  = row['60-min post dose, Time 24 hrs']
+                        min_60_time_pure = min_60_time.split('|')[0]
+                        min_60_time_form_field_instance = min_60_time.split('|')[1]
+                        min_60_time_time_formated = datetime.strptime(min_60_time_pure, time_format)
+                    except:
+                        min_60_time_pure = np.nan
+                        min_60_time_form_field_instance = 'This field doesnt have any data'
+                        min_60_time_time_formated = np.nan          
 
                     #----------------------------------------------------------------------------------------------------------------------------
                     try:
@@ -1536,8 +1607,27 @@ def lead_ECG(df_root, path_excel_writer):
 
                     except Exception as e:
                         lista_logs.append(f'Revision LE0680--> {e}')  
+                    
+                    # -------------------------------------------- Time Revisions ---------------------------------------------------------------------------------------
 
+                    # Revision LE0570
+                    try:
+                        if float((predose_triplicate_2_time_formated - predose_triplicate_1_time_formated).total_seconds()/60) > 2.0:
+                            error = [subject, visit, 'Pre dose triplicate 2, Time 24 hrs', predose_triplicate_2_time_form_field_instance,\
+                                         'Pre dose triplicate 2 Time should be within 2 minutes after Pre dose triplicate 1, Time', predose_triplicate_2_time_pure, 'LE0570']
+                            lista_revision.append(error)
+                    except Exception as e:
+                        lista_logs.append(f'Revision LE0570--> {e}')  
 
+                    # Revision LE0580
+                    try:
+                        if float((predose_triplicate_3_time_formated - predose_triplicate_2_time_formated).total_seconds()/60) > 2.0:
+                            error = [subject, visit, 'Pre dose triplicate 3, Time 24 hrs', predose_triplicate_3_time_form_field_instance,\
+                                         'Pre dose triplicate 3 Time should be within 2 minutes after Pre dose triplicate 2, Time', predose_triplicate_3_time_pure, 'LE0580']
+                            lista_revision.append(error)
+                    except Exception as e:
+                        lista_logs.append(f'Revision LE0580--> {e}')  
+                    
 
     excel_writer = load_workbook(path_excel_writer)
     column_names = ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']

@@ -76,7 +76,6 @@ if __name__ == '__main__':
 
 
     with open(f"{script_directory.replace('code', '')}output\DNDi_log_{current_date}.txt", 'w') as file:
-        # Writing an empty string to create an empty file
         file.write("")
 
     # --------------------- Screening visit --------------------------------------38

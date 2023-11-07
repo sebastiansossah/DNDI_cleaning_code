@@ -197,9 +197,17 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
                                     lista_comprobacion_overlap.append(medical_date_history)
                             except Exception as e:
                                 lista_logs.append(f'Revision MS0060 --> {e}')
+
+                            # Revision MS070
+                            try:
+                                if medical_surgical_pure != '':
+                                    print('hacer la revision MS070')
+                            except:
+                                pass
         
                     except Exception as e:
                         lista_logs.append(f'Revision desde MS0040 hasta MS0060 --> {e}')
+                    
 
 
     excel_writer = load_workbook(path_excel_writer)
