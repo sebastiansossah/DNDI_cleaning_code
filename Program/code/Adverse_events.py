@@ -162,6 +162,7 @@ def adverse_events(df_root, path_excel_writer):
 
     for sujeto in lista_sujetos:
         sujeto_principal = df[df['Participante']==sujeto]
+        sujeto_principal = sujeto_principal.sort_values(by=['FormFieldInstance Id'], ascending=True)
         sujeto_principal = sujeto_principal.reset_index(drop=True)
 
         adverse_events_id_review = []
