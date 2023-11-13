@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import math
 from datetime import datetime
 from revision_fechas import revision_fecha
 import warnings
@@ -48,6 +49,13 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
     df_end_study_general = df_end_study_general[['Participante', 'Valor']]
     df_end_study_general = df_end_study_general.rename(columns={'Participante':'Subject', 'Valor':'end_study_date'})
 
+    df_visit_done = df_root[df_root['name']=='Date of visit']
+    df_visit_done = df_visit_done[['Visit','Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
+    df_visit_done = df_visit_done[df_visit_done['Campo']=='Was the visit performed?']
+    df_visit_done['Valor_completo'] = df_visit_done['Valor'].astype(str) + '|' + df_visit_done['FormFieldInstance Id'].astype(str)
+    df_visit_done = df_visit_done[['Visit','Participante','Valor_completo']]
+    df_visit_done = df_visit_done.rename(columns={'Participante':'Subject', 'Valor_completo':'was_DV_performed'})
+
     lista_revision = []
     lista_logs = ['Clinical Laboratory Test - Clinical Chemistry D-1']
 
@@ -71,6 +79,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
             pru = pru.merge(df_demographic, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(clicinical_chemestry_principal, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
+            pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
             
             for index, row in pru.iterrows():
                 status = row['status']
@@ -83,6 +92,10 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                 clinical_chemestry_principal = row['blood_sample_principal']
                 end_study_date = row['end_study_date']
 
+                was_DV_performed = row['was_DV_performed']
+                was_DV_performed_pure = was_DV_performed.split('|')[0]
+                was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
+   
                 
                 if status == 'DATA_ENTRY_COMPLETE':
                     try:
@@ -90,7 +103,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                         alanine_aminotransferase_out_normal_pure = alanine_aminotransferase_out_normal.split('|')[0]
                         alanine_aminotransferase_out_normal_form_field_instance = alanine_aminotransferase_out_normal.split('|')[1]
                     except Exception as e:
-                        alanine_aminotransferase_out_normal_pure = ''
+                        alanine_aminotransferase_out_normal_pure = math.nan
                         alanine_aminotransferase_out_normal_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -98,7 +111,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                         alanine_aminotransferase_result_pure = alanine_aminotransferase_result.split('|')[0]
                         alanine_aminotransferase_result_form_field_instance = alanine_aminotransferase_result.splti('|')[1]
                     except Exception as e:
-                        alanine_aminotransferase_result_pure = ''
+                        alanine_aminotransferase_result_pure = math.nan
                         alanine_aminotransferase_result_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -106,7 +119,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                         aspartate_aminotransferase_out_normal_pure = aspartate_aminotransferase_out_normal.split('|')[0]
                         aspartate_aminotransferase_out_normal_form_field_instance = aspartate_aminotransferase_out_normal.split('|')[1]
                     except Exception as e:
-                        aspartate_aminotransferase_out_normal_pure = ''
+                        aspartate_aminotransferase_out_normal_pure = math.nan
                         aspartate_aminotransferase_out_normal_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -114,7 +127,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                         aspartate_aminotransferase_result_pure = aspartate_aminotransferase_result.split('|')[0]
                         aspartate_aminotransferase_result_form_field_instance = aspartate_aminotransferase_result.split('|')[1]
                     except Exception as e:
-                        aspartate_aminotransferase_result_pure = ''
+                        aspartate_aminotransferase_result_pure = math.nan
                         aspartate_aminotransferase_result_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -122,7 +135,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                         blood_sample_collected_pure = blood_sample_collected.split('|')[0]
                         blood_sample_collected_form_field_instance = blood_sample_collected.split('|')[1]
                     except Exception as e:
-                        blood_sample_collected_pure = ''
+                        blood_sample_collected_pure = math.nan
                         blood_sample_collected_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -130,7 +143,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                         creatine_kinase_out_normal_pure = creatine_kinase_out_normal.split('|')[0]
                         creatine_kinase_out_normal_form_field_instance = creatine_kinase_out_normal.split('|')[1]
                     except Exception as e:
-                        creatine_kinase_out_normal_pure = ''
+                        creatine_kinase_out_normal_pure = math.nan
                         creatine_kinase_out_normal_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -138,7 +151,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                         creatine_kinase_result_pure = creatine_kinase_result.split('|')[0]
                         creatine_kinase_result_form_field_instance = creatine_kinase_result.split('|')[1]
                     except Exception as e:
-                        creatine_kinase_result_pure = ''
+                        creatine_kinase_result_pure = math.nan
                         creatine_kinase_result_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -154,7 +167,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                         serum_creatine_out_normal_pure = serum_creatine_out_normal.split('|')[0]
                         serum_creatine_out_normal_form_field_instance =serum_creatine_out_normal.split('|')[1]
                     except Exception as e:
-                        serum_creatine_out_normal_pure = '' 
+                        serum_creatine_out_normal_pure = math.nan 
                         serum_creatine_out_normal_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -162,10 +175,15 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                         serum_creatine_result_pure = serum_creatine_result.split('|')[0]
                         serum_creatine_result_form_field_instance = serum_creatine_result.split('|')[1]
                     except Exception as e:
-                        serum_creatine_result_pure = ''
+                        serum_creatine_result_pure = math.nan
                         serum_creatine_result_form_field_instance = 'This field doesnt have any data'
                     
                     # -----------------------------------------------------------------------------------------------------------------------------
+                    # Revision GE0070
+                    if float(was_DV_performed_pure) !=  1.0:
+                        error = [subject, visit, 'Visit Pages', was_DV_performed_form_field_instance , 'This Form will be disabled because the visit was not done', was_DV_performed_pure, 'GE0070']
+                        lista_revision.append(error)
+
                     try:
                         # Primera  revision general de formato de fecha ->GE0020
                         f = revision_fecha(date_collected_pure)
@@ -351,9 +369,9 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                         try:
                             validador = row[validador_raw].split('|')[0]
                         except:
-                            validador = ''
+                            validador = math.nan
      
-                        if validador != '-' or validador != np.nan or  str(validador) != 'nan' or float(validador) !=0.0 or str(validador) != '':
+                        if math.isnan(float(validador)) or validador != '-' or validador != np.nan or  str(validador) != 'nan' or float(validador) !=0.0 or str(validador) != '':
                             mi_cuenta+=1
                         else:
                             pass

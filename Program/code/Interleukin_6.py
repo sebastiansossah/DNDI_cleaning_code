@@ -1,4 +1,5 @@
 import numpy as np
+import math
 import pandas as pd
 from datetime import datetime
 from revision_fechas import revision_fecha
@@ -38,6 +39,13 @@ def interleukin_6(df_root, path_excel_writer):
     df_end_study_general = df_end_study_general[['Participante', 'Valor']]
     df_end_study_general = df_end_study_general.rename(columns={'Participante':'Subject', 'Valor':'end_study_date'})
 
+    df_visit_done = df_root[df_root['name']=='Date of visit']
+    df_visit_done = df_visit_done[['Visit','Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
+    df_visit_done = df_visit_done[df_visit_done['Campo']=='Was the visit performed?']
+    df_visit_done['Valor_completo'] = df_visit_done['Valor'].astype(str) + '|' + df_visit_done['FormFieldInstance Id'].astype(str)
+    df_visit_done = df_visit_done[['Visit','Participante','Valor_completo']]
+    df_visit_done = df_visit_done.rename(columns={'Participante':'Subject', 'Valor_completo':'was_DV_performed'})
+
     lista_logs = ['Interleukin-6']
     lista_revision = []
 
@@ -59,6 +67,7 @@ def interleukin_6(df_root, path_excel_writer):
             pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_informed, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
+            pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
 
             for index, row in pru.iterrows():
                 status = row['status']
@@ -68,7 +77,11 @@ def interleukin_6(df_root, path_excel_writer):
                 date_of_visit = row['Date_of_visit']
                 date_inform_consent = row['Informed_consent_date']
                 end_study_date = row['end_study_date']
-                
+
+                was_DV_performed = row['was_DV_performed']
+                was_DV_performed_pure = was_DV_performed.split('|')[0]
+                was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
+   
 
                 if status == 'DATA_ENTRY_COMPLETE':
 
@@ -77,7 +90,7 @@ def interleukin_6(df_root, path_excel_writer):
                         Provide_the_reason_pure = Provide_the_reason.split('|')[0]
                         Provide_the_reason_form_field_instance = Provide_the_reason.split('|')[1]
                     except Exception as e:
-                        Provide_the_reason_pure = ''
+                        Provide_the_reason_pure = math.nan
                         Provide_the_reason_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -93,7 +106,7 @@ def interleukin_6(df_root, path_excel_writer):
                         Result_pg_ml_pure = Result_pg_ml.split('|')[0]
                         Result_pg_ml_form_field_instance = Result_pg_ml.split('|')[1]
                     except Exception as e:
-                        Result_pg_ml_pure = ''
+                        Result_pg_ml_pure = math.nan
                         Result_pg_ml_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -101,10 +114,16 @@ def interleukin_6(df_root, path_excel_writer):
                         Out_of_normal_range_pure = Out_of_normal_range.split('|')[0]
                         Out_of_normal_range_form_field_instance = Out_of_normal_range.split('|')[1]
                     except Exception as e:
-                        Out_of_normal_range_pure =''
+                        Out_of_normal_range_pure = math.nan
                         Out_of_normal_range_form_field_instance = 'This field doesnt have any data'
 
                     # ------------------------------------------------------------------------------------------
+
+                    # Revision GE0070
+                    if float(was_DV_performed_pure) !=  1.0:
+                        error = [subject, visit, 'Visit Pages', was_DV_performed_form_field_instance , 'This Form will be disabled because the visit was not done', was_DV_performed_pure, 'GE0070']
+                        lista_revision.append(error)
+
                     try:
                         # Primera  revision general de formato de fecha ->GE0020
                         f = revision_fecha(date_collected_pure)

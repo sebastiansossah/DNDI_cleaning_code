@@ -1,4 +1,5 @@
 import numpy as np
+import math
 import pandas as pd
 from datetime import datetime
 from log_writer import log_writer
@@ -36,6 +37,13 @@ def covid_19_testing(df_root, path_excel_writer):
     df_end_study_general = df_end_study_general[['Participante', 'Valor']]
     df_end_study_general = df_end_study_general.rename(columns={'Participante':'Subject', 'Valor':'end_study_date'})
 
+    df_visit_done = df_root[df_root['name']=='Date of visit']
+    df_visit_done = df_visit_done[['Visit','Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
+    df_visit_done = df_visit_done[df_visit_done['Campo']=='Was the visit performed?']
+    df_visit_done['Valor_completo'] = df_visit_done['Valor'].astype(str) + '|' + df_visit_done['FormFieldInstance Id'].astype(str)
+    df_visit_done = df_visit_done[['Visit','Participante','Valor_completo']]
+    df_visit_done = df_visit_done.rename(columns={'Participante':'Subject', 'Valor_completo':'was_DV_performed'})
+
     lista_revision = []
     lista_logs = ['Covid 19 testing']
 
@@ -57,6 +65,7 @@ def covid_19_testing(df_root, path_excel_writer):
             pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_informed, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
+            pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
 
             for index, row in pru.iterrows():
                 status = row['status']
@@ -67,6 +76,10 @@ def covid_19_testing(df_root, path_excel_writer):
                 date_inform_consent = row['Informed_consent_date']
                 end_study_date = row['end_study_date']
 
+                was_DV_performed = row['was_DV_performed']
+                was_DV_performed_pure = was_DV_performed.split('|')[0]
+                was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
+   
                 
                 if status == 'DATA_ENTRY_COMPLETE':
 
@@ -75,7 +88,7 @@ def covid_19_testing(df_root, path_excel_writer):
                         was_antigen_performed_pure = was_antigen_performed.split('|')[0]
                         was_antigen_performed_form_field_instance = was_antigen_performed.split('|')[1]
                     except Exception as e:
-                        was_antigen_performed_pure = ''
+                        was_antigen_performed_pure = math.nan
                         was_antigen_performed_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -83,7 +96,7 @@ def covid_19_testing(df_root, path_excel_writer):
                         provide_reason_pure = provide_reason.split('|')[0]
                         provide_reason_form_field_instance = provide_reason.split('|')[1]
                     except Exception as e:
-                        provide_reason_pure = ''
+                        provide_reason_pure = math.nan
                         provide_reason_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -91,7 +104,7 @@ def covid_19_testing(df_root, path_excel_writer):
                         date_test_performed_pure = date_test_performed.split('|')[0]
                         date_test_performed_form_field_instance = date_test_performed.split('|')[1] 
                     except Exception as e:
-                        date_test_performed_pure = ''
+                        date_test_performed_pure = 'math.nan'
                         date_test_performed_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -99,10 +112,14 @@ def covid_19_testing(df_root, path_excel_writer):
                         result_pure = result.split('|')[0]
                         result_form_field_instance = result.split('|')[1]
                     except Exception as e:
-                        result_pure = ''
+                        result_pure = math.nan
                         result_form_field_instance = 'This field doesnt have any data'
                     
                     # ------------------------------------------------------------------------------
+                    # Revision GE0070
+                    if float(was_DV_performed_pure) !=  1.0:
+                        error = [subject, visit, 'Visit Pages', was_DV_performed_form_field_instance , 'This Form will be disabled because the visit was not done', was_DV_performed_pure, 'GE0070']
+                        lista_revision.append(error)
 
                     try:
                         # Primera  revision general de formato de fecha ->GE0020

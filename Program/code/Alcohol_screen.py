@@ -1,4 +1,5 @@
 import numpy as np
+import math
 import pandas as pd
 from datetime import datetime
 from log_writer import log_writer
@@ -38,6 +39,13 @@ def alcohol_screen(df_root, path_excel_writer):
     df_end_study_general = df_end_study_general[['Participante', 'Valor']]
     df_end_study_general = df_end_study_general.rename(columns={'Participante':'Subject', 'Valor':'end_study_date'})
 
+    df_visit_done = df_root[df_root['name']=='Date of visit']
+    df_visit_done = df_visit_done[['Visit','Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
+    df_visit_done = df_visit_done[df_visit_done['Campo']=='Was the visit performed?']
+    df_visit_done['Valor_completo'] = df_visit_done['Valor'].astype(str) + '|' + df_visit_done['FormFieldInstance Id'].astype(str)
+    df_visit_done = df_visit_done[['Visit','Participante','Valor_completo']]
+    df_visit_done = df_visit_done.rename(columns={'Participante':'Subject', 'Valor_completo':'was_DV_performed'})
+
     lista_revision = []
     lista_logs = ['Alcohol Screen']
 
@@ -60,6 +68,7 @@ def alcohol_screen(df_root, path_excel_writer):
             pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_informed, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
+            pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
 
             for index, row in pru.iterrows():
                 status = row['status']
@@ -70,6 +79,10 @@ def alcohol_screen(df_root, path_excel_writer):
                 date_inform_consent = row['Informed_consent_date']
                 end_study_date = row['end_study_date']
 
+                was_DV_performed = row['was_DV_performed']
+                was_DV_performed_pure = was_DV_performed.split('|')[0]
+                was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
+   
                 
                 if status == 'DATA_ENTRY_COMPLETE':
                     try:
@@ -77,7 +90,7 @@ def alcohol_screen(df_root, path_excel_writer):
                         was_serum_test_performed_pure = was_serum_test_performed.split('|')[0]
                         was_serum_test_performed_form_field_instance = was_serum_test_performed.split('|')[1]
                     except Exception as e:
-                        was_serum_test_performed_pure = ''
+                        was_serum_test_performed_pure = math.nan
                         was_serum_test_performed_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -101,7 +114,7 @@ def alcohol_screen(df_root, path_excel_writer):
                         test_result_pure = test_result.split('|')[0]
                         test_result_form_field_instance = test_result.split('|')[1]
                     except Exception as e:
-                        test_result_pure = ''
+                        test_result_pure = math.nan
                         test_result_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -109,7 +122,7 @@ def alcohol_screen(df_root, path_excel_writer):
                         levels_alcohol_percentaje_pure = levels_alcohol_percentaje.split('|')[0]
                         levels_alcohol_percentaje_form_field_instance = levels_alcohol_percentaje.split('|')[1]
                     except Exception as e:
-                        levels_alcohol_percentaje_pure = ''
+                        levels_alcohol_percentaje_pure = math.nan
                         levels_alcohol_percentaje_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -117,10 +130,15 @@ def alcohol_screen(df_root, path_excel_writer):
                         levels_alcohol_mg_dl_pure = levels_alcohol_mg_dl.split('|')[0]
                         levels_alcohol_mg_dl_form_field_instance = levels_alcohol_mg_dl.split('|')[1]
                     except Exception as e:
-                        levels_alcohol_mg_dl_pure = ''
+                        levels_alcohol_mg_dl_pure = math.nan
                         levels_alcohol_mg_dl_form_field_instance = 'This field doesnt have any data'
 
                     # -----------------------------------------------------------------------
+                    # Revision GE0070
+                    if float(was_DV_performed_pure) !=  1.0:
+                        error = [subject, visit, 'Visit Pages', was_DV_performed_form_field_instance , 'This Form will be disabled because the visit was not done', was_DV_performed_pure, 'GE0070']
+                        lista_revision.append(error)
+
                     try:
                         # Primera  revision general de formato de fecha ->GE0020
                         f = revision_fecha(date_test_performed_pure)
