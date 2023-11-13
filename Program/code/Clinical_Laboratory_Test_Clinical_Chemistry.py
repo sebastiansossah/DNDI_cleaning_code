@@ -432,7 +432,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                             lista_revision.append(error)     
 
                     except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e}')
+                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision LBC0010
                     try:
@@ -448,7 +448,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                             pass
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LBC0010--> {e}')
+                        lista_logs.append(f'Revision LBC0010--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision LBC0030
                     try:
@@ -463,7 +463,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         else:
                             pass
                     except Exception as e:
-                        lista_logs.append(f'Revision LBC0030--> {e}')
+                        lista_logs.append(f'Revision LBC0030--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> LBC0040
                     try:
@@ -473,7 +473,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                             error = [subject, visit, 'Date Collected', date_collected_form_field_instance ,'Date Collected must be before the End of study/Early withdrawal date. ', date_collected_pure, 'LBC0040']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LBC0040 --> {e} ')
+                        lista_logs.append(f'Revision LBC0040 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
                     # Revision LBC0050
                     try:
@@ -486,7 +486,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                                             blood_sample_collected_pure, 'LBC0050']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LBC0050--> {e}')
+                        lista_logs.append(f'Revision LBC0050--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision  LBC0260
@@ -504,7 +504,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                                 lista_revision.append(error)
                                             
                     except Exception as e:
-                        lista_logs.append(f'Revision LBC0060--> {e}')
+                        lista_logs.append(f'Revision LBC0060--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision LBC0270
@@ -535,7 +535,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                                              'According to the result, the value is out of range, please review.' , GGT_result_pure, 'LBC0070']
                                     lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LBC0070--> {e}')
+                        lista_logs.append(f'Revision LBC0070--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision LBC0280
@@ -553,7 +553,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                                 lista_revision.append(error)
                                             
                     except Exception as e:
-                        lista_logs.append(f'Revision LBC0280--> {e}')
+                        lista_logs.append(f'Revision LBC0280--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision LBC0290
@@ -576,7 +576,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                                 lista_revision.append(error)
                                           
                     except Exception as e:
-                        lista_logs.append(f'Revision LBC0290--> {e}')
+                        lista_logs.append(f'Revision LBC0290--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision LBC0300
@@ -595,7 +595,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                                 lista_revision.append(error)
                                             
                     except Exception as e:
-                        lista_logs.append(f'Revision LBC0300--> {e}')
+                        lista_logs.append(f'Revision LBC0300--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision LBC0310
@@ -613,7 +613,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                                 lista_revision.append(error)
                                             
                     except Exception as e:
-                        lista_logs.append(f'Revision LBC0310--> {e}')
+                        lista_logs.append(f'Revision LBC0310--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision LBC0320
@@ -631,7 +631,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                                 lista_revision.append(error)
                                             
                     except Exception as e:
-                        lista_logs.append(f'Revision LBC0320--> {e}')
+                        lista_logs.append(f'Revision LBC0320--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision LBC0330
@@ -651,7 +651,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                                 lista_revision.append(error)
                                             
                     except Exception as e:
-                        lista_logs.append(f'Revision LBC0330--> {e}')
+                        lista_logs.append(f'Revision LBC0330--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision LBC0340
@@ -685,7 +685,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                                     lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LBC0340 --> {e}')
+                        lista_logs.append(f'Revision LBC0340 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision LBC0350
@@ -703,7 +703,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                                 lista_revision.append(error)
                                             
                     except Exception as e:
-                        lista_logs.append(f'Revision LBC0350--> {e}')
+                        lista_logs.append(f'Revision LBC0350--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision LBC0360
@@ -721,7 +721,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                                 lista_revision.append(error)
                                             
                     except Exception as e:
-                        lista_logs.append(f'Revision LBC0360--> {e}')
+                        lista_logs.append(f'Revision LBC0360--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision LBC0370
@@ -754,7 +754,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                                     lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LBC0370 --> {e}')
+                        lista_logs.append(f'Revision LBC0370 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision LBC0380
@@ -773,7 +773,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                                 lista_revision.append(error)
                                             
                     except Exception as e:
-                        lista_logs.append(f'Revision LBC0380--> {e}')
+                        lista_logs.append(f'Revision LBC0380--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision LBC0390
@@ -791,7 +791,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                                 lista_revision.append(error)
                                             
                     except Exception as e:
-                        lista_logs.append(f'Revision LBC0390--> {e}')
+                        lista_logs.append(f'Revision LBC0390--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision LBC0400
@@ -823,7 +823,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                                     lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LBC0400--> {e}')
+                        lista_logs.append(f'Revision LBC0400--> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     try:
                         # Revision LBC0410
@@ -855,7 +855,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                                     lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LBC0410--> {e}')
+                        lista_logs.append(f'Revision LBC0410--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision LBC0420
@@ -887,7 +887,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                                     lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LBC0420--> {e}')
+                        lista_logs.append(f'Revision LBC0420--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision LBC0430
@@ -905,7 +905,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                                 lista_revision.append(error)
                                             
                     except Exception as e:
-                        lista_logs.append(f'Revision LBC0430--> {e}')
+                        lista_logs.append(f'Revision LBC0430--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision LBC0440
@@ -923,7 +923,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                                 lista_revision.append(error)
                                             
                     except Exception as e:
-                        lista_logs.append(f'Revision LBC0440--> {e}')
+                        lista_logs.append(f'Revision LBC0440--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision LBC0450
@@ -941,7 +941,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                                 lista_revision.append(error)
                                             
                     except Exception as e:
-                        lista_logs.append(f'Revision LBC0450--> {e}')
+                        lista_logs.append(f'Revision LBC0450--> {e} - Subject: {subject},  Visit: {visit}')
                     
                     lista_validacion = ['Alkaline Phosphatase',
                                         'Alkaline Phosphatase, Result (U/L)',
@@ -1054,7 +1054,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                                             blood_sample_collected_pure, 'LBC0460']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LBC0460--> {e}')
+                        lista_logs.append(f'Revision LBC0460--> {e} - Subject: {subject},  Visit: {visit} ')
                     
     excel_writer = load_workbook(path_excel_writer)
     column_names = ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']

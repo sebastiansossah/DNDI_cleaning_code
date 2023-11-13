@@ -88,7 +88,7 @@ def demographic(df_root, path_excel_writer):
                                       f'{age_at_consent_pure} - {año_calculado}', 'DM0030']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision DM0030 --> {e}')
+                        lista_logs.append(f'Revision DM0030 --> {e} - Subject: {subject},  Visit: {visit} ')
 
     excel_writer = load_workbook(path_excel_writer)
     column_names = ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']

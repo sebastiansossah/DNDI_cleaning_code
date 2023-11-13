@@ -138,7 +138,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
 
                     try:
                         absolute_lymphocyte_result = row['Absolute lymphocyte count, Result (cels/uL)']
-                        absolute_lymphocyte_result_pure = absolute_lymphocyte_result.aplit('|')[0]
+                        absolute_lymphocyte_result_pure = absolute_lymphocyte_result.split('|')[0]
                         absolute_lymphocyte_result_form_field_isntance = absolute_lymphocyte_result.split('|')[1]
                     except Exception as e:
                         absolute_lymphocyte_result_pure  = ''
@@ -372,7 +372,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                     try:
                         platelet_count_out_normal = row['Platelet Count, Out of normal range?']
                         platelet_count_out_normal_pure = platelet_count_out_normal.split('|')[0]
-                        platelet_count_out_normal_form_field_instance = platelet_count_out_normal('|')[1]
+                        platelet_count_out_normal_form_field_instance = platelet_count_out_normal.split('|')[1]
                     except Exception as e:
                         platelet_count_out_normal_pure = ''
                         platelet_count_out_normal_form_field_instance = 'This field doesnt have any data'
@@ -429,7 +429,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                             lista_revision.append(error)     
 
                     except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e}')  
+                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')  
 
                     # Revision LBT0010
                     try:
@@ -445,7 +445,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         else:
                             pass
                     except Exception as e:
-                        lista_logs.append(f'Revision LBT0010--> {e}')
+                        lista_logs.append(f'Revision LBT0010--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision LBT0030
                     try:
@@ -461,7 +461,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         else:
                             pass
                     except Exception as e:
-                        lista_logs.append(f'Revision LBT0030--> {e}')
+                        lista_logs.append(f'Revision LBT0030--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> LBT0040
                     try:
@@ -471,7 +471,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                             error = [subject, visit, 'Date Collected', date_collected_form_field_instance ,'Date Collected must be before the End of study/Early withdrawal date. ', date_collected_pure, 'LBT0040']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LBT0040 --> {e} ')
+                        lista_logs.append(f'Revision LBT0040 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
                     # Revision LBT0050
                     try:
@@ -484,7 +484,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                             blood_sample_collected_pure, 'LBT0050']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LBT0050--> {e}')
+                        lista_logs.append(f'Revision LBT0050--> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     try:
                         # Revision LBT0060
@@ -519,7 +519,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                                 'According to the result, the value is out of range, please review.' , Erythrocyte_result_pure, 'LBT0270']
                                     lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LBT0060--> {e}')
+                        lista_logs.append(f'Revision LBT0060--> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     try:
                         # Revision LBT0070
@@ -539,7 +539,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 lista_revision.append(error)
                                             
                     except Exception as e:
-                        lista_logs.append(f'Revision LBT0070--> {e}')
+                        lista_logs.append(f'Revision LBT0070--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision LBT0080
@@ -574,7 +574,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                                 Neutrophil_result_pure, 'LBT0290']
                                     lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LBT0080--> {e}')
+                        lista_logs.append(f'Revision LBT0080--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision LBT0090
@@ -611,7 +611,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                                     Lymphocyte_result_pure, 'LBT0300']
                                     lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LBT0090--> {e}')
+                        lista_logs.append(f'Revision LBT0090--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision LBT0100
@@ -646,7 +646,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                                 Monocytes_result_pure, 'LBT0310']
                                     lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LBT0100--> {e}')
+                        lista_logs.append(f'Revision LBT0100--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision LBT0110
@@ -681,7 +681,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                                 Eosinophil_result_pure, 'LBT0320']
                                     lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LBT0100--> {e}')
+                        lista_logs.append(f'Revision LBT0100--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision LBT0120
@@ -698,7 +698,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                          'According to the result, the value is out of range, please review.', Basophil_result_pure, 'LBT0330']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LBT0120--> {e}')
+                        lista_logs.append(f'Revision LBT0120--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision LBT0130
@@ -737,7 +737,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                                     absolute_Neutrophil_result_pure, 'LBT0340']
                                     lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LBT0130--> {e}')
+                        lista_logs.append(f'Revision LBT0130--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision LBT0140
@@ -777,7 +777,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                     lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LBT0140--> {e}')
+                        lista_logs.append(f'Revision LBT0140--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision LBT0150
@@ -816,7 +816,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                                     absolute_monocyte_result_pure, 'LBT0360']
                                     lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LBT0150--> {e}')
+                        lista_logs.append(f'Revision LBT0150--> {e} - Subject: {subject},  Visit: {visit} ')
  
                     try:
                         # Revision LBT0160 
@@ -855,7 +855,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                                     absolute_eosinophil_result_pure, 'LBT0370']
                                     lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LBT0160--> {e}')
+                        lista_logs.append(f'Revision LBT0160--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision LBT0170
@@ -876,7 +876,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                                 absolute_basophil_result_pure, 'LBT0380']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LBT0170--> {e}')
+                        lista_logs.append(f'Revision LBT0170--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision LBT0180
@@ -911,7 +911,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                                 'According to the result, the value is out of range, please review.' , RBC__result_pure, 'LBT0390']
                                     lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LBT0180--> {e}')
+                        lista_logs.append(f'Revision LBT0180--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision LBT0190 
@@ -950,7 +950,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                                 Haemoglobin_result_pure, 'LBT0400']
                                     lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LBT0190--> {e}')
+                        lista_logs.append(f'Revision LBT0190--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision LBT0200 
@@ -989,7 +989,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                                     Hematocrit_result_pure, 'LBT0410']
                                     lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LBT0200--> {e}')
+                        lista_logs.append(f'Revision LBT0200--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision LBT0210 
@@ -1028,7 +1028,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                                 MCV_result_form_field_instance, 'LBT0420']
                                     lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LBT0210--> {e}')
+                        lista_logs.append(f'Revision LBT0210--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision LBT0220 
@@ -1067,7 +1067,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                                     MCH_result_pure, 'LBT0430']
                                     lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LBT0220--> {e}')
+                        lista_logs.append(f'Revision LBT0220--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision LBT0230
@@ -1106,7 +1106,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                                       MCHC_result_pure, 'LBT0440']
                                     lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LBT0230--> {e}')
+                        lista_logs.append(f'Revision LBT0230--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision LBT0240 
@@ -1145,7 +1145,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                                     platelet_count_result_pure, 'LBT0450']
                                     lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LBT0240--> {e}')
+                        lista_logs.append(f'Revision LBT0240--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision LBT0250
@@ -1184,7 +1184,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                                       MPV_result_pure, 'LBT0460']
                                     lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LBT0250--> {e}')
+                        lista_logs.append(f'Revision LBT0250--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     lista_validacion = ['Erythrocyte sedimentation rate (ESR)',
                         'White blood Cell count (WBC)',
@@ -1264,7 +1264,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                                 blood_sample_collected_pure, 'LBT0260']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LBT0260--> {e}')
+                        lista_logs.append(f'Revision LBT0260--> {e} - Subject: {subject},  Visit: {visit} ')
 
     excel_writer = load_workbook(path_excel_writer)
     column_names =  ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']

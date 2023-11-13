@@ -140,7 +140,7 @@ def pregnancy_test(df_root, path_excel_writer):
                             lista_revision.append(error)     
 
                     except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e}')
+                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision RP0010
                     try:
@@ -150,7 +150,7 @@ def pregnancy_test(df_root, path_excel_writer):
                                         post_menopausal, 'RP0010']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision RP0010--> {e}')
+                        lista_logs.append(f'Revision RP0010--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision RP0030
                     try:
@@ -159,7 +159,7 @@ def pregnancy_test(df_root, path_excel_writer):
                                      'If Subjects Gender is "Male" in DEMOGRAPHIC, form should be left empty' , post_menopausal, 'RP0030']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision RP0030--> {e}')
+                        lista_logs.append(f'Revision RP0030--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision RP0040
                     try:
@@ -173,7 +173,7 @@ def pregnancy_test(df_root, path_excel_writer):
                                             was_pregnancy_test_performed_pure, 'RP0040']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision RP0040--> {e}')
+                        lista_logs.append(f'Revision RP0040--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision RP0050
                     try:
@@ -189,7 +189,7 @@ def pregnancy_test(df_root, path_excel_writer):
                         else:
                             pass
                     except Exception as e:
-                        lista_logs.append(f'Revision RP0050--> {e}')
+                        lista_logs.append(f'Revision RP0050--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision RP0060
                     try:
@@ -205,7 +205,7 @@ def pregnancy_test(df_root, path_excel_writer):
                         else:
                             pass
                     except Exception as e:
-                        lista_logs.append(f'Revision RP0060--> {e}')
+                        lista_logs.append(f'Revision RP0060--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> RP0070
                     try:
@@ -215,7 +215,7 @@ def pregnancy_test(df_root, path_excel_writer):
                             error = [subject, visit, 'date of test performed', date_test_performed_form_field_instance ,'The date of test performed cant be after the study/Early withdrawal date.', date_test_performed_pure, 'RP0070']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision RP0070 --> {e} ')
+                        lista_logs.append(f'Revision RP0070 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
     excel_writer = load_workbook(path_excel_writer)
     column_names =  ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']

@@ -116,7 +116,7 @@ def interleukin_6(df_root, path_excel_writer):
                             lista_revision.append(error)     
 
                     except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e}')
+                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     try:
                         # Revision IN0010
@@ -126,7 +126,7 @@ def interleukin_6(df_root, path_excel_writer):
                                              'According to the result, the value is out of range, please review', Result_pg_ml_pure, 'IN0010']
                                     lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision IN0010 --> {e}')
+                        lista_logs.append(f'Revision IN0010 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     try:
                         # Revision IN0020
@@ -136,7 +136,7 @@ def interleukin_6(df_root, path_excel_writer):
                                              'According to the result, the value is not out of range, please review', Result_pg_ml_pure, 'IN0020']
                                     lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision IN0020 --> {e}')
+                        lista_logs.append(f'Revision IN0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                                         
                     # Revision IN0030
@@ -153,7 +153,7 @@ def interleukin_6(df_root, path_excel_writer):
                             pass
 
                     except Exception as e:
-                        lista_logs.append(f'Revision IN0030--> {e}')
+                        lista_logs.append(f'Revision IN0030--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision IN0040
                     try:
@@ -168,7 +168,7 @@ def interleukin_6(df_root, path_excel_writer):
                         else:
                             pass
                     except Exception as e:
-                        lista_logs.append(f'Revision IN0040--> {e}')
+                        lista_logs.append(f'Revision IN0040--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> IN0050
                     try:
@@ -179,7 +179,7 @@ def interleukin_6(df_root, path_excel_writer):
                                      'Date Sample Collected must be before the End of study/Early withdrawal date. ', date_collected_pure, 'IN0050']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision IN0050 --> {e} ')
+                        lista_logs.append(f'Revision IN0050 --> {e} - Subject: {subject},  Visit: {visit} ')
 
 
     excel_writer = load_workbook(path_excel_writer)

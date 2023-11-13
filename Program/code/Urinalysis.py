@@ -98,7 +98,7 @@ def urinalysis(df_root, path_excel_writer):
                             lista_revision.append(error)     
 
                     except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e}')
+                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision UR0010
                     try:
@@ -111,7 +111,7 @@ def urinalysis(df_root, path_excel_writer):
                                             urine_sample_collected_pure, 'UR0010']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision UR0010--> {e}')
+                        lista_logs.append(f'Revision UR0010--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision UR0020
                     try:
@@ -127,7 +127,7 @@ def urinalysis(df_root, path_excel_writer):
                         else:
                             pass
                     except Exception as e:
-                        lista_logs.append(f'Revision UR0020--> {e}')
+                        lista_logs.append(f'Revision UR0020--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision UR0030
                     try:
@@ -143,7 +143,7 @@ def urinalysis(df_root, path_excel_writer):
                         else:
                             pass
                     except Exception as e:
-                        lista_logs.append(f'Revision UR0030--> {e}')
+                        lista_logs.append(f'Revision UR0030--> {e} - Subject: {subject},  Visit: {visit} ')
 
 
                     # Revision -> UR0040
@@ -154,7 +154,7 @@ def urinalysis(df_root, path_excel_writer):
                             error = [subject, visit, 'Date Collected', date_collected_form_field_instance ,'Date Collected must be before the End of study/Early withdrawal date. ', date_collected_pure, 'UR0040']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision UR0040 --> {e} ')
+                        lista_logs.append(f'Revision UR0040 --> {e}  - Subject: {subject},  Visit: {visit} ')
 
                     lista_validacion = [
                         'Bilirubin',
@@ -192,7 +192,7 @@ def urinalysis(df_root, path_excel_writer):
                                             urine_sample_collected_pure, 'UR0060']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision UR0060--> {e}')
+                        lista_logs.append(f'Revision UR0060--> {e} - Subject: {subject},  Visit: {visit} ')
 
     excel_writer = load_workbook(path_excel_writer)
     column_names = ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']

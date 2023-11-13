@@ -206,7 +206,7 @@ def lead_ECG(df_root, path_excel_writer):
                     try:
                         min_60_post_dose_PR_msec = row["60-min post dose, PR (msec)"]
                         min_60_post_dose_PR_msec_pure = min_60_post_dose_PR_msec.split('|')[0]
-                        min_60_post_dose_PR_msec_form_field_instance = min_60_post_dose_PR_msec.split('|')[0]
+                        min_60_post_dose_PR_msec_form_field_instance = min_60_post_dose_PR_msec.split('|')[1]
                     except Exception as e:
                         min_60_post_dose_PR_msec_pure = ''
                         min_60_post_dose_PR_msec_form_field_instance = 'This field doesnt have any data'
@@ -572,7 +572,7 @@ def lead_ECG(df_root, path_excel_writer):
                             lista_revision.append(error)     
 
                     except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e}')
+                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision LE0010
                     try:
@@ -585,7 +585,7 @@ def lead_ECG(df_root, path_excel_writer):
                                             were_ECG_performed_pure, 'LE0010']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0010--> {e}')
+                        lista_logs.append(f'Revision LE0010--> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     lista_validacion = [
                         'Undefined',
@@ -620,7 +620,7 @@ def lead_ECG(df_root, path_excel_writer):
                                          'If ECG was performed, not all sections can be "not done"' , were_ECG_performed_pure, 'LE0020']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0020--> {e}')
+                        lista_logs.append(f'Revision LE0020--> {e} - Subject: {subject},  Visit: {visit} ')
 
 
                     # Revision LE0040
@@ -636,7 +636,7 @@ def lead_ECG(df_root, path_excel_writer):
                         else:
                             pass
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0040--> {e}')
+                        lista_logs.append(f'Revision LE0040--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision LE0050
                     try:
@@ -651,7 +651,7 @@ def lead_ECG(df_root, path_excel_writer):
                         else:
                             pass
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0050--> {e}')
+                        lista_logs.append(f'Revision LE0050--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> LE0060
                     try:
@@ -661,7 +661,7 @@ def lead_ECG(df_root, path_excel_writer):
                             error = [subject, visit, 'Date of ECG Performed', date_of_egc_form_field_instance ,'Date of ECG Performed must be before the End of study/Early withdrawal date. ', date_of_egc_pure, 'LE0060']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0060 --> {e} ')
+                        lista_logs.append(f'Revision LE0060 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
                     # ------------------------------------------ All undifined ---------------------------------------------------------
                     # Revision LE0070
@@ -675,7 +675,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0070--> {e}') 
+                        lista_logs.append(f'Revision LE0070--> {e} - Subject: {subject},  Visit: {visit} ') 
 
                     # Revision LE0140
                     try: 
@@ -686,7 +686,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0140--> {e}') 
+                        lista_logs.append(f'Revision LE0140--> {e} - Subject: {subject},  Visit: {visit} ') 
 
                     # Revision LE0210
                     try: 
@@ -696,7 +696,7 @@ def lead_ECG(df_root, path_excel_writer):
                                          'The PR is not within expected range (120 to 200), therefore the Interpretation cant be Normal.', Undefined_PR_msec_pure, 'LE0210']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0210--> {e}') 
+                        lista_logs.append(f'Revision LE0210--> {e} - Subject: {subject},  Visit: {visit} ') 
 
                     # Revision LE0280
                     try: 
@@ -707,7 +707,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0280--> {e}') 
+                        lista_logs.append(f'Revision LE0280--> {e} - Subject: {subject},  Visit: {visit} ') 
                         
                     # Revision LE0350
                     try: 
@@ -717,7 +717,7 @@ def lead_ECG(df_root, path_excel_writer):
                                          'The QT is not within expected range (below or equal to 500 msec), therefore the Interpretation cant be Normal.', Undefined_QT_msec_pure, 'LE0350']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0350--> {e}')     
+                        lista_logs.append(f'Revision LE0350--> {e} - Subject: {subject},  Visit: {visit} ')     
                     
                     # Revision LE0420
                     try: 
@@ -728,7 +728,7 @@ def lead_ECG(df_root, path_excel_writer):
                                      'The QTcF is not within expected range (350 to 450), therefore the Interpretation cant be Normal.', Undefined_QTcF_msec_pure, 'LE0420']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0420--> {e}')  
+                        lista_logs.append(f'Revision LE0420--> {e} - Subject: {subject},  Visit: {visit} ')  
 
                     # Revision LE0430
                     try: 
@@ -739,7 +739,7 @@ def lead_ECG(df_root, path_excel_writer):
                                               Undefined_QTcF_msec_pure, 'LE0430']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0430--> {e}')   
+                        lista_logs.append(f'Revision LE0430--> {e} - Subject: {subject},  Visit: {visit} ')   
                     
 
                         lista_revisar =[
@@ -811,7 +811,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0620--> {e}')  
+                        lista_logs.append(f'Revision LE0620--> {e} - Subject: {subject},  Visit: {visit} ')  
 
                     # ------------------------------------------ All pre dose ---------------------------------------------------------
 
@@ -826,7 +826,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0080--> {e}') 
+                        lista_logs.append(f'Revision LE0080--> {e} - Subject: {subject},  Visit: {visit} ') 
 
                     # Revision LE0150
                     try: 
@@ -837,7 +837,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0150--> {e}') 
+                        lista_logs.append(f'Revision LE0150--> {e} - Subject: {subject},  Visit: {visit} ') 
 
                     # Revision LE0290
                     try: 
@@ -848,7 +848,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0290--> {e}') 
+                        lista_logs.append(f'Revision LE0290--> {e} - Subject: {subject},  Visit: {visit} ') 
                         
                     # Revision LE0360
                     try: 
@@ -858,7 +858,7 @@ def lead_ECG(df_root, path_excel_writer):
                                          'The QT is not within expected range (below or equal to 500 msec), therefore the Interpretation cant be Normal.', Pre_dose_triplicate_1_QT_msec_pure, 'LE0360']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0360--> {e}')     
+                        lista_logs.append(f'Revision LE0360--> {e} - Subject: {subject},  Visit: {visit} ')     
                     
                     # Revision LE0440
                     try: 
@@ -869,7 +869,7 @@ def lead_ECG(df_root, path_excel_writer):
                                      'The QTcF is not within expected range (350 to 450), therefore the Interpretation cant be Normal.', Pre_dose_triplicate_1_QTcF_msec_pure, 'LE0440']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0440--> {e}')  
+                        lista_logs.append(f'Revision LE0440--> {e} - Subject: {subject},  Visit: {visit} ')  
 
 
                     cuenta_validacion_abnormal_predose_1 = 0
@@ -932,7 +932,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0630--> {e}')  
+                        lista_logs.append(f'Revision LE0630--> {e} - Subject: {subject},  Visit: {visit} ')  
 
                     # ------------------------------------------ All pre dose triplicate 2 ---------------------------------------------------------
 
@@ -948,7 +948,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0090--> {e}') 
+                        lista_logs.append(f'Revision LE0090--> {e} - Subject: {subject},  Visit: {visit} ') 
 
                     # Revision LE0160
                     try: 
@@ -959,7 +959,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0160--> {e}') 
+                        lista_logs.append(f'Revision LE0160--> {e} - Subject: {subject},  Visit: {visit} ') 
 
 
                     # Revision LE0230
@@ -982,7 +982,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0300--> {e}') 
+                        lista_logs.append(f'Revision LE0300--> {e} - Subject: {subject},  Visit: {visit} ') 
                         
                     # Revision LE0370
                     try: 
@@ -993,7 +993,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0370--> {e}')     
+                        lista_logs.append(f'Revision LE0370--> {e} - Subject: {subject},  Visit: {visit} ')     
                     
                     # Revision LE0460
                     try: 
@@ -1004,7 +1004,7 @@ def lead_ECG(df_root, path_excel_writer):
                                      'The QTcF is not within expected range (350 to 450), therefore the Interpretation cant be Normal.', Pre_dose_triplicate_2_QTcF_msec_pure, 'LE0460']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0460--> {e}')  
+                        lista_logs.append(f'Revision LE0460--> {e} - Subject: {subject},  Visit: {visit} ')  
 
 
                     cuenta_validacion_abnormal_predose_2 = 0
@@ -1067,7 +1067,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0640--> {e}')  
+                        lista_logs.append(f'Revision LE0640--> {e} - Subject: {subject},  Visit: {visit} ')  
 
 
                     # ------------------------------------------ All pre dose triplicate 3 ---------------------------------------------------------
@@ -1083,7 +1083,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LE00100--> {e}') 
+                        lista_logs.append(f'Revision LE00100--> {e} - Subject: {subject},  Visit: {visit} ') 
 
                     # Revision LE0170
                     try: 
@@ -1094,7 +1094,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0170--> {e}') 
+                        lista_logs.append(f'Revision LE0170--> {e} - Subject: {subject},  Visit: {visit} ') 
 
 
                     # Revision LE0240
@@ -1106,7 +1106,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0240--> {e}') 
+                        lista_logs.append(f'Revision LE0240--> {e} - Subject: {subject},  Visit: {visit} ') 
 
                     # Revision LE0310
                     try: 
@@ -1117,7 +1117,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0310--> {e}') 
+                        lista_logs.append(f'Revision LE0310--> {e} - Subject: {subject},  Visit: {visit} ') 
                         
                     # Revision LE0380
                     try: 
@@ -1128,7 +1128,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0380--> {e}')     
+                        lista_logs.append(f'Revision LE0380--> {e} - Subject: {subject},  Visit: {visit} ')     
                     
                     # Revision LE0480
                     try: 
@@ -1139,7 +1139,7 @@ def lead_ECG(df_root, path_excel_writer):
                                      'The QTcF is not within expected range (350 to 450), therefore the Interpretation cant be Normal.', Pre_dose_triplicate_3_QTcF_msec_pure, 'LE0480']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0480--> {e}')  
+                        lista_logs.append(f'Revision LE0480--> {e} - Subject: {subject},  Visit: {visit} ')  
 
 
                     cuenta_validacion_abnormal_predose_3 = 0
@@ -1202,7 +1202,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0650--> {e}')  
+                        lista_logs.append(f'Revision LE0650--> {e} - Subject: {subject},  Visit: {visit} ')  
 
 
                     # ------------------------------------------ All 15 min post dose ---------------------------------------------------------
@@ -1218,7 +1218,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LE00110--> {e}') 
+                        lista_logs.append(f'Revision LE00110--> {e} - Subject: {subject},  Visit: {visit} ') 
 
                     # Revision LE0180
                     try: 
@@ -1229,7 +1229,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0180--> {e}') 
+                        lista_logs.append(f'Revision LE0180--> {e} - Subject: {subject},  Visit: {visit} ') 
 
 
                     # Revision LE0250
@@ -1241,7 +1241,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0250--> {e}') 
+                        lista_logs.append(f'Revision LE0250--> {e} - Subject: {subject},  Visit: {visit} ') 
 
                     # Revision LE0320
                     try: 
@@ -1252,7 +1252,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0320--> {e}') 
+                        lista_logs.append(f'Revision LE0320--> {e} - Subject: {subject},  Visit: {visit} ') 
                         
                     # Revision LE0390
                     try: 
@@ -1263,7 +1263,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0390--> {e}')     
+                        lista_logs.append(f'Revision LE0390--> {e} - Subject: {subject},  Visit: {visit} ')     
                     
                     # Revision LE0500
                     try: 
@@ -1274,7 +1274,7 @@ def lead_ECG(df_root, path_excel_writer):
                                      'The QTcF is not within expected range (350 to 450), therefore the Interpretation cant be Normal.', min_15_post_dose_QTcF_msec_pure, 'LE0500']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0500--> {e}')  
+                        lista_logs.append(f'Revision LE0500--> {e} - Subject: {subject},  Visit: {visit} ')  
 
 
                     cuenta_validacion_abnormal_15_min = 0
@@ -1337,7 +1337,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0660--> {e}')  
+                        lista_logs.append(f'Revision LE0660--> {e} - Subject: {subject},  Visit: {visit} ')  
 
 
                     # ------------------------------------------ All 30 min post dose ---------------------------------------------------------
@@ -1352,7 +1352,7 @@ def lead_ECG(df_root, path_excel_writer):
                                          'If the Interpretation is Normal, the range must be between 45 and 90', min_30_post_dose_HR_bpm_pure, 'LE00120']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LE00120--> {e}') 
+                        lista_logs.append(f'Revision LE00120--> {e} - Subject: {subject},  Visit: {visit} ') 
 
                     # Revision LE0190
                     try: 
@@ -1363,7 +1363,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0190--> {e}') 
+                        lista_logs.append(f'Revision LE0190--> {e} - Subject: {subject},  Visit: {visit} ') 
 
 
                     # Revision LE0260
@@ -1375,7 +1375,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0260--> {e}') 
+                        lista_logs.append(f'Revision LE0260--> {e} - Subject: {subject},  Visit: {visit} ') 
 
                     # Revision LE0330
                     try: 
@@ -1386,7 +1386,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0330--> {e}') 
+                        lista_logs.append(f'Revision LE0330--> {e} - Subject: {subject},  Visit: {visit} ') 
                         
                     # Revision LE0400
                     try: 
@@ -1396,7 +1396,7 @@ def lead_ECG(df_root, path_excel_writer):
                                          'The QT is not within expected range (below or equal to 500 msec), therefore the Interpretation cant be Normal.', min_30_post_dose_QT_msec_pure, 'LE0400']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0400--> {e}')     
+                        lista_logs.append(f'Revision LE0400--> {e} - Subject: {subject},  Visit: {visit} ')     
                     
                     # Revision LE0520
                     try: 
@@ -1407,7 +1407,7 @@ def lead_ECG(df_root, path_excel_writer):
                                      'The QTcF is not within expected range (350 to 450), therefore the Interpretation cant be Normal.', min_30_post_dose_QTcF_msec_pure, 'LE0520']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0520--> {e}')  
+                        lista_logs.append(f'Revision LE0520--> {e} - Subject: {subject},  Visit: {visit} ')  
 
 
                     cuenta_validacion_abnormal_30_min = 0
@@ -1470,7 +1470,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0670--> {e}')  
+                        lista_logs.append(f'Revision LE0670--> {e} - Subject: {subject},  Visit: {visit} ')  
 
 
 
@@ -1487,7 +1487,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LE00130--> {e}') 
+                        lista_logs.append(f'Revision LE00130--> {e} - Subject: {subject},  Visit: {visit} ') 
 
                     # Revision LE0200
                     try: 
@@ -1498,7 +1498,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0200--> {e}') 
+                        lista_logs.append(f'Revision LE0200--> {e} - Subject: {subject},  Visit: {visit} ') 
 
 
                     # Revision LE0270
@@ -1510,7 +1510,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0270--> {e}') 
+                        lista_logs.append(f'Revision LE0270--> {e} - Subject: {subject},  Visit: {visit} ') 
 
                     # Revision LE0340
                     try: 
@@ -1521,7 +1521,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0340--> {e}') 
+                        lista_logs.append(f'Revision LE0340--> {e} - Subject: {subject},  Visit: {visit} ') 
                         
                     # Revision LE0410
                     try: 
@@ -1532,7 +1532,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0410--> {e}')     
+                        lista_logs.append(f'Revision LE0410--> {e} - Subject: {subject},  Visit: {visit} ')     
                     
                     # Revision LE0540
                     try: 
@@ -1543,7 +1543,7 @@ def lead_ECG(df_root, path_excel_writer):
                                      'The QTcF is not within expected range (350 to 450), therefore the Interpretation cant be Normal.', min_60_post_dose_QTcF_msec_pure, 'LE0540']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0540--> {e}')  
+                        lista_logs.append(f'Revision LE0540--> {e} - Subject: {subject},  Visit: {visit} ')  
 
 
                     cuenta_validacion_abnormal_60_min = 0
@@ -1606,7 +1606,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0680--> {e}')  
+                        lista_logs.append(f'Revision LE0680--> {e} - Subject: {subject},  Visit: {visit} ')  
                     
                     # -------------------------------------------- Time Revisions ---------------------------------------------------------------------------------------
 
@@ -1617,7 +1617,7 @@ def lead_ECG(df_root, path_excel_writer):
                                          'Pre dose triplicate 2 Time should be within 2 minutes after Pre dose triplicate 1, Time', predose_triplicate_2_time_pure, 'LE0570']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0570--> {e}')  
+                        lista_logs.append(f'Revision LE0570--> {e} - Subject: {subject},  Visit: {visit} ')  
 
                     # Revision LE0580
                     try:
@@ -1626,7 +1626,7 @@ def lead_ECG(df_root, path_excel_writer):
                                          'Pre dose triplicate 3 Time should be within 2 minutes after Pre dose triplicate 2, Time', predose_triplicate_3_time_pure, 'LE0580']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LE0580--> {e}')  
+                        lista_logs.append(f'Revision LE0580--> {e} - Subject: {subject},  Visit: {visit} ')  
                     
 
     excel_writer = load_workbook(path_excel_writer)

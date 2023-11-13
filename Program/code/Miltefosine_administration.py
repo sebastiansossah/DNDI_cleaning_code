@@ -172,7 +172,7 @@ def miltefosine_administration(df_root, path_excel_writer):
                             lista_revision.append(error)     
 
                     except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e}')
+                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
                         
                     # Revision ECML0030
                     try:
@@ -183,7 +183,7 @@ def miltefosine_administration(df_root, path_excel_writer):
                         else:
                             date_dosing_historico_list.append(date_dosing_pure)
                     except Exception as e:
-                        lista_logs.append(f'Revision ECML0030 --> {e}')
+                        lista_logs.append(f'Revision ECML0030 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision ECML0040
                     try:
@@ -194,7 +194,7 @@ def miltefosine_administration(df_root, path_excel_writer):
                                         'The date must not be before the informed consent date', date_dosing_pure, 'ECML0040']
                             lista_revision.append(error)
                     except Exception as e:
-                            lista_logs.append(f'Revision ECML0040 --> {e}')
+                            lista_logs.append(f'Revision ECML0040 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision ECML0050
                     try:
@@ -207,7 +207,7 @@ def miltefosine_administration(df_root, path_excel_writer):
                                             f'{date_dosing_pure} - {visita_randomization}', 'ECML0050']
                             lista_revision.append(error)
                     except Exception as e:
-                            lista_logs.append(f'Revision ECML0050 --> {e}')
+                            lista_logs.append(f'Revision ECML0050 --> {e} - Subject: {subject},  Visit: {visit} ')
                               
                     # Revision ECML0080
                     try:
@@ -221,7 +221,7 @@ def miltefosine_administration(df_root, path_excel_writer):
                                                  dosing_event_pure, 'ECML0080']
                                     lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision ECML0080 --> {e}')
+                        lista_logs.append(f'Revision ECML0080 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision ECML0090
                     try:
@@ -235,7 +235,7 @@ def miltefosine_administration(df_root, path_excel_writer):
                                                  dosing_event_pure, 'ECML0090']
                                     lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision ECML0090 --> {e}')
+                        lista_logs.append(f'Revision ECML0090 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision ECML0100
                     try:
@@ -249,7 +249,7 @@ def miltefosine_administration(df_root, path_excel_writer):
                                                  dosing_event_pure, 'ECML0100']
                                     lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision ECML0100 --> {e}')
+                        lista_logs.append(f'Revision ECML0100 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision ECML0110
                     try:
@@ -262,7 +262,7 @@ def miltefosine_administration(df_root, path_excel_writer):
                                             'The date must not be before the informed consent date', date_dosing_pure, 'ECML0050']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision ECML0110 --> {e}')
+                        lista_logs.append(f'Revision ECML0110 --> {e} - Subject: {subject},  Visit: {visit} ')
     
     excel_writer = load_workbook(path_excel_writer)
     column_names = ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']

@@ -86,7 +86,7 @@ def urine_microscopic_examination(df_root, path_excel_writer):
                                             was_performed_pure, 'URM0010']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision URM0010--> {e}')
+                        lista_logs.append(f'Revision URM0010--> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     lista_validacion_resultados = [
                     'RBC, Result (/hpf)',
@@ -124,7 +124,7 @@ def urine_microscopic_examination(df_root, path_excel_writer):
                                             was_performed_pure, 'URM0020']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision URM0020--> {e}')
+                        lista_logs.append(f'Revision URM0020--> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision URM0030
                     try:
@@ -137,7 +137,7 @@ def urine_microscopic_examination(df_root, path_excel_writer):
                                             was_performed_pure, 'URM0030']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision URM0030--> {e}')
+                        lista_logs.append(f'Revision URM0030--> {e} - Subject: {subject},  Visit: {visit} ')
 
 
     excel_writer = load_workbook(path_excel_writer)

@@ -186,7 +186,7 @@ def Pharmacokinetic_blood_sampling(df_root, path_excel_writer):
                                      f , Date_of_blood_sample_collected_pure, 'GE0020']
                             lista_revision.append(error)     
                     except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e}')
+                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision PK0010
                     try:
@@ -202,7 +202,7 @@ def Pharmacokinetic_blood_sampling(df_root, path_excel_writer):
                             pass
 
                     except Exception as e:
-                        lista_logs.append(f'Revision PK0010--> {e}')
+                        lista_logs.append(f'Revision PK0010--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision PK0030
                     try:
@@ -217,7 +217,7 @@ def Pharmacokinetic_blood_sampling(df_root, path_excel_writer):
                         else:
                             pass
                     except Exception as e:
-                        lista_logs.append(f'Revision PK0030--> {e}')
+                        lista_logs.append(f'Revision PK0030--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> PK0040
                     try:
@@ -228,7 +228,7 @@ def Pharmacokinetic_blood_sampling(df_root, path_excel_writer):
                                      'Date of blood sample collected must be before the End of study/Early withdrawal date. ', Date_of_blood_sample_collected_pure, 'PK0040']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision PK0040 --> {e} ')
+                        lista_logs.append(f'Revision PK0040 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
 
                     lista_validacion = [
@@ -266,7 +266,7 @@ def Pharmacokinetic_blood_sampling(df_root, path_excel_writer):
                                         'If the sample was collected, not all sections can be "not done"', Was_any_pharmacokinetic_blood_sample_collected_pure, 'PK0050']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision PK0050--> {e}')
+                        lista_logs.append(f'Revision PK0050--> {e} - Subject: {subject},  Visit: {visit} ')
                     
 
     excel_writer = load_workbook(path_excel_writer)

@@ -843,7 +843,7 @@ def vital_signs(df_root, path_excel_writer):
                             lista_revision.append(error)     
 
                     except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e}')
+                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision VS0020
                     try:
@@ -858,7 +858,7 @@ def vital_signs(df_root, path_excel_writer):
                         else:
                             pass
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0020--> {e}')
+                        lista_logs.append(f'Revision VS0020--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision VS0030
                     try:
@@ -873,7 +873,7 @@ def vital_signs(df_root, path_excel_writer):
                         else:
                             pass
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0030--> {e}')
+                        lista_logs.append(f'Revision VS0030--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> VS0040
                     try:
@@ -883,7 +883,7 @@ def vital_signs(df_root, path_excel_writer):
                             error = [subject, visit, 'Date of assessment performed', date_assesment_form_field_instance ,'Visit Date must be before the End of study/Early withdrawal date. ', date_assesment_pure, 'VS0040']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0040 --> {e} ')
+                        lista_logs.append(f'Revision VS0040 --> {e}  - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision VS0050
                     try:
@@ -894,7 +894,7 @@ def vital_signs(df_root, path_excel_writer):
                                 error = [subject, visit, 'Undefined, BMI', BMI_form_field_instance, 'Only at Screening', BMI_pure, 'VS0050']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0050--> {e}')
+                        lista_logs.append(f'Revision VS0050--> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision VS0060
                     try:
@@ -905,7 +905,7 @@ def vital_signs(df_root, path_excel_writer):
                                 error = [subject, visit, 'Undefined, Height (cm)', height_form_field_instance,'Only at Screening', height_pure, 'VS0060']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0060--> {e}')
+                        lista_logs.append(f'Revision VS0060--> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision VS0070
                     try:
@@ -916,7 +916,7 @@ def vital_signs(df_root, path_excel_writer):
                                 error = [subject, visit, 'Undefined, Weight (kg)', weight_form_field_instance, 'Only at Screening', weight_pure, 'VS0070']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0070--> {e}')
+                        lista_logs.append(f'Revision VS0070--> {e} - Subject: {subject},  Visit: {visit} ')
 
 
                     try:
@@ -938,7 +938,7 @@ def vital_signs(df_root, path_excel_writer):
                                             Undefined_Diastolic_Blood_Pressure_value_pure, 'VS0170']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0080--> {e}')
+                        lista_logs.append(f'Revision VS0080--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0090
@@ -957,7 +957,7 @@ def vital_signs(df_root, path_excel_writer):
                                          'The Diastolic Blood Pressure is within expected range (50 to 90), the Interpretation should not be Abnormal.', Pre_dose_Diastolic_Blood_Pressure_value_pure, 'VS0180']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0090--> {e}')
+                        lista_logs.append(f'Revision VS0090--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0100
@@ -978,7 +978,7 @@ def vital_signs(df_root, path_excel_writer):
                                             mins_15_post_dose_Diastolic_Blood_Pressure_value_pure, 'VS0190']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0100--> {e}')
+                        lista_logs.append(f'Revision VS0100--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0110
@@ -999,7 +999,7 @@ def vital_signs(df_root, path_excel_writer):
                                             mins_30_post_dose_Diastolic_Blood_Pressure_value_pure, 'VS0200']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0110--> {e}')
+                        lista_logs.append(f'Revision VS0110--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0120
@@ -1020,7 +1020,7 @@ def vital_signs(df_root, path_excel_writer):
                                             mins_60_post_dose_Diastolic_Blood_Pressure_value_pure, 'VS0210']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0120--> {e}')
+                        lista_logs.append(f'Revision VS0120--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0130
@@ -1041,7 +1041,7 @@ def vital_signs(df_root, path_excel_writer):
                                             hours_2_post_dose_Diastolic_Blood_Pressure_value_pure, 'VS0220']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0130--> {e}')
+                        lista_logs.append(f'Revision VS0130--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0140
@@ -1062,7 +1062,7 @@ def vital_signs(df_root, path_excel_writer):
                                             hours_4_post_dose_Diastolic_Blood_Pressure_value_pure, 'VS0230']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0140--> {e}')
+                        lista_logs.append(f'Revision VS0140--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0150
@@ -1083,7 +1083,7 @@ def vital_signs(df_root, path_excel_writer):
                                             hours_8_post_dose_Diastolic_Blood_Pressure_value_pure, 'VS0240']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0150--> {e}')
+                        lista_logs.append(f'Revision VS0150--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0160
@@ -1104,7 +1104,7 @@ def vital_signs(df_root, path_excel_writer):
                                             hours_12_post_dose_Diastolic_Blood_Pressure_value_pure, 'VS0250']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0160--> {e}')
+                        lista_logs.append(f'Revision VS0160--> {e} - Subject: {subject},  Visit: {visit} ')
 # ---------------------------------------------------------------------------------------------
 
                     try:
@@ -1124,7 +1124,7 @@ def vital_signs(df_root, path_excel_writer):
                                          'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', Undefined_Oral_Temperature_value_pure, 'VS0350']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0260--> {e}')
+                        lista_logs.append(f'Revision VS0260--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0280
@@ -1143,7 +1143,7 @@ def vital_signs(df_root, path_excel_writer):
                                          'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', mins_15_post_dose_Oral_Temperature_value_pure, 'VS0370']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0280--> {e}')
+                        lista_logs.append(f'Revision VS0280--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0270
@@ -1162,7 +1162,7 @@ def vital_signs(df_root, path_excel_writer):
                                          'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', Pre_dose_Oral_Temperature_value_pure, 'VS0360']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0270--> {e}')
+                        lista_logs.append(f'Revision VS0270--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0290
@@ -1181,7 +1181,7 @@ def vital_signs(df_root, path_excel_writer):
                                          'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', mins_30_post_dose_Oral_Temperature_value_pure, 'VS0380']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0290--> {e}')
+                        lista_logs.append(f'Revision VS0290--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0300
@@ -1200,7 +1200,7 @@ def vital_signs(df_root, path_excel_writer):
                                          'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', mins_60_post_dose_Oral_Temperature_value_pure, 'VS0390']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0300--> {e}')
+                        lista_logs.append(f'Revision VS0300--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0310
@@ -1219,7 +1219,7 @@ def vital_signs(df_root, path_excel_writer):
                                          'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', hours_2_post_dose_Oral_Temperature_value_pure, 'VS0400']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0310--> {e}')
+                        lista_logs.append(f'Revision VS0310--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0330
@@ -1238,7 +1238,7 @@ def vital_signs(df_root, path_excel_writer):
                                          'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', hours_8_post_dose_Oral_Temperature_value_pure, 'VS0420']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0330--> {e}')
+                        lista_logs.append(f'Revision VS0330--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0320
@@ -1257,7 +1257,7 @@ def vital_signs(df_root, path_excel_writer):
                                          'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', hours_4_post_dose_Oral_Temperature_value_pure, 'VS0410']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0320--> {e}')
+                        lista_logs.append(f'Revision VS0320--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0340
@@ -1276,7 +1276,7 @@ def vital_signs(df_root, path_excel_writer):
                                          'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', hours_12_post_dose_Oral_Temperature_value_pure, 'VS0430']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0340--> {e}')
+                        lista_logs.append(f'Revision VS0340--> {e} - Subject: {subject},  Visit: {visit} ')
 
 # -----------------------------------
                     try:
@@ -1296,7 +1296,7 @@ def vital_signs(df_root, path_excel_writer):
                                          'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', Undefined_Pulse_rate_value_pure, 'VS0530']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0440--> {e}')
+                        lista_logs.append(f'Revision VS0440--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0450
@@ -1315,7 +1315,7 @@ def vital_signs(df_root, path_excel_writer):
                                          'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', Pre_dose_Pulse_rate_value_pure, 'VS0540']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0450--> {e}')
+                        lista_logs.append(f'Revision VS0450--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0460
@@ -1334,7 +1334,7 @@ def vital_signs(df_root, path_excel_writer):
                                          'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', mins_15_post_dose_Pulse_rate_value_pure, 'VS0550']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0460--> {e}')
+                        lista_logs.append(f'Revision VS0460--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0470
@@ -1353,7 +1353,7 @@ def vital_signs(df_root, path_excel_writer):
                                          'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', mins_30_post_dose_Pulse_rate_value_pure, 'VS0560']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0470--> {e}')
+                        lista_logs.append(f'Revision VS0470--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0480
@@ -1372,7 +1372,7 @@ def vital_signs(df_root, path_excel_writer):
                                          'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', mins_60_post_dose_Pulse_rate_value_pure, 'VS0570']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0480--> {e}')
+                        lista_logs.append(f'Revision VS0480--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0490
@@ -1391,7 +1391,7 @@ def vital_signs(df_root, path_excel_writer):
                                          'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', hours_2_post_dose_Pulse_rate_value_pure, 'VS0580']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0490--> {e}')
+                        lista_logs.append(f'Revision VS0490--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0490
@@ -1410,7 +1410,7 @@ def vital_signs(df_root, path_excel_writer):
                                          'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', hours_2_post_dose_Pulse_rate_value_pure, 'VS0580']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0490--> {e}')
+                        lista_logs.append(f'Revision VS0490--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0500
@@ -1429,7 +1429,7 @@ def vital_signs(df_root, path_excel_writer):
                                          'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', hours_4_post_dose_Pulse_rate_value_pure, 'VS0590']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0500--> {e}')
+                        lista_logs.append(f'Revision VS0500--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0510
@@ -1448,7 +1448,7 @@ def vital_signs(df_root, path_excel_writer):
                                          'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', hours_8_post_dose_Pulse_rate_value_pure, 'VS0600']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0510--> {e}')
+                        lista_logs.append(f'Revision VS0510--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0520
@@ -1467,7 +1467,7 @@ def vital_signs(df_root, path_excel_writer):
                                          'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', hours_12_post_dose_Pulse_rate_value_pure, 'VS0610']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0520--> {e}')
+                        lista_logs.append(f'Revision VS0520--> {e} - Subject: {subject},  Visit: {visit} ')
 # -----------------------------------
 
                     try:
@@ -1488,7 +1488,7 @@ def vital_signs(df_root, path_excel_writer):
                                          'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', Undefined_Respiratory_rate_value_pure, 'VS0710']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0620--> {e}')
+                        lista_logs.append(f'Revision VS0620--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0630
@@ -1507,7 +1507,7 @@ def vital_signs(df_root, path_excel_writer):
                                          'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', Pre_dose_Respiratory_rate_value_pure, 'VS0720']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0630--> {e}')
+                        lista_logs.append(f'Revision VS0630--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0640
@@ -1526,7 +1526,7 @@ def vital_signs(df_root, path_excel_writer):
                                          'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', mins_15_post_dose_Respiratory_rate_value_pure, 'VS0730']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0640--> {e}')
+                        lista_logs.append(f'Revision VS0640--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0650
@@ -1545,7 +1545,7 @@ def vital_signs(df_root, path_excel_writer):
                                          'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', mins_30_post_dose_Respiratory_rate_value_pure, 'VS0740']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0650--> {e}')
+                        lista_logs.append(f'Revision VS0650--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0660
@@ -1564,7 +1564,7 @@ def vital_signs(df_root, path_excel_writer):
                                          'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', mins_60_post_dose_Respiratory_rate_value_pure, 'VS0750']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0660--> {e}')
+                        lista_logs.append(f'Revision VS0660--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0670
@@ -1583,7 +1583,7 @@ def vital_signs(df_root, path_excel_writer):
                                          'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', hours_2_post_dose_Respiratory_rate_value_pure, 'VS0760']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0670--> {e}')
+                        lista_logs.append(f'Revision VS0670--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0680
@@ -1602,7 +1602,7 @@ def vital_signs(df_root, path_excel_writer):
                                          'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', hours_4_post_dose_Respiratory_rate_value_pure, 'VS0770']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0680--> {e}')
+                        lista_logs.append(f'Revision VS0680--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0690
@@ -1621,7 +1621,7 @@ def vital_signs(df_root, path_excel_writer):
                                          'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', hours_8_post_dose_Respiratory_rate_value_pure, 'VS0780']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0690--> {e}')
+                        lista_logs.append(f'Revision VS0690--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0700
@@ -1640,7 +1640,7 @@ def vital_signs(df_root, path_excel_writer):
                                          'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', hours_12_post_dose_Respiratory_rate_value_pure, 'VS0790']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0700--> {e}')
+                        lista_logs.append(f'Revision VS0700--> {e} - Subject: {subject},  Visit: {visit} ')
 #---------------------------------------------------------------------------
 
                     try:
@@ -1660,7 +1660,7 @@ def vital_signs(df_root, path_excel_writer):
                                          'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation cant be Normal.', Undefined_Systolic_Blood_Pressure_value_pure, 'VS0890']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0800--> {e}')
+                        lista_logs.append(f'Revision VS0800--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # # Revision VS0800
@@ -1676,7 +1676,7 @@ def vital_signs(df_root, path_excel_writer):
                                          'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation cant be Normal.', Pre_dose_Systolic_Blood_Pressure_value_pure, 'VS0890']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0890--> {e}')
+                        lista_logs.append(f'Revision VS0890--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0820
@@ -1697,7 +1697,7 @@ def vital_signs(df_root, path_excel_writer):
                                             mins_15_post_dose_Systolic_Blood_Pressure_value_pure, 'VS0910']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0820--> {e}')
+                        lista_logs.append(f'Revision VS0820--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0830
@@ -1718,7 +1718,7 @@ def vital_signs(df_root, path_excel_writer):
                                             mins_30_post_dose_Systolic_Blood_Pressure_value_pure, 'VS0920']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0830--> {e}')
+                        lista_logs.append(f'Revision VS0830--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0840
@@ -1739,7 +1739,7 @@ def vital_signs(df_root, path_excel_writer):
                                             mins_60_post_dose_Systolic_Blood_Pressure_value_pure, 'VS0930']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0840--> {e}')
+                        lista_logs.append(f'Revision VS0840--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0850
@@ -1760,7 +1760,7 @@ def vital_signs(df_root, path_excel_writer):
                                             hours_2_post_dose_Systolic_Blood_Pressure_value_pure, 'VS0940']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0850--> {e}')
+                        lista_logs.append(f'Revision VS0850--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0860
@@ -1781,7 +1781,7 @@ def vital_signs(df_root, path_excel_writer):
                                             hours_4_post_dose_Systolic_Blood_Pressure_value_pure, 'VS0950']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0860--> {e}')
+                        lista_logs.append(f'Revision VS0860--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0870
@@ -1802,7 +1802,7 @@ def vital_signs(df_root, path_excel_writer):
                                             hours_8_post_dose_Systolic_Blood_Pressure_value_pure, 'VS0960']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0870--> {e}')
+                        lista_logs.append(f'Revision VS0870--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision VS0880
@@ -1823,7 +1823,7 @@ def vital_signs(df_root, path_excel_writer):
                                             hours_12_post_dose_Systolic_Blood_Pressure_value_pure, 'VS0970']
                                 lista_revision.append(error)                     
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0880--> {e}')
+                        lista_logs.append(f'Revision VS0880--> {e} - Subject: {subject},  Visit: {visit} ')
 
 
                     # Revision VS0980
@@ -1836,7 +1836,7 @@ def vital_signs(df_root, path_excel_writer):
                                          'The "Not Required" option can only be selected if visit is D-1 and D-1 date=Screening visit date', was_vital_signs_performed_pure, 'VS0980']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0980--> {e}')
+                        lista_logs.append(f'Revision VS0980--> {e} - Subject: {subject},  Visit: {visit} ')
 
 
 

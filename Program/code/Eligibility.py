@@ -230,7 +230,6 @@ def eligibility(df_root, path_excel_writer):
                         date_of_decision_pure = ''
                         date_of_decision_form_field_instance = 'This field doesnt have any data'
 
-
                     try:
                         date_decision_not_randomize = row['Date of decision to not randomize the participant']
                         date_decision_not_randomize_pure = date_decision_not_randomize.split('|')[0]
@@ -258,7 +257,7 @@ def eligibility(df_root, path_excel_writer):
                     try:
                         eligibility_criteria_number = row['Eligibility criteria number']
                         eligibility_criteria_number_pure = eligibility_criteria_number.split('|')[0]
-                        eligibility_criteria_number_form_field_instance = eligibility_criteria_number.split('|')[0]
+                        eligibility_criteria_number_form_field_instance = eligibility_criteria_number.split('|')[1]
                     except:
                         eligibility_criteria_number_pure = ''
                         eligibility_criteria_number_form_field_instance = 'This field doesnt have any data'
@@ -291,7 +290,7 @@ def eligibility(df_root, path_excel_writer):
                                 lista_revision.append(error)     
 
                         except Exception as e:
-                            lista_logs.append(f'Revision GE0020 --> {e}')
+                            lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     #Revision para los que son solo de screening visit -----------------------------------------------------------------------------------------------
                     if visit == 'Screening Visit':
@@ -305,7 +304,7 @@ def eligibility(df_root, path_excel_writer):
                                         'The date must not be before the informed consent date', date_of_decision_pure, 'IE0060']
                                 lista_revision.append(error)
                         except Exception as e:
-                            lista_logs.append(f'Revision IE0100 --> {e}')
+                            lista_logs.append(f'Revision IE0100 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                         # Revision para IE0130
                         try:
@@ -318,7 +317,7 @@ def eligibility(df_root, path_excel_writer):
                                 else:
                                     pass
                         except Exception as e:
-                            lista_logs.append(f'Revision IE0130 --> {e}')
+                            lista_logs.append(f'Revision IE0130 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                         # Revision para IE0180 
                         try:
@@ -331,7 +330,7 @@ def eligibility(df_root, path_excel_writer):
                                                 will_randomized_pure, 'IE0180']
                                     lista_revision.append(error)
                         except Exception as e:
-                            lista_logs.append(f'Revision IE0180 --> {e}')
+                            lista_logs.append(f'Revision IE0180 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                         # Revision para IE0190
                         try:
@@ -343,7 +342,7 @@ def eligibility(df_root, path_excel_writer):
                                                 will_randomized_pure, 'IE0190']
                                     lista_revision.append(error)
                         except Exception as e:
-                            lista_logs.append(f'Revision IE0190 --> {e}')
+                            lista_logs.append(f'Revision IE0190 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                         # Revision para IE0220
                         try:
@@ -355,7 +354,7 @@ def eligibility(df_root, path_excel_writer):
                                 else:
                                     pass
                         except Exception as e:
-                            lista_logs.append(f'Revision IE0220 --> {e}')
+                            lista_logs.append(f'Revision IE0220 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                         # Revision para IE0270
                         try:
@@ -367,7 +366,7 @@ def eligibility(df_root, path_excel_writer):
                                 else:
                                     pass
                         except Exception as e:
-                            lista_logs.append(f'Revision IE0270 --> {e}')
+                            lista_logs.append(f'Revision IE0270 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                         # Revision para IE0350
                         try:
@@ -379,7 +378,7 @@ def eligibility(df_root, path_excel_writer):
                                 else:
                                     pass
                         except Exception as e:
-                            lista_logs.append(f'Revision IE0350 --> {e}')
+                            lista_logs.append(f'Revision IE0350 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                         # Revision para IE0441
                         try:
@@ -391,7 +390,7 @@ def eligibility(df_root, path_excel_writer):
                                 else:
                                     pass
                         except Exception as e:
-                            lista_logs.append(f'Revision IE0441 --> {e}')
+                            lista_logs.append(f'Revision IE0441 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                         # Revision para IE447
                         try:
@@ -402,7 +401,7 @@ def eligibility(df_root, path_excel_writer):
                                                 cuenta_lesiones, 'IE0447']
                                     lista_revision.append(error)
                         except Exception as e:
-                            lista_logs.append(f'Revision IE447 --> {e}')
+                            lista_logs.append(f'Revision IE447 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                         # Revision para IE0451
                         try:
@@ -412,7 +411,7 @@ def eligibility(df_root, path_excel_writer):
                                             'The participant has a Diastolic Blood Pressure over 90 mmHg ,he/she should not be eligible for the study', diastolic_preasure, 'IE0451']
                                     lista_revision.append(error)
                         except Exception as e:
-                            lista_logs.append(f'Revision IE0451 --> {e}')
+                            lista_logs.append(f'Revision IE0451 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                         # Revision para IE0455
                         try:
@@ -422,7 +421,7 @@ def eligibility(df_root, path_excel_writer):
                                             'The participant has a Systolic Blood Pressure that is not between 100 and 140 mmHg,he/she should not be eligible for the study', systolic_preasure, 'IE0455']
                                     lista_revision.append(error)
                         except Exception as e:
-                            lista_logs.append(f'Revision IE0455 --> {e}')
+                            lista_logs.append(f'Revision IE0455 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                         # Revision para IE0459
                         try:
@@ -432,7 +431,7 @@ def eligibility(df_root, path_excel_writer):
                                             'The participant has a Systolic Blood Pressure that is not between 100 and 140 mmHg,he/she should not be eligible for the study', HR_EGC, 'IE0459']
                                     lista_revision.append(error)
                         except Exception as e:
-                            lista_logs.append(f'Revision IE0459 --> {e}')
+                            lista_logs.append(f'Revision IE0459 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                         # Revision para IE0463
                         try:
@@ -442,7 +441,7 @@ def eligibility(df_root, path_excel_writer):
                                             'The participant has a Clinically significant ECG,he/she should not be eligible for the study', abnormal_specify, 'IE0463']
                                     lista_revision.append(error)
                         except Exception as e:
-                            lista_logs.append(f'Revision IE0463 --> {e}')
+                            lista_logs.append(f'Revision IE0463 --> {e} - Subject: {subject},  Visit: {visit} ')
 
 
                     # Revision para los que son solo D-1 ---------------------------------------------------------------------------------------------------------
@@ -458,7 +457,7 @@ def eligibility(df_root, path_excel_writer):
                                         'The date must not be before the informed consent date', date_decision_not_randomize_pure, 'IE0100']
                                 lista_revision.append(error)
                         except Exception as e:
-                            lista_logs.append(f'Revision IE0100 --> {e}')
+                            lista_logs.append(f'Revision IE0100 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                         # Revision para IE0120
                         try:
@@ -471,7 +470,7 @@ def eligibility(df_root, path_excel_writer):
                                 else:
                                     pass
                         except Exception as e:
-                            lista_logs.append(f'Revision IE0120 --> {e}')
+                            lista_logs.append(f'Revision IE0120 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                         # Revision para IE0140
                         try:
@@ -485,7 +484,7 @@ def eligibility(df_root, path_excel_writer):
                                                   subject_eligible_for_study, 'IE0140']
                                     lista_revision.append(error)
                         except Exception as e :
-                            lista_logs.append(f'Revision IE0140 --> {e}')
+                            lista_logs.append(f'Revision IE0140 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                         # Revision para IE0150
                         try:
@@ -496,7 +495,7 @@ def eligibility(df_root, path_excel_writer):
                                                 subject_eligible_for_study_pure, 'IE0150']
                                     lista_revision.append(error)
                         except Exception as e:
-                            lista_logs.append(f'Revision IE0150 --> {e} ')
+                            lista_logs.append(f'Revision IE0150 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
                         # Revision para IE210
                         try:
@@ -508,7 +507,7 @@ def eligibility(df_root, path_excel_writer):
                                 else:
                                     pass
                         except Exception as e:
-                            lista_logs.append(f'Revision IE210 --> {e}')
+                            lista_logs.append(f'Revision IE210 --> {e} - Subject: {subject},  Visit: {visit} ')
                
                         # Revision para IE0260
                         try:
@@ -520,7 +519,7 @@ def eligibility(df_root, path_excel_writer):
                                 else:
                                     pass
                         except Exception as e:
-                            lista_logs.append(f'Revision IE0260 --> {e}')
+                            lista_logs.append(f'Revision IE0260 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                         # Revision para IE0440
                         try:
@@ -532,7 +531,7 @@ def eligibility(df_root, path_excel_writer):
                                 else:
                                     pass
                         except Exception as e:
-                            lista_logs.append(f'Revision IE0440 --> {e}')
+                            lista_logs.append(f'Revision IE0440 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                         # Revision para IE446
                         try:
@@ -544,7 +543,7 @@ def eligibility(df_root, path_excel_writer):
                                                     cuenta_lesiones, 'IE0446']
                                     lista_revision.append(error)
                         except Exception as e:
-                            lista_logs.append(f'Revision IE0446 --> {e}')
+                            lista_logs.append(f'Revision IE0446 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                         # Revision para IE0450
                         try:
@@ -554,7 +553,7 @@ def eligibility(df_root, path_excel_writer):
                                             'The participant has a Diastolic Blood Pressure over 90 mmHg ,he/she should not be eligible for randomization', diastolic_preasure, 'IE0450']
                                     lista_revision.append(error)
                         except Exception as e:
-                            lista_logs.append(f'Revision IE0450 --> {e}')
+                            lista_logs.append(f'Revision IE0450 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                         # Revision para IE0454
                         try:
@@ -564,7 +563,7 @@ def eligibility(df_root, path_excel_writer):
                                             'The participant has a Systolic Blood Pressure that is not between 100 and 140 mmHg, he/she should not be eligible for randomization', systolic_preasure, 'IE0454']
                                     lista_revision.append(error)
                         except Exception as e:
-                            lista_logs.append(f'Revision IE0454 --> {e}')
+                            lista_logs.append(f'Revision IE0454 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                         # Revision para IE0458
                         try:
@@ -574,7 +573,7 @@ def eligibility(df_root, path_excel_writer):
                                             'The participant has a HR that is not between 45 and 90 bpm,he/she should not be eligible for randomization', HR_EGC, 'IE0458']
                                     lista_revision.append(error)
                         except Exception as e:
-                            lista_logs.append(f'Revision IE0458 --> {e}')
+                            lista_logs.append(f'Revision IE0458 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                         # Revision para IE0462
                         try:
@@ -584,7 +583,7 @@ def eligibility(df_root, path_excel_writer):
                                             'The participant has a Clinically significant ECG,he/she should not be eligible for randomization', abnormal_specify, 'IE0462']
                                     lista_revision.append(error)
                         except Exception as e:
-                            lista_logs.append(f'Revision IE0462 --> {e}')
+                            lista_logs.append(f'Revision IE0462 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision para los que estan en los dos formularios-------------------------------------------------------------------------------------------
                     # Revision IE0020
@@ -597,7 +596,7 @@ def eligibility(df_root, path_excel_writer):
                                          'if Eligibility criteria type is Inclusion, the number has to be from 1 to 14', eligibility_criteria_number_pure, 'IE0020']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision IE0020 --> {e}')
+                        lista_logs.append(f'Revision IE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision IE0030
                     try:
@@ -609,7 +608,7 @@ def eligibility(df_root, path_excel_writer):
                                          'if Eligibility criteria type is Exclusion, the number has to be from 1 to 25', eligibility_criteria_number_pure, 'IE0030']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision IE0030 --> {e}')
+                        lista_logs.append(f'Revision IE0030 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision IE0040 
                     try:
@@ -625,7 +624,7 @@ def eligibility(df_root, path_excel_writer):
                             else:
                                 lista_revision_I_E.append(tuple_review_inclusion_exclusion)
                     except Exception as e:
-                        lista_logs.append(f'Revision IE0040 --> {e}')
+                        lista_logs.append(f'Revision IE0040 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision para IE0310
                     try:
@@ -637,7 +636,7 @@ def eligibility(df_root, path_excel_writer):
                             else:
                                 pass
                     except Exception as e:
-                        lista_logs.append(f'Revision IE0310 --> {e}')
+                        lista_logs.append(f'Revision IE0310 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision para IE0468
                     try:
@@ -647,7 +646,7 @@ def eligibility(df_root, path_excel_writer):
                                          'The participant has a QTcF interval (>450msec), he/she should not be eligible for randomization', QTCF, 'IE0468']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision IE0468 --> {e}')
+                        lista_logs.append(f'Revision IE0468 --> {e} - Subject: {subject},  Visit: {visit} ')
 
 
     excel_writer = load_workbook(path_excel_writer)

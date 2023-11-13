@@ -216,7 +216,7 @@ def prior_concomitant_procedures(df_root, path_excel_writer):
                             lista_revision.append(error)     
 
                     except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e}')
+                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Primera  revision general de formato de fecha ->GE0020
@@ -228,7 +228,7 @@ def prior_concomitant_procedures(df_root, path_excel_writer):
                                      f , end_date_pure, 'GE0020']
                             lista_revision.append(error)     
                     except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e}') 
+                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ') 
 
                     # Revision PR0010
                     try:
@@ -240,7 +240,7 @@ def prior_concomitant_procedures(df_root, path_excel_writer):
                         else:
                             list_procesure_id_review.append(procedure_id_pure)
                     except:
-                        lista_logs.append(f'Revision CM0010 --> {e}')
+                        lista_logs.append(f'Revision CM0010 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision PR0020
                     try:
@@ -255,7 +255,7 @@ def prior_concomitant_procedures(df_root, path_excel_writer):
                         else:
                             list_of_tuples_name_procedures_dates.append(tuple_to_compare)
                     except Exception as e:
-                        lista_logs.append(f'Revision CM0020 --> {e}')
+                        lista_logs.append(f'Revision CM0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     
                     # Revision PR0040
@@ -270,7 +270,7 @@ def prior_concomitant_procedures(df_root, path_excel_writer):
                                                 adverse_event_id_pure, 'PR0040']
                                 lista_revision.append(error)
                         except Exception as e:
-                            lista_logs.append(f'Revision PR0040 --> {e}')
+                            lista_logs.append(f'Revision PR0040 --> {e} - Subject: {subject},  Visit: {visit} ')
                     else:
                         pass
 
@@ -310,7 +310,7 @@ def prior_concomitant_procedures(df_root, path_excel_writer):
                                                adverse_event_id_pure, 'PR0050']
                                     lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision PR0050 --> {e}')
+                        lista_logs.append(f'Revision PR0050 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision PR0080
                     if aditional_adverse_event_pure != '':
@@ -324,7 +324,7 @@ def prior_concomitant_procedures(df_root, path_excel_writer):
                                                 aditional_adverse_event_pure, 'PR0080']
                                 lista_revision.append(error)
                         except Exception as e:
-                            lista_logs.append(f'Revision PR0080 --> {e}')
+                            lista_logs.append(f'Revision PR0080 --> {e} - Subject: {subject},  Visit: {visit} ')
                     else:
                         pass
 
@@ -337,7 +337,7 @@ def prior_concomitant_procedures(df_root, path_excel_writer):
                                      'Start Date must be before the End of study/Early withdrawal date. ', start_date_pure, 'PR0140']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision PR0140 --> {e} ')
+                        lista_logs.append(f'Revision PR0140 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
                     # Revision PR0150
                     try:
@@ -348,7 +348,7 @@ def prior_concomitant_procedures(df_root, path_excel_writer):
                                         'The date should be equal or greater than the start date', end_date_pure, 'PR0150']
                             lista_revision.append(error)
                     except Exception as e:
-                            lista_logs.append(f'Revision PR0150 --> {e}')
+                            lista_logs.append(f'Revision PR0150 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> PR0160
                     try:
@@ -359,7 +359,7 @@ def prior_concomitant_procedures(df_root, path_excel_writer):
                                      'End Date must be before the End of study/Early withdrawal date. ', end_date_pure, 'PR0160']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision PR0160 --> {e} ')
+                        lista_logs.append(f'Revision PR0160 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
     excel_writer = load_workbook(path_excel_writer)
     column_names = ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']

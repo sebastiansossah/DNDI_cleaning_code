@@ -98,7 +98,7 @@ def titration_of_auto_antibodies(df_root, path_excel_writer):
                             lista_revision.append(error)     
 
                     except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e}')
+                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision TI0020
                     try:
@@ -113,7 +113,7 @@ def titration_of_auto_antibodies(df_root, path_excel_writer):
                         else:
                             pass
                     except Exception as e:
-                        lista_logs.append(f'Revision TI0020--> {e}')
+                        lista_logs.append(f'Revision TI0020--> {e} - Subject: {subject},  Visit: {visit} ')
                     
 
                     # Revision TI0030
@@ -129,7 +129,7 @@ def titration_of_auto_antibodies(df_root, path_excel_writer):
                         else:
                             pass
                     except Exception as e:
-                        lista_logs.append(f'Revision TI0030--> {e}')
+                        lista_logs.append(f'Revision TI0030--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> TI0040
                     try:
@@ -140,7 +140,7 @@ def titration_of_auto_antibodies(df_root, path_excel_writer):
                                      'Date Sample Collected must be before the End of study/Early withdrawal date. ', date_collected_pure, 'TI0040']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision TI0040 --> {e} ')
+                        lista_logs.append(f'Revision TI0040 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
 
     excel_writer = load_workbook(path_excel_writer)

@@ -250,7 +250,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                                 error = [subject, visit, 'Date of start of systematic use of condom', date_of_start_condom_form_field_instance ,f , date_of_start_condom_pure, 'GE0020']
                                 lista_revision.append(error) 
                         except Exception as e:
-                            lista_logs.append(f'Revision GE0020 --> {e}')
+                            lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
                         
                         # Revision para->GE0020
                         try:
@@ -261,7 +261,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                                 error = [subject, visit, 'Date of start of contraceptive method', date_start_contraceptive_form_field_instance ,f , date_start_contraceptive_pure, 'GE0020']
                                 lista_revision.append(error) 
                         except Exception as e:
-                            lista_logs.append(f'Revision GE0020 --> {e}')
+                            lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
                         
                         # Revision para CB0020
                         try:        
@@ -274,7 +274,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                                          'There should be more than a year difference between the visit date and the year of last menstruation' , last_mestruation_year_pure, 'CB0020']
                                 lista_revision.append(error)
                         except Exception as e:
-                            lista_logs.append(f'Revision CB0020 --> {e}')
+                            lista_logs.append(f'Revision CB0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                         # Revision para CB0030
                         try:                        
@@ -285,7 +285,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                                           last_mestruation_year_pure, 'CB0030']
                                 lista_revision.append(error)
                         except Exception as e:
-                            lista_logs.append(f'Revision CB0030 --> {e}')
+                            lista_logs.append(f'Revision CB0030 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                         try:
                             # Revision para CB0140
@@ -296,7 +296,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                                          'The contraceptive method date cant be before the birth date' , date_start_contraceptive_pure, 'CB0140']
                                 lista_revision.append(error)
                         except Exception as e:
-                            lista_logs.append(f'Revision CB0140 --> {e}')
+                            lista_logs.append(f'Revision CB0140 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                         # if float(contraception_pure) == 1.0:
 

@@ -113,7 +113,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                     try:
                         species_name = row['Species name']
                         species_name_pure = species_name.split('|')[0]
-                        species_name_form_field_instance = species_name.split('|')[0]
+                        species_name_form_field_instance = species_name.split('|')[1]
                     except Exception as e:
                         species_name_pure = ''
                         species_name_form_field_instance = 'This field doesnt have any data'
@@ -144,7 +144,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                             error = [subject, visit, 'Date of confirmed diagnosis of CL', date_confirmed_diagnosis_form_field_instance ,f , date_confirmed_diagnosis_pure, 'GE0020']
                             lista_revision.append(error) 
                     except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e}')
+                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
 
                     try:
@@ -156,7 +156,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                             error = [subject, visit,'Date of new sample taken', date_new_sample_form_field_instance ,f , date_new_sample_pure, 'GE0020']
                             lista_revision.append(error) 
                     except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e}')
+                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
 
                     # Revision CL0010
@@ -173,7 +173,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                             pass
 
                     except Exception as e:
-                        lista_logs.append(f'Revision CL0010--> {e}')
+                        lista_logs.append(f'Revision CL0010--> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision CL0020
                     try:
@@ -188,7 +188,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                         else:
                             pass
                     except Exception as e:
-                        lista_logs.append(f'Revision CL0020--> {e}')
+                        lista_logs.append(f'Revision CL0020--> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision CL0030
                     try:
@@ -204,7 +204,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                         else:
                             pass
                     except Exception as e:
-                        lista_logs.append(f'Revision CL0030--> {e}')
+                        lista_logs.append(f'Revision CL0030--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision CL0040
                     try: 
@@ -214,7 +214,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                                             'If "other" is selected, there must be at least one "other species" section added' , species_name_pure, 'CL0040']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision CL0040--> {e}')
+                        lista_logs.append(f'Revision CL0040--> {e} - Subject: {subject},  Visit: {visit} ')
     
                     # Revision CL0050
                     try: 
@@ -225,9 +225,9 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                                             'If at least one "other species" section is added, the "other" option must be selected' , f'{species_identification_pure} - {species_name_pure}', 'CL0050']
                                     lista_revision.append(error)
                             except Exception as e:
-                                    lista_logs.append(f'Revision CL0050--> {e}')
+                                    lista_logs.append(f'Revision CL0050--> {e} - Subject: {subject},  Visit: {visit} ')
                     except Exception as e:
-                        lista_logs.append(f'Revision CL0050--> {e}')
+                        lista_logs.append(f'Revision CL0050--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision CL0070
                     try:
@@ -239,7 +239,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                             lista_other_names.append(to_save)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision CL0070--> {e}')
+                        lista_logs.append(f'Revision CL0070--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     lista_validacion = [
                         'Type of Leishmaniasis history', 
@@ -271,7 +271,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                                             previous_history_leishmaniasis_pure, 'CL0080']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision CL0080--> {e}')
+                        lista_logs.append(f'Revision CL0080--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision CL0090
                     try:
@@ -284,7 +284,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                                             previous_history_leishmaniasis_pure, 'CL0090']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision CL0090--> {e}')
+                        lista_logs.append(f'Revision CL0090--> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision CL0100
                     try:
@@ -300,7 +300,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                         else:
                             pass
                     except Exception as e:
-                        lista_logs.append(f'Revision CL0100--> {e}')
+                        lista_logs.append(f'Revision CL0100--> {e} - Subject: {subject},  Visit: {visit} ')
 
 
                     # Revision CL0110
@@ -316,7 +316,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                         else:
                             pass
                     except Exception as e:
-                        lista_logs.append(f'Revision CL0110--> {e}')
+                        lista_logs.append(f'Revision CL0110--> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision CL0120
                     try:
@@ -327,7 +327,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                         else:
                             lista_date_diagnosis.append(date_diagnosis_pure)
                     except Exception as e:
-                        lista_logs.append(f'Revision CL0120--> {e}')
+                        lista_logs.append(f'Revision CL0120--> {e} - Subject: {subject},  Visit: {visit} ')
 
 
     excel_writer = load_workbook(path_excel_writer)

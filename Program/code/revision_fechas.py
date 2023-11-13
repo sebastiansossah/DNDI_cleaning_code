@@ -139,6 +139,7 @@ if __name__ == '__main__':
     prueba2 = '8-05-2022'
     prueba3 = '26-JUL-2023'
     prueba4 = 'UNK-UNK-2019'
+    prueba5 = ''
     # print(revision_fecha(prueba1))
     # print(revision_fecha(prueba2))
-    print(date_format(prueba4))
+    print(revision_fecha(prueba5))

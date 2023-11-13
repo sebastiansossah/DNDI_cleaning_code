@@ -168,7 +168,7 @@ def lesion_measurement(df_root, path_excel_writer):
                             lista_revision.append(error)     
 
                     except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e}')
+                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision LM0010
                     try:
@@ -181,7 +181,7 @@ def lesion_measurement(df_root, path_excel_writer):
                                             Was_the_lesion_measurement_performed_pure, 'LM0010']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LM0010--> {e}')
+                        lista_logs.append(f'Revision LM0010--> {e} - Subject: {subject},  Visit: {visit} ')
 
 
                     # Revision LM0030
@@ -198,7 +198,7 @@ def lesion_measurement(df_root, path_excel_writer):
                         else:
                             pass
                     except Exception as e:
-                        lista_logs.append(f'Revision LM0030--> {e}')
+                        lista_logs.append(f'Revision LM0030--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision LM0040
                     try:
@@ -213,7 +213,7 @@ def lesion_measurement(df_root, path_excel_writer):
                         else:
                             pass
                     except Exception as e:
-                        lista_logs.append(f'Revision LM0040--> {e}')
+                        lista_logs.append(f'Revision LM0040--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> LM0050
                     try:
@@ -223,7 +223,7 @@ def lesion_measurement(df_root, path_excel_writer):
                             error = [subject, visit, 'Date of assessment performed', Date_of_assessment_performed_form_field_instance ,'Date of assessment performed must be before the End of study/Early withdrawal date. ', Date_of_assessment_performed_pure, 'LM0050']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LM0050 --> {e} ')
+                        lista_logs.append(f'Revision LM0050 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
                     lista_validacion = [
                                     'Anatomical Location',
@@ -262,7 +262,7 @@ def lesion_measurement(df_root, path_excel_writer):
                                             Was_the_lesion_measurement_performed_pure, 'LM0060']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LM0060--> {e}')
+                        lista_logs.append(f'Revision LM0060--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     
                     # Revision LM0070
@@ -275,7 +275,7 @@ def lesion_measurement(df_root, path_excel_writer):
                                          'If answer is "No", no "Lesion" section must be added', Was_the_lesion_measurement_performed_pure, 'LM0070']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LM0070--> {e}')
+                        lista_logs.append(f'Revision LM0070--> {e} - Subject: {subject},  Visit: {visit} ')
 
 
     excel_writer = load_workbook(path_excel_writer)

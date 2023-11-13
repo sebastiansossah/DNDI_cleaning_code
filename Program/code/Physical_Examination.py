@@ -150,7 +150,7 @@ def physical_examination(df_root, path_excel_writer):
                             lista_revision.append(error)     
 
                     except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e}')
+                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
 
                     # Revision PE0020
@@ -166,7 +166,7 @@ def physical_examination(df_root, path_excel_writer):
                         else:
                             pass
                     except Exception as e:
-                        lista_logs.append(f'Revision PE0020 --> {e}')
+                        lista_logs.append(f'Revision PE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision PE0030
                     try:
@@ -181,7 +181,7 @@ def physical_examination(df_root, path_excel_writer):
                         else:
                             pass
                     except Exception as e:
-                        lista_logs.append(f'Revision PE0030 --> {e}')
+                        lista_logs.append(f'Revision PE0030 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> PE0040
                     try:
@@ -191,7 +191,7 @@ def physical_examination(df_root, path_excel_writer):
                             error = [subject, visit, 'Date of examination performed', date_examination_performed_form_field_instance ,'Date of examination performed must be before the End of study/Early withdrawal date. ', date_examination_performed_pure, 'PE0040']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision PE0040 --> {e} ')
+                        lista_logs.append(f'Revision PE0040 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
                     
                     if visit not in lista_revision:
@@ -226,7 +226,7 @@ def physical_examination(df_root, path_excel_writer):
                                              'If abnormal, the abnormality section must be added at least once', undefined_clinical_pure, 'PE0090']
                                     lista_revision.append(error)
                         except Exception as e:
-                            lista_logs.append(f'Revision PE0090 --> {e}')
+                            lista_logs.append(f'Revision PE0090 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision PE0100
                     try:
@@ -238,7 +238,7 @@ def physical_examination(df_root, path_excel_writer):
                                          'The "Not Required" option can only be selected if visit is D-1 and D-1 date=Screening visit date', was_physical_performed_pure, 'PE0100']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision PE0100--> {e}')
+                        lista_logs.append(f'Revision PE0100--> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision PE0110
                     lista_body_system = [
@@ -252,7 +252,7 @@ def physical_examination(df_root, path_excel_writer):
                                          'General appearance, Neurological, Musculo-skeletal, Lymphatic should only be selected at the screening visit', undefined_body_system_pure, 'PE0110']
                                 lista_revision.append(error)        
                     except Exception as e:
-                        lista_logs.append(f'Revision PE0110 --> {e}')
+                        lista_logs.append(f'Revision PE0110 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     lista_visita_revision = [
                         'D1', 'D15', 'D29'
@@ -289,7 +289,7 @@ def physical_examination(df_root, path_excel_writer):
                                              'If abnormal, the abnormality section must be added at least once', predose_clinical_pure, 'PE0050']
                                     lista_revision.append(error)
                         except Exception as e:
-                            lista_logs.append(f'Revision PE0050 --> {e}')
+                            lista_logs.append(f'Revision PE0050 --> {e} - Subject: {subject},  Visit: {visit} ')
 
 
                         # Revision PE0060
@@ -321,7 +321,7 @@ def physical_examination(df_root, path_excel_writer):
                                              'If abnormal, the abnormality section must be added at least once' , two_hours_pure, 'PE0060']
                                     lista_revision.append(error)
                         except Exception as e:
-                            lista_logs.append(f'Revision PE0060 --> {e}')
+                            lista_logs.append(f'Revision PE0060 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                         # Revision PE0070
                         lista_revision_4_hours = [
@@ -352,7 +352,7 @@ def physical_examination(df_root, path_excel_writer):
                                              'If abnormal, the abnormality section must be added at least once' , four_hours_pure, 'PE0070']
                                     lista_revision.append(error)
                         except Exception as e:
-                            lista_logs.append(f'Revision PE0070 --> {e}')
+                            lista_logs.append(f'Revision PE0070 --> {e} - Subject: {subject},  Visit: {visit} ')
 
 # ----------------------------------------------
                         # Revision PE0080
@@ -384,7 +384,7 @@ def physical_examination(df_root, path_excel_writer):
                                              'If abnormal, the abnormality section must be added at least once', eight_hours_pure, 'PE0080']
                                     lista_revision.append(error)
                         except Exception as e:
-                            lista_logs.append(f'Revision PE0080 --> {e}')
+                            lista_logs.append(f'Revision PE0080 --> {e} - Subject: {subject},  Visit: {visit} ')
                         
 
     excel_writer = load_workbook(path_excel_writer)

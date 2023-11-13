@@ -192,7 +192,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                             lista_revision.append(error)     
 
                     except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e}')
+                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision LBO0010
                     try:
@@ -208,7 +208,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                         else:
                             pass
                     except Exception as e:
-                        lista_logs.append(f'Revision LBO0010--> {e}')
+                        lista_logs.append(f'Revision LBO0010--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision LBO0020
                     try:
@@ -224,7 +224,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                         else:
                             pass
                     except Exception as e:
-                        lista_logs.append(f'Revision LBO0020--> {e}')
+                        lista_logs.append(f'Revision LBO0020--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> LBO0030
                     try:
@@ -234,7 +234,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                             error = [subject, visit, 'Visit Date', date_collected_form_field_instance ,'Date Collected must be before the End of study/Early withdrawal date. ', date_collected_pure, 'LBO0030']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LBO0030 --> {e} ')
+                        lista_logs.append(f'Revision LBO0030 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
                     # Revision LBO0050
                     try:
@@ -247,7 +247,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                                             blood_sample_collected_pure, 'LBO0050']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LBO0050--> {e}')
+                        lista_logs.append(f'Revision LBO0050--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     lista_validacion =[
                         'INR',
@@ -287,7 +287,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                                             blood_sample_collected_pure, 'LBO0060']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LBO0060--> {e}')
+                        lista_logs.append(f'Revision LBO0060--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision LBO0080
@@ -305,7 +305,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                                 lista_revision.append(error)
                                             
                     except Exception as e:
-                        lista_logs.append(f'Revision LBO0080--> {e}')
+                        lista_logs.append(f'Revision LBO0080--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision LBO0090
@@ -323,7 +323,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                                 lista_revision.append(error)
                                             
                     except Exception as e:
-                        lista_logs.append(f'Revision LBO0110--> {e}')
+                        lista_logs.append(f'Revision LBO0110--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision LBO0120
@@ -340,7 +340,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                                          'According to the result, the value is out of range, please review.', INR_result_pure, 'LBO0130']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LBO0130--> {e}')
+                        lista_logs.append(f'Revision LBO0130--> {e} - Subject: {subject},  Visit: {visit} ')
 
 
     excel_writer = load_workbook(path_excel_writer)

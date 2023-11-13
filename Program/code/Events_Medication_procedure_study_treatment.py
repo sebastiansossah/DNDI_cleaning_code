@@ -140,7 +140,7 @@ def ev_med_proce_treatment(df_root, path_excel_writer):
                                                 were_AE_experienced_since_informed_consent_pure, 'SM0010']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision SM0010 --> {e}')
+                        lista_logs.append(f'Revision SM0010 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision SM0020 
                     try:
@@ -153,7 +153,7 @@ def ev_med_proce_treatment(df_root, path_excel_writer):
                                                 were_AE_experienced_since_informed_consent_pure, 'SM0020']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision SM0020 --> {e}')
+                        lista_logs.append(f'Revision SM0020 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision SM0030
                     try:
@@ -164,7 +164,7 @@ def ev_med_proce_treatment(df_root, path_excel_writer):
                                                 were_any_concomitant_medication_8_weeks_before_pure, 'SM0030']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision SM0030 --> {e}')
+                        lista_logs.append(f'Revision SM0030 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision SM0040
                     try:
@@ -177,7 +177,7 @@ def ev_med_proce_treatment(df_root, path_excel_writer):
                                                 were_any_concomitant_medication_8_weeks_before_pure, 'SM0040']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision SM0040 --> {e}')
+                        lista_logs.append(f'Revision SM0040 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision SM0050
                     try:
@@ -188,7 +188,7 @@ def ev_med_proce_treatment(df_root, path_excel_writer):
                                                 were_concomitant_procedure_performed_during_study_pure, 'SM0050']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision SM0050 --> {e}')
+                        lista_logs.append(f'Revision SM0050 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision SM0060
                     try:
@@ -201,7 +201,7 @@ def ev_med_proce_treatment(df_root, path_excel_writer):
                                                 were_concomitant_procedure_performed_during_study_pure, 'SM0060']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision SM0060 --> {e}')
+                        lista_logs.append(f'Revision SM0060 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision SM0070
                     try:
@@ -212,7 +212,7 @@ def ev_med_proce_treatment(df_root, path_excel_writer):
                                                 has_subject_taken_cpg_ODN_pure, 'SM0070']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision SM0070 --> {e}')
+                        lista_logs.append(f'Revision SM0070 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision SM0080
                     try:
@@ -225,7 +225,7 @@ def ev_med_proce_treatment(df_root, path_excel_writer):
                                                 has_subject_taken_cpg_ODN_pure, 'SM0080']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision SM0080 --> {e}')
+                        lista_logs.append(f'Revision SM0080 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision SM0110
                     try:
@@ -236,7 +236,7 @@ def ev_med_proce_treatment(df_root, path_excel_writer):
                                                 has_subject_taken_miltefosine_pure, 'SM0110']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision SM0110 --> {e}')
+                        lista_logs.append(f'Revision SM0110 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision SM0120
                     try:
@@ -249,7 +249,7 @@ def ev_med_proce_treatment(df_root, path_excel_writer):
                                                 has_subject_taken_miltefosine_pure, 'SM0120']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision SM0120 --> {e}')
+                        lista_logs.append(f'Revision SM0120 --> {e} - Subject: {subject},  Visit: {visit} ')
 
     
     excel_writer = load_workbook(path_excel_writer)

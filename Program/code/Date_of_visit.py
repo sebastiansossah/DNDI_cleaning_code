@@ -94,7 +94,7 @@ def date_of_visit(df_root, path_excel_writer):
                         visit_dictionary[visit] = visit_date
 
                     except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e}')
+                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
 
                     # Revision -> VS0050
@@ -105,7 +105,7 @@ def date_of_visit(df_root, path_excel_writer):
                             error = [subject, visit, 'Visit Date', visit_date_form_field_instance ,'Visit date must be equal or greater than the inform consent date', visit_date_pure, 'VS0050']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0050 --> {e} ')
+                        lista_logs.append(f'Revision VS0050 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
                     # Revision -> VS0030
                     try:
@@ -115,7 +115,7 @@ def date_of_visit(df_root, path_excel_writer):
                             error = [subject, visit, 'Visit Date', visit_date_form_field_instance ,'Visit Date must be before the End of study/Early withdrawal date. ', visit_date_pure, 'VS0030']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision VS0030 --> {e} ')
+                        lista_logs.append(f'Revision VS0030 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
         
         # Codigo para verificar si las fechas de las visitas, son mayores consecutivamente -> VS0020
@@ -146,7 +146,7 @@ def date_of_visit(df_root, path_excel_writer):
                     else:
                         pass
                 except Exception as e:
-                    lista_logs.append(f'Revision VS0050 --> {e} ')
+                    lista_logs.append(f'Revision VS0050 --> {e} - Subject: {subject},  Visit: {visit}  ')
                     
     
     excel_writer = load_workbook(path_excel_writer)

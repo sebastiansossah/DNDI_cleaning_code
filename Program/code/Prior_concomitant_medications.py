@@ -256,7 +256,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                             lista_revision.append(error)     
 
                     except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e}')
+                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Primera  revision general de formato de fecha ->GE0020
@@ -268,7 +268,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                                      f , end_date_pure, 'GE0020']
                             lista_revision.append(error)     
                     except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e}') 
+                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ') 
 
                     # Revision CM0010
                     try:
@@ -280,7 +280,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                         else:
                             concomitant_medication_id_review.append(concomitant_medication_id_pure)
                     except Exception as e:
-                        lista_logs.append(f'Revision CM0010 --> {e}')
+                        lista_logs.append(f'Revision CM0010 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision CM0020
                     try:
@@ -295,7 +295,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                         else:
                             list_of_tuples_name_medication_dates.append(tuple_to_compare)
                     except Exception as e:
-                        lista_logs.append(f'Revision CM0020 --> {e}')
+                        lista_logs.append(f'Revision CM0020 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision CM0040
                     if adverse_event_id_pure != '':
@@ -309,7 +309,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                                                 adverse_event_id_pure, 'CM0040']
                                 lista_revision.append(error)
                         except Exception as e:
-                            lista_logs.append(f'Revision CM0040 --> {e}')
+                            lista_logs.append(f'Revision CM0040 --> {e} - Subject: {subject},  Visit: {visit} ')
                     else:
                         pass
 
@@ -349,7 +349,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                                                adverse_event_id_pure, 'CM0050']
                                     lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision CM0050 --> {e}')
+                        lista_logs.append(f'Revision CM0050 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision CM0080
                     if aditional_adverse_event_pure != '':
@@ -363,7 +363,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                                                 aditional_adverse_event_pure, 'CM0080']
                                 lista_revision.append(error)
                         except Exception as e:
-                            lista_logs.append(f'Revision CM0080 --> {e}')
+                            lista_logs.append(f'Revision CM0080 --> {e} - Subject: {subject},  Visit: {visit} ')
                     else:
                         pass
 
@@ -376,7 +376,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                                      'Start Date must be before the End of study/Early withdrawal date. ', start_date_form_field_instance, 'CM0130']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision CM0130 --> {e} ')
+                        lista_logs.append(f'Revision CM0130 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
                     # Revision CM0140
                     try:
@@ -387,7 +387,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                                         'The date should be equal or greater than the start date', end_date_pure, 'CM0140']
                             lista_revision.append(error)
                     except Exception as e:
-                            lista_logs.append(f'Revision CM0140 --> {e}')
+                            lista_logs.append(f'Revision CM0140 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> CM0150
                     try:
@@ -398,7 +398,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                                      'End Date must be before the End of study/Early withdrawal date. ', end_date_pure, 'CM0150']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision CM0150 --> {e} ')
+                        lista_logs.append(f'Revision CM0150 --> {e}  - Subject: {subject},  Visit: {visit} ')
 
                     # Revision CM0160
                     try:
@@ -408,7 +408,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                                         'The end date cant be more than 8 weeks before the inform consent date', end_date_pure, 'CM0160']
                             lista_revision.append(error)
                     except Exception as e:
-                            lista_logs.append(f'Revision CM0160 --> {e}')
+                            lista_logs.append(f'Revision CM0160 --> {e} - Subject: {subject},  Visit: {visit} ')
 
 
     

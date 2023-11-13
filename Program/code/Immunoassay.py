@@ -138,7 +138,7 @@ def immunoassay(df_root, path_excel_writer):
                             lista_revision.append(error)     
 
                     except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e}')
+                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision IM0010
                     try:
@@ -154,7 +154,7 @@ def immunoassay(df_root, path_excel_writer):
                         else:
                             pass
                     except Exception as e:
-                        lista_logs.append(f'Revision IM0010--> {e}')
+                        lista_logs.append(f'Revision IM0010--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision IM0020
                     try:
@@ -170,7 +170,7 @@ def immunoassay(df_root, path_excel_writer):
                         else:
                             pass
                     except Exception as e:
-                        lista_logs.append(f'Revision IM0020--> {e}')
+                        lista_logs.append(f'Revision IM0020--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> IM0030
                     try:
@@ -180,7 +180,7 @@ def immunoassay(df_root, path_excel_writer):
                             error = [subject, visit, 'Date Sample Collected', date_collected_form_field_instance ,'Date Sample Collected must be before the End of study/Early withdrawal date. ', date_collected_pure, 'IM0030']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision IM0030 --> {e} ')
+                        lista_logs.append(f'Revision IM0030 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
                 
                     # Revision IM0050
@@ -193,7 +193,7 @@ def immunoassay(df_root, path_excel_writer):
                         else:
                             pass
                     except Exception as e:
-                        lista_logs.append(f'Revision IM0050--> {e}')
+                        lista_logs.append(f'Revision IM0050--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Revision IM0060
@@ -211,7 +211,7 @@ def immunoassay(df_root, path_excel_writer):
                                             TSH_result_pure, 'IM0070']
                                 lista_revision.append(error)   
                     except Exception as e:
-                        lista_logs.append(f'Revision IM0060--> {e}')
+                        lista_logs.append(f'Revision IM0060--> {e} - Subject: {subject},  Visit: {visit} ')
 
     excel_writer = load_workbook(path_excel_writer)
     column_names =  ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']

@@ -114,7 +114,7 @@ def urinary_drug_screen(df_root, path_excel_writer):
                             lista_revision.append(error)     
 
                     except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e}')
+                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision UD0020
                     try:
@@ -128,7 +128,7 @@ def urinary_drug_screen(df_root, path_excel_writer):
                                                 was_urine_test_performed_pure, 'UD0020']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision UD0020--> {e}')
+                        lista_logs.append(f'Revision UD0020--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision UD0030
                     try:
@@ -141,7 +141,7 @@ def urinary_drug_screen(df_root, path_excel_writer):
                                                 check_below_trace_pure, 'UD0030']
                                     lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision UD0030--> {e}')
+                        lista_logs.append(f'Revision UD0030--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision UD0040
                     try:
@@ -157,7 +157,7 @@ def urinary_drug_screen(df_root, path_excel_writer):
                         else:
                             pass
                     except Exception as e:
-                        lista_logs.append(f'Revision UD0040--> {e}')
+                        lista_logs.append(f'Revision UD0040--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision UD0050
                     try:
@@ -173,7 +173,7 @@ def urinary_drug_screen(df_root, path_excel_writer):
                         else:
                             pass
                     except Exception as e:
-                        lista_logs.append(f'Revision UD0050--> {e}')
+                        lista_logs.append(f'Revision UD0050--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> UD0060
                     try:
@@ -183,7 +183,7 @@ def urinary_drug_screen(df_root, path_excel_writer):
                             error = [subject, visit, 'Date of test performed', date_of_test_form_field_isntance ,'Date of test performed must be before the End of study/Early withdrawal date. ', date_of_test_pure, 'UD0060']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision UD0060 --> {e} ')
+                        lista_logs.append(f'Revision UD0060 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
                 else:
                     pass

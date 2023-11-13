@@ -175,7 +175,7 @@ def end_of_study(df_root, path_excel_writer):
                                         f , date_last_treatment_administration_miltefosine_pure, 'GE0020']
                     lista_revision.append(error)     
             except Exception as e:
-                lista_logs.append(f'Revision GE0020 --> {e}')
+                lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
             try:
                 # Primera  revision general de formato de fecha ->GE0020
@@ -188,7 +188,7 @@ def end_of_study(df_root, path_excel_writer):
                                         f , date_last_treatment_administration_CPG_pure, 'GE0020']
                     lista_revision.append(error)     
             except Exception as e:
-                lista_logs.append(f'Revision GE0020 --> {e}')
+                lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
             try:
                 # Primera  revision general de formato de fecha ->GE0020
@@ -201,7 +201,7 @@ def end_of_study(df_root, path_excel_writer):
                                         f , end_of_study_date_general_pure, 'GE0020']
                     lista_revision.append(error)     
             except Exception as e:
-                lista_logs.append(f'Revision GE0020 --> {e}')
+                lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
             # Revision ES0030
             try:
@@ -211,7 +211,7 @@ def end_of_study(df_root, path_excel_writer):
                                 end_of_study_date_general_pure, 'ES0030']
                     lista_revision.append(error)
             except Exception as e:
-                lista_logs.append(f'Revision ES0030 --> {e}')
+                lista_logs.append(f'Revision ES0030 --> {e} - Subject: {subject},  Visit: {visit} ')
 
             # Revision ES0040
             try:
@@ -222,7 +222,7 @@ def end_of_study(df_root, path_excel_writer):
                             primary_reason_not_completing_general_pure, 'ES0040']
                         lista_revision.append(error)
             except Exception as e:
-                lista_logs.append(f'Revision ES0040 --> {e}')
+                lista_logs.append(f'Revision ES0040 --> {e} - Subject: {subject},  Visit: {visit} ')
             
             # Revision ES0050
             try:
@@ -235,7 +235,7 @@ def end_of_study(df_root, path_excel_writer):
                             primary_reason_not_completing_general_pure, 'ES0050']
                         lista_revision.append(error)
             except Exception as e:
-                lista_logs.append(f'Revision ES0050 --> {e}')
+                lista_logs.append(f'Revision ES0050 --> {e} - Subject: {subject},  Visit: {visit} ')
 
             # Revision ES0090
             try:
@@ -246,7 +246,7 @@ def end_of_study(df_root, path_excel_writer):
                             primary_reason_not_completing_miltefosine_pure, 'ES0090']
                         lista_revision.append(error)
             except Exception as e:
-                lista_logs.append(f'Revision ES0090 --> {e}')
+                lista_logs.append(f'Revision ES0090 --> {e} - Subject: {subject},  Visit: {visit} ')
             
             # Revision ES0120
             try:
@@ -257,7 +257,7 @@ def end_of_study(df_root, path_excel_writer):
                             primary_reason_not_completing_miltefosine_pure, 'ES0120']
                         lista_revision.append(error)
             except Exception as e:
-                lista_logs.append(f'Revision ES0120 --> {e}')
+                lista_logs.append(f'Revision ES0120 --> {e} - Subject: {subject},  Visit: {visit} ')
 
             # Revision ES0160
             try:
@@ -268,7 +268,7 @@ def end_of_study(df_root, path_excel_writer):
                             primary_reason_not_completing_CPG_pure, 'ES0160']
                         lista_revision.append(error)
             except Exception as e:
-                lista_logs.append(f'Revision ES0160 --> {e}')
+                lista_logs.append(f'Revision ES0160 --> {e} - Subject: {subject},  Visit: {visit} ')
             
             # Revision ES0190
             try:
@@ -279,7 +279,7 @@ def end_of_study(df_root, path_excel_writer):
                             primary_reason_not_completing_CPG_pure, 'ES0190']
                         lista_revision.append(error)
             except Exception as e:
-                lista_logs.append(f'Revision ES0190 --> {e}')
+                lista_logs.append(f'Revision ES0190 --> {e} - Subject: {subject},  Visit: {visit} ')
             
             # Revision ES0210
             try:
@@ -292,7 +292,7 @@ def end_of_study(df_root, path_excel_writer):
                             was_study_treatment_complited_protocol_CPG_pure, 'ES0210']
                         lista_revision.append(error)
             except Exception as e:
-                lista_logs.append(f'Revision ES0210 --> {e}')
+                lista_logs.append(f'Revision ES0210 --> {e} - Subject: {subject},  Visit: {visit} ')
             
             # Revision ES0220
             try:
@@ -303,7 +303,7 @@ def end_of_study(df_root, path_excel_writer):
                             primary_reason_not_completing_CPG_pure, 'ES0220']
                         lista_revision.append(error)
             except Exception as e:
-                lista_logs.append(f'Revision ES0220 --> {e}')
+                lista_logs.append(f'Revision ES0220 --> {e} - Subject: {subject},  Visit: {visit} ')
 
             # Revision ES0230
             try:
@@ -316,7 +316,7 @@ def end_of_study(df_root, path_excel_writer):
                             was_study_treatment_complited_protocol_miltefosine_pure, 'ES0230']
                         lista_revision.append(error)
             except Exception as e:
-                lista_logs.append(f'Revision ES0230 --> {e}')
+                lista_logs.append(f'Revision ES0230 --> {e} - Subject: {subject},  Visit: {visit} ')
 
             # Revision ES0240
             try:
@@ -327,7 +327,7 @@ def end_of_study(df_root, path_excel_writer):
                             primary_reason_not_completing_miltefosine_pure, 'ES0240']
                         lista_revision.append(error)
             except Exception as e:
-                lista_logs.append(f'Revision ES0240 --> {e}')
+                lista_logs.append(f'Revision ES0240 --> {e} - Subject: {subject},  Visit: {visit} ')
 
 
 

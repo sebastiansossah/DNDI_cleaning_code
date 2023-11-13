@@ -113,7 +113,7 @@ def vein_assesment(df_root, path_excel_writer):
                             error = [subject, visit, 'Date of assessment performed', date_of_assesment_form_field_instance ,f , date_of_assesment_pure, 'GE0020']
                             lista_revision.append(error)     
                     except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e}')
+                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> VA0050
                     try:
@@ -123,7 +123,7 @@ def vein_assesment(df_root, path_excel_writer):
                             error = [subject, visit, 'Date of assessment performed', date_of_assesment_form_field_instance ,'Date of assessment performed must be before the End of study/Early withdrawal date. ', date_of_assesment_pure, 'VA0050']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision VA0050 --> {e} ')
+                        lista_logs.append(f'Revision VA0050 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
                     # Revision VA0020 
                     try:
@@ -136,7 +136,7 @@ def vein_assesment(df_root, path_excel_writer):
                                               vein_assessment_performed_pure, 'VA0020']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision VA0020--> {e}')
+                        lista_logs.append(f'Revision VA0020--> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision VA0030
                     try:
@@ -152,7 +152,7 @@ def vein_assesment(df_root, path_excel_writer):
                         else:
                             pass
                     except Exception as e:
-                        lista_logs.append(f'Revision VA0030--> {e}')
+                        lista_logs.append(f'Revision VA0030--> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision VA0040
                     try:
@@ -168,7 +168,7 @@ def vein_assesment(df_root, path_excel_writer):
                         else:
                             pass
                     except Exception as e:
-                        lista_logs.append(f'Revision VA0040--> {e}')
+                        lista_logs.append(f'Revision VA0040--> {e} - Subject: {subject},  Visit: {visit} ')
                 else:
                     pass
 

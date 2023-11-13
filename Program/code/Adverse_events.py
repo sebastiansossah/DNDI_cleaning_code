@@ -386,7 +386,7 @@ def adverse_events(df_root, path_excel_writer):
                             lista_revision.append(error)     
 
                     except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e}')
+                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Primera  revision general de formato de fecha ->GE0020
@@ -398,7 +398,7 @@ def adverse_events(df_root, path_excel_writer):
                                      f , end_date_pure, 'GE0020']
                             lista_revision.append(error)     
                     except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e}') 
+                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ') 
 
                     # Revision AE0010
                     try:
@@ -410,7 +410,7 @@ def adverse_events(df_root, path_excel_writer):
                         else:
                             adverse_events_id_review.append(adverse_event_id_pure)
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0010 --> {e}')
+                        lista_logs.append(f'Revision AE0010 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0020
                     try:
@@ -424,7 +424,7 @@ def adverse_events(df_root, path_excel_writer):
                         else:
                             list_of_tuples_adverse_id.append(tuple_to_compare)
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0020 --> {e}')
+                        lista_logs.append(f'Revision AE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0040
                     try:
@@ -437,7 +437,7 @@ def adverse_events(df_root, path_excel_writer):
                                             start_date_pure, 'AE0040']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0040 --> {e}')
+                        lista_logs.append(f'Revision AE0040 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0050
                     try:
@@ -448,7 +448,7 @@ def adverse_events(df_root, path_excel_writer):
                                             start_date_pure, 'AE0050']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0050 --> {e}')
+                        lista_logs.append(f'Revision AE0050 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0060
                     try:
@@ -460,7 +460,7 @@ def adverse_events(df_root, path_excel_writer):
                                         end_date_pure, 'AE0060']
                             lista_revision.append(error) 
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0050 --> {e}')
+                        lista_logs.append(f'Revision AE0050 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> AE0070
                     try:
@@ -471,7 +471,7 @@ def adverse_events(df_root, path_excel_writer):
                                      'End Date must be before the End of study/Early withdrawal date. ', end_date_pure, 'AE0070']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0070 --> {e} ')
+                        lista_logs.append(f'Revision AE0070 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0100
                     try:
@@ -483,7 +483,7 @@ def adverse_events(df_root, path_excel_writer):
                                         sae_start_date_AE_became_serious_pure, 'AE0100']
                             lista_revision.append(error) 
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0100 --> {e}')
+                        lista_logs.append(f'Revision AE0100 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0120
                     try:
@@ -496,7 +496,7 @@ def adverse_events(df_root, path_excel_writer):
                             else:
                                 pass
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0120 --> {e}')
+                        lista_logs.append(f'Revision AE0120 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision AE0130
                     try:
@@ -509,7 +509,7 @@ def adverse_events(df_root, path_excel_writer):
                             else:
                                 pass
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0130 --> {e}')
+                        lista_logs.append(f'Revision AE0130 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0140
                     try:
@@ -522,7 +522,7 @@ def adverse_events(df_root, path_excel_writer):
                             else:
                                 pass
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0140 --> {e}')
+                        lista_logs.append(f'Revision AE0140 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0150
                     try:
@@ -535,7 +535,7 @@ def adverse_events(df_root, path_excel_writer):
                             else:
                                 pass
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0150 --> {e}')
+                        lista_logs.append(f'Revision AE0150 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0160
                     try:
@@ -548,7 +548,7 @@ def adverse_events(df_root, path_excel_writer):
                             else:
                                 pass
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0160 --> {e}')
+                        lista_logs.append(f'Revision AE0160 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0170
                     try:
@@ -561,7 +561,7 @@ def adverse_events(df_root, path_excel_writer):
                             else:
                                 pass
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0170 --> {e}')
+                        lista_logs.append(f'Revision AE0170 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision AE0180
                     try:
@@ -575,7 +575,7 @@ def adverse_events(df_root, path_excel_writer):
                                 else:
                                     pass
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0180 --> {e}') 
+                        lista_logs.append(f'Revision AE0180 --> {e} - Subject: {subject},  Visit: {visit} ') 
 
                     # Revision AE0190
                     try:
@@ -589,7 +589,7 @@ def adverse_events(df_root, path_excel_writer):
                                 else:
                                     pass
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0190 --> {e}')
+                        lista_logs.append(f'Revision AE0190 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0200
                     try:
@@ -603,7 +603,7 @@ def adverse_events(df_root, path_excel_writer):
                                 else:
                                     pass
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0200 --> {e}') 
+                        lista_logs.append(f'Revision AE0200 --> {e} - Subject: {subject},  Visit: {visit} ') 
 
                     # Revision AE0210
                     try:
@@ -617,7 +617,7 @@ def adverse_events(df_root, path_excel_writer):
                                 else:
                                     pass
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0210 --> {e}')
+                        lista_logs.append(f'Revision AE0210 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0220
                     try:
@@ -628,7 +628,7 @@ def adverse_events(df_root, path_excel_writer):
                                             actions_taken_cpg_pure, 'AE0220']
                                 lista_revision.append(error) 
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0220 --> {e}')
+                        lista_logs.append(f'Revision AE0220 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0230
                     try:
@@ -639,7 +639,7 @@ def adverse_events(df_root, path_excel_writer):
                                             actions_taken_miltefosine_pure, 'AE0230']
                                 lista_revision.append(error) 
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0230 --> {e}')
+                        lista_logs.append(f'Revision AE0230 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0240
                     try:
@@ -651,7 +651,7 @@ def adverse_events(df_root, path_excel_writer):
                                 lista_revision.append(error) 
 
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0240 --> {e}')
+                        lista_logs.append(f'Revision AE0240 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0250
                     try:
@@ -663,7 +663,7 @@ def adverse_events(df_root, path_excel_writer):
                                 lista_revision.append(error)
 
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0250 --> {e}')
+                        lista_logs.append(f'Revision AE0250 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0260
                     try:
@@ -674,7 +674,7 @@ def adverse_events(df_root, path_excel_writer):
                                             actions_taken_cpg_pure, 'AE0260']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0260 --> {e}')
+                        lista_logs.append(f'Revision AE0260 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0270
                     try:
@@ -685,7 +685,7 @@ def adverse_events(df_root, path_excel_writer):
                                             actions_taken_cpg_pure, 'AE0270']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0270 --> {e}')
+                        lista_logs.append(f'Revision AE0270 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0280
                     try:
@@ -696,7 +696,7 @@ def adverse_events(df_root, path_excel_writer):
                                             actions_taken_cpg_pure, 'AE0280']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0280 --> {e}')
+                        lista_logs.append(f'Revision AE0280 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0290
                     try:
@@ -707,7 +707,7 @@ def adverse_events(df_root, path_excel_writer):
                                             actions_taken_miltefosine_pure, 'AE0290']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0290 --> {e}')
+                        lista_logs.append(f'Revision AE0290 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0300
                     try:
@@ -718,7 +718,7 @@ def adverse_events(df_root, path_excel_writer):
                                             actions_taken_miltefosine_pure, 'AE0300']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0300 --> {e}')
+                        lista_logs.append(f'Revision AE0300 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0310
                     try:
@@ -729,7 +729,7 @@ def adverse_events(df_root, path_excel_writer):
                                             actions_taken_miltefosine_pure, 'AE0310']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0310 --> {e}')
+                        lista_logs.append(f'Revision AE0310 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0320
                     try:
@@ -740,7 +740,7 @@ def adverse_events(df_root, path_excel_writer):
                                             actions_taken_miltefosine_pure, 'AE0320']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0320 --> {e}')
+                        lista_logs.append(f'Revision AE0320 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0330
                     try:
@@ -751,7 +751,7 @@ def adverse_events(df_root, path_excel_writer):
                                             actions_taken_miltefosine_pure, 'AE0330']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0330 --> {e}')
+                        lista_logs.append(f'Revision AE0330 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0340
                     try:
@@ -762,7 +762,7 @@ def adverse_events(df_root, path_excel_writer):
                                             other_action_taken_pure, 'AE0340']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0340 --> {e}')
+                        lista_logs.append(f'Revision AE0340 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision AE0350
                     try:
@@ -773,7 +773,7 @@ def adverse_events(df_root, path_excel_writer):
                                             other_action_taken_pure, 'AE0350']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0350 --> {e}')
+                        lista_logs.append(f'Revision AE0350 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0360
                     try:
@@ -784,7 +784,7 @@ def adverse_events(df_root, path_excel_writer):
                                             outcome_pure, 'AE0360']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0360 --> {e}')
+                        lista_logs.append(f'Revision AE0360 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0370
                     try: 
@@ -795,7 +795,7 @@ def adverse_events(df_root, path_excel_writer):
                                             outcome_pure, 'AE0370']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0370 --> {e}')
+                        lista_logs.append(f'Revision AE0370 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0380
                     try:
@@ -806,7 +806,7 @@ def adverse_events(df_root, path_excel_writer):
                                             outcome_pure, 'AE0380']  
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0380 --> {e}')
+                        lista_logs.append(f'Revision AE0380 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0390
                     try:
@@ -817,7 +817,7 @@ def adverse_events(df_root, path_excel_writer):
                                             outcome_pure, 'AE0390']  
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0390 --> {e}')
+                        lista_logs.append(f'Revision AE0390 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision AE0400
                     try:
@@ -828,7 +828,7 @@ def adverse_events(df_root, path_excel_writer):
                                             seriousness_criteria_pure, 'AE0400']  
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0400 --> {e}')
+                        lista_logs.append(f'Revision AE0400 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision AE0410
                     try:
@@ -839,7 +839,7 @@ def adverse_events(df_root, path_excel_writer):
                                             severity_pure, 'AE0410']  
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0410 --> {e}')
+                        lista_logs.append(f'Revision AE0410 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0420
                     try:
@@ -850,7 +850,7 @@ def adverse_events(df_root, path_excel_writer):
                                             study_discontinued_pure, 'AE0420']  
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0420 --> {e}')
+                        lista_logs.append(f'Revision AE0420 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision AE0430
                     try:
@@ -861,7 +861,7 @@ def adverse_events(df_root, path_excel_writer):
                                             study_discontinued_pure, 'AE0430']  
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision AE0430 --> {e}')
+                        lista_logs.append(f'Revision AE0430 --> {e} - Subject: {subject},  Visit: {visit} ')
 
 
     excel_writer = load_workbook(path_excel_writer)

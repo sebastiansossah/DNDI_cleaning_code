@@ -89,7 +89,7 @@ def informed_consent(df_root, path_excel_writer):
                             error = [subject, visit, 'Informed consent signature date' ,signature_date_form_field_instance , f , signature_date_pure, 'GE0020']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e}')
+                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     
                     # Revision para IC0030
@@ -102,7 +102,7 @@ def informed_consent(df_root, path_excel_writer):
                             pass
 
                     except Exception as e:
-                        lista_logs.append(f'Revision IC0030 --> {e}')
+                        lista_logs.append(f'Revision IC0030 --> {e} - Subject: {subject},  Visit: {visit} ')
                         
                     lista_validacion_prior_screening.append(prior_screening_number_pure)
 

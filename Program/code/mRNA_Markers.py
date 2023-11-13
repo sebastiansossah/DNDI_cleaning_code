@@ -109,7 +109,7 @@ def mRNA_markers(df_root, path_excel_writer):
                     try:
                         hours_04_post_dose = row["04-hours post dose"]
                         hours_04_post_dose_pure = hours_04_post_dose.split('|')[0]
-                        hours_04_post_dose_form_field_instance = hours_04_post_dose.split('|')[0]
+                        hours_04_post_dose_form_field_instance = hours_04_post_dose.split('|')[1]
                     except Exception as e:
                         hours_04_post_dose_pure = ''
                         hours_04_post_dose_form_field_instance = 'This field doesnt have any data'
@@ -150,7 +150,7 @@ def mRNA_markers(df_root, path_excel_writer):
                             lista_revision.append(error)     
 
                     except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e}')
+                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision MR0010
                     try:
@@ -166,7 +166,7 @@ def mRNA_markers(df_root, path_excel_writer):
                             pass
 
                     except Exception as e:
-                        lista_logs.append(f'Revision MR0010--> {e}')
+                        lista_logs.append(f'Revision MR0010--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision MR0020
                     try:
@@ -181,7 +181,7 @@ def mRNA_markers(df_root, path_excel_writer):
                         else:
                             pass
                     except Exception as e:
-                        lista_logs.append(f'Revision MR0020--> {e}')
+                        lista_logs.append(f'Revision MR0020--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> MR0030
                     try:
@@ -192,7 +192,7 @@ def mRNA_markers(df_root, path_excel_writer):
                                      'Date of blood sample collected must be before the End of study/Early withdrawal date. ', Date_of_blood_sample_collected_pure, 'MR0030']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision MR0030 --> {e} ')
+                        lista_logs.append(f'Revision MR0030 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
                     lista_validacion =[
                         'Pre-dose',
@@ -220,7 +220,7 @@ def mRNA_markers(df_root, path_excel_writer):
                                         'If the sample was collected, not all sections can be "not done"', Was_blood_sample_collected_pure, 'MR0050']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision MR0050--> {e}')
+                        lista_logs.append(f'Revision MR0050--> {e} - Subject: {subject},  Visit: {visit} ')
 
 
     excel_writer = load_workbook(path_excel_writer)

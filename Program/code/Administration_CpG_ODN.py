@@ -126,7 +126,7 @@ def adminsitration_CpG_ODN(df_root, path_excel_writer):
                             lista_revision.append(error)     
 
                     except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e}')
+                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision IMP0020
                     try:
@@ -136,7 +136,7 @@ def adminsitration_CpG_ODN(df_root, path_excel_writer):
                                         'The date must be equal to the D1, D15 or D29 date of visit', visita_comparar, 'IMP0020']
                             lista_revision.append(error)
                     except Exception as e:
-                            lista_logs.append(f'Revision IMP0020 --> {e}')
+                            lista_logs.append(f'Revision IMP0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision IMP0040
                     try:
@@ -147,7 +147,7 @@ def adminsitration_CpG_ODN(df_root, path_excel_writer):
                                         'The date/time of dosing cant be before the informed consent date/time', date_dosing_pure, 'IMP0040']
                             lista_revision.append(error)
                     except Exception as e:
-                            lista_logs.append(f'Revision IMP0040 --> {e}')
+                            lista_logs.append(f'Revision IMP0040 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision IMP0050
                     try:
@@ -160,7 +160,7 @@ def adminsitration_CpG_ODN(df_root, path_excel_writer):
                                             f'{date_dosing_pure} - {visita_randomization}', 'IMP0050']
                             lista_revision.append(error)
                     except Exception as e:
-                            lista_logs.append(f'Revision IMP0050 --> {e}')
+                            lista_logs.append(f'Revision IMP0050 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision IMP0060
                     try:
@@ -172,7 +172,7 @@ def adminsitration_CpG_ODN(df_root, path_excel_writer):
                         else: 
                             date_dosing_list_review.append(date_dosing_pure)
                     except Exception as e:
-                            lista_logs.append(f'Revision IMP0060 --> {e}')
+                            lista_logs.append(f'Revision IMP0060 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision IMP0080
                     try: 
@@ -186,7 +186,7 @@ def adminsitration_CpG_ODN(df_root, path_excel_writer):
                                                         dosing_event_pure, 'IMP0080']
                                       lista_revision.append(error)
                     except Exception as e:
-                         lista_logs.append(f'Revision IMP0080 --> {e}')
+                         lista_logs.append(f'Revision IMP0080 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision IMP0090
                     try:
@@ -200,7 +200,7 @@ def adminsitration_CpG_ODN(df_root, path_excel_writer):
                                                         dosing_event_pure, 'IMP0090']
                                       lista_revision.append(error)
                     except Exception as e:
-                         lista_logs.append(f'Revision IMP0090 --> {e}')
+                         lista_logs.append(f'Revision IMP0090 --> {e} - Subject: {subject},  Visit: {visit} ')
 
     
     excel_writer = load_workbook(path_excel_writer)

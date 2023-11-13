@@ -142,7 +142,7 @@ def injection_site_examination(df_root, path_excel_writer):
                             lista_revision.append(error)     
 
                     except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e}')
+                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision IS0020
                     try:
@@ -158,7 +158,7 @@ def injection_site_examination(df_root, path_excel_writer):
                             pass
 
                     except Exception as e:
-                        lista_logs.append(f'Revision IS0020--> {e}')
+                        lista_logs.append(f'Revision IS0020--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision IS0030
                     try:
@@ -173,7 +173,7 @@ def injection_site_examination(df_root, path_excel_writer):
                         else:
                             pass
                     except Exception as e:
-                        lista_logs.append(f'Revision IS0030--> {e}')
+                        lista_logs.append(f'Revision IS0030--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> IS0040
                     try:
@@ -184,7 +184,7 @@ def injection_site_examination(df_root, path_excel_writer):
                                      'Date of the Injection site examination must be before the End of study/Early withdrawal date. ', date_injection_pure, 'IS0040']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision IS0040 --> {e} ')
+                        lista_logs.append(f'Revision IS0040 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
 
                     lista_validacion =[ 'Undefined',
@@ -264,7 +264,7 @@ def injection_site_examination(df_root, path_excel_writer):
                                          'If, Was the Injection site examination performed?="Yes" at least one section per time point must be added' , was_injection_performed_pure, 'IS0050']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision IS0050--> {e}')
+                        lista_logs.append(f'Revision IS0050--> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision IS0100
                     try:
@@ -277,7 +277,7 @@ def injection_site_examination(df_root, path_excel_writer):
                         else:
                             lista_validacion_predose.append(validador_predose)
                     except Exception as e:
-                        lista_logs.append(f'Revision IS0100--> {e}')
+                        lista_logs.append(f'Revision IS0100--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision IS0110
                     try:
@@ -290,7 +290,7 @@ def injection_site_examination(df_root, path_excel_writer):
                         else:
                             lista_validacion_2_hours.append(validador_2_post_dose)
                     except Exception as e:
-                        lista_logs.append(f'Revision IS0110--> {e}')
+                        lista_logs.append(f'Revision IS0110--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision IS0120
                     try:
@@ -303,7 +303,7 @@ def injection_site_examination(df_root, path_excel_writer):
                         else:
                             lista_validacion_4_hours.append(validador_4_post_dose)
                     except Exception as e:
-                        lista_logs.append(f'Revision IS0120--> {e}')
+                        lista_logs.append(f'Revision IS0120--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision IS0130
                     try:
@@ -316,7 +316,7 @@ def injection_site_examination(df_root, path_excel_writer):
                         else:
                             lista_validacion_8_hours.append(validador_8_post_dose)
                     except Exception as e:
-                        lista_logs.append(f'Revision IS0130--> {e}')
+                        lista_logs.append(f'Revision IS0130--> {e} - Subject: {subject},  Visit: {visit} ')
 
 
 

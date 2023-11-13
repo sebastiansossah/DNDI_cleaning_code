@@ -106,7 +106,7 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
                             lista_revision.append(error)     
 
                     except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e}')
+                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     try:
                         # Primera  revision general de formato de fecha ->GE0020
@@ -118,7 +118,7 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
                             lista_revision.append(error)     
 
                     except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e}')
+                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision  MS0010
                     try:
@@ -133,7 +133,7 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
                                          'If the answer is Yes, at least one section of Medical or Surgical History Detail should be added' , any_relevant_medical_pure, 'MS0010']
                                 lista_revision.append(error) 
                     except Exception as e:
-                        lista_logs.append(f'Revision MS0020 --> {e}')
+                        lista_logs.append(f'Revision MS0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision  MS0020
                     try:
@@ -148,7 +148,7 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
                                          'If the answer is No, No sections of Medical or Surgical History Detail should be added' , any_relevant_medical, 'MS0020']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision MS0020 --> {e}')
+                        lista_logs.append(f'Revision MS0020 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     try:
                         if float(any_relevant_medical_pure) == 1.0:
@@ -165,7 +165,7 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
                                 else:
                                     pass
                             except Exception as e:
-                                lista_logs.append(f'Revision MS0040 --> {e}')
+                                lista_logs.append(f'Revision MS0040 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                             # Revision MS0050
                             try: 
@@ -183,7 +183,7 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
                                                  'The year and month of  Onset Date/First taken must be equal or after the month and year of birth in DEMOGRAPHIC Diagnosis/Surgery.' , onset_date_year, 'MS0050']
                                         lista_revision.append(error)
                             except Exception as e:
-                                lista_logs.append(f'Revision MS0050 --> {e}')
+                                lista_logs.append(f'Revision MS0050 --> {e} - Subject: {subject},  Visit: {visit} ')
                             
                             # Revision MS0060
                             try:
@@ -196,7 +196,7 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
                                 else:
                                     lista_comprobacion_overlap.append(medical_date_history)
                             except Exception as e:
-                                lista_logs.append(f'Revision MS0060 --> {e}')
+                                lista_logs.append(f'Revision MS0060 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                             # Revision MS070
                             try:
@@ -206,7 +206,7 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
                                 pass
         
                     except Exception as e:
-                        lista_logs.append(f'Revision desde MS0040 hasta MS0060 --> {e}')
+                        lista_logs.append(f'Revision desde MS0040 hasta MS0060 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
 
 

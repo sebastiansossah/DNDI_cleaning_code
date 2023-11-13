@@ -131,7 +131,7 @@ def alcohol_screen(df_root, path_excel_writer):
                             lista_revision.append(error)     
 
                     except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e}')
+                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision AS0020 
                     try:
@@ -144,7 +144,7 @@ def alcohol_screen(df_root, path_excel_writer):
                                               was_serum_test_performed_pure, 'AS0020']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision AS0020--> {e}')
+                        lista_logs.append(f'Revision AS0020--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision AS0030
                     try:
@@ -160,7 +160,7 @@ def alcohol_screen(df_root, path_excel_writer):
                         else:
                             pass
                     except Exception as e:
-                        lista_logs.append(f'Revision AS0030--> {e}')
+                        lista_logs.append(f'Revision AS0030--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision AS0040
                     try: 
@@ -170,7 +170,7 @@ def alcohol_screen(df_root, path_excel_writer):
                                          levels_alcohol_percentaje_pure, 'AS0040']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision AS0040--> {e}')
+                        lista_logs.append(f'Revision AS0040--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision AS0050
                     try: 
@@ -180,7 +180,7 @@ def alcohol_screen(df_root, path_excel_writer):
                                          levels_alcohol_mg_dl_pure, 'AS0050']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision AS0050--> {e}')
+                        lista_logs.append(f'Revision AS0050--> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision LBCOV0060
                     try:
@@ -191,7 +191,7 @@ def alcohol_screen(df_root, path_excel_writer):
                                          f'{levels_alcohol_mg_dl_pure} {testing_percentage}', 'LBCOV0060']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LBCOV0060--> {e}')
+                        lista_logs.append(f'Revision LBCOV0060--> {e} - Subject: {subject},  Visit: {visit} ')
                     
 
                     # Revision AS0070
@@ -209,7 +209,7 @@ def alcohol_screen(df_root, path_excel_writer):
                         else:
                             pass
                     except Exception as e:
-                        lista_logs.append(f'Revision AS0070--> {e}')
+                        lista_logs.append(f'Revision AS0070--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> AS0080
                     try:
@@ -220,7 +220,7 @@ def alcohol_screen(df_root, path_excel_writer):
                                      'Date of test performed must be before the End of study/Early withdrawal date. ', date_test_performed_pure, 'AS0080']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision AS0080 --> {e} ')
+                        lista_logs.append(f'Revision AS0080 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
 
 

@@ -73,7 +73,7 @@ def covid_19_testing(df_root, path_excel_writer):
                     try:
                         was_antigen_performed = row['Was the SARS-CoV-2 antigen test performed?']
                         was_antigen_performed_pure = was_antigen_performed.split('|')[0]
-                        was_antigen_performed_form_field_instance = was_antigen_performed.split('|')[0]
+                        was_antigen_performed_form_field_instance = was_antigen_performed.split('|')[1]
                     except Exception as e:
                         was_antigen_performed_pure = ''
                         was_antigen_performed_form_field_instance = 'This field doesnt have any data'
@@ -114,7 +114,7 @@ def covid_19_testing(df_root, path_excel_writer):
                             lista_revision.append(error)     
 
                     except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e}')
+                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision LBCOV0010 
                     try:
@@ -127,7 +127,7 @@ def covid_19_testing(df_root, path_excel_writer):
                                               was_antigen_performed_pure, 'LBCOV0010']
                                 lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LBCOV0010--> {e}')
+                        lista_logs.append(f'Revision LBCOV0010--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision LBCOV0030
                     try:
@@ -143,7 +143,7 @@ def covid_19_testing(df_root, path_excel_writer):
                         else:
                             pass
                     except Exception as e:
-                        lista_logs.append(f'Revision LBCOV0030--> {e}')
+                        lista_logs.append(f'Revision LBCOV0030--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision LBCOV0040
                     try:
@@ -159,7 +159,7 @@ def covid_19_testing(df_root, path_excel_writer):
                         else:
                             pass
                     except Exception as e:
-                        lista_logs.append(f'Revision LBCOV0040--> {e}')
+                        lista_logs.append(f'Revision LBCOV0040--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> LBCOV0050
                     try:
@@ -169,7 +169,7 @@ def covid_19_testing(df_root, path_excel_writer):
                             error = [subject, visit, 'Date of test performed', date_test_performed_form_field_instance ,'Date of test performed must be before the End of study/Early withdrawal date. ', date_test_performed_pure, 'LBCOV0050']
                             lista_revision.append(error)
                     except Exception as e:
-                        lista_logs.append(f'Revision LBCOV0050 --> {e} ')
+                        lista_logs.append(f'Revision LBCOV0050 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
 
     excel_writer = load_workbook(path_excel_writer)
