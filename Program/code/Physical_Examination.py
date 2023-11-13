@@ -6,6 +6,7 @@ from log_writer import log_writer
 import pandas as pd
 from datetime import datetime
 from revision_fechas import revision_fecha
+import math
 import warnings
 
 def physical_examination(df_root, path_excel_writer):
@@ -37,6 +38,13 @@ def physical_examination(df_root, path_excel_writer):
     df_end_study_general = df_end_study_general[['Participante', 'Valor']]
     df_end_study_general = df_end_study_general.rename(columns={'Participante':'Subject', 'Valor':'end_study_date'})
 
+    df_visit_done = df_root[df_root['name']=='Date of visit']
+    df_visit_done = df_visit_done[['Visit','Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
+    df_visit_done = df_visit_done[df_visit_done['Campo']=='Was the visit performed?']
+    df_visit_done['Valor_completo'] = df_visit_done['Valor'].astype(str) + '|' + df_visit_done['FormFieldInstance Id'].astype(str)
+    df_visit_done = df_visit_done[['Visit','Participante','Valor_completo']]
+    df_visit_done = df_visit_done.rename(columns={'Participante':'Subject', 'Valor_completo':'was_DV_performed'})
+
     lista_revision = []
     lista_logs = ['Physical Examination']
 
@@ -58,6 +66,7 @@ def physical_examination(df_root, path_excel_writer):
             pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_informed, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
+            pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
 
             for index, row in pru.iterrows():
                 status = row['status']
@@ -68,6 +77,9 @@ def physical_examination(df_root, path_excel_writer):
                 date_inform_consent = row['Informed_consent_date']
                 end_study_date = row['end_study_date']
 
+                was_DV_performed = row['was_DV_performed']
+                was_DV_performed_pure = was_DV_performed.split('|')[0]
+                was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
                 
                 if status == 'DATA_ENTRY_COMPLETE':
                     try:
@@ -75,7 +87,7 @@ def physical_examination(df_root, path_excel_writer):
                         was_physical_performed_pure = was_physical_performed.split('|')[0]
                         was_physical_performed_form_field_instance = was_physical_performed.split('|')[1]
                     except Exception as e:
-                        was_physical_performed_pure = ''
+                        was_physical_performed_pure = math.nan
                         was_physical_performed_form_field_instance = 'This field doesnt have any data'
 
                     # try:
@@ -96,7 +108,7 @@ def physical_examination(df_root, path_excel_writer):
                         undefined_clinical_pure = undefined_clinical.split('|')[0]
                         undefined_clinical_form_field_instance = undefined_clinical.split('|')[1]
                     except Exception as e:
-                        undefined_clinical_pure = ''
+                        undefined_clinical_pure = math.nan
                         undefined_clinical_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -104,7 +116,7 @@ def physical_examination(df_root, path_excel_writer):
                         undefined_body_system_pure = undefined_body_system.split('|')[0]
                         undefined_body_system_form_field_instance = undefined_body_system.split('|')[1]
                     except Exception as e:
-                        undefined_body_system_pure = ''
+                        undefined_body_system_pure = math.nan
                         undefined_body_system_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -112,7 +124,7 @@ def physical_examination(df_root, path_excel_writer):
                         predose_clinical_pure = predose_clinical.split('|')[0]
                         predose_clinical_form_field_instance = predose_clinical.split('|')[1] 
                     except Exception as e:
-                        predose_clinical_pure = ''
+                        predose_clinical_pure = math.nan
                         predose_clinical_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -120,7 +132,7 @@ def physical_examination(df_root, path_excel_writer):
                         two_hours_pure = two_hours.split('|')[0]
                         two_hours_form_field_instance = two_hours.split('|')[1]
                     except Exception as e:
-                        two_hours_pure = ''
+                        two_hours_pure = math.nan
                         two_hours_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -128,7 +140,7 @@ def physical_examination(df_root, path_excel_writer):
                         four_hours_pure = four_hours.split('|')[0]
                         four_hours_form_field_instance = four_hours.split('|')[1]
                     except Exception as e:
-                        four_hours_pure = ''
+                        four_hours_pure = math.nan
                         four_hours_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -136,10 +148,16 @@ def physical_examination(df_root, path_excel_writer):
                         eight_hours_pure = eight_hours.split('|')[0]
                         eight_hours_form_field_instance = eight_hours.split('|')[1]
                     except Exception as e:
-                        eight_hours_pure = ''
+                        eight_hours_pure = math.nan
                         eight_hours_form_field_instance = 'This field doesnt have any data'
                                         
                     # ----------------------------------------------------------------------------------------
+
+                    # Revision GE0070
+                    if float(was_DV_performed_pure) !=  1.0:
+                        error = [subject, visit, 'Visit Pages', was_DV_performed_form_field_instance , 'This Form will be disabled because the visit was not done', was_DV_performed_pure, 'GE0070']
+                        lista_revision.append(error)
+
                     try:
                         # Primera  revision general de formato de fecha ->GE0020
                         f = revision_fecha(date_examination_performed_pure)
@@ -209,9 +227,9 @@ def physical_examination(df_root, path_excel_writer):
                             try: 
                                 validador_uno = row[validador_raw_uno].split('|')[0]
                             except:
-                                validador_uno = ''
+                                validador_uno = math.nan
 
-                            if validador_uno != '-' or validador_uno != np.nan or  str(validador_uno) != 'nan' or float(validador_uno) !=0.0 or str(validador_uno) != '':
+                            if math.isnan(float(validador_uno)) or validador_uno != '-' or validador_uno != np.nan or  str(validador_uno) != 'nan' or float(validador_uno) !=0.0 or str(validador_uno) != '':
                                 mi_cuenta+=1
                             else:
                                 pass
@@ -273,9 +291,9 @@ def physical_examination(df_root, path_excel_writer):
                             try:
                                 validador_predose = row[validador_predose_raw].split('|')[0]
                             except:
-                                validador_predose = ''
+                                validador_predose = math.nan
 
-                            if validador_predose != '-' or validador_predose != np.nan or  str(validador_predose) != 'nan' or float(validador_predose) !=0.0 or str(validador_predose) != '':
+                            if math.isnan(float(validador_predose))  or validador_predose != '-' or validador_predose != np.nan or  str(validador_predose) != 'nan' or float(validador_predose) !=0.0 or str(validador_predose) != '':
                                 mi_cuenta_pre_dose+=1
                             else:
                                 pass
@@ -305,10 +323,10 @@ def physical_examination(df_root, path_excel_writer):
                             try:
                                 validador_two = row[validador_two_raw].split('|')[0]
                             except:
-                                validador_two = ''
+                                validador_two = math.nan
 
-                            if validador_two != '-' or validador_two != np.nan or  str(validador_two) != 'nan' or float(validador_two) !=0.0 or str(validador_two) != '':
-                                mi_cuenta_two_hours+1
+                            if math.isnan(float(validador_two)) or validador_two != '-' or validador_two != np.nan or  str(validador_two) != 'nan' or float(validador_two) !=0.0 or str(validador_two) != '':
+                                mi_cuenta_two_hours+=1
                             else:
                                 pass
 
@@ -336,9 +354,9 @@ def physical_examination(df_root, path_excel_writer):
                             try:
                                 validador_four = row[validador_four_raw].split('|')[0]
                             except:
-                                validador_four = ''
+                                validador_four = math.nan
                             
-                            if validador_four != '-' or validador_four != np.nan or  str(validador_four) != 'nan' or float(validador_four) !=0.0 or str(validador_four) != '':
+                            if math.nan(float(validador_four)) or validador_four != '-' or validador_four != np.nan or  str(validador_four) != 'nan' or float(validador_four) !=0.0 or str(validador_four) != '':
                                 mi_cuenta_four_hours+=1
                             else:
                                 pass
@@ -368,9 +386,9 @@ def physical_examination(df_root, path_excel_writer):
                             try:
                                 validador_eight = row[validador_eight_raw].split('|')[0]
                             except:
-                                validador_eight = ''
+                                validador_eight = math.nan
                             
-                            if validador_eight != '-' or validador_eight != np.nan or  str(validador_eight) != 'nan' or float(validador_eight) !=0.0 or str(validador_eight) != '':
+                            if math.isnan(float(validador_eight)) or validador_eight != '-' or validador_eight != np.nan or  str(validador_eight) != 'nan' or float(validador_eight) !=0.0 or str(validador_eight) != '':
                                 mi_cuenta_eight_hours+=1
                             else:
                                 pass

@@ -1,5 +1,5 @@
 from datetime import datetime
-
+import math 
 import numpy as np
 from revision_fechas import revision_fecha
 from log_writer import log_writer
@@ -43,6 +43,13 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
     df_end_study_general = df_end_study_general[['Participante', 'Valor']]
     df_end_study_general = df_end_study_general.rename(columns={'Participante':'Subject', 'Valor':'end_study_date'})
 
+    df_visit_done = df_root[df_root['name']=='Date of visit']
+    df_visit_done = df_visit_done[['Visit','Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
+    df_visit_done = df_visit_done[df_visit_done['Campo']=='Was the visit performed?']
+    df_visit_done['Valor_completo'] = df_visit_done['Valor'].astype(str) + '|' + df_visit_done['FormFieldInstance Id'].astype(str)
+    df_visit_done = df_visit_done[['Visit','Participante','Valor_completo']]
+    df_visit_done = df_visit_done.rename(columns={'Participante':'Subject', 'Valor_completo':'was_DV_performed'})
+
     warnings.filterwarnings('ignore')
 
     lista_revision = []
@@ -67,11 +74,16 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
             pru = pru.merge(df_informed, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_demographic, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
+            pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
 
             for index, row in pru.iterrows():
                 status = row['status']
                 subject = row['Subject']
                 visit = row['Visit']
+
+                was_DV_performed = row['was_DV_performed']
+                was_DV_performed_pure = was_DV_performed.split('|')[0]
+                was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
 
                 date_of_visit = row['Date_of_visit']
                 date_inform_consent = row['Informed_consent_date']
@@ -85,7 +97,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         absolute_Neutrophil_pure = absolute_Neutrophil.split('|')[0]
                         absolute_Neutrophil_form_field_instance = absolute_Neutrophil.split('|')[1]
                     except Exception as e:
-                        absolute_Neutrophil_pure = ''
+                        absolute_Neutrophil_pure = math.nan
                         absolute_Neutrophil_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -93,7 +105,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         absolute_Neutrophil_result_pure = absolute_Neutrophil_result.split('|')[0]
                         absolute_Neutrophil_result_form_field_instance = absolute_Neutrophil_result.split('|')[1]
                     except Exception as e:
-                        absolute_Neutrophil_result_pure = ''
+                        absolute_Neutrophil_result_pure = math.nan
                         absolute_Neutrophil_result_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -101,7 +113,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         absolute_basophil_pure = absolute_basophil.split('|')[0]
                         absolute_basophil_form_field_isntance = absolute_basophil.split('|')[1]
                     except Exception as e:
-                        absolute_basophil_pure = ''
+                        absolute_basophil_pure = math.nan
                         absolute_basophil_form_field_isntance = 'This field doesnt have any data'
 
                     try:
@@ -109,7 +121,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         absolute_basophil_result_pure = absolute_basophil_result.split('|')[0]
                         absolute_basophil_result_form_field_isntance = absolute_basophil_result.split('|')[1]
                     except Exception as e:
-                        absolute_basophil_result_pure = ''  
+                        absolute_basophil_result_pure = math.nan  
                         absolute_basophil_result_form_field_isntance   = 'This field doesnt have any data'                    
 
                     try:
@@ -117,7 +129,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         absolute_eosinophil_pure = absolute_eosinophil.split('|')[0]
                         absolute_eosinophil_form_field_instance = absolute_eosinophil.split('|')[1]
                     except Exception as e:
-                        absolute_eosinophil_pure = ''
+                        absolute_eosinophil_pure = math.nan
                         absolute_eosinophil_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -125,7 +137,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         absolute_eosinophil_result_pure = absolute_eosinophil_result.split('|')[0]
                         absolute_eosinophil_result_form_field_instance = absolute_eosinophil_result.split('|')[1]
                     except Exception as e:
-                        absolute_eosinophil_result_pure = ''
+                        absolute_eosinophil_result_pure = math.nan
                         absolute_eosinophil_result_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -133,7 +145,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         absolute_lymphocyte_pure = absolute_lymphocyte.split('|')[0]
                         absolute_lymphocyte_form_field_instance = absolute_lymphocyte.split('|')[1]
                     except Exception as e:
-                        absolute_lymphocyte_pure = ''
+                        absolute_lymphocyte_pure = math.nan
                         absolute_lymphocyte_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -141,7 +153,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         absolute_lymphocyte_result_pure = absolute_lymphocyte_result.split('|')[0]
                         absolute_lymphocyte_result_form_field_isntance = absolute_lymphocyte_result.split('|')[1]
                     except Exception as e:
-                        absolute_lymphocyte_result_pure  = ''
+                        absolute_lymphocyte_result_pure  = math.nan
                         absolute_lymphocyte_result_form_field_isntance = 'This field doesnt have any data'
                             
                     try:
@@ -149,7 +161,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         absolute_monocyte_pure = absolute_monocyte.split('|')[0]
                         absolute_monocyte_form_field_instance = absolute_monocyte.split('|')[1]
                     except Exception as e:
-                        absolute_monocyte_pure = ''
+                        absolute_monocyte_pure = math.nan
                         absolute_monocyte_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -157,7 +169,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         absolute_monocyte_result_pure = absolute_monocyte_result.split('|')[0]
                         absolute_monocyte_result_form_field_instance = absolute_monocyte_result.split('|')[1]
                     except Exception as e:
-                        absolute_monocyte_result_pure = ''
+                        absolute_monocyte_result_pure = math.nan
                         absolute_monocyte_result_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -165,7 +177,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         Basophil_out_normal_pure = Basophil_out_normal.split('|')[0]
                         Basophil_out_normal_form_field_instance = Basophil_out_normal.split('|')[1]
                     except Exception as e:
-                        Basophil_out_normal_pure = ''
+                        Basophil_out_normal_pure = math.nan
                         Basophil_out_normal_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -173,7 +185,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         Basophil_result_pure = Basophil_result.split('|')[0]
                         Basophil_result_form_field_instance = Basophil_result.split('|')[1]
                     except Exception as e:
-                        Basophil_result_pure = ''
+                        Basophil_result_pure = math.nan
                         Basophil_result_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -181,7 +193,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         blood_sample_collected_pure = blood_sample_collected.split('|')[0]
                         blood_sample_collected_form_field_instance = blood_sample_collected.split('|')[1]
                     except Exception as e:
-                        blood_sample_collected_pure = ''
+                        blood_sample_collected_pure = math.nan
                         blood_sample_collected_form_field_instance = 'This field doesnt have any data'
                         
                     try:
@@ -189,7 +201,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         date_collected_pure = date_collected.split('|')[0]
                         date_collected_form_field_instance = date_collected.split('|')[1]
                     except Exception as e:
-                        date_collected_pure = ''
+                        date_collected_pure = math.nan
                         date_collected_form_field_instance = 'This field doesnt have any data'
                         
                     try:
@@ -197,7 +209,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         Eosinophil_out_normal_pure = Eosinophil_out_normal.split('|')[0]
                         Eosinophil_out_normal_form_field_instance = Eosinophil_out_normal.split('|')[1]
                     except Exception as e:
-                        Eosinophil_out_normal_pure = ''
+                        Eosinophil_out_normal_pure = math.nan
                         Eosinophil_out_normal_form_field_instance = 'This field doesnt have any data'
                         
                     try:
@@ -205,7 +217,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         Eosinophil_result_pure = Eosinophil_result.split('|')[0]
                         Eosinophil_result_form_field_instance = Eosinophil_result.split('|')[1]
                     except Exception as e:
-                        Eosinophil_result_pure = ''
+                        Eosinophil_result_pure = math.nan
                         Eosinophil_result_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -213,7 +225,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         Erythrocyte_out_normal_pure = Erythrocyte_out_normal.split('|')[0]
                         Erythrocyte_out_normal_form_field_instance = Erythrocyte_out_normal.split('|')[1]
                     except Exception as e:
-                        Erythrocyte_out_normal_pure = ''
+                        Erythrocyte_out_normal_pure = math.nan
                         Erythrocyte_out_normal_form_field_instance = 'This field doesnt have any data'
                         
                     try:
@@ -221,7 +233,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         Erythrocyte_result_pure = Erythrocyte_result.split('|')[0]
                         Erythrocyte_result_form_field_instance = Erythrocyte_result.split('|')[1]
                     except Exception as e:
-                        Erythrocyte_result_pure = ''
+                        Erythrocyte_result_pure = math.nan
                         Erythrocyte_result_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -229,7 +241,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         Haemoglobin_out_normal_pure = Haemoglobin_out_normal.split('|')[0]
                         Haemoglobin_out_normal_form_field_isntance = Haemoglobin_out_normal.split('|')[1]
                     except Exception as e:
-                        Haemoglobin_out_normal_pure = ''
+                        Haemoglobin_out_normal_pure = math.nan
                         Haemoglobin_out_normal_form_field_isntance = 'This field doesnt have any data'
                     
                     try:
@@ -237,7 +249,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         Haemoglobin_result_pure = Haemoglobin_result.split('|')[0]
                         Haemoglobin_result_form_field_instance = Haemoglobin_result.split('|')[1]
                     except Exception as e:
-                        Haemoglobin_result_pure = ''
+                        Haemoglobin_result_pure = math.nan
                         Haemoglobin_result_form_field_instance = 'This field doesnt have any data'
                         
                     try:
@@ -245,7 +257,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         Hematocrit_out_normal_pure = Hematocrit_out_normal.split('|')[0]
                         Hematocrit_out_normal_form_field_isntance = Hematocrit_out_normal.split('|')[1]
                     except Exception as e:
-                        Hematocrit_out_normal_pure = ''
+                        Hematocrit_out_normal_pure = math.nan
                         Hematocrit_out_normal_form_field_isntance = 'This field doesnt have any data'
 
                     try:
@@ -253,7 +265,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         Hematocrit_result_pure = Hematocrit_result.split('|')[0]
                         Hematocrit_result_form_field_isntance = Hematocrit_result.split('|')[1]
                     except Exception as e:
-                        Hematocrit_result_pure = ''
+                        Hematocrit_result_pure = math.nan
                         Hematocrit_result_form_field_isntance = 'This field doesnt have any data'
 
                     try:
@@ -261,7 +273,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         Lymphocyte_out_normal_pure = Lymphocyte_out_normal.split('|')[0]
                         Lymphocyte_out_normal_form_field_instance = Lymphocyte_out_normal.split('|')[1]
                     except Exception as e:
-                        Lymphocyte_out_normal_pure = ''
+                        Lymphocyte_out_normal_pure = math.nan
                         Lymphocyte_out_normal_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -269,7 +281,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         Lymphocyte_result_pure = Lymphocyte_result.split('|')[0]
                         Lymphocyte_result_form_field_instance = Lymphocyte_result.split('|')[1]
                     except Exception as e:
-                        Lymphocyte_result_pure = ''
+                        Lymphocyte_result_pure = math.nan
                         Lymphocyte_result_form_field_instance = 'This field doesnt have any data'
                         
                     try:
@@ -277,7 +289,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         MCH_out_normal_pure = MCH_out_normal.split('|')[0]
                         MCH_out_normal_form_field_instance = MCH_out_normal.split('|')[1]
                     except Exception as e:
-                        MCH_out_normal_pure = ''
+                        MCH_out_normal_pure = math.nan
                         MCH_out_normal_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -285,7 +297,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         MCH_result_pure = MCH_result.split('|')[0]
                         MCH_result_form_field_instance = MCH_result.split('|')[1]
                     except Exception as e:
-                        MCH_result_pure = ''
+                        MCH_result_pure = math.nan
                         MCH_result_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -293,7 +305,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         MCHC_out_normal_pure = MCHC_out_normal.split('|')[0]
                         MCHC_out_normal_form_field_definition = MCHC_out_normal.split('|')[1]
                     except Exception as e:
-                        MCHC_out_normal_pure = ''
+                        MCHC_out_normal_pure = math.nan
                         MCHC_out_normal_form_field_definition = 'This field doesnt have any data'
 
                     try:
@@ -301,7 +313,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         MCHC_result_pure = MCHC_result.split('|')[0]
                         MCHC_result_form_field_instance = MCHC_result.split('|')[1]
                     except Exception as e:
-                        MCHC_result_pure = ''
+                        MCHC_result_pure = math.nan
                         MCHC_result_form_field_instance = 'This field doesnt have any data'
                         
                     try:
@@ -309,7 +321,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         MCV_out_normal_pure = MCV_out_normal.split('|')[0]
                         MCV_out_normal_form_field_instance = MCV_out_normal.split('|')[1]
                     except Exception as e:
-                        MCV_out_normal_pure = ''
+                        MCV_out_normal_pure = math.nan
                         MCV_out_normal_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -317,7 +329,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         MCV_result_pure = MCV_result.split('|')[0]
                         MCV_result_form_field_instance = MCV_result.split('|')[1]
                     except Exception as e:
-                        MCV_result_pure = ''
+                        MCV_result_pure = math.nan
                         MCV_result_form_field_instance = 'This field doesnt have any data'
                         
                     try:
@@ -325,7 +337,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         MPV_out_normal_pure = MPV_out_normal.split('|')[0]
                         MPV_out_normal_form_field_instance = MPV_out_normal.split('|')[1]
                     except Exception as e:
-                        MPV_out_normal_pure = ''
+                        MPV_out_normal_pure = math.nan
                         MPV_out_normal_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -333,7 +345,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         MPV_result_pure = MPV_result.split('|')[0]
                         MPV_result_form_field_instance = MPV_result.split('|')[1]
                     except Exception as e:
-                        MPV_result_pure = ''
+                        MPV_result_pure = math.nan
                         MPV_result_form_field_instance = 'This field doesnt have any data'
                             
                     try:
@@ -341,7 +353,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         Monocytes_out_normal_pure = Monocytes_out_normal.split('|')[0]
                         Monocytes_out_normal_form_field_instance = Monocytes_out_normal.split('|')[1]
                     except Exception as e:
-                        Monocytes_out_normal_pure = ''
+                        Monocytes_out_normal_pure = math.nan
                         Monocytes_out_normal_form_field_instance = 'This field doesnt have any data'
                     
 
@@ -350,7 +362,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         Monocytes_result_pure = Monocytes_result.split('|')[0]
                         Monocytes_result_form_field_instance = Monocytes_result.split('|')[1]
                     except Exception as e:
-                        Monocytes_result_pure = ''
+                        Monocytes_result_pure = math.nan
                         Monocytes_result_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -358,7 +370,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         Neutrophil_out_normal_pure = Neutrophil_out_normal.split('|')[0]
                         Neutrophil_out_normal_form_field_isntance = Neutrophil_out_normal.split('|')[1]
                     except Exception as e:
-                        Neutrophil_out_normal_pure = ''
+                        Neutrophil_out_normal_pure = math.nan
                         Neutrophil_out_normal_form_field_isntance = 'This field doesnt have any data'
 
                     try:
@@ -366,7 +378,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         Neutrophil_result_pure = Neutrophil_result.split('|')[0]
                         Neutrophil_result_form_field_instance = Neutrophil_result.split('|')[1]
                     except Exception as e:
-                        Neutrophil_result_pure = ''
+                        Neutrophil_result_pure = math.nan
                         Neutrophil_result_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -374,7 +386,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         platelet_count_out_normal_pure = platelet_count_out_normal.split('|')[0]
                         platelet_count_out_normal_form_field_instance = platelet_count_out_normal.split('|')[1]
                     except Exception as e:
-                        platelet_count_out_normal_pure = ''
+                        platelet_count_out_normal_pure = math.nan
                         platelet_count_out_normal_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -382,7 +394,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         platelet_count_result_pure = platelet_count_result.split('|')[0]
                         platelet_count_result_form_field_instance = platelet_count_result.split('|')[1]
                     except Exception as e:
-                        platelet_count_result_pure = ''
+                        platelet_count_result_pure = math.nan
                         platelet_count_result_form_field_instance = 'This field doesnt have any data'
                         
                     try:
@@ -390,7 +402,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         RBC_out_normal_pure = RBC_out_normal.split('|')[0]
                         RBC_out_normal_form_field_instance = RBC_out_normal.split('|')[1]
                     except Exception as e:
-                        RBC_out_normal_pure = ''       
+                        RBC_out_normal_pure = math.nan       
                         RBC_out_normal_form_field_instance  = 'This field doesnt have any data'
 
                     try:
@@ -398,7 +410,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         RBC__result_pure = RBC__result.split('|')[0]
                         RBC__result_form_field_isntance = RBC__result.split('|')[1]
                     except Exception as e:
-                        RBC__result_pure = ''
+                        RBC__result_pure = math.nan
                         RBC__result_form_field_isntance = 'This field doesnt have any data'
 
                     try:
@@ -406,7 +418,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         WBC_out_normal_pure = WBC_out_normal.split('|')[0]
                         WBC_out_normal_form_field_isntance = WBC_out_normal.split('|')[1]
                     except Exception as e:
-                        WBC_out_normal_pure = ''     
+                        WBC_out_normal_pure = math.nan     
                         WBC_out_normal_form_field_isntance = 'This field doesnt have any data'
 
                     try:
@@ -414,10 +426,14 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         WBC_result_pure = WBC_result.split('|')[0]
                         WBC_result_form_field_instance = WBC_result.split('|')[1]
                     except Exception as e:
-                        WBC_result_pure = ''
+                        WBC_result_pure = math.nan
                         WBC_result_form_field_instance = 'This field doesnt have any data'
 
                     # -----------------------------------------------------------------------------------
+                    # Revision GE0070
+                    if float(was_DV_performed_pure) !=  1.0:
+                        error = [subject, visit, 'Visit Pages', was_DV_performed_form_field_instance , 'This Form will be disabled because the visit was not done', was_DV_performed_pure, 'GE0070']
+                        lista_revision.append(error)
 
                     try:
                         # Primera  revision general de formato de fecha ->GE0020
@@ -1245,9 +1261,9 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         try: 
                             validador = row[validador_raw].split('|')[0]
                         except:
-                            validador = ''
+                            validador = math.nan
                         
-                        if validador != '-' or validador != np.nan or  str(validador) != 'nan' or float(validador) !=0.0 or str(validador) != '':
+                        if math.isnan(float(validador)) or validador != '-' or validador != np.nan or  str(validador) != 'nan' or float(validador) !=0.0 or str(validador) != '':
                             mi_cuenta+=1
                         else:
                             pass

@@ -1,5 +1,6 @@
 from datetime import datetime
 import numpy as np
+import math
 import pandas as pd
 from revision_fechas import revision_fecha
 from log_writer import log_writer
@@ -126,6 +127,13 @@ def eligibility(df_root, path_excel_writer):
     df_lead_egc_undefined = df_lead_egc_undefined[['Visit','Participante','Valor']]
     df_lead_egc_undefined = df_lead_egc_undefined.rename(columns={'Participante':'Subject', 'Valor':'QTCF_undefined'})
 
+    df_visit_done = df_root[df_root['name']=='Date of visit']
+    df_visit_done = df_visit_done[['Visit','Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
+    df_visit_done = df_visit_done[df_visit_done['Campo']=='Was the visit performed?']
+    df_visit_done['Valor_completo'] = df_visit_done['Valor'].astype(str) + '|' + df_visit_done['FormFieldInstance Id'].astype(str)
+    df_visit_done = df_visit_done[['Visit','Participante','Valor_completo']]
+    df_visit_done = df_visit_done.rename(columns={'Participante':'Subject', 'Valor_completo':'was_DV_performed'})
+
     lista_revision = []
 
     lista_logs = ['Eligibility']
@@ -162,6 +170,7 @@ def eligibility(df_root, path_excel_writer):
             pru = pru.merge(df_lead_egc, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_lead_egc_if_abnormal, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_lead_egc_undefined, on=['Subject', 'Visit'], how='left')
+            pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
 
             lista_revision_I_E = []
 
@@ -187,6 +196,10 @@ def eligibility(df_root, path_excel_writer):
                 hbsag_result = row['hbsag_result']
                 hcv_result = row['hcv_result']
                 
+                was_DV_performed = row['was_DV_performed']
+                was_DV_performed_pure = was_DV_performed.split('|')[0]
+                was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
+            
                 if status == 'DATA_ENTRY_COMPLETE':
 
                     try:
@@ -194,7 +207,7 @@ def eligibility(df_root, path_excel_writer):
                         subject_eligible_for_study_pure = subject_eligible_for_study.split('|')[0]
                         subject_eligible_for_study_form_field_instance = subject_eligible_for_study.split('|')[1]
                     except Exception as e:
-                        subject_eligible_for_study_pure = np.nan
+                        subject_eligible_for_study_pure = math.nan
                         subject_eligible_for_study_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -202,7 +215,7 @@ def eligibility(df_root, path_excel_writer):
                         participant_randomization_pure = participant_randomization.split('|')[0]
                         participant_randomization_form_field_instance = participant_randomization.split('|')[1]
                     except Exception as e:
-                        participant_randomization_pure = np.nan
+                        participant_randomization_pure = math.nan
                         participant_randomization_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -210,7 +223,7 @@ def eligibility(df_root, path_excel_writer):
                         will_randomized_pure = will_randomized.split('|')[0]
                         will_randomized_form_field_instance = will_randomized.split('|')[1]
                     except Exception as e:
-                        will_randomized_pure = ''
+                        will_randomized_pure = math.nan
                         will_randomized_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -218,7 +231,7 @@ def eligibility(df_root, path_excel_writer):
                         subject_enrolled_study_pure = subject_enrolled_study.split('|')[0]
                         subject_enrolled_study_form_field_instance = subject_enrolled_study.split('|')[1]
                     except Exception as e:
-                        subject_enrolled_study_pure = ''
+                        subject_enrolled_study_pure = math.nan
                         subject_enrolled_study_form_field_instance = 'This field doesnt have any data'
 
                     
@@ -259,7 +272,7 @@ def eligibility(df_root, path_excel_writer):
                         eligibility_criteria_number_pure = eligibility_criteria_number.split('|')[0]
                         eligibility_criteria_number_form_field_instance = eligibility_criteria_number.split('|')[1]
                     except:
-                        eligibility_criteria_number_pure = ''
+                        eligibility_criteria_number_pure = math.nan
                         eligibility_criteria_number_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -267,7 +280,7 @@ def eligibility(df_root, path_excel_writer):
                         eligibility_criteria_type_pure = eligibility_criteria_type.split('|')[0]
                         eligibility_criteria_type_form_field_instance = eligibility_criteria_type.split('|')[1]
                     except:
-                        eligibility_criteria_type_pure = ''
+                        eligibility_criteria_type_pure = math.nan
                         eligibility_criteria_type_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -275,10 +288,15 @@ def eligibility(df_root, path_excel_writer):
                         eligibility_specify_pure = eligibility_specify.split('|')[0]
                         eligibility_specify_form_field_instance = eligibility_specify.split('|')[1]
                     except:
-                        eligibility_specify_pure = ''
+                        eligibility_specify_pure = math.nan
                         eligibility_specify_form_field_instance = 'This field doesnt have any data'
 
                     #---------------------------------------------------------------------------
+                    # Revision GE0070
+                    if float(was_DV_performed_pure) !=  1.0:
+                        error = [subject, visit, 'Visit Pages', was_DV_performed_form_field_instance , 'This Form will be disabled because the visit was not done', was_DV_performed_pure, 'GE0070']
+                        lista_revision.append(error)
+
                     if float(participant_randomization_pure) == 0.0 or float(subject_eligible_for_study_pure) == 0.0:
                         try:
                             # Primera  revision general de formato de fecha ->GE0020
@@ -322,7 +340,7 @@ def eligibility(df_root, path_excel_writer):
                         # Revision para IE0180 
                         try:
                             if float(will_randomized_pure) == 0.0:
-                                if eligibility_criteria_number_pure != '' or eligibility_criteria_type_pure != '' or eligibility_specify_pure != '':
+                                if math.isnan(float(eligibility_criteria_number_pure)) == False or math.isnan(float(eligibility_criteria_type_pure)) == False or math.isnan(float(eligibility_specify_pure)) == False :
                                     pass
                                 else:
                                     error = [subject, visit, 'Will the participant be randomized?', will_randomized_form_field_instance, \
@@ -336,7 +354,7 @@ def eligibility(df_root, path_excel_writer):
                         try:
                             if float(will_randomized_pure) == 1.0:
                                     
-                                if eligibility_criteria_number_pure != '' or eligibility_criteria_type_pure != '' or eligibility_specify_pure != '':
+                                if math.isnan(float(eligibility_criteria_number_pure)) == False or math.isnan(float(eligibility_criteria_type_pure)) == False or math.isnan(float(eligibility_specify_pure)) == False :
                                     error = [subject, visit, 'Will the participant be randomized?', will_randomized_form_field_instance, \
                                             'If "Is the participant eligible to randomization?" ="Yes", no sections of "Provide unfulfilled eligibility criteria" should be added',\
                                                 will_randomized_pure, 'IE0190']
@@ -475,8 +493,7 @@ def eligibility(df_root, path_excel_writer):
                         # Revision para IE0140
                         try:
                             if float(participant_randomization_pure) == 0.0:
-
-                                if eligibility_criteria_number_pure != '' or eligibility_criteria_type_pure != '' or eligibility_specify_pure != '':
+                                if math.isnan(float(eligibility_criteria_number_pure)) == False or math.isnan(float(eligibility_criteria_type_pure)) == False or math.isnan(float(eligibility_specify_pure)) == False :
                                     pass
                                 else:
                                     error = [subject, visit, 'Is the participant eligible to randomization?', participant_randomization_form_field_instance, \
@@ -489,7 +506,7 @@ def eligibility(df_root, path_excel_writer):
                         # Revision para IE0150
                         try:
                             if float(participant_randomization_pure) == 1.0:
-                                if eligibility_criteria_number_pure != '' or eligibility_criteria_type_pure != '' or eligibility_specify_pure != '':
+                                if math.isnan(float(eligibility_criteria_number_pure)) == False or math.isnan(float(eligibility_criteria_type_pure)) == False or math.isnan(float(eligibility_specify_pure)) == False :
                                     error = [subject, visit, 'Is the participant eligible to randomization?', participant_randomization_form_field_instance, \
                                              'If "Is the participant eligible to randomization?" ="Yes", no sections of "Provide unfulfilled eligibility criteria" should be added', \
                                                 subject_eligible_for_study_pure, 'IE0150']

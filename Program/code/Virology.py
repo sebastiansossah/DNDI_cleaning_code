@@ -4,6 +4,7 @@ from datetime import datetime
 from revision_fechas import revision_fecha
 from log_writer import log_writer
 import warnings
+import math
 from openpyxl import load_workbook
 from openpyxl.utils.dataframe import dataframe_to_rows
 warnings.filterwarnings('ignore')
@@ -37,6 +38,13 @@ def virology(df_root, path_excel_writer):
     df_end_study_general = df_end_study_general[['Participante', 'Valor']]
     df_end_study_general = df_end_study_general.rename(columns={'Participante':'Subject', 'Valor':'end_study_date'})
 
+    df_visit_done = df_root[df_root['name']=='Date of visit']
+    df_visit_done = df_visit_done[['Visit','Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
+    df_visit_done = df_visit_done[df_visit_done['Campo']=='Was the visit performed?']
+    df_visit_done['Valor_completo'] = df_visit_done['Valor'].astype(str) + '|' + df_visit_done['FormFieldInstance Id'].astype(str)
+    df_visit_done = df_visit_done[['Visit','Participante','Valor_completo']]
+    df_visit_done = df_visit_done.rename(columns={'Participante':'Subject', 'Valor_completo':'was_DV_performed'})
+
     lista_revision = []
     lista_logs = ['Virology']
 
@@ -58,6 +66,7 @@ def virology(df_root, path_excel_writer):
             pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_informed, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
+            pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
 
             for index, row in pru.iterrows():
                 status = row['status']
@@ -68,13 +77,17 @@ def virology(df_root, path_excel_writer):
                 date_inform_consent = row['Informed_consent_date']
                 end_study_date = row['end_study_date']
 
+                was_DV_performed = row['was_DV_performed']
+                was_DV_performed_pure = was_DV_performed.split('|')[0]
+                was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
+   
                 if status == 'DATA_ENTRY_COMPLETE':
                     try:
                         blood_sample_collected = row["Blood Sample Collected"]
                         blood_sample_collected_pure = blood_sample_collected.split('|')[0]
                         blood_sample_collected_form_field_isntance = blood_sample_collected.split('|')[1]
                     except Exception as e:
-                        blood_sample_collected_pure = ''
+                        blood_sample_collected_pure = math.nan
                         blood_sample_collected_form_field_isntance = 'This field doesnt have any data'
                     
                     try:
@@ -191,9 +204,9 @@ def virology(df_root, path_excel_writer):
                         try: 
                             validador = row[validador_raw].split('|')[0]
                         except:
-                            validador = ''
+                            validador = math.nan
                         
-                        if validador != '-' or validador != np.nan or  str(validador) != 'nan' or float(validador) !=0.0 or str(validador) != '':
+                        if math.isnan(float(validador)) or validador != '-' or validador != np.nan or  str(validador) != 'nan' or float(validador) !=0.0 or str(validador) != '':
                             mi_cuenta+=1
                         else:
                             pass

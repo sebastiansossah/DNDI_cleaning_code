@@ -4,7 +4,7 @@ from datetime import datetime
 
 # Importing forms from screening visit--------------------------------------------------------------------------------
 from Date_of_visit import date_of_visit
-from Informed_Consent import informed_consent
+from Informed_Consent import informed_consent_revision
 from Demographics import demographic
 from Child_Bearing_Potential import child_bearing_potential
 from History_of_cutaneous_leishmaniasis import history_of_cutaneous_leishmaniasis
@@ -62,8 +62,6 @@ if __name__ == '__main__':
     current_date = datetime.now().strftime("%Y%m%d")
     
     df_root = pd.read_excel(path)
-    df_root = df_root[(df_root['visible'] == 1.0) | (df_root['visible'] == 1) | (df_root['visible'] == 1.)]
-
     df_root.rename(columns = {'Instancia':'FormFieldInstance Id'}, inplace = True)
     path_excel_writer = r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\Program\output\DNDi_cleaning_yyyymmdd.xlsx".replace('yyyymmdd', current_date)
     log_file = r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\Program\output\DNDi_log_yyyymmdd.txt".replace('yyyymmdd', current_date)
@@ -81,7 +79,7 @@ if __name__ == '__main__':
     # --------------------- Screening visit --------------------------------------38
 
     date_of_visit = date_of_visit(df_root, path_excel_writer)
-    informed_consent= informed_consent(df_root, path_excel_writer)
+    informed_consent_revision= informed_consent_revision(df_root, path_excel_writer)
     demographic = demographic(df_root, path_excel_writer)
     child_bearing_potential = child_bearing_potential(df_root, path_excel_writer)
     history_of_cutaneous_leishmaniasis = history_of_cutaneous_leishmaniasis(df_root, path_excel_writer)
@@ -129,7 +127,7 @@ if __name__ == '__main__':
 
 
 list_variables_union = [date_of_visit,
-informed_consent,
+informed_consent_revision,
 demographic,
 child_bearing_potential,
 history_of_cutaneous_leishmaniasis,

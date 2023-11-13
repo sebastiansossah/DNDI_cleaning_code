@@ -1,4 +1,5 @@
 from datetime import datetime
+import math
 from log_writer import log_writer
 import numpy as np
 from revision_fechas import revision_fecha
@@ -41,6 +42,13 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
     df_end_study_general = df_end_study_general[['Participante', 'Valor']]
     df_end_study_general = df_end_study_general.rename(columns={'Participante':'Subject', 'Valor':'end_study_date'})
 
+    df_visit_done = df_root[df_root['name']=='Date of visit']
+    df_visit_done = df_visit_done[['Visit','Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
+    df_visit_done = df_visit_done[df_visit_done['Campo']=='Was the visit performed?']
+    df_visit_done['Valor_completo'] = df_visit_done['Valor'].astype(str) + '|' + df_visit_done['FormFieldInstance Id'].astype(str)
+    df_visit_done = df_visit_done[['Visit','Participante','Valor_completo']]
+    df_visit_done = df_visit_done.rename(columns={'Participante':'Subject', 'Valor_completo':'was_DV_performed'})
+
     lista_revision = []
     lista_logs = ['Clinical Laboratory Test - Coagulation']
 
@@ -62,6 +70,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
             pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_informed, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
+            pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
 
             for index, row in pru.iterrows():
                 subject = row['Subject']
@@ -72,13 +81,17 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                 date_inform_consent = row['Informed_consent_date']
                 end_study_date = row['end_study_date']
 
+                was_DV_performed = row['was_DV_performed']
+                was_DV_performed_pure = was_DV_performed.split('|')[0]
+                was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
+   
                 if status == 'DATA_ENTRY_COMPLETE':
                     try:
                         blood_sample_collected = row['Blood Sample Collected']
                         blood_sample_collected_pure = blood_sample_collected.split('|')[0]
                         blood_sample_collected_form_field_instance = blood_sample_collected.split('|')[1]
                     except Exception as e:
-                        blood_sample_collected_pure = ''
+                        blood_sample_collected_pure = math.nan
                         blood_sample_collected_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -99,7 +112,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                         INR_pure = INR.split('|')[0]
                         INR_form_field_instance = INR.split('|')[1]
                     except Exception as e:
-                        INR_pure = ''    
+                        INR_pure = math.nan
                         INR_form_field_instance = 'This field doesnt have any data'
 
                     # try:
@@ -112,7 +125,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                         INR_out_normal_range_pure = INR_out_normal_range.split('|')[0]
                         INR_out_normal_range_form_field_instance = INR_out_normal_range.split('|')[1]
                     except Exception as e:
-                        INR_out_normal_range_pure = ''
+                        INR_out_normal_range_pure = math.nan
                         INR_out_normal_range_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -128,7 +141,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                         PT_pure = PT.split('|')[0]
                         PT_form_field_isntance = PT.split('|')[1]
                     except Exception as e:
-                        PT_pure = '' 
+                        PT_pure = math.nan
                         PT_form_field_isntance = 'This field doesnt have any data'
 
                     # try:
@@ -141,7 +154,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                         PT_out_normal_range_pure = PT_out_normal_range.split('|')[0]
                         PT_out_normal_range_form_field_instance = PT_out_normal_range.split('|')[1]
                     except Exception as e:
-                        PT_out_normal_range_pure = ''     
+                        PT_out_normal_range_pure = math.nan
                         PT_out_normal_range_form_field_instance   = 'This field doesnt have any data'
 
                     try:
@@ -149,7 +162,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                         PT_result_pure = PT_result.split('|')[0]
                         PT_result_form_field_instance = PT_result.split('|')[1]
                     except Exception as e:
-                        PT_result_pure = ''       
+                        PT_result_pure = math.nan     
                         PT_result_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -157,7 +170,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                         aPTT_pure = aPTT.split('|')[0]
                         aPTT_form_field_instance = aPTT.split('|')[1]
                     except Exception as e:
-                        aPTT_pure = ''
+                        aPTT_pure = math.nan
                         aPTT_form_field_instance = 'This field doesnt have any data'
 
                     # try:
@@ -170,7 +183,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                         aPTT_out_normal_range_pure = aPTT_out_normal_range.split('|')[0]
                         aPTT_out_normal_range_form_field_instance = aPTT_out_normal_range.split('|')[1]
                     except Exception as e:
-                        aPTT_out_normal_range_pure = ''
+                        aPTT_out_normal_range_pure = math.nan
                         aPTT_out_normal_range_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -178,10 +191,15 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                         aPTT_result_pure = aPTT_result.split('|')[0]
                         aPTT_result_form_field_instance = aPTT_result.split('|')[1]
                     except Exception as e:
-                        aPTT_result_pure = ''
+                        aPTT_result_pure = math.nan
                         aPTT_result_form_field_instance = 'This field doesnt have any data'
 
                     # ------------------------------------------------------------------------------------------------------------
+                    # Revision GE0070
+                    if float(was_DV_performed_pure) !=  1.0:
+                        error = [subject, visit, 'Visit Pages', was_DV_performed_form_field_instance , 'This Form will be disabled because the visit was not done', was_DV_performed_pure, 'GE0070']
+                        lista_revision.append(error)
+
                     try:
                         # Primera  revision general de formato de fecha ->GE0020
                         f = revision_fecha(date_collected_pure)
@@ -269,9 +287,9 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                         try:
                             validador = row[validador_raw].split('|')[0]
                         except:
-                            validador = ''
+                            validador = math.nan
                         
-                        if validador != '-' or validador != np.nan or  str(validador) != 'nan' or float(validador) !=0.0 or str(validador) != '':
+                        if math.isnan(float(validador)) or validador != '-' or validador != np.nan or  str(validador) != 'nan' or float(validador) !=0.0 or str(validador) != '':
                             mi_cuenta+=1
                         else:
                             pass

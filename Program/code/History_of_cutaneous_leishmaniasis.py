@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import math
 from datetime import datetime
 from revision_fechas import revision_fecha, date_format
 import warnings
@@ -44,7 +45,12 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
     df_demographic_age_month = df_demographic_age_month[['Visit','Participante','Valor']]
     df_demographic_age_month = df_demographic_age_month.rename(columns={'Participante':'Subject', 'Valor':'Birth_month'})
 
-
+    df_visit_done = df_root[df_root['name']=='Date of visit']
+    df_visit_done = df_visit_done[['Visit','Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
+    df_visit_done = df_visit_done[df_visit_done['Campo']=='Was the visit performed?']
+    df_visit_done['Valor_completo'] = df_visit_done['Valor'].astype(str) + '|' + df_visit_done['FormFieldInstance Id'].astype(str)
+    df_visit_done = df_visit_done[['Visit','Participante','Valor_completo']]
+    df_visit_done = df_visit_done.rename(columns={'Participante':'Subject', 'Valor_completo':'was_DV_performed'})
 
     lista_logs = ['History of cutaneous leishmaniasis']
     lista_revision = []
@@ -69,6 +75,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
             pru = pru.merge(df_informed, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_demographic_age_month, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_demographic_age_year, on=['Subject', 'Visit'], how='left')
+            pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
 
             lista_other_names = []
 
@@ -77,6 +84,10 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                 subject = row['Subject']
                 visit = row['Visit']
 
+                was_DV_performed = row['was_DV_performed']
+                was_DV_performed_pure = was_DV_performed.split('|')[0]
+                was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
+                
                 date_of_visit = row['Date_of_visit']
 
                 year_birth = row['Birth_year']
@@ -115,7 +126,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                         species_name_pure = species_name.split('|')[0]
                         species_name_form_field_instance = species_name.split('|')[1]
                     except Exception as e:
-                        species_name_pure = ''
+                        species_name_pure = math.nan
                         species_name_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -123,7 +134,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                         previous_history_leishmaniasis_pure = previous_history_leishmaniasis.split('|')[0]
                         previous_history_leishmaniasis_form_field_instance = previous_history_leishmaniasis.split('|')[1]
                     except Exception as e:
-                        previous_history_leishmaniasis_pure = ''
+                        previous_history_leishmaniasis_pure = math.nan
                         previous_history_leishmaniasis_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -135,6 +146,12 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                         date_diagnosis_form_field_instance = 'This field doesnt have any data'
 
                     #----------------------------------------------------------------------------
+
+                    # Revision GE0070
+                    if float(was_DV_performed_pure) !=  1.0:
+                        error = [subject, visit, 'Visit Pages', was_DV_performed_form_field_instance , 'This Form will be disabled because the visit was not done', was_DV_performed_pure, 'GE0070']
+                        lista_revision.append(error)
+
                     try:
                         # Primera  revision general de formato de fecha ->GE0020
                         f = revision_fecha(date_confirmed_diagnosis_pure)
@@ -209,7 +226,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                     # Revision CL0040
                     try: 
                         if 99.0 in [float(i) for i in species_identification_pure.split(',')]:
-                            if str(species_name_pure) == '' or float(species_name_pure) == np.nan or  str(species_name_pure) == '-':
+                            if math.isnan(float(species_name_pure)) or str(species_name_pure) == '' or float(species_name_pure) == np.nan or  str(species_name_pure) == '-':
                                 error = [subject, visit, 'Species identification', species_identification_form_field_instance ,\
                                             'If "other" is selected, there must be at least one "other species" section added' , species_name_pure, 'CL0040']
                                 lista_revision.append(error)
@@ -220,7 +237,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                     try: 
                         if 99.0 not in [float(i) for i in species_identification_pure.split(',')]:
                             try:
-                                if str(species_name_pure) != '' or float(species_name_pure) != np.nan or  str(species_name_pure) != '-':
+                                if math.isnan(float(species_name_pure)) or str(species_name_pure) != '' or float(species_name_pure) != np.nan or  str(species_name_pure) != '-':
                                     error = [subject, visit, 'Species identification', species_identification_form_field_instance, \
                                             'If at least one "other species" section is added, the "other" option must be selected' , f'{species_identification_pure} - {species_name_pure}', 'CL0050']
                                     lista_revision.append(error)
@@ -253,9 +270,9 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                         try: 
                             validador = row[validador_raw].split('|')[0]
                         except:
-                            validador = ''
+                            validador = math.nan
 
-                        if validador != '-' or validador != np.nan or  str(validador) != 'nan' or float(validador) !=0.0 or str(validador) != '':
+                        if math.isnan(float(validador)) or validador != '-' or validador != np.nan or  str(validador) != 'nan' or float(validador) !=0.0 or str(validador) != '':
                             mi_cuenta+=1
                         else:
                             pass

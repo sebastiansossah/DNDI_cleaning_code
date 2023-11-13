@@ -1,3 +1,4 @@
+import math
 from datetime import datetime
 from revision_fechas import revision_fecha, date_format
 from log_writer import log_writer
@@ -26,6 +27,13 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
     df_demographic_age = df_demographic_age[['Visit','Participante','Valor']]
     df_demographic_age = df_demographic_age.rename(columns={'Participante':'Subject', 'Valor':'Birth_Year'})
 
+    df_visit_done = df_root[df_root['name']=='Date of visit']
+    df_visit_done = df_visit_done[['Visit','Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
+    df_visit_done = df_visit_done[df_visit_done['Campo']=='Was the visit performed?']
+    df_visit_done['Valor_completo'] = df_visit_done['Valor'].astype(str) + '|' + df_visit_done['FormFieldInstance Id'].astype(str)
+    df_visit_done = df_visit_done[['Visit','Participante','Valor_completo']]
+    df_visit_done = df_visit_done.rename(columns={'Participante':'Subject', 'Valor_completo':'was_DV_performed'})
+
     lista_revision = []
     lista_logs = ['Medical Or Surgical History (other than Leishmaniasis)']
 
@@ -47,10 +55,16 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
             pru['Visit'] = visita
             pru['status'] = pru_1['activityState'].unique()
             pru = pru.merge(df_demographic_age, on=['Subject', 'Visit'], how='left')
+            pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
 
             for index, row in pru.iterrows():
 
                 status = row['status']
+
+                was_DV_performed = row['was_DV_performed']
+                was_DV_performed_pure = was_DV_performed.split('|')[0]
+                was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
+
                 if status == 'DATA_ENTRY_COMPLETE':
                 
                     subject = row['Subject']
@@ -62,7 +76,7 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
                         any_relevant_medical_pure = any_relevant_medical.split('|')[0]
                         any_relevant_medical_form_field_instance = any_relevant_medical.split('|')[1]
                     except:
-                        any_relevant_medical_pure = ''
+                        any_relevant_medical_pure = math.nan
                         any_relevant_medical_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -70,7 +84,7 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
                         medical_surgical_pure = medical_surgical.split('|')[0]
                         medical_surgical_form_field_instance = medical_surgical.split('|')[1]
                     except Exception as e:
-                        medical_surgical_pure = ''
+                        medical_surgical_pure = math.nan
                         medical_surgical_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -95,6 +109,11 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
                     # currently_treated = ''
                     
                     # --------------------------------------------------------------------------------------
+
+                    # Revision GE0070
+                    if float(was_DV_performed_pure) !=  1.0:
+                        error = [subject, visit, 'Visit Pages', was_DV_performed_form_field_instance , 'This Form will be disabled because the visit was not done', was_DV_performed_pure, 'GE0070']
+                        lista_revision.append(error)
 
                     try:
                         # Primera  revision general de formato de fecha ->GE0020
@@ -126,7 +145,7 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
                             if type(medical_surgical_pure) == pd.Series:
                                 print('revision MS0010 revisar medical or surgical')
                                 pass
-                            elif medical_surgical_pure != '' :
+                            elif math.isnan(float(medical_surgical_pure)) :
                                 pass
                             else:
                                 error = [subject, visit, 'Are there any relevant medical history or surgical history?', any_relevant_medical_form_field_instance,\
@@ -141,7 +160,7 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
                             if type(medical_surgical_pure) != pd.Series:
                                 print('revision MS0020 revisar medical or surgical')
                                 pass
-                            elif medical_surgical_pure == '':
+                            elif math.isnan(float(medical_surgical_pure)):
                                 pass
                             else:
                                 error = [subject, visit, 'Are there any relevant medical history or surgical history?', any_relevant_medical_form_field_instance,\

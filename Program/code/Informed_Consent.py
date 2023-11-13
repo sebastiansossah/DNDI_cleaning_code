@@ -10,7 +10,7 @@ from openpyxl.utils.dataframe import dataframe_to_rows
 warnings.filterwarnings('ignore')
 
 
-def informed_consent(df_root, path_excel_writer):
+def informed_consent_revision(df_root, path_excel_writer):
     '''
     Esta funcion tiene como finalidad la revision de cada uno de los puntos 
     del edit check para el formulario de informed consent
@@ -27,6 +27,13 @@ def informed_consent(df_root, path_excel_writer):
     df_visit_date = df_visit_date[['Visit','Participante','Valor']]
     df_visit_date = df_visit_date.rename(columns={'Participante':'Subject'})
 
+    df_visit_done = df_root[df_root['name']=='Date of visit']
+    df_visit_done = df_visit_done[['Visit','Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
+    df_visit_done = df_visit_done[df_visit_done['Campo']=='Was the visit performed?']
+    df_visit_done['Valor_completo'] = df_visit_done['Valor'].astype(str) + '|' + df_visit_done['FormFieldInstance Id'].astype(str)
+    df_visit_done = df_visit_done[['Visit','Participante','Valor_completo']]
+    df_visit_done = df_visit_done.rename(columns={'Participante':'Subject', 'Valor_completo':'was_DV_performed'})
+
     lista_revision = []
     lista_logs = ['Informed Consent']
 
@@ -37,7 +44,9 @@ def informed_consent(df_root, path_excel_writer):
     for sujeto in lista_sujetos:
         sujeto_principal = df[df['Participante']==sujeto]
         
+        
         for visita in sujeto_principal.Visit.unique():
+            
             pru_1 = sujeto_principal[sujeto_principal['Visit']==visita]
             pru = pru_1
             pru = pru[['Campo', 'Value_id']].T
@@ -47,6 +56,7 @@ def informed_consent(df_root, path_excel_writer):
             pru['Visit'] = visita
             pru['status'] = pru_1['activityState'].unique()
             pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
+            pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
             
 
             for index, row in pru.iterrows():
@@ -55,9 +65,11 @@ def informed_consent(df_root, path_excel_writer):
                 visit = row['Visit']
 
                 fecha_visita = row['Valor']
-                
-                
 
+                was_DV_performed = row['was_DV_performed']
+                was_DV_performed_pure = was_DV_performed.split('|')[0]
+                was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
+   
                 try:
                     signature_date =  row['Informed consent signature date']
                     signature_date_pure = signature_date.split('|')[0]
@@ -78,6 +90,11 @@ def informed_consent(df_root, path_excel_writer):
                 date_format = '%d-%b-%Y'
 
                 if status == 'DATA_ENTRY_COMPLETE':
+
+                    # Revision GE0070
+                    if float(was_DV_performed_pure) !=  1.0:
+                        error = [subject, visit, 'Visit Pages', was_DV_performed_form_field_instance , 'This Form will be disabled because the visit was not done', was_DV_performed_pure, 'GE0070']
+                        lista_revision.append(error)
 
                     # Revision general de la fehcha GE0020
                     try:
@@ -123,6 +140,6 @@ def informed_consent(df_root, path_excel_writer):
 
 if __name__ == '__main__':
     path_excel = r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\Program\output\prueba.xlsx"
-    df_root = pd.read_excel(r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\data\newDNDI.xlsx")
-    informed_consent(df_root, path_excel ) 
+    df_root = pd.read_excel(r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\Program\data\6da79231-2439-4881-aeca-81cf5e9cd052.xlsx")
+    informed_consent_revision(df_root, path_excel ) 
 

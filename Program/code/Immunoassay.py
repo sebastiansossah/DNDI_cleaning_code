@@ -1,4 +1,5 @@
 import pandas as pd
+import math
 from datetime import datetime
 from revision_fechas import revision_fecha
 from log_writer import log_writer
@@ -39,6 +40,13 @@ def immunoassay(df_root, path_excel_writer):
     df_end_study_general = df_end_study_general[['Participante', 'Valor']]
     df_end_study_general = df_end_study_general.rename(columns={'Participante':'Subject', 'Valor':'end_study_date'})
 
+    df_visit_done = df_root[df_root['name']=='Date of visit']
+    df_visit_done = df_visit_done[['Visit','Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
+    df_visit_done = df_visit_done[df_visit_done['Campo']=='Was the visit performed?']
+    df_visit_done['Valor_completo'] = df_visit_done['Valor'].astype(str) + '|' + df_visit_done['FormFieldInstance Id'].astype(str)
+    df_visit_done = df_visit_done[['Visit','Participante','Valor_completo']]
+    df_visit_done = df_visit_done.rename(columns={'Participante':'Subject', 'Valor_completo':'was_DV_performed'})
+
     lista_revision = []
     lista_logs = ['Immunoassay (Thyroid Stimulating Hormone)']
 
@@ -60,12 +68,17 @@ def immunoassay(df_root, path_excel_writer):
             pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_informed, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
+            pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
 
             for index, row in pru.iterrows():
                 status = row['status']
                 subject = row['Subject']
                 visit = row['Visit']
 
+                was_DV_performed = row['was_DV_performed']
+                was_DV_performed_pure = was_DV_performed.split('|')[0]
+                was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
+   
                 date_of_visit = row['Date_of_visit']
                 date_inform_consent = row['Informed_consent_date']
                 end_study_date = row['end_study_date']
@@ -76,7 +89,7 @@ def immunoassay(df_root, path_excel_writer):
                         blood_sample_collected_pure = blood_sample_collected.split('|')[0]
                         blood_sample_collected_form_field_instance = blood_sample_collected.split('|')[1]
                     except Exception as e:
-                        blood_sample_collected_pure = ''    
+                        blood_sample_collected_pure = math.nan  
                         blood_sample_collected_form_field_instance  = 'This field doesnt have any data'
 
                     try:
@@ -92,7 +105,7 @@ def immunoassay(df_root, path_excel_writer):
                         provide_reason_pure = provide_reason.split('|')[0]
                         provide_reason_form_field_instance = provide_reason.split('|')[1]
                     except Exception as e:
-                        provide_reason_pure = ''
+                        provide_reason_pure = math.nan  
                         provide_reason_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -100,7 +113,7 @@ def immunoassay(df_root, path_excel_writer):
                         TSH_pure = TSH.split('|')[0]
                         TSH_form_field_instance = TSH.split('|')[1]
                     except Exception as e:
-                        TSH_pure = ''
+                        TSH_pure = math.nan  
                         TSH_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -108,7 +121,7 @@ def immunoassay(df_root, path_excel_writer):
                         TSH_specify_pure = TSH_specify.split('|')[0]
                         TSH_specify_form_field_instnace = TSH_specify.split('|')[1]
                     except Exception as e:
-                        TSH_specify_pure = ''
+                        TSH_specify_pure = math.nan  
                         TSH_specify_form_field_instnace = 'This field doesnt have any data'
 
                     try:
@@ -116,7 +129,7 @@ def immunoassay(df_root, path_excel_writer):
                         TSH_out_normal_pure = TSH_out_normal.split('|')[0]
                         TSH_out_normal_form_field_instance = TSH_out_normal.split('|')[1]
                     except Exception as e:
-                        TSH_out_normal_pure = ''
+                        TSH_out_normal_pure = math.nan  
                         TSH_out_normal_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -124,10 +137,16 @@ def immunoassay(df_root, path_excel_writer):
                         TSH_result_pure = TSH_result.split('|')[0]
                         TSH_result_form_field_instance = TSH_result.split('|')[1]
                     except Exception as e:
-                        TSH_result_pure = ''
+                        TSH_result_pure = math.nan  
                         TSH_result_form_field_instance = 'This field doesnt have any data'
 
                     # -----------------------------------------------------------------------------------------------------------------
+
+                    # Revision GE0070
+                    if float(was_DV_performed_pure) !=  1.0:
+                        error = [subject, visit, 'Visit Pages', was_DV_performed_form_field_instance , 'This Form will be disabled because the visit was not done', was_DV_performed_pure, 'GE0070']
+                        lista_revision.append(error)
+
                     try:
                         # Primera  revision general de formato de fecha ->GE0020
                         f = revision_fecha(date_collected_pure)

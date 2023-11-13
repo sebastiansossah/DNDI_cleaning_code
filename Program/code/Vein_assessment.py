@@ -1,4 +1,5 @@
 import pandas as pd
+import math
 from datetime import datetime
 from revision_fechas import revision_fecha
 from log_writer import log_writer
@@ -38,6 +39,13 @@ def vein_assesment(df_root, path_excel_writer):
     df_end_study_general = df_end_study_general[['Participante', 'Valor']]
     df_end_study_general = df_end_study_general.rename(columns={'Participante':'Subject', 'Valor':'end_study_date'})
 
+    df_visit_done = df_root[df_root['name']=='Date of visit']
+    df_visit_done = df_visit_done[['Visit','Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
+    df_visit_done = df_visit_done[df_visit_done['Campo']=='Was the visit performed?']
+    df_visit_done['Valor_completo'] = df_visit_done['Valor'].astype(str) + '|' + df_visit_done['FormFieldInstance Id'].astype(str)
+    df_visit_done = df_visit_done[['Visit','Participante','Valor_completo']]
+    df_visit_done = df_visit_done.rename(columns={'Participante':'Subject', 'Valor_completo':'was_DV_performed'})
+
 
     lista_logs = ['Vein Assesment']
     lista_revision = []
@@ -60,9 +68,15 @@ def vein_assesment(df_root, path_excel_writer):
             pru = pru.merge(df_informed, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
+            pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
     
             for index, row in pru.iterrows():
                 status = row['status']
+
+                was_DV_performed = row['was_DV_performed']
+                was_DV_performed_pure = was_DV_performed.split('|')[0]
+                was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
+                
         
                 if status == 'DATA_ENTRY_COMPLETE':
                     subject = row['Subject']
@@ -76,7 +90,7 @@ def vein_assesment(df_root, path_excel_writer):
                         vein_assessment_performed_pure = vein_assessment_performed.split('|')[0]
                         vein_assessment_performed_form_field_instance =  vein_assessment_performed.split('|')[1]
                     except Exception as e:
-                        vein_assessment_performed_pure = ''
+                        vein_assessment_performed_pure = math.nan
                         vein_assessment_performed_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -104,6 +118,11 @@ def vein_assesment(df_root, path_excel_writer):
                         suitable_veins_form_field_isntance = 'This field doesnt have any data'
                     
                     # ----------------------------------------------------------------------
+                    # Revision GE0070
+                    if float(was_DV_performed_pure) !=  1.0:
+                        error = [subject, visit, 'Visit Pages', was_DV_performed_form_field_instance , 'This Form will be disabled because the visit was not done', was_DV_performed_pure, 'GE0070']
+                        lista_revision.append(error)
+
                     try:
                         # Primera  revision general de formato de fecha -> GE0020
                         f = revision_fecha(date_of_assesment_pure)

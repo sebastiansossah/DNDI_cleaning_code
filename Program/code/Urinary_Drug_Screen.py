@@ -1,4 +1,5 @@
 from openpyxl import load_workbook
+import math
 from openpyxl.utils.dataframe import dataframe_to_rows
 from log_writer import log_writer
 import pandas as pd
@@ -36,6 +37,13 @@ def urinary_drug_screen(df_root, path_excel_writer):
     df_end_study_general = df_end_study_general[['Participante', 'Valor']]
     df_end_study_general = df_end_study_general.rename(columns={'Participante':'Subject', 'Valor':'end_study_date'})
 
+    df_visit_done = df_root[df_root['name']=='Date of visit']
+    df_visit_done = df_visit_done[['Visit','Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
+    df_visit_done = df_visit_done[df_visit_done['Campo']=='Was the visit performed?']
+    df_visit_done['Valor_completo'] = df_visit_done['Valor'].astype(str) + '|' + df_visit_done['FormFieldInstance Id'].astype(str)
+    df_visit_done = df_visit_done[['Visit','Participante','Valor_completo']]
+    df_visit_done = df_visit_done.rename(columns={'Participante':'Subject', 'Valor_completo':'was_DV_performed'})
+
     warnings.filterwarnings('ignore')
 
     lista_revision = []
@@ -59,12 +67,17 @@ def urinary_drug_screen(df_root, path_excel_writer):
             pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_informed, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
+            pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
 
             for index, row in pru.iterrows():
                 status = row['status']
                 subject = row['Subject']
                 visit = row['Visit']
 
+                was_DV_performed = row['was_DV_performed']
+                was_DV_performed_pure = was_DV_performed.split('|')[0]
+                was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
+                
                 date_of_visit = row['Date_of_visit']
                 date_inform_consent = row['Informed_consent_date']
                 end_study_date = row['end_study_date']
@@ -76,7 +89,7 @@ def urinary_drug_screen(df_root, path_excel_writer):
                         was_urine_test_performed_pure = was_urine_test_performed.split('|')[0]
                         was_urine_test_performed_form_field_isntance = was_urine_test_performed.split('|')[1]
                     except Exception as e:
-                        was_urine_test_performed_pure = ''
+                        was_urine_test_performed_pure = math.nan
                         was_urine_test_performed_form_field_isntance = 'This field doesnt have any data'
 
                     try:
@@ -104,6 +117,12 @@ def urinary_drug_screen(df_root, path_excel_writer):
                         check_below_trace_form_field_isntance = 'This field doesnt have any data'
                     
                     #----------------------------------------------------------------------------------------------
+
+                    # Revision GE0070
+                    if float(was_DV_performed_pure) !=  1.0:
+                        error = [subject, visit, 'Visit Pages', was_DV_performed_form_field_instance , 'This Form will be disabled because the visit was not done', was_DV_performed_pure, 'GE0070']
+                        lista_revision.append(error)
+
                     try:
                         # Primera  revision general de formato de fecha ->GE0020
                         f = revision_fecha(date_of_test_pure)

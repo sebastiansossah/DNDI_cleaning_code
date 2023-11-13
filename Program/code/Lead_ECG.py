@@ -1,4 +1,5 @@
 import numpy as np
+import math
 import pandas as pd
 from datetime import datetime
 from log_writer import log_writer
@@ -39,6 +40,13 @@ def lead_ECG(df_root, path_excel_writer):
     df_end_study_general = df_end_study_general[['Participante', 'Valor']]
     df_end_study_general = df_end_study_general.rename(columns={'Participante':'Subject', 'Valor':'end_study_date'})
 
+    df_visit_done = df_root[df_root['name']=='Date of visit']
+    df_visit_done = df_visit_done[['Visit','Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
+    df_visit_done = df_visit_done[df_visit_done['Campo']=='Was the visit performed?']
+    df_visit_done['Valor_completo'] = df_visit_done['Valor'].astype(str) + '|' + df_visit_done['FormFieldInstance Id'].astype(str)
+    df_visit_done = df_visit_done[['Visit','Participante','Valor_completo']]
+    df_visit_done = df_visit_done.rename(columns={'Participante':'Subject', 'Valor_completo':'was_DV_performed'})
+
     lista_revision = []
     lista_logs = ['12-Lead ECG']
 
@@ -60,6 +68,7 @@ def lead_ECG(df_root, path_excel_writer):
             pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_informed, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
+            pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
 
 
             for index, row in pru.iterrows():
@@ -67,6 +76,10 @@ def lead_ECG(df_root, path_excel_writer):
                 subject = row['Subject']
                 visit = row['Visit']
 
+                was_DV_performed = row['was_DV_performed']
+                was_DV_performed_pure = was_DV_performed.split('|')[0]
+                was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
+   
                 date_of_visit = row['Date_of_visit']
                 date_inform_consent = row['Informed_consent_date']
                 end_study_date = row['end_study_date']
@@ -80,7 +93,7 @@ def lead_ECG(df_root, path_excel_writer):
                         were_ECG_performed_pure  = were_ECG_performed.split('|')[0]
                         were_ECG_performed_form_field_instance = were_ECG_performed.split('|')[1]
                     except Exception as e:
-                        were_ECG_performed_pure = ''
+                        were_ECG_performed_pure = math.nan
                         were_ECG_performed_form_field_instance = 'This field doesnt have any data'
                     
                     try: 
@@ -96,7 +109,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Undefined_HR_bpm_pure = Undefined_HR_bpm.split('|')[0]
                         Undefined_HR_bpm_form_field_instance = Undefined_HR_bpm.split('|')[1]
                     except Exception as e:
-                        Undefined_HR_bpm_pure = ''
+                        Undefined_HR_bpm_pure = math.nan
                         Undefined_HR_bpm_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -104,7 +117,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_1_Interpretation_pure = Pre_dose_triplicate_1_Interpretation.split('|')[0]
                         Pre_dose_triplicate_1_Interpretation_form_field_instance = Pre_dose_triplicate_1_Interpretation.split('|')[1]
                     except Exception as e:
-                        Pre_dose_triplicate_1_Interpretation_pure = '' 
+                        Pre_dose_triplicate_1_Interpretation_pure = math.nan 
                         Pre_dose_triplicate_1_Interpretation_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -112,7 +125,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_1_HR_bpm_pure = Pre_dose_triplicate_1_HR_bpm.split('|')[0]
                         Pre_dose_triplicate_1_HR_bpm_form_field_instance = Pre_dose_triplicate_1_HR_bpm.split('|')[1]
                     except Exception as e:
-                        Pre_dose_triplicate_1_HR_bpm_pure = ''
+                        Pre_dose_triplicate_1_HR_bpm_pure = math.nan
                         Pre_dose_triplicate_1_HR_bpm_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -120,7 +133,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_2_HR_bpm_pure = Pre_dose_triplicate_2_HR_bpm.split('|')[0]
                         Pre_dose_triplicate_2_HR_bpm_form_field_instance = Pre_dose_triplicate_2_HR_bpm.split('|')[1]
                     except Exception as e:
-                        Pre_dose_triplicate_2_HR_bpm_pure = ''
+                        Pre_dose_triplicate_2_HR_bpm_pure = math.nan
                         Pre_dose_triplicate_2_HR_bpm_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -128,7 +141,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_3_HR_bpm_pure = Pre_dose_triplicate_3_HR_bpm.split('|')[0]
                         Pre_dose_triplicate_3_HR_bpm_form_field_instance = Pre_dose_triplicate_3_HR_bpm.split('|')[1]
                     except Exception as e:
-                        Pre_dose_triplicate_3_HR_bpm_pure = ''
+                        Pre_dose_triplicate_3_HR_bpm_pure = math.nan
                         Pre_dose_triplicate_3_HR_bpm_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -136,7 +149,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_1__RR_msec_pure = Pre_dose_triplicate_1__RR_msec.split('|')[0]
                         Pre_dose_triplicate_1__RR_msec_form_field_instance = Pre_dose_triplicate_1__RR_msec.split('|')[1]
                     except Exception as e:
-                        Pre_dose_triplicate_1__RR_msec_pure = ''
+                        Pre_dose_triplicate_1__RR_msec_pure = math.nan
                         Pre_dose_triplicate_1__RR_msec_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -144,7 +157,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_15_post_dose_HR_bpm_pure = min_15_post_dose_HR_bpm.split('|')[0]
                         min_15_post_dose_HR_bpm_form_field_instance = min_15_post_dose_HR_bpm.split('|')[1]
                     except Exception as e:
-                        min_15_post_dose_HR_bpm_pure = ''
+                        min_15_post_dose_HR_bpm_pure = math.nan
                         min_15_post_dose_HR_bpm_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -152,7 +165,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_30_post_dose_HR_bpm_pure = min_30_post_dose_HR_bpm.split('|')[0]
                         min_30_post_dose_HR_bpm_form_field_instance = min_30_post_dose_HR_bpm.split('|')[1]
                     except Exception as e:
-                        min_30_post_dose_HR_bpm_pure = ''
+                        min_30_post_dose_HR_bpm_pure = math.nan
                         min_30_post_dose_HR_bpm_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -160,7 +173,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_60_post_dose_HR_bpm_pure = min_60_post_dose_HR_bpm.split('|')[0]
                         min_60_post_dose_HR_bpm_form_field_instance = min_60_post_dose_HR_bpm.split('|')[1]
                     except Exception as e:
-                        min_60_post_dose_HR_bpm_pure = '' 
+                        min_60_post_dose_HR_bpm_pure = math.nan 
                         min_60_post_dose_HR_bpm_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -168,7 +181,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Undefined_PR_msec_pure = Undefined_PR_msec.split('|')[0]
                         Undefined_PR_msec_form_field_instance = Undefined_PR_msec.split('|')[1]
                     except Exception as e:
-                        Undefined_PR_msec_pure = ''
+                        Undefined_PR_msec_pure = math.nan
                         Undefined_PR_msec_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -176,7 +189,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_2_PR_msec_pure = Pre_dose_triplicate_2_PR_msec.split('|')[0]
                         Pre_dose_triplicate_2_PR_msec_form_field_instance = Pre_dose_triplicate_2_PR_msec.split('|')[1]
                     except Exception as e:
-                        Pre_dose_triplicate_2_PR_msec_pure = ''
+                        Pre_dose_triplicate_2_PR_msec_pure = math.nan
                         Pre_dose_triplicate_2_PR_msec_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -184,7 +197,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_3_PR_msec_pure = Pre_dose_triplicate_3_PR_msec.split('|')[0]
                         Pre_dose_triplicate_3_PR_msec_form_field_instance = Pre_dose_triplicate_3_PR_msec.split('|')[1]
                     except Exception as e:
-                        Pre_dose_triplicate_3_PR_msec_pure = ''
+                        Pre_dose_triplicate_3_PR_msec_pure = math.nan
                         Pre_dose_triplicate_3_PR_msec_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -192,7 +205,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_15_post_dose_PR_msec_pure = min_15_post_dose_PR_msec.split('|')[0]
                         min_15_post_dose_PR_msec_form_field_instance = min_15_post_dose_PR_msec.split('|')[1]
                     except Exception as e:
-                        min_15_post_dose_PR_msec_pure = ''
+                        min_15_post_dose_PR_msec_pure = math.nan
                         min_15_post_dose_PR_msec_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -200,7 +213,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_30_post_dose_PR_msec_pure = min_30_post_dose_PR_msec.split('|')[0]
                         min_30_post_dose_PR_msec_form_field_instance = min_30_post_dose_PR_msec.split('|')[1]
                     except Exception as e:
-                        min_30_post_dose_PR_msec_pure = ''
+                        min_30_post_dose_PR_msec_pure = math.nan
                         min_30_post_dose_PR_msec_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -208,7 +221,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_60_post_dose_PR_msec_pure = min_60_post_dose_PR_msec.split('|')[0]
                         min_60_post_dose_PR_msec_form_field_instance = min_60_post_dose_PR_msec.split('|')[1]
                     except Exception as e:
-                        min_60_post_dose_PR_msec_pure = ''
+                        min_60_post_dose_PR_msec_pure = math.nan
                         min_60_post_dose_PR_msec_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -216,7 +229,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Undefined_QRS_msec_pure = Undefined_QRS_msec.split('|')[0]
                         Undefined_QRS_msec_form_field_instance = Undefined_QRS_msec.split('|')[1]
                     except Exception as e:
-                        Undefined_QRS_msec_pure = ''
+                        Undefined_QRS_msec_pure = math.nan
                         Undefined_QRS_msec_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -224,7 +237,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Undefined_RR_msec_pure = Undefined_RR_msec.split('|')[0]
                         Undefined_RR_msec_form_field_instance = Undefined_RR_msec.split('|')[1]
                     except Exception as e:
-                        Undefined_RR_msec_pure = ''
+                        Undefined_RR_msec_pure = math.nan
                         Undefined_RR_msec_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -232,7 +245,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_1_QRS_msec_pure = Pre_dose_triplicate_1_QRS_msec.split('|')[0]
                         Pre_dose_triplicate_1_QRS_msec_form_field_instance = Pre_dose_triplicate_1_QRS_msec.split('|')[1]
                     except Exception as e:
-                        Pre_dose_triplicate_1_QRS_msec_pure = ''
+                        Pre_dose_triplicate_1_QRS_msec_pure = math.nan
                         Pre_dose_triplicate_1_QRS_msec_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -240,7 +253,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_2_QRS_msec_pure = Pre_dose_triplicate_2_QRS_msec.split('|')[0]
                         Pre_dose_triplicate_2_QRS_msec_form_field_instance = Pre_dose_triplicate_2_QRS_msec.split('|')[1]
                     except Exception as e:
-                        Pre_dose_triplicate_2_QRS_msec_pure = ''
+                        Pre_dose_triplicate_2_QRS_msec_pure = math.nan
                         Pre_dose_triplicate_2_QRS_msec_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -248,7 +261,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_2_RR_msec_pure = Pre_dose_triplicate_2_RR_msec.split('|')[0]
                         Pre_dose_triplicate_2_RR_msec_form_field_instance = Pre_dose_triplicate_2_RR_msec.split('|')[1]
                     except Exception as e:
-                        Pre_dose_triplicate_2_RR_msec_pure = ''
+                        Pre_dose_triplicate_2_RR_msec_pure = math.nan
                         Pre_dose_triplicate_2_RR_msec_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -256,7 +269,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_3_QRS_msec_pure = Pre_dose_triplicate_3_QRS_msec.split('|')[0]
                         Pre_dose_triplicate_3_QRS_msec_form_field_instance = Pre_dose_triplicate_3_QRS_msec.split('|')[1]
                     except Exception as e:
-                        Pre_dose_triplicate_3_QRS_msec_pure = ''
+                        Pre_dose_triplicate_3_QRS_msec_pure = math.nan
                         Pre_dose_triplicate_3_QRS_msec_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -264,7 +277,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_15_post_dose_QRS_msec_pure = min_15_post_dose_QRS_msec.split('|')[0]
                         min_15_post_dose_QRS_msec_form_field_instance = min_15_post_dose_QRS_msec.split('|')[1]
                     except Exception as e:
-                        min_15_post_dose_QRS_msec_pure = ''
+                        min_15_post_dose_QRS_msec_pure = math.nan
                         min_15_post_dose_QRS_msec_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -272,7 +285,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_30_post_dose_QRS_msec_pure = min_30_post_dose_QRS_msec.split('|')[0]
                         min_30_post_dose_QRS_msec_form_field_instance = min_30_post_dose_QRS_msec.split('|')[1]
                     except Exception as e:
-                        min_30_post_dose_QRS_msec_pure = ''
+                        min_30_post_dose_QRS_msec_pure = math.nan
                         min_30_post_dose_QRS_msec_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -280,7 +293,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_60_post_dose_QRS_msec_pure = min_60_post_dose_QRS_msec.split('|')[0]
                         min_60_post_dose_QRS_msec_form_field_instance = min_60_post_dose_QRS_msec.split('|')[1]
                     except Exception as e:
-                        min_60_post_dose_QRS_msec_pure = ''
+                        min_60_post_dose_QRS_msec_pure = math.nan
                         min_60_post_dose_QRS_msec_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -288,7 +301,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_15_post_dose_RR_msec_pure = min_15_post_dose_RR_msec.split('|')[0]
                         min_15_post_dose_RR_msec_form_field_instance = min_15_post_dose_RR_msec.split('|')[1]
                     except Exception as e:
-                        min_15_post_dose_RR_msec_pure = ''
+                        min_15_post_dose_RR_msec_pure = math.nan
                         min_15_post_dose_RR_msec_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -296,7 +309,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Undefined_QT_msec_pure = Undefined_QT_msec.split('|')[0]
                         Undefined_QT_msec_form_field_instance = Undefined_QT_msec.split('|')[1]
                     except Exception as e:
-                        Undefined_QT_msec_pure = ''
+                        Undefined_QT_msec_pure = math.nan
                         Undefined_QT_msec_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -304,7 +317,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_1_QT_msec_pure = Pre_dose_triplicate_1_QT_msec.split('|')[0]
                         Pre_dose_triplicate_1_QT_msec_form_field_instance = Pre_dose_triplicate_1_QT_msec.split('|')[1]
                     except Exception as e:
-                        Pre_dose_triplicate_1_QT_msec_pure = ''
+                        Pre_dose_triplicate_1_QT_msec_pure = math.nan
                         Pre_dose_triplicate_1_QT_msec_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -312,7 +325,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_1_PR_msec_pure = Pre_dose_triplicate_1_PR_msec.split('|')[0]
                         Pre_dose_triplicate_1_PR_msec_form_field_instance = Pre_dose_triplicate_1_PR_msec.split('|')[1]
                     except Exception as e:
-                        Pre_dose_triplicate_1_PR_msec_pure = ''
+                        Pre_dose_triplicate_1_PR_msec_pure = math.nan
                         Pre_dose_triplicate_1_PR_msec_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -320,7 +333,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_2_QT_msec_pure = Pre_dose_triplicate_2_QT_msec.split('|')[0]
                         Pre_dose_triplicate_2_QT_msec_form_field_instance = Pre_dose_triplicate_2_QT_msec.split('|')[1]
                     except Exception as e:
-                        Pre_dose_triplicate_2_QT_msec_pure = ''
+                        Pre_dose_triplicate_2_QT_msec_pure = math.nan
                         Pre_dose_triplicate_2_QT_msec_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -328,7 +341,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_3_QT_msec_pure = Pre_dose_triplicate_3_QT_msec.split('|')[0]
                         Pre_dose_triplicate_3_QT_msec_form_field_instance = Pre_dose_triplicate_3_QT_msec.split('|')[1]
                     except Exception as e:
-                        Pre_dose_triplicate_3_QT_msec_pure = ''
+                        Pre_dose_triplicate_3_QT_msec_pure = math.nan
                         Pre_dose_triplicate_3_QT_msec_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -336,7 +349,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_30_post_dose_RR_msec_pure = min_30_post_dose_RR_msec.split('|')[0]
                         min_30_post_dose_RR_msec_form_field_instance = min_30_post_dose_RR_msec.split('|')[1]
                     except Exception as e:
-                        min_30_post_dose_RR_msec_pure = ''
+                        min_30_post_dose_RR_msec_pure = math.nan
                         min_30_post_dose_RR_msec_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -344,7 +357,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_15_post_dose_QT_msec_pure = min_15_post_dose_QT_msec.split('|')[0]
                         min_15_post_dose_QT_msec_form_field_instance = min_15_post_dose_QT_msec.split('|')[1]
                     except Exception as e:
-                        min_15_post_dose_QT_msec_pure = ''
+                        min_15_post_dose_QT_msec_pure = math.nan
                         min_15_post_dose_QT_msec_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -352,7 +365,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_60_post_dose_RR_msec_pure = min_60_post_dose_RR_msec.split('|')[0]
                         min_60_post_dose_RR_msec_form_field_instance = min_60_post_dose_RR_msec.split('|')[1]
                     except Exception as e:
-                        min_60_post_dose_RR_msec_pure = ''
+                        min_60_post_dose_RR_msec_pure = math.nan
                         min_60_post_dose_RR_msec_form_field_instance = 'This field doesnt have any data'
                     
                     try: 
@@ -360,7 +373,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_3_RR_msec_pure = Pre_dose_triplicate_3_RR_msec.split('|')[0]
                         Pre_dose_triplicate_3_RR_msec_form_field_instance = Pre_dose_triplicate_3_RR_msec.split('|')[1]
                     except Exception as e:
-                        Pre_dose_triplicate_3_RR_msec_pure = ''
+                        Pre_dose_triplicate_3_RR_msec_pure = math.nan
                         Pre_dose_triplicate_3_RR_msec_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -368,7 +381,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_30_post_dose_QT_msec_pure = min_30_post_dose_QT_msec.split('|')[0]
                         min_30_post_dose_QT_msec_form_field_instance = min_30_post_dose_QT_msec.split('|')[1]
                     except Exception as e:
-                        min_30_post_dose_QT_msec_pure = ''
+                        min_30_post_dose_QT_msec_pure = math.nan
                         min_30_post_dose_QT_msec_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -376,7 +389,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_60_post_dose_QT_msec_pure = min_60_post_dose_QT_msec.split('|')[0]
                         min_60_post_dose_QT_msec_form_field_instance = min_60_post_dose_QT_msec.split('|')[1]
                     except Exception as e:
-                        min_60_post_dose_QT_msec_pure = ''
+                        min_60_post_dose_QT_msec_pure = math.nan
                         min_60_post_dose_QT_msec_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -384,7 +397,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Undefined_QTcF_msec_pure = Undefined_QTcF_msec.split('|')[0]
                         Undefined_QTcF_msec_form_field_instance = Undefined_QTcF_msec.split('|')[1]
                     except Exception as e:
-                        Undefined_QTcF_msec_pure = ''
+                        Undefined_QTcF_msec_pure = math.nan
                         Undefined_QTcF_msec_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -392,7 +405,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_1_QTcF_msec_pure = Pre_dose_triplicate_1_QTcF_msec.split('|')[0]
                         Pre_dose_triplicate_1_QTcF_msec_form_field_instance = Pre_dose_triplicate_1_QTcF_msec.split('|')[1]
                     except Exception as e:
-                        Pre_dose_triplicate_1_QTcF_msec_pure = ''
+                        Pre_dose_triplicate_1_QTcF_msec_pure = math.nan
                         Pre_dose_triplicate_1_QTcF_msec_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -400,7 +413,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_2_QTcF_msec_pure = Pre_dose_triplicate_2_QTcF_msec.split('|')[0]
                         Pre_dose_triplicate_2_QTcF_msec_form_field_instance = Pre_dose_triplicate_2_QTcF_msec.split('|')[1]
                     except Exception as e:
-                        Pre_dose_triplicate_2_QTcF_msec_pure = ''
+                        Pre_dose_triplicate_2_QTcF_msec_pure = math.nan
                         Pre_dose_triplicate_2_QTcF_msec_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -408,7 +421,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_3_QTcF_msec_pure = Pre_dose_triplicate_3_QTcF_msec.split('|')[0]
                         Pre_dose_triplicate_3_QTcF_msec_form_field_instance = Pre_dose_triplicate_3_QTcF_msec.split('|')[1]
                     except Exception as e:
-                        Pre_dose_triplicate_3_QTcF_msec_pure = ''
+                        Pre_dose_triplicate_3_QTcF_msec_pure = math.nan
                         Pre_dose_triplicate_3_QTcF_msec_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -416,7 +429,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_15_post_dose_QTcF_msec_pure = min_15_post_dose_QTcF_msec.split('|')[0]
                         min_15_post_dose_QTcF_msec_form_field_instance = min_15_post_dose_QTcF_msec.split('|')[1]
                     except Exception as e:
-                        min_15_post_dose_QTcF_msec_pure = ''
+                        min_15_post_dose_QTcF_msec_pure = math.nan
                         min_15_post_dose_QTcF_msec_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -424,7 +437,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_30_post_dose_QTcF_msec_pure = min_30_post_dose_QTcF_msec.split('|')[0]
                         min_30_post_dose_QTcF_msec_form_field_instance = min_30_post_dose_QTcF_msec.split('|')[1]
                     except Exception as e:
-                        min_30_post_dose_QTcF_msec_pure = ''
+                        min_30_post_dose_QTcF_msec_pure = math.nan
                         min_30_post_dose_QTcF_msec_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -432,7 +445,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_60_post_dose_QTcF_msec_pure = min_60_post_dose_QTcF_msec.split('|')[0]
                         min_60_post_dose_QTcF_msec_form_field_instance = min_60_post_dose_QTcF_msec.split('|')[1]
                     except Exception as e:
-                        min_60_post_dose_QTcF_msec_pure = ''
+                        min_60_post_dose_QTcF_msec_pure = math.nan
                         min_60_post_dose_QTcF_msec_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -440,7 +453,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Undefined_Interpretation_pure = Undefined_Interpretation.split('|')[0]
                         Undefined_Interpretation_form_field_instance = Undefined_Interpretation.split('|')[1]
                     except Exception as e:
-                        Undefined_Interpretation_pure = ''
+                        Undefined_Interpretation_pure = math.nan
                         Undefined_Interpretation_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -448,7 +461,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_1_Interpretation_pure = Pre_dose_triplicate_1_Interpretation.split('|')[0]
                         Pre_dose_triplicate_1_Interpretation_form_field_instance = Pre_dose_triplicate_1_Interpretation.split('|')[1]
                     except Exception as e:
-                        Pre_dose_triplicate_1_Interpretation_pure = ''
+                        Pre_dose_triplicate_1_Interpretation_pure = math.nan
                         Pre_dose_triplicate_1_Interpretation_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -456,7 +469,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_2_Interpretation_pure = Pre_dose_triplicate_2_Interpretation.split('|')[0]
                         Pre_dose_triplicate_2_Interpretation_form_field_instance = Pre_dose_triplicate_2_Interpretation.split('|')[1]
                     except Exception as e:
-                        Pre_dose_triplicate_2_Interpretation_pure = ''
+                        Pre_dose_triplicate_2_Interpretation_pure = math.nan
                         Pre_dose_triplicate_2_Interpretation_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -464,7 +477,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_3_Interpretation_pure = Pre_dose_triplicate_3_Interpretation.split('|')[0]
                         Pre_dose_triplicate_3_Interpretation_form_field_instance = Pre_dose_triplicate_3_Interpretation.split('|')[1]
                     except Exception as e:
-                        Pre_dose_triplicate_3_Interpretation_pure = ''
+                        Pre_dose_triplicate_3_Interpretation_pure = math.nan
                         Pre_dose_triplicate_3_Interpretation_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -472,7 +485,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_15_post_dose_Interpretation_pure = min_15_post_dose_Interpretation.split('|')[0]
                         min_15_post_dose_Interpretation_form_field_instance = min_15_post_dose_Interpretation.split('|')[1]
                     except Exception as e:
-                        min_15_post_dose_Interpretation_pure = ''
+                        min_15_post_dose_Interpretation_pure = math.nan
                         min_15_post_dose_Interpretation_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -480,7 +493,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_30_post_dose_Interpretation_pure = min_30_post_dose_Interpretation.split('|')[0]
                         min_30_post_dose_Interpretation_form_field_instance = min_30_post_dose_Interpretation.split('|')[1]
                     except Exception as e:
-                        min_30_post_dose_Interpretation_pure = ''
+                        min_30_post_dose_Interpretation_pure = math.nan
                         min_30_post_dose_Interpretation_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -488,7 +501,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_60_post_dose_Interpretation_pure = min_60_post_dose_Interpretation.split('|')[0]
                         min_60_post_dose_Interpretation_form_field_instance = min_60_post_dose_Interpretation.split('|')[1]
                     except Exception as e:
-                        min_60_post_dose_Interpretation_pure = ''
+                        min_60_post_dose_Interpretation_pure = math.nan
                         min_60_post_dose_Interpretation_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -497,9 +510,9 @@ def lead_ECG(df_root, path_excel_writer):
                         undefined_time_form_field_instance = undefined_time.split('|')[1]
                         undefined_time_formated = datetime.strptime(undefined_time_pure, time_format)
                     except:
-                        undefined_time_pure = np.nan
+                        undefined_time_pure = math.nan
                         undefined_time_form_field_instance = 'This field doesnt have any data'
-                        undefined_time_formated = np.nan
+                        undefined_time_formated = math.nan
                     
                     try:
                         predose_triplicate_1_time = row['Pre dose triplicate 1, Time 24 hrs']
@@ -507,9 +520,9 @@ def lead_ECG(df_root, path_excel_writer):
                         predose_triplicate_1_time_form_field_instance =  predose_triplicate_1_time.split('|')[1]
                         predose_triplicate_1_time_formated = datetime.strptime(predose_triplicate_1_time_pure, time_format)
                     except:
-                        predose_triplicate_1_time_pure = np.nan
+                        predose_triplicate_1_time_pure = math.nan
                         predose_triplicate_1_time_form_field_instance = 'This field doesnt have any data'
-                        predose_triplicate_1_time_formated = np.nan
+                        predose_triplicate_1_time_formated = math.nan
 
                     try:
                         predose_triplicate_2_time = row['Pre dose triplicate 2, Time 24 hrs']
@@ -517,9 +530,9 @@ def lead_ECG(df_root, path_excel_writer):
                         predose_triplicate_2_time_form_field_instance =  predose_triplicate_2_time.split('|')[1]
                         predose_triplicate_2_time_formated = datetime.strptime(predose_triplicate_2_time_pure, time_format)
                     except:
-                        predose_triplicate_2_time_pure = np.nan
+                        predose_triplicate_2_time_pure = math.nan
                         predose_triplicate_2_time_form_field_instance = 'This field doesnt have any data'
-                        predose_triplicate_2_time_formated = np.nan
+                        predose_triplicate_2_time_formated = math.nan
 
                     try:
                         predose_triplicate_3_time = row['Pre dose triplicate 3, Time 24 hrs']
@@ -527,9 +540,9 @@ def lead_ECG(df_root, path_excel_writer):
                         predose_triplicate_3_time_form_field_instance =  predose_triplicate_3_time.split('|')[1]
                         predose_triplicate_3_time_formated = datetime.strptime(predose_triplicate_3_time_pure, time_format)
                     except:
-                        predose_triplicate_3_time_pure = np.nan
+                        predose_triplicate_3_time_pure = math.nan
                         predose_triplicate_3_time_form_field_instance = 'This field doesnt have any data'
-                        predose_triplicate_3_time_formated = np.nan
+                        predose_triplicate_3_time_formated = math.nan
                     
                     try:
                         min_15_time  = row['15-min post dose, Time 24 hrs']
@@ -537,9 +550,9 @@ def lead_ECG(df_root, path_excel_writer):
                         min_15_time_form_field_instance = min_15_time.split('|')[1]
                         min_15_time_time_formated = datetime.strptime(min_15_time_pure, time_format)
                     except:
-                        min_15_time_pure = np.nan
+                        min_15_time_pure = math.nan
                         min_15_time_form_field_instance = 'This field doesnt have any data'
-                        min_15_time_time_formated = np.nan
+                        min_15_time_time_formated = math.nan
 
                     try:
                         min_30_time  = row['30-min post dose, Time 24 hrs']
@@ -547,9 +560,9 @@ def lead_ECG(df_root, path_excel_writer):
                         min_30_time_form_field_instance = min_30_time.split('|')[1]
                         min_30_time_time_formated = datetime.strptime(min_30_time_pure, time_format)
                     except:
-                        min_30_time_pure = np.nan
+                        min_30_time_pure = math.nan
                         min_30_time_form_field_instance = 'This field doesnt have any data'
-                        min_30_time_time_formated = np.nan
+                        min_30_time_time_formated = math.nan
 
                     try:
                         min_60_time  = row['60-min post dose, Time 24 hrs']
@@ -557,11 +570,17 @@ def lead_ECG(df_root, path_excel_writer):
                         min_60_time_form_field_instance = min_60_time.split('|')[1]
                         min_60_time_time_formated = datetime.strptime(min_60_time_pure, time_format)
                     except:
-                        min_60_time_pure = np.nan
+                        min_60_time_pure = math.nan
                         min_60_time_form_field_instance = 'This field doesnt have any data'
-                        min_60_time_time_formated = np.nan          
+                        min_60_time_time_formated = math.nan          
 
                     #----------------------------------------------------------------------------------------------------------------------------
+
+                    # Revision GE0070
+                    if float(was_DV_performed_pure) !=  1.0:
+                        error = [subject, visit, 'Visit Pages', was_DV_performed_form_field_instance , 'This Form will be disabled because the visit was not done', was_DV_performed_pure, 'GE0070']
+                        lista_revision.append(error)
+
                     try:
                         # Primera  revision general de formato de fecha ->GE0020
                         f = revision_fecha(date_of_egc_pure)
@@ -603,9 +622,9 @@ def lead_ECG(df_root, path_excel_writer):
                         try:
                             validador = row[validador_raw].split('|')[0]
                         except:
-                            validador = ''
+                            validador = math.nan
          
-                        if validador != '-' or validador != np.nan or  str(validador) != 'nan' or float(validador) !=0.0 or str(validador) != '':
+                        if math.isnan(float(validador)) or validador != '-' or validador != np.nan or  str(validador) != 'nan' or float(validador) !=0.0 or str(validador) != '':
                             mi_cuenta+=1
                         else:
                             pass
@@ -664,6 +683,7 @@ def lead_ECG(df_root, path_excel_writer):
                         lista_logs.append(f'Revision LE0060 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
                     # ------------------------------------------ All undifined ---------------------------------------------------------
+
                     # Revision LE0070
                     try: 
                         
