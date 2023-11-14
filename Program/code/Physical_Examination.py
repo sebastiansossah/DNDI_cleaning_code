@@ -356,7 +356,7 @@ def physical_examination(df_root, path_excel_writer):
                             except:
                                 validador_four = math.nan
                             
-                            if math.nan(float(validador_four)) or validador_four != '-' or validador_four != np.nan or  str(validador_four) != 'nan' or float(validador_four) !=0.0 or str(validador_four) != '':
+                            if math.isnan(float(validador_four)) or validador_four != '-' or validador_four != np.nan or  str(validador_four) != 'nan' or float(validador_four) !=0.0 or str(validador_four) != '':
                                 mi_cuenta_four_hours+=1
                             else:
                                 pass
