@@ -1,4 +1,5 @@
 import numpy as np
+import math
 import pandas as pd
 from datetime import datetime
 from revision_fechas import revision_fecha
@@ -38,6 +39,13 @@ def Pharmacokinetic_blood_sampling(df_root, path_excel_writer):
     df_end_study_general = df_end_study_general[['Participante', 'Valor']]
     df_end_study_general = df_end_study_general.rename(columns={'Participante':'Subject', 'Valor':'end_study_date'})
 
+    df_visit_done = df_root[df_root['name']=='Date of visit']
+    df_visit_done = df_visit_done[['Visit','Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
+    df_visit_done = df_visit_done[df_visit_done['Campo']=='Was the visit performed?']
+    df_visit_done['Valor_completo'] = df_visit_done['Valor'].astype(str) + '|' + df_visit_done['FormFieldInstance Id'].astype(str)
+    df_visit_done = df_visit_done[['Visit','Participante','Valor_completo']]
+    df_visit_done = df_visit_done.rename(columns={'Participante':'Subject', 'Valor_completo':'was_DV_performed'})
+
     lista_logs = ['Pharmacokinetic Blood Sampling (PK)']
     lista_revision = []
 
@@ -59,6 +67,7 @@ def Pharmacokinetic_blood_sampling(df_root, path_excel_writer):
             pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_informed, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
+            pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
 
             for index, row in pru.iterrows():
                 status = row['status']
@@ -69,13 +78,17 @@ def Pharmacokinetic_blood_sampling(df_root, path_excel_writer):
                 date_inform_consent = row['Informed_consent_date']
                 end_study_date = row['end_study_date']
 
+                was_DV_performed = row['was_DV_performed']
+                was_DV_performed_pure = was_DV_performed.split('|')[0]
+                was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
+   
                 if status == 'DATA_ENTRY_COMPLETE':
                     try:
                         Was_any_pharmacokinetic_blood_sample_collected = row["Was any pharmacokinetic blood sample collected?"]
                         Was_any_pharmacokinetic_blood_sample_collected_pure = Was_any_pharmacokinetic_blood_sample_collected.split('|')[0]
                         Was_any_pharmacokinetic_blood_sample_collected_form_field_instance = Was_any_pharmacokinetic_blood_sample_collected.split('|')[1]
                     except Exception as e:
-                        Was_any_pharmacokinetic_blood_sample_collected_pure = ''
+                        Was_any_pharmacokinetic_blood_sample_collected_pure = math.nan
                         Was_any_pharmacokinetic_blood_sample_collected_form_field_instance = 'This field doesnt have any data'
 
                     # try:
@@ -176,6 +189,11 @@ def Pharmacokinetic_blood_sampling(df_root, path_excel_writer):
                     #     pass 
 
                     # --------------------------------------------------------------------------------------------------------------
+                    # Revision GE0070
+                    if float(was_DV_performed_pure) !=  1.0:
+                        error = [subject, visit, 'Visit Pages', was_DV_performed_form_field_instance , 'This Form will be disabled because the visit was not done', was_DV_performed_pure, 'GE0070']
+                        lista_revision.append(error)
+
                     try:
                         # Primera  revision general de formato de fecha ->GE0020
                         f = revision_fecha(Date_of_blood_sample_collected_pure)
@@ -250,9 +268,9 @@ def Pharmacokinetic_blood_sampling(df_root, path_excel_writer):
                         try: 
                             validador = row[validador_raw].split('|')[0]
                         except:
-                            validador = np.nan
+                            validador = math.nan
        
-                        if float(validador) == 0.0 or validador == '' or validador == '-' or float(validador) == np.nan:
+                        if math.isnan(float(validador)) or float(validador) == 0.0 or validador == '' or validador == '-' or float(validador) == np.nan:
                             pass
                         else:
                             cuenta_validar +=1
