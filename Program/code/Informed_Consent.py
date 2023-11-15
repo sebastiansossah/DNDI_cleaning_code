@@ -96,17 +96,20 @@ def informed_consent_revision(df_root, path_excel_writer):
                         error = [subject, visit, 'Visit Pages', was_DV_performed_form_field_instance , 'This Form will be disabled because the visit was not done', was_DV_performed_pure, 'GE0070']
                         lista_revision.append(error)
 
-                    # Revision general de la fehcha GE0020
-                    try:
+                    if signature_date_pure == '':
+                        pass
+                    else:
+                        # Revision general de la fehcha GE0020
+                        try:
 
-                        f = revision_fecha(signature_date_pure)
-                        if f == None:
-                            pass
-                        else:
-                            error = [subject, visit, 'Informed consent signature date' ,signature_date_form_field_instance , f , signature_date_pure, 'GE0020']
-                            lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
+                            f = revision_fecha(signature_date_pure)
+                            if f == None:
+                                pass
+                            else:
+                                error = [subject, visit, 'Informed consent signature date' ,signature_date_form_field_instance , f , signature_date_pure, 'GE0020']
+                                lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     
                     # Revision para IC0030

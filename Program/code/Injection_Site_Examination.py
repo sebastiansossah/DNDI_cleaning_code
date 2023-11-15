@@ -149,18 +149,21 @@ def injection_site_examination(df_root, path_excel_writer):
                         error = [subject, visit, 'Visit Pages', was_DV_performed_form_field_instance , 'This Form will be disabled because the visit was not done', was_DV_performed_pure, 'GE0070']
                         lista_revision.append(error)
 
-                    try:
-                        # Primera  revision general de formato de fecha ->GE0020
-                        f = revision_fecha(date_injection_pure)
-                        if f == None:
-                            pass
-                        else:
-                            error = [subject, visit, 'Date of the Injection site examination', date_injection_form_field_instace,\
-                                     f , date_injection_pure, 'GE0020']
-                            lista_revision.append(error)     
+                    if date_injection_pure == '':
+                        pass
+                    else:            
+                        try:
+                            # Primera  revision general de formato de fecha ->GE0020
+                            f = revision_fecha(date_injection_pure)
+                            if f == None:
+                                pass
+                            else:
+                                error = [subject, visit, 'Date of the Injection site examination', date_injection_form_field_instace,\
+                                        f , date_injection_pure, 'GE0020']
+                                lista_revision.append(error)     
 
-                    except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
+                        except Exception as e:
+                            lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision IS0020
                     try:

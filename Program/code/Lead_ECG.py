@@ -581,17 +581,20 @@ def lead_ECG(df_root, path_excel_writer):
                         error = [subject, visit, 'Visit Pages', was_DV_performed_form_field_instance , 'This Form will be disabled because the visit was not done', was_DV_performed_pure, 'GE0070']
                         lista_revision.append(error)
 
-                    try:
-                        # Primera  revision general de formato de fecha ->GE0020
-                        f = revision_fecha(date_of_egc_pure)
-                        if f == None:
-                            pass
-                        else:
-                            error = [subject, visit, 'Date of ECG Performed', date_of_egc_form_field_instance ,f , date_of_egc_form_field_instance, 'GE0020']
-                            lista_revision.append(error)     
+                    if date_of_egc_pure == '':
+                        pass
+                    else:                            
+                        try:
+                            # Primera  revision general de formato de fecha ->GE0020
+                            f = revision_fecha(date_of_egc_pure)
+                            if f == None:
+                                pass
+                            else:
+                                error = [subject, visit, 'Date of ECG Performed', date_of_egc_form_field_instance ,f , date_of_egc_pure, 'GE0020']
+                                lista_revision.append(error)     
 
-                    except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
+                        except Exception as e:
+                            lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision LE0010
                     try:

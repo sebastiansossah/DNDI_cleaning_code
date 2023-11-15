@@ -374,31 +374,36 @@ def adverse_events(df_root, path_excel_writer):
                         sae_start_date_AE_became_serious_form_field_instance = 'This field doesnt have any data'
 
                     # ---------------------------------------------------------------------------------------
+                    if start_date_pure == '':
+                        pass
+                    else:
+                        try:
+                            # Primera  revision general de formato de fecha ->GE0020
+                            f = revision_fecha(start_date_pure)
+                            if f == None:
+                                pass
+                            else:
+                                error = [subject, visit, 'Start date', start_date_form_field_instnace,\
+                                        f , start_date_pure, 'GE0020']
+                                lista_revision.append(error)     
 
-                    try:
-                        # Primera  revision general de formato de fecha ->GE0020
-                        f = revision_fecha(start_date_pure)
-                        if f == None:
-                            pass
-                        else:
-                            error = [subject, visit, 'Start date', start_date_form_field_instnace,\
-                                     f , start_date_pure, 'GE0020']
-                            lista_revision.append(error)     
+                        except Exception as e:
+                            lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
-                    except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
-
-                    try:
-                        # Primera  revision general de formato de fecha ->GE0020
-                        f = revision_fecha(end_date_pure)
-                        if f == None:
-                            pass
-                        else:
-                            error = [subject, visit, 'End date', end_date_form_field_instance,\
-                                     f , end_date_pure, 'GE0020']
-                            lista_revision.append(error)     
-                    except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ') 
+                    if end_date_pure == '':
+                        pass
+                    else:
+                        try:
+                            # Primera  revision general de formato de fecha ->GE0020
+                            f = revision_fecha(end_date_pure)
+                            if f == None:
+                                pass
+                            else:
+                                error = [subject, visit, 'End date', end_date_form_field_instance,\
+                                        f , end_date_pure, 'GE0020']
+                                lista_revision.append(error)     
+                        except Exception as e:
+                            lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ') 
 
                     # Revision AE0010
                     try:

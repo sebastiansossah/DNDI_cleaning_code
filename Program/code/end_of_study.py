@@ -95,7 +95,7 @@ def end_of_study(df_root, path_excel_writer):
                 date_last_treatment_administration_miltefosine_pure = date_last_treatment_administration_miltefosine.split('|')[0]
                 date_last_treatment_administration_miltefosine_form_field_instance = date_last_treatment_administration_miltefosine.split('|')[1]
             except:
-                date_last_treatment_administration_miltefosine_pure = math.nan
+                date_last_treatment_administration_miltefosine_pure = ''
                 date_last_treatment_administration_miltefosine_form_field_instance = 'This field doesnt have any data'
 
             try:
@@ -120,7 +120,7 @@ def end_of_study(df_root, path_excel_writer):
                 date_last_treatment_administration_CPG_pure = date_last_treatment_administration_CPG.split('|')[0]
                 date_last_treatment_administration_CPG_form_field_instance = date_last_treatment_administration_CPG.split('|')[1]
             except:
-                date_last_treatment_administration_CPG_pure = math.nan
+                date_last_treatment_administration_CPG_pure = ''
                 date_last_treatment_administration_CPG_form_field_instance = 'This field doesnt have any data'
             
             try:
@@ -144,7 +144,7 @@ def end_of_study(df_root, path_excel_writer):
                 end_of_study_date_general_pure = end_of_study_date_general.split('|')[0]
                 end_of_study_date_general_form_field_instance = end_of_study_date_general.split('|')[1]
             except:
-                end_of_study_date_general_pure = math.nan
+                end_of_study_date_general_pure = ''
                 end_of_study_date_general_form_field_instance = 'This field doesnt have any data'
             
             try:
@@ -164,44 +164,54 @@ def end_of_study(df_root, path_excel_writer):
                 primary_reason_not_completing_general_form_field_instance = 'This field doesnt have any data'
 
             # --------------------------------------------------------------------------------------------------------------------------------------------------
-            try:
-                # Primera  revision general de formato de fecha ->GE0020
-                f = revision_fecha(date_last_treatment_administration_miltefosine_pure)
-                if f == None:
-                    pass
-                else:
-                    error = [subject, visit, 'Date of last study treatment administration (Miltefosine)', \
-                                date_last_treatment_administration_miltefosine_form_field_instance,\
-                                        f , date_last_treatment_administration_miltefosine_pure, 'GE0020']
-                    lista_revision.append(error)     
-            except Exception as e:
-                lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
+            if date_last_treatment_administration_miltefosine_pure == '':
+                pass
+            else:
+                try:
+                    # Primera  revision general de formato de fecha ->GE0020
+                    f = revision_fecha(date_last_treatment_administration_miltefosine_pure)
+                    if f == None:
+                        pass
+                    else:
+                        error = [subject, visit, 'Date of last study treatment administration (Miltefosine)', \
+                                    date_last_treatment_administration_miltefosine_form_field_instance,\
+                                            f , date_last_treatment_administration_miltefosine_pure, 'GE0020']
+                        lista_revision.append(error)     
+                except Exception as e:
+                    lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
+            
+            if date_last_treatment_administration_CPG_pure == '':
+                pass
+            else:
+                try:
+                    # Primera  revision general de formato de fecha ->GE0020
+                    f = revision_fecha(date_last_treatment_administration_CPG_pure)
+                    if f == None:
+                        pass
+                    else:
+                        error = [subject, visit, 'Date of last study treatment administration (CpG ODN D35)', \
+                                    date_last_treatment_administration_CPG_form_field_instance,\
+                                            f , date_last_treatment_administration_CPG_pure, 'GE0020']
+                        lista_revision.append(error)     
+                except Exception as e:
+                    lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
-            try:
-                # Primera  revision general de formato de fecha ->GE0020
-                f = revision_fecha(date_last_treatment_administration_CPG_pure)
-                if f == None:
-                    pass
-                else:
-                    error = [subject, visit, 'Date of last study treatment administration (CpG ODN D35)', \
-                                date_last_treatment_administration_CPG_form_field_instance,\
-                                        f , date_last_treatment_administration_CPG_pure, 'GE0020']
-                    lista_revision.append(error)     
-            except Exception as e:
-                lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
+            if end_of_study_date_general_pure == '':
+                pass
+            else:
 
-            try:
-                # Primera  revision general de formato de fecha ->GE0020
-                f = revision_fecha(end_of_study_date_general_pure)
-                if f == None:
-                    pass
-                else:
-                    error = [subject, visit, 'End of study/Early withdrawal date', \
-                                end_of_study_date_general_form_field_instance,\
-                                        f , end_of_study_date_general_pure, 'GE0020']
-                    lista_revision.append(error)     
-            except Exception as e:
-                lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
+                try:
+                    # Primera  revision general de formato de fecha ->GE0020
+                    f = revision_fecha(end_of_study_date_general_pure)
+                    if f == None:
+                        pass
+                    else:
+                        error = [subject, visit, 'End of study/Early withdrawal date', \
+                                    end_of_study_date_general_form_field_instance,\
+                                            f , end_of_study_date_general_pure, 'GE0020']
+                        lista_revision.append(error)     
+                except Exception as e:
+                    lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
             # Revision ES0030
             try:

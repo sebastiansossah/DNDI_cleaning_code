@@ -95,7 +95,7 @@ def virology(df_root, path_excel_writer):
                         date_collected_pure = date_collected.split('|')[0]
                         date_collected_form_field_instance = date_collected.split('|')[1]
                     except Exception as e:
-                        date_collected = ''
+                        date_collected_pure = ''
                         date_collected_form_field_instance = 'This field doesnt have any data'
 
                     # try:
@@ -139,17 +139,20 @@ def virology(df_root, path_excel_writer):
                     #     pass   
 
                     # ---------------------------------------------------------------------------------------------------------------
-                    try:
-                        # Primera  revision general de formato de fecha ->GE0020
-                        f = revision_fecha(date_collected_pure)
-                        if f == None:
-                            pass
-                        else:
-                            error = [subject, visit, 'Date Sample Collected', date_collected_form_field_instance ,f , date_collected_pure, 'GE0020']
-                            lista_revision.append(error)     
+                    if date_collected_pure == '':
+                        pass
+                    else:
+                        try:
+                            # Primera  revision general de formato de fecha ->GE0020
+                            f = revision_fecha(date_collected_pure)
+                            if f == None:
+                                pass
+                            else:
+                                error = [subject, visit, 'Date Sample Collected', date_collected_form_field_instance ,f , date_collected_pure, 'GE0020']
+                                lista_revision.append(error)     
 
-                    except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
+                        except Exception as e:
+                            lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision VR0010
                     try:

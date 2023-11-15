@@ -161,19 +161,23 @@ def miltefosine_administration(df_root, path_excel_writer):
                         subject_vomited_pure = ''
                         subject_vomited_form_field_instance = 'This field doesnt have any data'
                  #--------------------------------------------------------------------------------------------------------
-                    try:
-                        # Primera  revision general de formato de fecha ->GE0020
-                        f = revision_fecha(date_dosing_pure)
-                        if f == None:
-                            pass
-                        else:
-                            error = [subject, visit, 'Date of dosing', date_dosing_form_field_instance,\
-                                     f , date_dosing_pure, 'GE0020']
-                            lista_revision.append(error)     
+                    if date_dosing_pure == '':
+                        pass
+                    else:
+                        try:
+                            # Primera  revision general de formato de fecha ->GE0020
+                            f = revision_fecha(date_dosing_pure)
+                            if f == None:
+                                pass
+                            else:
+                                error = [subject, visit, 'Date of dosing', date_dosing_form_field_instance,\
+                                        f , date_dosing_pure, 'GE0020']
+                                lista_revision.append(error)     
 
-                    except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
-                        
+                        except Exception as e:
+                            lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
+                    
+                    
                     # Revision ECML0030
                     try:
                         if date_dosing_pure in date_dosing_historico_list:

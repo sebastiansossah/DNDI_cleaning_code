@@ -444,9 +444,9 @@ def eligibility(df_root, path_excel_writer):
                         # Revision para IE0459
                         try:
                             if float(subject_eligible_for_study_pure) == 1.0:
-                                if float(HR_EGC) < 100.0 or float(HR_EGC) > 140.0:
+                                if float(HR_EGC) < 45.0 or float(HR_EGC) > 90.0:
                                     error = [subject, visit, 'Is the subject eligible for the study?', subject_eligible_for_study_form_field_instance, \
-                                            'The participant has a Systolic Blood Pressure that is not between 100 and 140 mmHg,he/she should not be eligible for the study', HR_EGC, 'IE0459']
+                                            'The participant has a HR that is not between 45 and 90 bpm,he/she should not be eligible for the study', HR_EGC, 'IE0459']
                                     lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision IE0459 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -631,15 +631,18 @@ def eligibility(df_root, path_excel_writer):
                     try:
                         tuple_review_inclusion_exclusion = (eligibility_criteria_type_pure, eligibility_criteria_number_pure)
 
-                        if tuple_review_inclusion_exclusion in lista_revision_I_E:
-                            error = [subject, visit, 'Eligibility criteria number', eligibility_criteria_number_form_field_instance, \
-                                     'The same criteria (Inclusion, Exclusion) and number, must not be duplicated', eligibility_criteria_number_pure, 'IE0040']
-                            lista_revision.append(error)
+                        if math.isnan(float(tuple_review_inclusion_exclusion[0])) or math.isnan(float(tuple_review_inclusion_exclusion[1])):
+                            pass
                         else:
-                            if '' in tuple_review_inclusion_exclusion:
-                                pass
+                            if tuple_review_inclusion_exclusion in lista_revision_I_E:
+                                error = [subject, visit, 'Eligibility criteria number', eligibility_criteria_number_form_field_instance, \
+                                        'The same criteria (Inclusion, Exclusion) and number, must not be duplicated', eligibility_criteria_number_pure, 'IE0040']
+                                lista_revision.append(error)
                             else:
-                                lista_revision_I_E.append(tuple_review_inclusion_exclusion)
+                                if '' in tuple_review_inclusion_exclusion:
+                                    pass
+                                else:
+                                    lista_revision_I_E.append(tuple_review_inclusion_exclusion)
                     except Exception as e:
                         lista_logs.append(f'Revision IE0040 --> {e} - Subject: {subject},  Visit: {visit} ')
 

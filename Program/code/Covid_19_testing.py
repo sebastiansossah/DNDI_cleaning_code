@@ -104,7 +104,7 @@ def covid_19_testing(df_root, path_excel_writer):
                         date_test_performed_pure = date_test_performed.split('|')[0]
                         date_test_performed_form_field_instance = date_test_performed.split('|')[1] 
                     except Exception as e:
-                        date_test_performed_pure = 'math.nan'
+                        date_test_performed_pure = ''
                         date_test_performed_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -121,17 +121,20 @@ def covid_19_testing(df_root, path_excel_writer):
                         error = [subject, visit, 'Visit Pages', was_DV_performed_form_field_instance , 'This Form will be disabled because the visit was not done', was_DV_performed_pure, 'GE0070']
                         lista_revision.append(error)
 
-                    try:
-                        # Primera  revision general de formato de fecha ->GE0020
-                        f = revision_fecha(date_test_performed_pure)
-                        if f == None:
-                            pass
-                        else:
-                            error = [subject, visit, 'Date of test performed', date_test_performed_form_field_instance ,f , date_test_performed_pure, 'GE0020']
-                            lista_revision.append(error)     
+                    if date_test_performed_pure == '' :
+                        pass
+                    else:
+                        try:
+                            # Primera  revision general de formato de fecha ->GE0020
+                            f = revision_fecha(date_test_performed_pure)
+                            if f == None:
+                                pass
+                            else:
+                                error = [subject, visit, 'Date of test performed', date_test_performed_form_field_instance ,f , date_test_performed_pure, 'GE0020']
+                                lista_revision.append(error)     
 
-                    except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
+                        except Exception as e:
+                            lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision LBCOV0010 
                     try:

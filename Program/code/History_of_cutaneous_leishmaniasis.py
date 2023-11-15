@@ -163,17 +163,19 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                     except Exception as e:
                         lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
-
-                    try:
-                        # Primera  revision general de formato de fecha ->GE0020
-                        f = revision_fecha(date_new_sample_pure)
-                        if f == None:
-                            pass
-                        else:
-                            error = [subject, visit,'Date of new sample taken', date_new_sample_form_field_instance ,f , date_new_sample_pure, 'GE0020']
-                            lista_revision.append(error) 
-                    except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
+                    if date_new_sample_pure == '':
+                        pass
+                    else:
+                        try:
+                            # Primera  revision general de formato de fecha ->GE0020
+                            f = revision_fecha(date_new_sample_pure)
+                            if f == None:
+                                pass
+                            else:
+                                error = [subject, visit,'Date of new sample taken', date_new_sample_form_field_instance ,f , date_new_sample_pure, 'GE0020']
+                                lista_revision.append(error) 
+                        except Exception as e:
+                            lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
 
                     # Revision CL0010
@@ -236,6 +238,8 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                     # Revision CL0050
                     try: 
                         if 99.0 not in [float(i) for i in species_identification_pure.split(',')]:
+                            pass 
+                        else:
                             try:
                                 if math.isnan(float(species_name_pure)) or str(species_name_pure) != '' or float(species_name_pure) != np.nan or  str(species_name_pure) != '-':
                                     error = [subject, visit, 'Species identification', species_identification_form_field_instance, \

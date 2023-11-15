@@ -108,7 +108,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                         date_of_start_condom_pure = date_of_start_condom.split('|')[0]
                         date_of_start_condom_form_field_instance = date_of_start_condom.split('|')[1]
                     except:
-                        date_of_start_condom_pure = math.nan
+                        date_of_start_condom_pure = ''
                         date_of_start_condom_form_field_instance = 'This field doesnt have any data'
                 
                     try:
@@ -116,7 +116,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                         date_start_contraceptive_pure = date_start_contraceptive.split('|')[0]
                         date_start_contraceptive_form_field_instance = date_start_contraceptive.split('|')[1]
                     except:
-                        date_start_contraceptive_pure = math.nan
+                        date_start_contraceptive_pure = ''
                         date_start_contraceptive_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -258,28 +258,33 @@ def child_bearing_potential(df_root, path_excel_writer):
                     else:
 # --------------------------------------------- Revision de edit check-----------------------------------------------------------
 
-
-                        # Revision para ->GE0020
-                        try:
-                            f = revision_fecha(date_of_start_condom_pure)
-                            if f == None:
-                                pass
-                            else:
-                                error = [subject, visit, 'Date of start of systematic use of condom', date_of_start_condom_form_field_instance ,f , date_of_start_condom_pure, 'GE0020']
-                                lista_revision.append(error) 
-                        except Exception as e:
-                            lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
+                        if date_of_start_condom_pure == '':
+                            pass
+                        else:
+                            # Revision para ->GE0020
+                            try:
+                                f = revision_fecha(date_of_start_condom_pure)
+                                if f == None:
+                                    pass
+                                else:
+                                    error = [subject, visit, 'Date of start of systematic use of condom', date_of_start_condom_form_field_instance ,f , date_of_start_condom_pure, 'GE0020']
+                                    lista_revision.append(error) 
+                            except Exception as e:
+                                lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
                         
-                        # Revision para->GE0020
-                        try:
-                            f = revision_fecha(date_start_contraceptive_pure)
-                            if f == None:
-                                pass
-                            else:
-                                error = [subject, visit, 'Date of start of contraceptive method', date_start_contraceptive_form_field_instance ,f , date_start_contraceptive_pure, 'GE0020']
-                                lista_revision.append(error) 
-                        except Exception as e:
-                            lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
+                        if date_start_contraceptive_pure == '':
+                            pass
+                        else:
+                            # Revision para->GE0020
+                            try:
+                                f = revision_fecha(date_start_contraceptive_pure)
+                                if f == None:
+                                    pass
+                                else:
+                                    error = [subject, visit, 'Date of start of contraceptive method', date_start_contraceptive_form_field_instance ,f , date_start_contraceptive_pure, 'GE0020']
+                                    lista_revision.append(error) 
+                            except Exception as e:
+                                lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
                         
                         # Revision para CB0020
                         try:        

@@ -846,17 +846,20 @@ def vital_signs(df_root, path_excel_writer):
 
 
                     # --------------------------------------------------------------------------------------------------------   
-                    try:
-                        # Primera  revision general de formato de fecha ->GE0020
-                        f = revision_fecha(date_assesment_pure)
-                        if f == None:
-                            pass
-                        else:
-                            error = [subject, visit, 'Date of assessment performed', date_assesment_form_field_instance ,f , date_assesment_pure, 'GE0020']
-                            lista_revision.append(error)     
+                    if date_assesment_pure == '':
+                        pass
+                    else:         
+                        try:
+                            # Primera  revision general de formato de fecha ->GE0020
+                            f = revision_fecha(date_assesment_pure)
+                            if f == None:
+                                pass
+                            else:
+                                error = [subject, visit, 'Date of assessment performed', date_assesment_form_field_instance ,f , date_assesment_pure, 'GE0020']
+                                lista_revision.append(error)     
 
-                    except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
+                        except Exception as e:
+                            lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision VS0020
                     try:
