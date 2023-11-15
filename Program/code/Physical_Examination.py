@@ -175,44 +175,47 @@ def physical_examination(df_root, path_excel_writer):
 
 
                     # Revision PE0020
-                    try:
-                        date_format = '%d-%b-%Y'
-                        date_of_test_f = datetime.strptime(date_examination_performed_pure, date_format)
-                        date_of_visit_f = datetime.strptime(date_of_visit, date_format)
+                    if date_examination_performed != '':
+                        try:
+                            date_format = '%d-%b-%Y'
+                            date_of_test_f = datetime.strptime(date_examination_performed_pure, date_format)
+                            date_of_visit_f = datetime.strptime(date_of_visit, date_format)
 
-                        if date_of_test_f != date_of_visit_f:
-                            error = [subject, visit, 'Date of examination performed', date_examination_performed_form_field_instance,\
-                                     'The date should be the same as the visit date in the "Date of Visit" Form' , f'{date_examination_performed_pure} - {date_of_visit}', 'PE0020']
-                            lista_revision.append(error)
-                        else:
-                            pass
-                    except Exception as e:
-                        lista_logs.append(f'Revision PE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
+                            if date_of_test_f != date_of_visit_f:
+                                error = [subject, visit, 'Date of examination performed', date_examination_performed_form_field_instance,\
+                                        'The date should be the same as the visit date in the "Date of Visit" Form' , f'{date_examination_performed_pure} - {date_of_visit}', 'PE0020']
+                                lista_revision.append(error)
+                            else:
+                                pass
+                        except Exception as e:
+                            lista_logs.append(f'Revision PE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision PE0030
-                    try:
-                        date_format = '%d-%b-%Y'
-                        date_of_test_f = datetime.strptime(date_examination_performed_pure, date_format)
-                        date_inform_consent_f = datetime.strptime(date_inform_consent, date_format)
+                    if date_examination_performed_pure != '':
+                        try:
+                            date_format = '%d-%b-%Y'
+                            date_of_test_f = datetime.strptime(date_examination_performed_pure, date_format)
+                            date_inform_consent_f = datetime.strptime(date_inform_consent, date_format)
 
-                        if date_of_test_f < date_inform_consent_f:
-                            error = [subject, visit, 'Date of examination performed', date_examination_performed_form_field_instance,\
-                                     'The date/time of test performed cant be before the informed consent date/time' ,f'{date_examination_performed_pure} - {date_inform_consent}', 'PE0030']
-                            lista_revision.append(error)
-                        else:
-                            pass
-                    except Exception as e:
-                        lista_logs.append(f'Revision PE0030 --> {e} - Subject: {subject},  Visit: {visit} ')
+                            if date_of_test_f < date_inform_consent_f:
+                                error = [subject, visit, 'Date of examination performed', date_examination_performed_form_field_instance,\
+                                        'The date/time of test performed cant be before the informed consent date/time' ,f'{date_examination_performed_pure} - {date_inform_consent}', 'PE0030']
+                                lista_revision.append(error)
+                            else:
+                                pass
+                        except Exception as e:
+                            lista_logs.append(f'Revision PE0030 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> PE0040
-                    try:
-                        if datetime.strptime(str(date_examination_performed_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
-                            pass
-                        else: 
-                            error = [subject, visit, 'Date of examination performed', date_examination_performed_form_field_instance ,'Date of examination performed must be before the End of study/Early withdrawal date. ', date_examination_performed_pure, 'PE0040']
-                            lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision PE0040 --> {e} - Subject: {subject},  Visit: {visit}  ')
+                    if date_examination_performed_pure != '':
+                        try:
+                            if datetime.strptime(str(date_examination_performed_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
+                                pass
+                            else: 
+                                error = [subject, visit, 'Date of examination performed', date_examination_performed_form_field_instance ,'Date of examination performed must be before the End of study/Early withdrawal date. ', date_examination_performed_pure, 'PE0040']
+                                lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision PE0040 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
                     
                     if visit not in lista_revision:

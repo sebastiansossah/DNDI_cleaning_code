@@ -646,50 +646,52 @@ def lead_ECG(df_root, path_excel_writer):
 
 
                     # Revision LE0040
-                    try:
-                        date_format = '%d-%b-%Y'
-                        date_of_test_f = datetime.strptime(date_of_egc_pure, date_format)
-                        date_of_visit_f = datetime.strptime(date_of_visit, date_format)
+                    if date_of_egc_pure != '':
+                        try:
+                            date_format = '%d-%b-%Y'
+                            date_of_test_f = datetime.strptime(date_of_egc_pure, date_format)
+                            date_of_visit_f = datetime.strptime(date_of_visit, date_format)
 
-                        if date_of_test_f != date_of_visit_f:
-                            error = [subject, visit, 'Date of ECG Performed', date_of_egc_form_field_instance ,'The date of ECG must be the same as the visit date', \
-                                     f'{date_of_egc_pure} - {date_of_visit}', 'LE0040']
-                            lista_revision.append(error)
-                        else:
-                            pass
-                    except Exception as e:
-                        lista_logs.append(f'Revision LE0040--> {e} - Subject: {subject},  Visit: {visit} ')
+                            if date_of_test_f != date_of_visit_f:
+                                error = [subject, visit, 'Date of ECG Performed', date_of_egc_form_field_instance ,'The date of ECG must be the same as the visit date', \
+                                        f'{date_of_egc_pure} - {date_of_visit}', 'LE0040']
+                                lista_revision.append(error)
+                            else:
+                                pass
+                        except Exception as e:
+                            lista_logs.append(f'Revision LE0040--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision LE0050
-                    try:
-                        date_format = '%d-%b-%Y'
-                        date_of_test_f = datetime.strptime(date_of_egc_pure, date_format)
-                        date_inform_consent_f = datetime.strptime(date_inform_consent, date_format)
+                    if date_of_egc_pure != '':
+                        try:
+                            date_format = '%d-%b-%Y'
+                            date_of_test_f = datetime.strptime(date_of_egc_pure, date_format)
+                            date_inform_consent_f = datetime.strptime(date_inform_consent, date_format)
 
-                        if date_of_test_f < date_inform_consent_f:
-                            error = [subject, visit, 'Date of ECG Performed', date_of_egc_form_field_instance,\
-                                     'The date/time of ECG cant be before the informed consent date/time' ,f'{date_of_egc_pure} - {date_inform_consent}', 'LE0050']
-                            lista_revision.append(error)
-                        else:
-                            pass
-                    except Exception as e:
-                        lista_logs.append(f'Revision LE0050--> {e} - Subject: {subject},  Visit: {visit} ')
+                            if date_of_test_f < date_inform_consent_f:
+                                error = [subject, visit, 'Date of ECG Performed', date_of_egc_form_field_instance,\
+                                        'The date/time of ECG cant be before the informed consent date/time' ,f'{date_of_egc_pure} - {date_inform_consent}', 'LE0050']
+                                lista_revision.append(error)
+                            else:
+                                pass
+                        except Exception as e:
+                            lista_logs.append(f'Revision LE0050--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> LE0060
-                    try:
-                        if datetime.strptime(str(date_of_egc_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
-                            pass
-                        else: 
-                            error = [subject, visit, 'Date of ECG Performed', date_of_egc_form_field_instance ,'Date of ECG Performed must be before the End of study/Early withdrawal date. ', date_of_egc_pure, 'LE0060']
-                            lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision LE0060 --> {e} - Subject: {subject},  Visit: {visit}  ')
+                    if date_of_egc_pure != '':
+                        try:
+                            if datetime.strptime(str(date_of_egc_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
+                                pass
+                            else: 
+                                error = [subject, visit, 'Date of ECG Performed', date_of_egc_form_field_instance ,'Date of ECG Performed must be before the End of study/Early withdrawal date. ', date_of_egc_pure, 'LE0060']
+                                lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision LE0060 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
                     # ------------------------------------------ All undifined ---------------------------------------------------------
 
                     # Revision LE0070
                     try: 
-                        
                         if float(Undefined_Interpretation_pure) == 1.0:
                             
                             if float(Undefined_HR_bpm_pure) < 45.0 or float(Undefined_HR_bpm_pure) > 90.0 :

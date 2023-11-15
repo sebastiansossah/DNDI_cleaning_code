@@ -93,13 +93,13 @@ def vein_assesment(df_root, path_excel_writer):
                         vein_assessment_performed_pure = math.nan
                         vein_assessment_performed_form_field_instance = 'This field doesnt have any data'
 
-                    try:
-                        provide_reason = row['Provide the reason']
-                        provide_reason_pure = provide_reason.split('|')[0]
-                        provide_reason_form_field_intance = provide_reason.split('|')[1]
-                    except Exception as e:
-                        provide_reason_pure = ''
-                        provide_reason_form_field_intance = 'This field doesnt have any data'
+                    # try:
+                    #     provide_reason = row['Provide the reason']
+                    #     provide_reason_pure = provide_reason.split('|')[0]
+                    #     provide_reason_form_field_intance = provide_reason.split('|')[1]
+                    # except Exception as e:
+                    #     provide_reason_pure = ''
+                    #     provide_reason_form_field_intance = 'This field doesnt have any data'
 
                     try:
                         date_of_assesment = row['Date of assessment performed']
@@ -109,13 +109,13 @@ def vein_assesment(df_root, path_excel_writer):
                         date_of_assesment_pure = ''
                         date_of_assesment_form_field_instance = 'This field doesnt have any data'
 
-                    try:
-                        suitable_veins = row['Suitable veins for multiple venepunctures/cannulations found?']
-                        suitable_veins_pure = suitable_veins.split('|')[0]
-                        suitable_veins_form_field_isntance = suitable_veins.split('|')[1]
-                    except Exception as e:
-                        suitable_veins_pure = ''
-                        suitable_veins_form_field_isntance = 'This field doesnt have any data'
+                    # try:
+                    #     suitable_veins = row['Suitable veins for multiple venepunctures/cannulations found?']
+                    #     suitable_veins_pure = suitable_veins.split('|')[0]
+                    #     suitable_veins_form_field_isntance = suitable_veins.split('|')[1]
+                    # except Exception as e:
+                    #     suitable_veins_pure = ''
+                    #     suitable_veins_form_field_isntance = 'This field doesnt have any data'
                     
                     # ----------------------------------------------------------------------
                     # Revision GE0070
@@ -138,16 +138,19 @@ def vein_assesment(df_root, path_excel_writer):
                             lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> VA0050
-                    try:
-                        if datetime.strptime(str(date_of_assesment_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
-                            pass
-                        else: 
-                            error = [subject, visit, 'Date of assessment performed', date_of_assesment_form_field_instance ,'Date of assessment performed must be before the End of study/Early withdrawal date. ', date_of_assesment_pure, 'VA0050']
-                            lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision VA0050 --> {e} - Subject: {subject},  Visit: {visit}  ')
+                    if date_of_assesment_pure == '':
+                        pass
+                    else:
+                        try:
+                            if datetime.strptime(str(date_of_assesment_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
+                                pass
+                            else: 
+                                error = [subject, visit, 'Date of assessment performed', date_of_assesment_form_field_instance ,'Date of assessment performed must be before the End of study/Early withdrawal date. ', date_of_assesment_pure, 'VA0050']
+                                lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision VA0050 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
-                    # Revision VA0020 
+                    # Revision VA0020
                     try:
                         if float(vein_assessment_performed_pure) == 9.0: 
                             if visita =='D-1':
@@ -161,36 +164,42 @@ def vein_assesment(df_root, path_excel_writer):
                         lista_logs.append(f'Revision VA0020--> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision VA0030
-                    try:
-                        date_format = '%d-%b-%Y'
-                        date_of_assesment_f = datetime.strptime(date_of_assesment_pure, date_format)
-                        date_of_visit_f = datetime.strptime(date_of_visit, date_format)
+                    if date_of_assesment_pure == '':
+                        pass
+                    else:
+                        try:
+                            date_format = '%d-%b-%Y'
+                            date_of_assesment_f = datetime.strptime(date_of_assesment_pure, date_format)
+                            date_of_visit_f = datetime.strptime(date_of_visit, date_format)
 
-                        if date_of_assesment_f != date_of_visit_f:
-                            error = [subject, visit, 'Date of assessment performed', date_of_assesment_form_field_instance, \
-                                     'The date must be the same as the date of visit date', \
-                                        f'{date_of_assesment_pure} - {date_of_visit}', 'VA0030']
-                            lista_revision.append(error)
-                        else:
-                            pass
-                    except Exception as e:
-                        lista_logs.append(f'Revision VA0030--> {e} - Subject: {subject},  Visit: {visit} ')
+                            if date_of_assesment_f != date_of_visit_f:
+                                error = [subject, visit, 'Date of assessment performed', date_of_assesment_form_field_instance, \
+                                        'The date must be the same as the date of visit date', \
+                                            f'{date_of_assesment_pure} - {date_of_visit}', 'VA0030']
+                                lista_revision.append(error)
+                            else:
+                                pass
+                        except Exception as e:
+                            lista_logs.append(f'Revision VA0030--> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision VA0040
-                    try:
-                        date_format = '%d-%b-%Y'
-                        date_of_assesment_f = datetime.strptime(date_of_assesment_pure, date_format)
-                        date_inform_consentf = datetime.strptime(date_inform_consent, date_format)
+                    if date_of_assesment_pure == '':
+                        pass
+                    else:
+                        try:
+                            date_format = '%d-%b-%Y'
+                            date_of_assesment_f = datetime.strptime(date_of_assesment_pure, date_format)
+                            date_inform_consentf = datetime.strptime(date_inform_consent, date_format)
 
-                        if date_of_assesment_f < date_inform_consentf:
-                            error = [subject, visit, 'Date of assessment performed', date_of_assesment_form_field_instance, \
-                                     'The date of assessment cant be before the informed consent date',\
-                                          f'{date_of_assesment_pure} - {date_inform_consent}', 'VA0040']
-                            lista_revision.append(error)
-                        else:
-                            pass
-                    except Exception as e:
-                        lista_logs.append(f'Revision VA0040--> {e} - Subject: {subject},  Visit: {visit} ')
+                            if date_of_assesment_f < date_inform_consentf:
+                                error = [subject, visit, 'Date of assessment performed', date_of_assesment_form_field_instance, \
+                                        'The date of assessment cant be before the informed consent date',\
+                                            f'{date_of_assesment_pure} - {date_inform_consent}', 'VA0040']
+                                lista_revision.append(error)
+                            else:
+                                pass
+                        except Exception as e:
+                            lista_logs.append(f'Revision VA0040--> {e} - Subject: {subject},  Visit: {visit} ')
                 else:
                     pass
 

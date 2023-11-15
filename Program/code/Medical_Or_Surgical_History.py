@@ -211,17 +211,20 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
                                 lista_logs.append(f'Revision MS0050 --> {e} - Subject: {subject},  Visit: {visit} ')
                             
                             # Revision MS0060
-                            try:
-                                medical_date_history = (medical_surgical_pure, onset_date_pure, end_date_pure)
+                            if math.isnan(float(medical_surgical_pure)):
+                                pass
+                            else: 
+                                try:
+                                    medical_date_history = (medical_surgical_pure, onset_date_pure, end_date_pure)
 
-                                if medical_date_history in lista_comprobacion_overlap:
-                                        error = [subject, visit, 'Medical/Surgical History/ Current Condition', medical_surgical_form_field_instance , \
-                                                 'The Medica/Surgical History/ Current Condition shuold not be enter twice if the dates overlap2' , medical_surgical_pure, 'MS0060']
-                                        lista_revision.append(error)
-                                else:
-                                    lista_comprobacion_overlap.append(medical_date_history)
-                            except Exception as e:
-                                lista_logs.append(f'Revision MS0060 --> {e} - Subject: {subject},  Visit: {visit} ')
+                                    if medical_date_history in lista_comprobacion_overlap:
+                                            error = [subject, visit, 'Medical/Surgical History/ Current Condition', medical_surgical_form_field_instance , \
+                                                    'The Medica/Surgical History/ Current Condition shuold not be enter twice if the dates overlap2' , medical_surgical_pure, 'MS0060']
+                                            lista_revision.append(error)
+                                    else:
+                                        lista_comprobacion_overlap.append(medical_date_history)
+                                except Exception as e:
+                                    lista_logs.append(f'Revision MS0060 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                             # Revision MS070
                             try:

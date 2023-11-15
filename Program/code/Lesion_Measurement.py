@@ -206,45 +206,48 @@ def lesion_measurement(df_root, path_excel_writer):
 
 
                     # Revision LM0030
-                    try:
-                        date_format = '%d-%b-%Y'
-                        date_of_test_f = datetime.strptime(Date_of_assessment_performed_pure, date_format)
-                        date_of_visit_f = datetime.strptime(date_of_visit, date_format)
+                    if Date_of_assessment_performed_pure != '':
+                        try:
+                            date_format = '%d-%b-%Y'
+                            date_of_test_f = datetime.strptime(Date_of_assessment_performed_pure, date_format)
+                            date_of_visit_f = datetime.strptime(date_of_visit, date_format)
 
-                        if date_of_test_f != date_of_visit_f:
-                            error = [subject, visit, 'Date of assessment performed', Date_of_assessment_performed_form_field_instance,\
-                                     'The date of assessment cant be before the informed consent date' , \
-                                        f'{Date_of_assessment_performed_pure} - {date_of_visit}', 'LM0030']
-                            lista_revision.append(error)
-                        else:
-                            pass
-                    except Exception as e:
-                        lista_logs.append(f'Revision LM0030--> {e} - Subject: {subject},  Visit: {visit} ')
+                            if date_of_test_f != date_of_visit_f:
+                                error = [subject, visit, 'Date of assessment performed', Date_of_assessment_performed_form_field_instance,\
+                                        'The date of assessment cant be before the informed consent date' , \
+                                            f'{Date_of_assessment_performed_pure} - {date_of_visit}', 'LM0030']
+                                lista_revision.append(error)
+                            else:
+                                pass
+                        except Exception as e:
+                            lista_logs.append(f'Revision LM0030--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision LM0040
-                    try:
-                        date_format = '%d-%b-%Y'
-                        date_of_test_f = datetime.strptime(Date_of_assessment_performed_pure, date_format)
-                        date_inform_consent_f = datetime.strptime(date_inform_consent, date_format)
+                    if Date_of_assessment_performed_pure != '':
+                        try:
+                            date_format = '%d-%b-%Y'
+                            date_of_test_f = datetime.strptime(Date_of_assessment_performed_pure, date_format)
+                            date_inform_consent_f = datetime.strptime(date_inform_consent, date_format)
 
-                        if date_of_test_f < date_inform_consent_f:
-                            error = [subject, visit, 'Date of assessment performed', Date_of_assessment_performed_form_field_instance, \
-                                     'The date of assessment cant be before the informed consent date',f'{Date_of_assessment_performed_pure} - {date_inform_consent}', 'LM0040']
-                            lista_revision.append(error)
-                        else:
-                            pass
-                    except Exception as e:
-                        lista_logs.append(f'Revision LM0040--> {e} - Subject: {subject},  Visit: {visit} ')
+                            if date_of_test_f < date_inform_consent_f:
+                                error = [subject, visit, 'Date of assessment performed', Date_of_assessment_performed_form_field_instance, \
+                                        'The date of assessment cant be before the informed consent date',f'{Date_of_assessment_performed_pure} - {date_inform_consent}', 'LM0040']
+                                lista_revision.append(error)
+                            else:
+                                pass
+                        except Exception as e:
+                            lista_logs.append(f'Revision LM0040--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> LM0050
-                    try:
-                        if datetime.strptime(str(Date_of_assessment_performed_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
-                            pass
-                        else: 
-                            error = [subject, visit, 'Date of assessment performed', Date_of_assessment_performed_form_field_instance ,'Date of assessment performed must be before the End of study/Early withdrawal date. ', Date_of_assessment_performed_pure, 'LM0050']
-                            lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision LM0050 --> {e} - Subject: {subject},  Visit: {visit}  ')
+                    if Date_of_assessment_performed_pure != '':
+                        try:
+                            if datetime.strptime(str(Date_of_assessment_performed_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
+                                pass
+                            else: 
+                                error = [subject, visit, 'Date of assessment performed', Date_of_assessment_performed_form_field_instance ,'Date of assessment performed must be before the End of study/Early withdrawal date. ', Date_of_assessment_performed_pure, 'LM0050']
+                                lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision LM0050 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
                     lista_validacion = [
                                     'Anatomical Location',

@@ -168,20 +168,21 @@ def alcohol_screen(df_root, path_excel_writer):
                         lista_logs.append(f'Revision AS0020--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision AS0030
-                    try:
-                        date_format = '%d-%b-%Y'
-                        date_of_test_f = datetime.strptime(date_test_performed_pure, date_format)
-                        date_of_visit_f = datetime.strptime(date_of_visit, date_format)
+                    if date_test_performed_pure != '':
+                        try:
+                            date_format = '%d-%b-%Y'
+                            date_of_test_f = datetime.strptime(date_test_performed_pure, date_format)
+                            date_of_visit_f = datetime.strptime(date_of_visit, date_format)
 
-                        if date_of_test_f != date_of_visit_f:
-                            error = [subject, visit, 'Date of test performed', date_test_performed_form_field_instance ,\
-                                     'The date should be the same as the visit date in the "Date of Visit" Form' ,\
-                                          f'{date_test_performed_pure} - {date_of_visit}', 'AS0030']
-                            lista_revision.append(error)
-                        else:
-                            pass
-                    except Exception as e:
-                        lista_logs.append(f'Revision AS0030--> {e} - Subject: {subject},  Visit: {visit} ')
+                            if date_of_test_f != date_of_visit_f:
+                                error = [subject, visit, 'Date of test performed', date_test_performed_form_field_instance ,\
+                                        'The date should be the same as the visit date in the "Date of Visit" Form' ,\
+                                            f'{date_test_performed_pure} - {date_of_visit}', 'AS0030']
+                                lista_revision.append(error)
+                            else:
+                                pass
+                        except Exception as e:
+                            lista_logs.append(f'Revision AS0030--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision AS0040
                     try: 
@@ -204,44 +205,47 @@ def alcohol_screen(df_root, path_excel_writer):
                         lista_logs.append(f'Revision AS0050--> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision LBCOV0060
-                    try:
-                        testing_percentage = float(levels_alcohol_percentaje_pure)*1000.0
-                        if testing_percentage != float(levels_alcohol_mg_dl_pure):
-                            error = [subject, visit, 'Levels of alcohol in the serum (BAC) (mg/dL)', levels_alcohol_mg_dl_form_field_instance ,\
-                                        'The BAC in % x 1000 should be the same as in mg/dL' ,\
-                                         f'{levels_alcohol_mg_dl_pure} {testing_percentage}', 'LBCOV0060']
-                            lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision LBCOV0060--> {e} - Subject: {subject},  Visit: {visit} ')
+                    if math.isnan(float(levels_alcohol_percentaje_pure)) == False  and  math.isnan(float(levels_alcohol_percentaje_pure)) == False: 
+                        try:
+                            testing_percentage = float(levels_alcohol_percentaje_pure)*1000.0
+                            if testing_percentage != float(levels_alcohol_mg_dl_pure):
+                                error = [subject, visit, 'Levels of alcohol in the serum (BAC) (mg/dL)', levels_alcohol_mg_dl_form_field_instance ,\
+                                            'The BAC in % x 1000 should be the same as in mg/dL' ,\
+                                            f'{levels_alcohol_mg_dl_pure} {testing_percentage}', 'LBCOV0060']
+                                lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision LBCOV0060--> {e} - Subject: {subject},  Visit: {visit} ')
                     
 
                     # Revision AS0070
-                    try:
-                        date_format = '%d-%b-%Y'
-                        date_of_test_f = datetime.strptime(date_test_performed_pure, date_format)
-                        date_inform_consent_f = datetime.strptime(date_inform_consent, date_format)
+                    if date_test_performed_pure != '':
+                        try:
+                            date_format = '%d-%b-%Y'
+                            date_of_test_f = datetime.strptime(date_test_performed_pure, date_format)
+                            date_inform_consent_f = datetime.strptime(date_inform_consent, date_format)
 
-                        if date_of_test_f < date_inform_consent_f:
-                            error = [subject, visit, 'Date of test performed', date_test_performed_form_field_instance ,\
-                                    'The date of test performed cant be before the informed consent date', \
-                                        f'{date_test_performed_pure} - {date_inform_consent}', 'AS0070']
-                            
-                            lista_revision.append(error)
-                        else:
-                            pass
-                    except Exception as e:
-                        lista_logs.append(f'Revision AS0070--> {e} - Subject: {subject},  Visit: {visit} ')
+                            if date_of_test_f < date_inform_consent_f:
+                                error = [subject, visit, 'Date of test performed', date_test_performed_form_field_instance ,\
+                                        'The date of test performed cant be before the informed consent date', \
+                                            f'{date_test_performed_pure} - {date_inform_consent}', 'AS0070']
+                                
+                                lista_revision.append(error)
+                            else:
+                                pass
+                        except Exception as e:
+                            lista_logs.append(f'Revision AS0070--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> AS0080
-                    try:
-                        if datetime.strptime(str(date_test_performed_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
-                            pass
-                        else: 
-                            error = [subject, visit, 'Date of test performed', date_test_performed_form_field_instance ,\
-                                     'Date of test performed must be before the End of study/Early withdrawal date. ', date_test_performed_pure, 'AS0080']
-                            lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision AS0080 --> {e} - Subject: {subject},  Visit: {visit}  ')
+                    if date_test_performed_pure != '':
+                        try:
+                            if datetime.strptime(str(date_test_performed_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
+                                pass
+                            else: 
+                                error = [subject, visit, 'Date of test performed', date_test_performed_form_field_instance ,\
+                                        'Date of test performed must be before the End of study/Early withdrawal date. ', date_test_performed_pure, 'AS0080']
+                                lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision AS0080 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
 
 

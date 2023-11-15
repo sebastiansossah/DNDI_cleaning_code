@@ -216,46 +216,49 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                             lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision LBO0010
-                    try:
-                        date_format = '%d-%b-%Y'
-                        date_collected_f = datetime.strptime(date_collected_pure, date_format)
-                        date_of_visit_f = datetime.strptime(date_of_visit, date_format)
+                    if date_collected_pure != '':
+                        try:
+                            date_format = '%d-%b-%Y'
+                            date_collected_f = datetime.strptime(date_collected_pure, date_format)
+                            date_of_visit_f = datetime.strptime(date_of_visit, date_format)
 
-                        if date_collected_f != date_of_visit_f:
-                            error = [subject, visit, 'Date Collected', date_collected_form_field_instance,\
-                                     'The date should be the same as the visit date in the "Date of Visit" Form', \
-                                        f'{date_collected_pure} - {date_of_visit}', 'LBO0010']
-                            lista_revision.append(error)
-                        else:
-                            pass
-                    except Exception as e:
-                        lista_logs.append(f'Revision LBO0010--> {e} - Subject: {subject},  Visit: {visit} ')
+                            if date_collected_f != date_of_visit_f:
+                                error = [subject, visit, 'Date Collected', date_collected_form_field_instance,\
+                                        'The date should be the same as the visit date in the "Date of Visit" Form', \
+                                            f'{date_collected_pure} - {date_of_visit}', 'LBO0010']
+                                lista_revision.append(error)
+                            else:
+                                pass
+                        except Exception as e:
+                            lista_logs.append(f'Revision LBO0010--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision LBO0020
-                    try:
-                        date_format = '%d-%b-%Y'
-                        date_collected_f = datetime.strptime(date_collected_pure, date_format)
-                        date_inform_consent_f = datetime.strptime(date_inform_consent, date_format)
+                    if date_collected_pure != '':
+                        try:
+                            date_format = '%d-%b-%Y'
+                            date_collected_f = datetime.strptime(date_collected_pure, date_format)
+                            date_inform_consent_f = datetime.strptime(date_inform_consent, date_format)
 
-                        if date_collected_f < date_inform_consent_f:
-                            error = [subject, visit, 'Date Collected', date_collected_pure,\
-                                     'The date/time of test performed cant be before the informed consent date/time',\
-                                        f'{date_collected_pure} - {date_inform_consent}', 'LBO0020']
-                            lista_revision.append(error)
-                        else:
-                            pass
-                    except Exception as e:
-                        lista_logs.append(f'Revision LBO0020--> {e} - Subject: {subject},  Visit: {visit} ')
+                            if date_collected_f < date_inform_consent_f:
+                                error = [subject, visit, 'Date Collected', date_collected_pure,\
+                                        'The date/time of test performed cant be before the informed consent date/time',\
+                                            f'{date_collected_pure} - {date_inform_consent}', 'LBO0020']
+                                lista_revision.append(error)
+                            else:
+                                pass
+                        except Exception as e:
+                            lista_logs.append(f'Revision LBO0020--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> LBO0030
-                    try:
-                        if datetime.strptime(str(date_collected_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
-                            pass
-                        else: 
-                            error = [subject, visit, 'Visit Date', date_collected_form_field_instance ,'Date Collected must be before the End of study/Early withdrawal date. ', date_collected_pure, 'LBO0030']
-                            lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision LBO0030 --> {e} - Subject: {subject},  Visit: {visit}  ')
+                    if date_collected_pure != '':
+                        try:
+                            if datetime.strptime(str(date_collected_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
+                                pass
+                            else: 
+                                error = [subject, visit, 'Visit Date', date_collected_form_field_instance ,'Date Collected must be before the End of study/Early withdrawal date. ', date_collected_pure, 'LBO0030']
+                                lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision LBO0030 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
                     # Revision LBO0050
                     try:

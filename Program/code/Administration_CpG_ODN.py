@@ -165,17 +165,20 @@ def adminsitration_CpG_ODN(df_root, path_excel_writer):
                     except Exception as e:
                             lista_logs.append(f'Revision IMP0050 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
-                    # Revision IMP0060
-                    try:
-                        if date_dosing_pure in date_dosing_list_review:
-                            error = [subject, visit, 'Date of dosing', \
-                                    date_dosing_form_field_instance, \
-                                    'The dosing date cant be repeated', date_dosing_pure, 'IMP0060']
-                            lista_revision.append(error)
-                        else: 
-                            date_dosing_list_review.append(date_dosing_pure)
-                    except Exception as e:
-                            lista_logs.append(f'Revision IMP0060 --> {e} - Subject: {subject},  Visit: {visit} ')
+                    if date_dosing == '':
+                         pass
+                    else:
+                        # Revision IMP0060
+                        try:
+                            if date_dosing_pure in date_dosing_list_review:
+                                error = [subject, visit, 'Date of dosing', \
+                                        date_dosing_form_field_instance, \
+                                        'The dosing date cant be repeated', date_dosing_pure, 'IMP0060']
+                                lista_revision.append(error)
+                            else: 
+                                date_dosing_list_review.append(date_dosing_pure)
+                        except Exception as e:
+                                lista_logs.append(f'Revision IMP0060 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision IMP0080
                     try: 

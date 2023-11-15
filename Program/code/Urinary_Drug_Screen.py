@@ -153,62 +153,66 @@ def urinary_drug_screen(df_root, path_excel_writer):
                         lista_logs.append(f'Revision UD0020--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision UD0030
-                    try:
-                        lis_check_below = check_below_trace_pure.split(',')
-                        if len(lis_check_below) > 1:
-                            for i in lis_check_below:
-                                if float(i) == 0.0:
-                                    error = [subject, visit, 'Check below trace/positive results ', check_below_trace_form_field_isntance, \
-                                             'When the "None" option is selected, no other option can be selected, please review', \
-                                                check_below_trace_pure, 'UD0030']
-                                    lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision UD0030--> {e} - Subject: {subject},  Visit: {visit} ')
+                    if check_below_trace_pure != '':
+                        try:
+                            lis_check_below = check_below_trace_pure.split(',')
+                            if len(lis_check_below) > 1:
+                                for i in lis_check_below:
+                                    if float(i) == 0.0:
+                                        error = [subject, visit, 'Check below trace/positive results ', check_below_trace_form_field_isntance, \
+                                                'When the "None" option is selected, no other option can be selected, please review', \
+                                                    check_below_trace_pure, 'UD0030']
+                                        lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision UD0030--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision UD0040
-                    try:
-                        date_format = '%d-%b-%Y'
-                        date_of_test_f = datetime.strptime(date_of_test_pure, date_format)
-                        date_of_visit_f = datetime.strptime(date_of_visit, date_format)
+                    if date_of_test_pure != '':
+                        try:
+                            date_format = '%d-%b-%Y'
+                            date_of_test_f = datetime.strptime(date_of_test_pure, date_format)
+                            date_of_visit_f = datetime.strptime(date_of_visit, date_format)
 
-                        if date_of_test_f != date_of_visit_f:
-                            error = [subject, visit, 'Date of test performed', date_of_test_form_field_isntance,\
-                                     'The date must be the same as the date of visit date', \
-                                        f'{date_of_test_pure} - {date_of_visit}', 'UD0040']
-                            lista_revision.append(error)
-                        else:
-                            pass
-                    except Exception as e:
-                        lista_logs.append(f'Revision UD0040--> {e} - Subject: {subject},  Visit: {visit} ')
+                            if date_of_test_f != date_of_visit_f:
+                                error = [subject, visit, 'Date of test performed', date_of_test_form_field_isntance,\
+                                        'The date must be the same as the date of visit date', \
+                                            f'{date_of_test_pure} - {date_of_visit}', 'UD0040']
+                                lista_revision.append(error)
+                            else:
+                                pass
+                        except Exception as e:
+                            lista_logs.append(f'Revision UD0040--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision UD0050
-                    try:
-                        date_format = '%d-%b-%Y'
-                        date_of_test_f = datetime.strptime(date_of_test_pure, date_format)
-                        date_inform_consent_f = datetime.strptime(date_inform_consent, date_format)
+                    if date_of_test_pure != '':
+                        try:
+                            date_format = '%d-%b-%Y'
+                            date_of_test_f = datetime.strptime(date_of_test_pure, date_format)
+                            date_inform_consent_f = datetime.strptime(date_inform_consent, date_format)
 
-                        if date_of_test_f < date_inform_consent_f:
-                            error = [subject, visit, 'Date of test performed', date_of_test_form_field_isntance, \
-                                     'The date of test performed cant be before the informed consent date', \
-                                        f'{date_of_test_pure} - {date_inform_consent}', 'UD0050']
-                            lista_revision.append(error)
-                        else:
-                            pass
-                    except Exception as e:
-                        lista_logs.append(f'Revision UD0050--> {e} - Subject: {subject},  Visit: {visit} ')
+                            if date_of_test_f < date_inform_consent_f:
+                                error = [subject, visit, 'Date of test performed', date_of_test_form_field_isntance, \
+                                        'The date of test performed cant be before the informed consent date', \
+                                            f'{date_of_test_pure} - {date_inform_consent}', 'UD0050']
+                                lista_revision.append(error)
+                            else:
+                                pass
+                        except Exception as e:
+                            lista_logs.append(f'Revision UD0050--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> UD0060
-                    try:
-                        if datetime.strptime(str(date_of_test_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
-                            pass
-                        else: 
-                            error = [subject, visit, 'Date of test performed', date_of_test_form_field_isntance ,'Date of test performed must be before the End of study/Early withdrawal date. ', date_of_test_pure, 'UD0060']
-                            lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision UD0060 --> {e} - Subject: {subject},  Visit: {visit}  ')
+                    if date_of_test_pure != '':
+                        try:
+                            if datetime.strptime(str(date_of_test_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
+                                pass
+                            else: 
+                                error = [subject, visit, 'Date of test performed', date_of_test_form_field_isntance ,'Date of test performed must be before the End of study/Early withdrawal date. ', date_of_test_pure, 'UD0060']
+                                lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision UD0060 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
-                else:
-                    pass
+                    else:
+                        pass
 
 
     excel_writer = load_workbook(path_excel_writer)

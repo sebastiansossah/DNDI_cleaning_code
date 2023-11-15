@@ -862,44 +862,47 @@ def vital_signs(df_root, path_excel_writer):
                             lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision VS0020
-                    try:
-                        date_format = '%d-%b-%Y'
-                        date_of_test_f = datetime.strptime(date_assesment_pure, date_format)
-                        date_of_visit_f = datetime.strptime(date_of_visit, date_format)
+                    if date_assesment_pure != '':
+                        try:
+                            date_format = '%d-%b-%Y'
+                            date_of_test_f = datetime.strptime(date_assesment_pure, date_format)
+                            date_of_visit_f = datetime.strptime(date_of_visit, date_format)
 
-                        if date_of_test_f != date_of_visit_f:
-                            error = [subject, visit, 'Date of assessment performed', date_assesment_form_field_instance,\
-                                     'The date should be the same as the visit date in the "Date of Visit" Form', f'{date_assesment_pure} - {date_of_visit}', 'VS0020']
-                            lista_revision.append(error)
-                        else:
-                            pass
-                    except Exception as e:
-                        lista_logs.append(f'Revision VS0020--> {e} - Subject: {subject},  Visit: {visit} ')
+                            if date_of_test_f != date_of_visit_f:
+                                error = [subject, visit, 'Date of assessment performed', date_assesment_form_field_instance,\
+                                        'The date should be the same as the visit date in the "Date of Visit" Form', f'{date_assesment_pure} - {date_of_visit}', 'VS0020']
+                                lista_revision.append(error)
+                            else:
+                                pass
+                        except Exception as e:
+                            lista_logs.append(f'Revision VS0020--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision VS0030
-                    try:
-                        date_format = '%d-%b-%Y'
-                        date_of_test_f = datetime.strptime(date_assesment_pure, date_format)
-                        date_inform_consent_f = datetime.strptime(date_inform_consent, date_format)
+                    if date_assesment_pure != '':
+                        try:
+                            date_format = '%d-%b-%Y'
+                            date_of_test_f = datetime.strptime(date_assesment_pure, date_format)
+                            date_inform_consent_f = datetime.strptime(date_inform_consent, date_format)
 
-                        if date_of_test_f < date_inform_consent_f:
-                            error = [subject, visit, 'Date of assessment performed', date_assesment_form_field_instance,\
-                                     'The date/time of test performed cant be before the informed consent date/time', f'{date_assesment_pure} - {date_inform_consent}', 'VS0030']
-                            lista_revision.append(error)
-                        else:
-                            pass
-                    except Exception as e:
-                        lista_logs.append(f'Revision VS0030--> {e} - Subject: {subject},  Visit: {visit} ')
+                            if date_of_test_f < date_inform_consent_f:
+                                error = [subject, visit, 'Date of assessment performed', date_assesment_form_field_instance,\
+                                        'The date/time of test performed cant be before the informed consent date/time', f'{date_assesment_pure} - {date_inform_consent}', 'VS0030']
+                                lista_revision.append(error)
+                            else:
+                                pass
+                        except Exception as e:
+                            lista_logs.append(f'Revision VS0030--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> VS0040
-                    try:
-                        if datetime.strptime(str(date_assesment_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
-                            pass
-                        else: 
-                            error = [subject, visit, 'Date of assessment performed', date_assesment_form_field_instance ,'Visit Date must be before the End of study/Early withdrawal date. ', date_assesment_pure, 'VS0040']
-                            lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision VS0040 --> {e}  - Subject: {subject},  Visit: {visit} ')
+                    if date_assesment_pure != '':
+                        try:
+                            if datetime.strptime(str(date_assesment_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
+                                pass
+                            else: 
+                                error = [subject, visit, 'Date of assessment performed', date_assesment_form_field_instance ,'Visit Date must be before the End of study/Early withdrawal date. ', date_assesment_pure, 'VS0040']
+                                lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision VS0040 --> {e}  - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision VS0050
                     try:

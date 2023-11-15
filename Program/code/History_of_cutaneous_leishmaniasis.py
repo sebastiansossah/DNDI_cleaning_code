@@ -118,7 +118,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                         species_identification_pure = species_identification.split('|')[0]
                         species_identification_form_field_instance = species_identification.split('|')[1]
                     except Exception as e:
-                        species_identification_pure = ''
+                        species_identification_pure = math.nan
                         species_identification_form_field_instance = 'This field doesnt have any data'
 
                     try:
@@ -151,23 +151,26 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                     if float(was_DV_performed_pure) !=  1.0:
                         error = [subject, visit, 'Visit Pages', was_DV_performed_form_field_instance , 'This Form will be disabled because the visit was not done', was_DV_performed_pure, 'GE0070']
                         lista_revision.append(error)
+                    
+                    # Primera  revision general de formato de fecha ->GE0020
+                    if date_confirmed_diagnosis_pure == '':
+                        pass
+                    else:
+                        try:
+                            f = revision_fecha(date_confirmed_diagnosis_pure)
+                            if f == None:
+                                pass
+                            else:
+                                error = [subject, visit, 'Date of confirmed diagnosis of CL', date_confirmed_diagnosis_form_field_instance ,f , date_confirmed_diagnosis_pure, 'GE0020']
+                                lista_revision.append(error) 
+                        except Exception as e:
+                            lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
-                    try:
-                        # Primera  revision general de formato de fecha ->GE0020
-                        f = revision_fecha(date_confirmed_diagnosis_pure)
-                        if f == None:
-                            pass
-                        else:
-                            error = [subject, visit, 'Date of confirmed diagnosis of CL', date_confirmed_diagnosis_form_field_instance ,f , date_confirmed_diagnosis_pure, 'GE0020']
-                            lista_revision.append(error) 
-                    except Exception as e:
-                        lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
-
+                    # Primera  revision general de formato de fecha ->GE0020
                     if date_new_sample_pure == '':
                         pass
                     else:
                         try:
-                            # Primera  revision general de formato de fecha ->GE0020
                             f = revision_fecha(date_new_sample_pure)
                             if f == None:
                                 pass
@@ -177,90 +180,107 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                         except Exception as e:
                             lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
-
                     # Revision CL0010
-                    try:
-                        date_format = '%d-%b-%Y'
-                        date_of_test_f = datetime.strptime(date_format(str(date_confirmed_diagnosis_pure)), date_format)
-                        date_of_visit_f = datetime.strptime(date_of_visit, date_format)
+                    if date_confirmed_diagnosis_pure == '':
+                        pass
+                    else:
+                        try:
+                            date_format = '%d-%b-%Y'
+                            date_of_test_f = datetime.strptime(date_format(str(date_confirmed_diagnosis_pure)), date_format)
+                            date_of_visit_f = datetime.strptime(date_of_visit, date_format)
 
-                        if date_of_test_f != date_of_visit_f:
-                            error = [subject, visit, 'Date of confirmed diagnosis of CL', date_confirmed_diagnosis_form_field_instance ,\
-                                     'The year of diagnosis of CL must be equal or after the year of birth in DEMOGRAPHIC' , f'{date_confirmed_diagnosis_pure} - {date_of_visit}', 'CL0010']
-                            lista_revision.append(error)
-                        else:
-                            pass
+                            if date_of_test_f != date_of_visit_f:
+                                error = [subject, visit, 'Date of confirmed diagnosis of CL', date_confirmed_diagnosis_form_field_instance ,\
+                                        'The year of diagnosis of CL must be equal or after the year of birth in DEMOGRAPHIC' , f'{date_confirmed_diagnosis_pure} - {date_of_visit}', 'CL0010']
+                                lista_revision.append(error)
+                            else:
+                                pass
 
-                    except Exception as e:
-                        lista_logs.append(f'Revision CL0010--> {e} - Subject: {subject},  Visit: {visit} ')
+                        except Exception as e:
+                            lista_logs.append(f'Revision CL0010--> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision CL0020
-                    try:
-                        date_format = '%d-%b-%Y'
-                        date_confirmed_diagnosis_f = datetime.strptime(date_format(str(date_confirmed_diagnosis_pure)), date_format)
-                        date_new_sample_f = datetime.strptime(date_format(date_new_sample_pure), date_format)
+                    if date_confirmed_diagnosis_pure == '':
+                        pass
+                    else:
+                        try:
+                            date_format = '%d-%b-%Y'
+                            date_confirmed_diagnosis_f = datetime.strptime(date_format(str(date_confirmed_diagnosis_pure)), date_format)
+                            date_new_sample_f = datetime.strptime(date_format(date_new_sample_pure), date_format)
 
-                        if date_confirmed_diagnosis_f < date_new_sample_f:
-                            error = [subject, visit, 'Date of Sample used for Diagnosis taken', date_new_sample_form_field_instance ,\
-                                     'The date of sample must be before the diagnosis of CL date.' , f'{date_confirmed_diagnosis_pure} - {date_new_sample_pure}', 'CL0020']
-                            lista_revision.append(error)
-                        else:
-                            pass
-                    except Exception as e:
-                        lista_logs.append(f'Revision CL0020--> {e} - Subject: {subject},  Visit: {visit} ')
+                            if date_confirmed_diagnosis_f < date_new_sample_f:
+                                error = [subject, visit, 'Date of Sample used for Diagnosis taken', date_new_sample_form_field_instance ,\
+                                        'The date of sample must be before the diagnosis of CL date.' , f'{date_confirmed_diagnosis_pure} - {date_new_sample_pure}', 'CL0020']
+                                lista_revision.append(error)
+                            else:
+                                pass
+                        except Exception as e:
+                            lista_logs.append(f'Revision CL0020--> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision CL0030
-                    try:
-                        date_format = '%d-%b-%Y'
-                        date_birth_cured = f'01-{month_birth}-{year_birth}'
-                        date_birth_format = datetime.strptime(date_birth_cured, '%d-%m-%Y')
-                        date_new_sample_f = datetime.strptime(date_format(str(date_new_sample_pure)), date_format)
+                    if date_new_sample_pure == '':
+                        pass
+                    else:
+                        try:
+                            date_format = '%d-%b-%Y'
+                            date_birth_cured = f'01-{month_birth}-{year_birth}'
+                            date_birth_format = datetime.strptime(date_birth_cured, '%d-%m-%Y')
+                            date_new_sample_f = datetime.strptime(date_format(str(date_new_sample_pure)), date_format)
 
-                        if  date_new_sample_f <  date_birth_format:
-                            error = [subject, visit, 'Date of Sample used for Diagnosis taken', date_new_sample_form_field_instance,  \
-                                     'The year and month of Sample used for Diagnosis taken must be equal or after the year and month of birth in DEMOGRAPHIC' , date_new_sample_pure, 'CL0030']
-                            lista_revision.append(error)
-                        else:
-                            pass
-                    except Exception as e:
-                        lista_logs.append(f'Revision CL0030--> {e} - Subject: {subject},  Visit: {visit} ')
+                            if  date_new_sample_f <  date_birth_format:
+                                error = [subject, visit, 'Date of Sample used for Diagnosis taken', date_new_sample_form_field_instance,  \
+                                        'The year and month of Sample used for Diagnosis taken must be equal or after the year and month of birth in DEMOGRAPHIC' , date_new_sample_pure, 'CL0030']
+                                lista_revision.append(error)
+                            else:
+                                pass
+                        except Exception as e:
+                            lista_logs.append(f'Revision CL0030--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision CL0040
-                    try: 
-                        if 99.0 in [float(i) for i in species_identification_pure.split(',')]:
-                            if math.isnan(float(species_name_pure)) or str(species_name_pure) == '' or float(species_name_pure) == np.nan or  str(species_name_pure) == '-':
-                                error = [subject, visit, 'Species identification', species_identification_form_field_instance ,\
-                                            'If "other" is selected, there must be at least one "other species" section added' , species_name_pure, 'CL0040']
-                                lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision CL0040--> {e} - Subject: {subject},  Visit: {visit} ')
+                    if math.isnan(float(species_identification_pure)):
+                        pass
+                    else:
+                        try: 
+                            if 99.0 in [float(i) for i in species_identification_pure.split(',')]:
+                                if math.isnan(float(species_name_pure)) or str(species_name_pure) == '' or float(species_name_pure) == np.nan or  str(species_name_pure) == '-':
+                                    error = [subject, visit, 'Species identification', species_identification_form_field_instance ,\
+                                                'If "other" is selected, there must be at least one "other species" section added' , species_name_pure, 'CL0040']
+                                    lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision CL0040--> {e} - Subject: {subject},  Visit: {visit} ')
     
                     # Revision CL0050
-                    try: 
-                        if 99.0 not in [float(i) for i in species_identification_pure.split(',')]:
-                            pass 
-                        else:
-                            try:
-                                if math.isnan(float(species_name_pure)) or str(species_name_pure) != '' or float(species_name_pure) != np.nan or  str(species_name_pure) != '-':
-                                    error = [subject, visit, 'Species identification', species_identification_form_field_instance, \
-                                            'If at least one "other species" section is added, the "other" option must be selected' , f'{species_identification_pure} - {species_name_pure}', 'CL0050']
-                                    lista_revision.append(error)
-                            except Exception as e:
-                                    lista_logs.append(f'Revision CL0050--> {e} - Subject: {subject},  Visit: {visit} ')
-                    except Exception as e:
-                        lista_logs.append(f'Revision CL0050--> {e} - Subject: {subject},  Visit: {visit} ')
+                    if math.isnan(float(species_identification_pure)):
+                        pass
+                    else:
+                        try: 
+                            if 99.0 not in [float(i) for i in species_identification_pure.split(',')]:
+                                pass 
+                            else:
+                                try:
+                                    if math.isnan(float(species_name_pure)) or str(species_name_pure) != '' or float(species_name_pure) != np.nan or  str(species_name_pure) != '-':
+                                        error = [subject, visit, 'Species identification', species_identification_form_field_instance, \
+                                                'If at least one "other species" section is added, the "other" option must be selected' , f'{species_identification_pure} - {species_name_pure}', 'CL0050']
+                                        lista_revision.append(error)
+                                except Exception as e:
+                                        lista_logs.append(f'Revision CL0050--> {e} - Subject: {subject},  Visit: {visit} ')
+                        except Exception as e:
+                            lista_logs.append(f'Revision CL0050--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision CL0070
-                    try:
-                        to_save =  species_name_pure.lower()
-                        if to_save in lista_other_names:
-                            error = [subject, visit, 'Other Species', species_name_form_field_instance ,'The error message should describe the inconsistency found', species_name_pure, 'CL0070']
-                            lista_revision.append(error)
-                        else:
-                            lista_other_names.append(to_save)
+                    if math.isnan(float(species_name_pure)):
+                        pass
+                    else:
+                        try:
+                            to_save =  species_name_pure.lower()
+                            if to_save in lista_other_names:
+                                error = [subject, visit, 'Other Species', species_name_form_field_instance ,'The error message should describe the inconsistency found', species_name_pure, 'CL0070']
+                                lista_revision.append(error)
+                            else:
+                                lista_other_names.append(to_save)
 
-                    except Exception as e:
-                        lista_logs.append(f'Revision CL0070--> {e} - Subject: {subject},  Visit: {visit} ')
+                        except Exception as e:
+                            lista_logs.append(f'Revision CL0070--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     lista_validacion = [
                         'Type of Leishmaniasis history', 
@@ -282,73 +302,87 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                             pass
 
                     # Revision CL0080
-                    try:
-                        if float(previous_history_leishmaniasis_pure) ==1.0: 
-                            if mi_cuenta != 0:
-                                pass
-                            else:
-                                error = [subject, visit, 'Are there any previous history of leishmaniasis (with a diagnosis in the past)?', previous_history_leishmaniasis_form_field_instance ,\
-                                         'If "Are there any previous history of leishmaniasis (with a diagnosis in the past)?" = Yes at least one "History of Leishmaniasis Details" section must be added', \
-                                            previous_history_leishmaniasis_pure, 'CL0080']
-                                lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision CL0080--> {e} - Subject: {subject},  Visit: {visit} ')
+                    if math.isnan(float(previous_history_leishmaniasis_pure)):
+                        pass
+                    else:
+                        try:
+                            if float(previous_history_leishmaniasis_pure) ==1.0: 
+                                if mi_cuenta != 0:
+                                    pass
+                                else:
+                                    error = [subject, visit, 'Are there any previous history of leishmaniasis (with a diagnosis in the past)?', previous_history_leishmaniasis_form_field_instance ,\
+                                            'If "Are there any previous history of leishmaniasis (with a diagnosis in the past)?" = Yes at least one "History of Leishmaniasis Details" section must be added', \
+                                                previous_history_leishmaniasis_pure, 'CL0080']
+                                    lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision CL0080--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision CL0090
-                    try:
-                        if float(previous_history_leishmaniasis_pure) ==0.0: 
-                            if mi_cuenta == 0:
-                                pass
-                            else:
-                                error = [subject, visit, 'Are there any previous history of leishmaniasis (with a diagnosis in the past)?', previous_history_leishmaniasis_form_field_instance ,\
-                                         'If "Are there any previous history of leishmaniasis (with a diagnosis in the past)?" = NO, there should be no "History of Leishmaniasis Details" section must be added', \
-                                            previous_history_leishmaniasis_pure, 'CL0090']
-                                lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision CL0090--> {e} - Subject: {subject},  Visit: {visit} ')
+                    if math.isnan(float(previous_history_leishmaniasis_pure)):
+                        pass
+                    else:
+                        try:
+                            if float(previous_history_leishmaniasis_pure) ==0.0: 
+                                if mi_cuenta == 0:
+                                    pass
+                                else:
+                                    error = [subject, visit, 'Are there any previous history of leishmaniasis (with a diagnosis in the past)?', previous_history_leishmaniasis_form_field_instance ,\
+                                            'If "Are there any previous history of leishmaniasis (with a diagnosis in the past)?" = NO, there should be no "History of Leishmaniasis Details" section must be added', \
+                                                previous_history_leishmaniasis_pure, 'CL0090']
+                                    lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision CL0090--> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision CL0100
-                    try:
-                        date_format = '%d-%b-%Y'
-                        date_birth_cured = f'01-{month_birth}-{year_birth}'
-                        date_birth_format = datetime.strptime(date_birth_cured, '%d-%m-%Y')
-                        date_diagnosis_f = datetime.strptime(date_format(date_diagnosis_pure), date_format)
+                    if date_diagnosis_pure == '':
+                        pass
+                    else:
+                        try:
+                            date_format = '%d-%b-%Y'
+                            date_birth_cured = f'01-{month_birth}-{year_birth}'
+                            date_birth_format = datetime.strptime(date_birth_cured, '%d-%m-%Y')
+                            date_diagnosis_f = datetime.strptime(date_format(date_diagnosis_pure), date_format)
 
-                        if date_diagnosis_f <  date_birth_format:
-                            error = [subject, visit, 'History of Leishmaniasis Details - Date of Diagnosis', date_diagnosis_form_field_instance,\
-                                     'The year and month of  Date of Diagnosis taken must be equal or after the month and year of birth in DEMOGRAPHIC' , date_diagnosis_pure, 'CL0100']
-                            lista_revision.append(error)
-                        else:
-                            pass
-                    except Exception as e:
-                        lista_logs.append(f'Revision CL0100--> {e} - Subject: {subject},  Visit: {visit} ')
+                            if date_diagnosis_f <  date_birth_format:
+                                error = [subject, visit, 'History of Leishmaniasis Details - Date of Diagnosis', date_diagnosis_form_field_instance,\
+                                        'The year and month of  Date of Diagnosis taken must be equal or after the month and year of birth in DEMOGRAPHIC' , date_diagnosis_pure, 'CL0100']
+                                lista_revision.append(error)
+                            else:
+                                pass
+                        except Exception as e:
+                            lista_logs.append(f'Revision CL0100--> {e} - Subject: {subject},  Visit: {visit} ')
 
 
                     # Revision CL0110
-                    try:
-                        date_format = '%d-%b-%Y'
-                        date_diagnosis_f = datetime.strptime(date_format(date_diagnosis_pure), date_format)
-                        date_inform_consent_f = datetime.strptime(date_inform_consent, date_format)
+                    if date_diagnosis_pure == '':
+                        pass
+                    else:
+                        try:
+                            date_format = '%d-%b-%Y'
+                            date_diagnosis_f = datetime.strptime(date_format(date_diagnosis_pure), date_format)
+                            date_inform_consent_f = datetime.strptime(date_inform_consent, date_format)
 
-                        if date_diagnosis_f < date_inform_consent_f:
-                            error = [subject, visit, 'Date of Diagnosis', date_diagnosis_form_field_instance ,'The Date of Diagnosis should be before the informed consent date', \
-                                    f'{date_diagnosis_pure} - {date_inform_consent}', 'CL0110']
-                            lista_revision.append(error)
-                        else:
-                            pass
-                    except Exception as e:
-                        lista_logs.append(f'Revision CL0110--> {e} - Subject: {subject},  Visit: {visit} ')
+                            if date_diagnosis_f < date_inform_consent_f:
+                                error = [subject, visit, 'Date of Diagnosis', date_diagnosis_form_field_instance ,'The Date of Diagnosis should be before the informed consent date', \
+                                        f'{date_diagnosis_pure} - {date_inform_consent}', 'CL0110']
+                                lista_revision.append(error)
+                            else:
+                                pass
+                        except Exception as e:
+                            lista_logs.append(f'Revision CL0110--> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision CL0120
-                    try:
-                    
-                        if date_diagnosis_pure in lista_date_diagnosis:
-                            error = [subject, visit, 'Date of Diagnosis', date_diagnosis_form_field_instance, 'The Date of Diagnosis should not be repeated', date_diagnosis_pure, 'CL0120']
-                            lista_revision.append(error)
-                        else:
-                            lista_date_diagnosis.append(date_diagnosis_pure)
-                    except Exception as e:
-                        lista_logs.append(f'Revision CL0120--> {e} - Subject: {subject},  Visit: {visit} ')
+                    if date_confirmed_diagnosis_pure == '':
+                        pass
+                    else:
+                        try:
+                            if date_diagnosis_pure in lista_date_diagnosis:
+                                error = [subject, visit, 'Date of Diagnosis', date_diagnosis_form_field_instance, 'The Date of Diagnosis should not be repeated', date_diagnosis_pure, 'CL0120']
+                                lista_revision.append(error)
+                            else:
+                                lista_date_diagnosis.append(date_diagnosis_pure)
+                        except Exception as e:
+                            lista_logs.append(f'Revision CL0120--> {e} - Subject: {subject},  Visit: {visit} ')
 
 
     excel_writer = load_workbook(path_excel_writer)

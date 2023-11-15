@@ -296,7 +296,7 @@ def eligibility(df_root, path_excel_writer):
                     if float(was_DV_performed_pure) !=  1.0:
                         error = [subject, visit, 'Visit Pages', was_DV_performed_form_field_instance , 'This Form will be disabled because the visit was not done', was_DV_performed_pure, 'GE0070']
                         lista_revision.append(error)
-
+                
                     if float(participant_randomization_pure) == 0.0 or float(subject_eligible_for_study_pure) == 0.0:
                         try:
                             # Primera  revision general de formato de fecha ->GE0020
@@ -313,16 +313,19 @@ def eligibility(df_root, path_excel_writer):
                     #Revision para los que son solo de screening visit -----------------------------------------------------------------------------------------------
                     if visit == 'Screening Visit':
 
-                        try:
-                            # IE0060
-                            if datetime.strptime(str(date_of_decision_pure), '%d-%b-%Y') >= datetime.strptime(str(informed_consent_date), '%d-%b-%Y'):
-                                pass
-                            else: 
-                                error = [subject, visit, 'Date of decision to not go beyond screening', date_of_decision_form_field_instance, \
-                                        'The date must not be before the informed consent date', date_of_decision_pure, 'IE0060']
-                                lista_revision.append(error)
-                        except Exception as e:
-                            lista_logs.append(f'Revision IE0100 --> {e} - Subject: {subject},  Visit: {visit} ')
+                        #Revision  IE0060
+                        if date_of_decision_pure == '':
+                            pass
+                        else:
+                            try:
+                                if datetime.strptime(str(date_of_decision_pure), '%d-%b-%Y') >= datetime.strptime(str(informed_consent_date), '%d-%b-%Y'):
+                                    pass
+                                else: 
+                                    error = [subject, visit, 'Date of decision to not go beyond screening', date_of_decision_form_field_instance, \
+                                            'The date must not be before the informed consent date', date_of_decision_pure, 'IE0060']
+                                    lista_revision.append(error)
+                            except Exception as e:
+                                lista_logs.append(f'Revision IE0100 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                         # Revision para IE0130
                         try:
@@ -464,18 +467,20 @@ def eligibility(df_root, path_excel_writer):
 
                     # Revision para los que son solo D-1 ---------------------------------------------------------------------------------------------------------
                     if visit == 'D-1':
-
-
-                        try:
-                            # IE0100
-                            if datetime.strptime(str(date_decision_not_randomize_pure), '%d-%b-%Y') >= datetime.strptime(str(informed_consent_date), '%d-%b-%Y'):
-                                pass
-                            else: 
-                                error = [subject, visit, 'Date of decision to not randomize the participant' , date_decision_not_randomize_form_field_instance, \
-                                        'The date must not be before the informed consent date', date_decision_not_randomize_pure, 'IE0100']
-                                lista_revision.append(error)
-                        except Exception as e:
-                            lista_logs.append(f'Revision IE0100 --> {e} - Subject: {subject},  Visit: {visit} ')
+                        
+                        # Revision IE0100
+                        if date_decision_not_randomize_pure == '':
+                            pass
+                        else:
+                            try:
+                                if datetime.strptime(str(date_decision_not_randomize_pure), '%d-%b-%Y') >= datetime.strptime(str(informed_consent_date), '%d-%b-%Y'):
+                                    pass
+                                else: 
+                                    error = [subject, visit, 'Date of decision to not randomize the participant' , date_decision_not_randomize_form_field_instance, \
+                                            'The date must not be before the informed consent date', date_decision_not_randomize_pure, 'IE0100']
+                                    lista_revision.append(error)
+                            except Exception as e:
+                                lista_logs.append(f'Revision IE0100 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                         # Revision para IE0120
                         try:
@@ -682,7 +687,7 @@ def eligibility(df_root, path_excel_writer):
     
     log_writer(lista_logs)
 
-    return eligibility_output[['Form Field Instance ID' ,'Standard Error Message']].replace({',': '', ';': ''}, regex=True)
+    return eligibility_output[['Form Field Instance ID' ,'Standard Error Message']].replace({',': '', ';': ''}, regex=True).drop_duplicates(inplace=True)
 
 if __name__ == '__main__':
     path_excel = r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\Program\output\prueba.xlsx"

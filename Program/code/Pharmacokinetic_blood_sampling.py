@@ -210,46 +210,49 @@ def Pharmacokinetic_blood_sampling(df_root, path_excel_writer):
                             lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision PK0010
-                    try:
-                        date_format = '%d-%b-%Y'
-                        date_of_test_f = datetime.strptime(Date_of_blood_sample_collected_pure, date_format)
-                        date_of_visit_f = datetime.strptime(date_of_visit, date_format)
+                    if Date_of_blood_sample_collected_pure != '':
+                        try:
+                            date_format = '%d-%b-%Y'
+                            date_of_test_f = datetime.strptime(Date_of_blood_sample_collected_pure, date_format)
+                            date_of_visit_f = datetime.strptime(date_of_visit, date_format)
 
-                        if date_of_test_f != date_of_visit_f:
-                            error = [subject, visit, 'Date of blood sample collected', Date_of_blood_sample_collected_form_field_instance ,\
-                                     'The date should be the same as the visit date in the "Date of Visit" form' , f'{Date_of_blood_sample_collected_pure} - {date_of_visit}', 'PK0010']
-                            lista_revision.append(error)
-                        else:
-                            pass
+                            if date_of_test_f != date_of_visit_f:
+                                error = [subject, visit, 'Date of blood sample collected', Date_of_blood_sample_collected_form_field_instance ,\
+                                        'The date should be the same as the visit date in the "Date of Visit" form' , f'{Date_of_blood_sample_collected_pure} - {date_of_visit}', 'PK0010']
+                                lista_revision.append(error)
+                            else:
+                                pass
 
-                    except Exception as e:
-                        lista_logs.append(f'Revision PK0010--> {e} - Subject: {subject},  Visit: {visit} ')
+                        except Exception as e:
+                            lista_logs.append(f'Revision PK0010--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision PK0030
-                    try:
-                        date_format = '%d-%b-%Y'
-                        date_of_test_f = datetime.strptime(Date_of_blood_sample_collected_pure, date_format)
-                        date_inform_consent_f = datetime.strptime(date_inform_consent, date_format)
+                    if Date_of_blood_sample_collected_pure != '':
+                        try:
+                            date_format = '%d-%b-%Y'
+                            date_of_test_f = datetime.strptime(Date_of_blood_sample_collected_pure, date_format)
+                            date_inform_consent_f = datetime.strptime(date_inform_consent, date_format)
 
-                        if date_of_test_f < date_inform_consent_f:
-                            error = [subject, visit, 'Date of blood sample collected', Date_of_blood_sample_collected_form_field_instance ,\
-                                      'The date of sample collected cant be before the informed consent date', f'{Date_of_blood_sample_collected_pure} - {date_inform_consent}', 'PK0030']
-                            lista_revision.append(error)
-                        else:
-                            pass
-                    except Exception as e:
-                        lista_logs.append(f'Revision PK0030--> {e} - Subject: {subject},  Visit: {visit} ')
+                            if date_of_test_f < date_inform_consent_f:
+                                error = [subject, visit, 'Date of blood sample collected', Date_of_blood_sample_collected_form_field_instance ,\
+                                        'The date of sample collected cant be before the informed consent date', f'{Date_of_blood_sample_collected_pure} - {date_inform_consent}', 'PK0030']
+                                lista_revision.append(error)
+                            else:
+                                pass
+                        except Exception as e:
+                            lista_logs.append(f'Revision PK0030--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> PK0040
-                    try:
-                        if datetime.strptime(str(Date_of_blood_sample_collected_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
-                            pass
-                        else: 
-                            error = [subject, visit, 'Date of blood sample collected', Date_of_blood_sample_collected_form_field_instance,\
-                                     'Date of blood sample collected must be before the End of study/Early withdrawal date. ', Date_of_blood_sample_collected_pure, 'PK0040']
-                            lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision PK0040 --> {e} - Subject: {subject},  Visit: {visit}  ')
+                    if Date_of_blood_sample_collected_pure != '':
+                        try:
+                            if datetime.strptime(str(Date_of_blood_sample_collected_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
+                                pass
+                            else: 
+                                error = [subject, visit, 'Date of blood sample collected', Date_of_blood_sample_collected_form_field_instance,\
+                                        'Date of blood sample collected must be before the End of study/Early withdrawal date. ', Date_of_blood_sample_collected_pure, 'PK0040']
+                                lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision PK0040 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
 
                     lista_validacion = [

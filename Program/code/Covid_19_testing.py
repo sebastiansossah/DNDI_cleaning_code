@@ -150,46 +150,49 @@ def covid_19_testing(df_root, path_excel_writer):
                         lista_logs.append(f'Revision LBCOV0010--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision LBCOV0030
-                    try:
-                        date_format = '%d-%b-%Y'
-                        date_of_test_f = datetime.strptime(date_test_performed_pure, date_format)
-                        date_of_visit_f = datetime.strptime(date_of_visit, date_format)
+                    if date_test_performed_pure != '':
+                        try:
+                            date_format = '%d-%b-%Y'
+                            date_of_test_f = datetime.strptime(date_test_performed_pure, date_format)
+                            date_of_visit_f = datetime.strptime(date_of_visit, date_format)
 
-                        if date_of_test_f != date_of_visit_f:
-                            error = [subject, visit, 'Date of test performed', date_test_performed_form_field_instance, \
-                                     'The date should be the same as the visit date in the "Date of Visit" Form' ,\
-                                          f'{date_test_performed_pure} - {date_of_visit}', 'LBCOV0030']
-                            lista_revision.append(error)
-                        else:
-                            pass
-                    except Exception as e:
-                        lista_logs.append(f'Revision LBCOV0030--> {e} - Subject: {subject},  Visit: {visit} ')
+                            if date_of_test_f != date_of_visit_f:
+                                error = [subject, visit, 'Date of test performed', date_test_performed_form_field_instance, \
+                                        'The date should be the same as the visit date in the "Date of Visit" Form' ,\
+                                            f'{date_test_performed_pure} - {date_of_visit}', 'LBCOV0030']
+                                lista_revision.append(error)
+                            else:
+                                pass
+                        except Exception as e:
+                            lista_logs.append(f'Revision LBCOV0030--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision LBCOV0040
-                    try:
-                        date_format = '%d-%b-%Y'
-                        date_of_test_f = datetime.strptime(date_test_performed_pure, date_format)
-                        date_inform_consent_f = datetime.strptime(date_inform_consent, date_format)
+                    if  date_test_performed_pure != '':
+                        try:
+                            date_format = '%d-%b-%Y'
+                            date_of_test_f = datetime.strptime(date_test_performed_pure, date_format)
+                            date_inform_consent_f = datetime.strptime(date_inform_consent, date_format)
 
-                        if date_of_test_f < date_inform_consent_f:
-                            error = [subject, visit, 'Date of test performed', date_test_performed_form_field_instance,\
-                                    'Date of test performed should be after the date of informed consent.', \
-                                        f'{date_test_performed_pure} - {date_inform_consent}', 'LBCOV0040']
-                            lista_revision.append(error)
-                        else:
-                            pass
-                    except Exception as e:
-                        lista_logs.append(f'Revision LBCOV0040--> {e} - Subject: {subject},  Visit: {visit} ')
+                            if date_of_test_f < date_inform_consent_f:
+                                error = [subject, visit, 'Date of test performed', date_test_performed_form_field_instance,\
+                                        'Date of test performed should be after the date of informed consent.', \
+                                            f'{date_test_performed_pure} - {date_inform_consent}', 'LBCOV0040']
+                                lista_revision.append(error)
+                            else:
+                                pass
+                        except Exception as e:
+                            lista_logs.append(f'Revision LBCOV0040--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> LBCOV0050
-                    try:
-                        if datetime.strptime(str(date_test_performed_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
-                            pass
-                        else: 
-                            error = [subject, visit, 'Date of test performed', date_test_performed_form_field_instance ,'Date of test performed must be before the End of study/Early withdrawal date. ', date_test_performed_pure, 'LBCOV0050']
-                            lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision LBCOV0050 --> {e} - Subject: {subject},  Visit: {visit}  ')
+                    if date_test_performed_pure != '':
+                        try:
+                            if datetime.strptime(str(date_test_performed_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
+                                pass
+                            else: 
+                                error = [subject, visit, 'Date of test performed', date_test_performed_form_field_instance ,'Date of test performed must be before the End of study/Early withdrawal date. ', date_test_performed_pure, 'LBCOV0050']
+                                lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision LBCOV0050 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
 
     excel_writer = load_workbook(path_excel_writer)

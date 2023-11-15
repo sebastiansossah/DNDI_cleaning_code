@@ -1,4 +1,5 @@
 from datetime import datetime
+import math
 from revision_fechas import revision_fecha
 from log_writer import log_writer 
 import warnings
@@ -83,7 +84,7 @@ def informed_consent_revision(df_root, path_excel_writer):
                     prior_screening_number_pure = prior_screening_number.split('|')[0]
                     prior_screening_number_form_field_instance = prior_screening_number.split('|')[1]
                 except:
-                    prior_screening_number_pure = ''
+                    prior_screening_number_pure = math.nan
                     prior_screening_number_form_field_instance = 'This field doesnt have any data'
 
 
@@ -111,18 +112,20 @@ def informed_consent_revision(df_root, path_excel_writer):
                         except Exception as e:
                             lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
-                    
-                    # Revision para IC0030
-                    try:
-                        if  prior_screening_number_pure in lista_validacion_prior_screening:
-                            error = [subject, visit, 'Prior screening number', prior_screening_number_form_field_instance  ,'The entered number should be a non existing subject number' , \
-                                      prior_screening_number_pure, 'IC0020']
-                            lista_revision.append(error)
-                        else:
-                            pass
+                    # Revision para IC0030           
+                    if math.isnan(float(prior_screening_number_pure)):
+                        pass
+                    else:
+                        try:
+                            if  prior_screening_number_pure in lista_validacion_prior_screening:
+                                error = [subject, visit, 'Prior screening number', prior_screening_number_form_field_instance  ,'The entered number should be a non existing subject number' , \
+                                        prior_screening_number_pure, 'IC0020']
+                                lista_revision.append(error)
+                            else:
+                                pass
 
-                    except Exception as e:
-                        lista_logs.append(f'Revision IC0030 --> {e} - Subject: {subject},  Visit: {visit} ')
+                        except Exception as e:
+                            lista_logs.append(f'Revision IC0030 --> {e} - Subject: {subject},  Visit: {visit} ')
                         
                     lista_validacion_prior_screening.append(prior_screening_number_pure)
 

@@ -94,8 +94,6 @@ def demographic(df_root, path_excel_writer):
                     
                     # Revision for DM0030
                     try:
-
-
                         año_calculado = int(año_visita) - int(birth_year_pure)
 
                         if age_at_consent_pure >= año_calculado -1 and age_at_consent_pure <= año_calculado + 1:

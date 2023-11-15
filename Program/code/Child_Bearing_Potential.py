@@ -286,40 +286,50 @@ def child_bearing_potential(df_root, path_excel_writer):
                             except Exception as e:
                                 lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
                         
-                        # Revision para CB0020
-                        try:        
-                            vist_date_year =  fecha_visita.split('-')[2]
-                            amount_years = int(vist_date_year) - int(last_mestruation_year_pure)
-                            if amount_years >= 1:
-                                pass
-                            else:
-                                error = [subject, visit, 'Year of Last Menstruation', last_mestruation_year_form_field_instance,\
-                                         'There should be more than a year difference between the visit date and the year of last menstruation' , last_mestruation_year_pure, 'CB0020']
-                                lista_revision.append(error)
-                        except Exception as e:
-                            lista_logs.append(f'Revision CB0020 --> {e} - Subject: {subject},  Visit: {visit} ')
+
+                        if math.isnan(float(last_mestruation_month_pure)):
+                            pass
+                        else:                      
+                            # Revision para CB0020
+                            try:        
+                                vist_date_year =  fecha_visita.split('-')[2]
+                                amount_years = int(vist_date_year) - int(last_mestruation_year_pure)
+                                if amount_years >= 1:
+                                    pass
+                                else:
+                                    error = [subject, visit, 'Year of Last Menstruation', last_mestruation_year_form_field_instance,\
+                                            'There should be more than a year difference between the visit date and the year of last menstruation' , last_mestruation_year_pure, 'CB0020']
+                                    lista_revision.append(error)
+                            except Exception as e:
+                                lista_logs.append(f'Revision CB0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                         # Revision para CB0030
-                        try:                        
-                            if int(last_mestruation_year_pure) <= 1968 or int(last_mestruation_year_pure) >= 2024:
-                                pass
-                            else:
-                                error = [subject, visit, 'Year of Last Menstruation' , last_mestruation_year_form_field_instance ,'The year should be after 1968 and before 2024',\
-                                          last_mestruation_year_pure, 'CB0030']
-                                lista_revision.append(error)
-                        except Exception as e:
-                            lista_logs.append(f'Revision CB0030 --> {e} - Subject: {subject},  Visit: {visit} ')
+                        if math.isnan(float(last_mestruation_month_pure)):
+                            pass
+                        else:       
+                            try:                        
+                                if int(last_mestruation_year_pure) <= 1968 or int(last_mestruation_year_pure) >= 2024:
+                                    pass
+                                else:
+                                    error = [subject, visit, 'Year of Last Menstruation' , last_mestruation_year_form_field_instance ,'The year should be after 1968 and before 2024',\
+                                            last_mestruation_year_pure, 'CB0030']
+                                    lista_revision.append(error)
+                            except Exception as e:
+                                lista_logs.append(f'Revision CB0030 --> {e} - Subject: {subject},  Visit: {visit} ')
 
-                        try:
-                            # Revision para CB0140
-                            if int(birth_year) < int(date_start_contraceptive_pure.split('-')[2]):
-                                pass
-                            else:
-                                error = [subject, visit, 'Date of start of contraceptive method', date_start_contraceptive_form_field_instance, \
-                                         'The contraceptive method date cant be before the birth date' , date_start_contraceptive_pure, 'CB0140']
-                                lista_revision.append(error)
-                        except Exception as e:
-                            lista_logs.append(f'Revision CB0140 --> {e} - Subject: {subject},  Visit: {visit} ')
+                        if date_start_contraceptive_pure == '':
+                            pass
+                        else:
+                            try:
+                                # Revision para CB0140
+                                if int(birth_year) < int(date_start_contraceptive_pure.split('-')[2]):
+                                    pass
+                                else:
+                                    error = [subject, visit, 'Date of start of contraceptive method', date_start_contraceptive_form_field_instance, \
+                                            'The contraceptive method date cant be before the birth date' , date_start_contraceptive_pure, 'CB0140']
+                                    lista_revision.append(error)
+                            except Exception as e:
+                                lista_logs.append(f'Revision CB0140 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                         # if float(contraception_pure) == 1.0:
 

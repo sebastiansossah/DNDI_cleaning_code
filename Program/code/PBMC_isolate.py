@@ -129,46 +129,48 @@ def PBMC_isolate(df_root, path_excel_writer):
                             lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision PB0010
-                    try:
-                        date_format = '%d-%b-%Y'
-                        date_of_test_f = datetime.strptime(date_sample_collected_pure, date_format)
-                        date_of_visit_f = datetime.strptime(date_of_visit, date_format)
+                    if date_sample_collected_pure != '':
+                        try:
+                            date_format = '%d-%b-%Y'
+                            date_of_test_f = datetime.strptime(date_sample_collected_pure, date_format)
+                            date_of_visit_f = datetime.strptime(date_of_visit, date_format)
 
-                        if date_of_test_f != date_of_visit_f:
-                            error = [subject, visit, 'Date of the sample collected', date_sample_collected_form_field_instance ,\
-                                     'The date should be the same as the visit date in the "Date of Visit" Form' , f'{date_sample_collected_pure} - {date_of_visit}', 'PB0010']
-                            lista_revision.append(error)
-                        else:
-                            pass
-
-                    except Exception as e:
-                        lista_logs.append(f'Revision PB0010--> {e} - Subject: {subject},  Visit: {visit} ')
+                            if date_of_test_f != date_of_visit_f:
+                                error = [subject, visit, 'Date of the sample collected', date_sample_collected_form_field_instance ,\
+                                        'The date should be the same as the visit date in the "Date of Visit" Form' , f'{date_sample_collected_pure} - {date_of_visit}', 'PB0010']
+                                lista_revision.append(error)
+                            else:
+                                pass
+                        except Exception as e:
+                            lista_logs.append(f'Revision PB0010--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision PB0030
-                    try:
-                        date_format = '%d-%b-%Y'
-                        date_of_test_f = datetime.strptime(date_sample_collected_pure, date_format)
-                        date_inform_consent_f = datetime.strptime(date_inform_consent, date_format)
+                    if date_sample_collected_pure != '':
+                        try:
+                            date_format = '%d-%b-%Y'
+                            date_of_test_f = datetime.strptime(date_sample_collected_pure, date_format)
+                            date_inform_consent_f = datetime.strptime(date_inform_consent, date_format)
 
-                        if date_of_test_f < date_inform_consent_f:
-                            error = [subject, visit, 'Date of the sample collected', date_sample_collected_form_field_instance ,\
-                                      'The date/time of sample collected cant be before the informed consent date/time', f'{date_sample_collected_pure} - {date_inform_consent}', 'PB0030']
-                            lista_revision.append(error)
-                        else:
-                            pass
-                    except Exception as e:
-                        lista_logs.append(f'Revision PB0030--> {e} - Subject: {subject},  Visit: {visit} ')
+                            if date_of_test_f < date_inform_consent_f:
+                                error = [subject, visit, 'Date of the sample collected', date_sample_collected_form_field_instance ,\
+                                        'The date/time of sample collected cant be before the informed consent date/time', f'{date_sample_collected_pure} - {date_inform_consent}', 'PB0030']
+                                lista_revision.append(error)
+                            else:
+                                pass
+                        except Exception as e:
+                            lista_logs.append(f'Revision PB0030--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> PB0040
-                    try:
-                        if datetime.strptime(str(date_sample_collected_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
-                            pass
-                        else: 
-                            error = [subject, visit, 'Date of the sample collected', date_sample_collected_form_field_instance ,\
-                                     'Date of the sample collected must be before the End of study/Early withdrawal date. ', date_sample_collected_pure, 'PB0040']
-                            lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision PB0040 --> {e} - Subject: {subject},  Visit: {visit}  ')
+                    if date_sample_collected_pure != '':
+                        try:
+                            if datetime.strptime(str(date_sample_collected_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
+                                pass
+                            else: 
+                                error = [subject, visit, 'Date of the sample collected', date_sample_collected_form_field_instance ,\
+                                        'Date of the sample collected must be before the End of study/Early withdrawal date. ', date_sample_collected_pure, 'PB0040']
+                                lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision PB0040 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
     excel_writer = load_workbook(path_excel_writer)
     column_names = ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']
