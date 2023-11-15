@@ -103,15 +103,12 @@ def urine_microscopic_examination(df_root, path_excel_writer):
                         try: 
                             validador_contador = row[validador_raw_resultados].split('|')[0]
                         except:
-                            validador_contador = 0
+                            validador_contador = math.nan
 
-                        if validador_contador != '' or validador_contador != '-':
+                        if math.isnan(float(validador_contador)):
                             pass
                         else:
-                            if float(validador_contador) > 0.0 :
-                                mi_cuenta_resultados += 1
-                            else:
-                                pass
+                            mi_cuenta_resultados +=1
 
 
                     # Revision URM0020

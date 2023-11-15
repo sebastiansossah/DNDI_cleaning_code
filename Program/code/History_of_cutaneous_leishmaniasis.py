@@ -322,7 +322,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                         pass
                     else:
                         try:
-                            if float(previous_history_leishmaniasis_pure) ==0.0: 
+                            if float(previous_history_leishmaniasis_pure) ==1.0: 
                                 if mi_cuenta == 0:
                                     pass
                                 else:
