@@ -906,7 +906,7 @@ def vital_signs(df_root, path_excel_writer):
                     
                     # Revision VS0050
                     try:
-                        if  math.isnan(float(BMI_pure)) or BMI_pure != '-' or BMI_pure != np.nan or  str(BMI_pure) != 'nan' or str(BMI_pure) != '':
+                        if  math.isnan(float(BMI_pure)) == False:
                             if visita == 'Screening Visit':
                                 pass
                             else:
@@ -917,7 +917,7 @@ def vital_signs(df_root, path_excel_writer):
                     
                     # Revision VS0060
                     try:
-                        if  math.isnan(float(height_pure)) or height_pure != '-' or height_pure != np.nan or  str(height_pure) != 'nan' or str(height_pure) != '':
+                        if  math.isnan(float(height_pure)) == False:
                             if visita == 'Screening Visit':
                                 pass
                             else:
@@ -928,7 +928,7 @@ def vital_signs(df_root, path_excel_writer):
                     
                     # Revision VS0070
                     try:
-                        if  math.isnan(float(weight_pure)) or weight_pure != '-' or weight_pure != np.nan or  str(weight_pure) != 'nan' or str(weight_pure) != '':
+                        if  math.isnan(float(weight_pure)) == False:
                             if visita == 'Screening Visit' or visita == 'D-1' or visita == 'D42' or visita == 'Unscheduled':
                                 pass
                             else:

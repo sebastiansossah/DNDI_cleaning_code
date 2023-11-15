@@ -372,9 +372,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                             lista_logs.append(f'Revision CL0110--> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision CL0120
-                    if date_confirmed_diagnosis_pure == '':
-                        pass
-                    else:
+                    if date_diagnosis_pure != '':
                         try:
                             if date_diagnosis_pure in lista_date_diagnosis:
                                 error = [subject, visit, 'Date of Diagnosis', date_diagnosis_form_field_instance, 'The Date of Diagnosis should not be repeated', date_diagnosis_pure, 'CL0120']
