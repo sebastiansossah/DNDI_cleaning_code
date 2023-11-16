@@ -210,8 +210,8 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer):
 
 
                     lista_validacion = [
-                        'Pre-dose',
-                        '8h',
+                        'Pre-dose, Time',
+                        '8h, Time',
                     ]
 
                     cuenta_validar = 0
@@ -220,22 +220,26 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer):
                         try: 
                             validador = row[validador_raw].split('|')[0]
                         except:
-                            validador = math.nan
+                            validador = ''
        
-                        if math.isnan(float(validador)) or float(validador) == 0.0 or validador == '' or validador == '-' or float(validador) == np.nan:
+                        if validador == '':
                             pass
                         else:
-                            cuenta_validar +=1
+                            cuenta_validar += 1
+                            
                     
-                    # Revision PD0050
-                    try:
-                        if float(Was_blood_sample_collected_pure) == 1.0:
-                            if cuenta_validar == 0:
-                                error = [subject, visit, 'Was blood sample collected?', Was_blood_sample_collected_form_field_instance ,\
-                                        'If the sample was collected, not all sections can be "not done"', Was_blood_sample_collected_pure, 'PD0050']
-                                lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision PD0050--> {e} - Subject: {subject},  Visit: {visit} ')
+                    if visit in ['D1', 'D15' , 'D29']:
+                        # Revision PD0050
+                        try:
+                            if float(Was_blood_sample_collected_pure) == 1.0:
+                                if cuenta_validar > 0:
+                                    pass
+                                else:
+                                    error = [subject, visit, 'Was blood sample collected?', Was_blood_sample_collected_form_field_instance ,\
+                                            'If the sample was collected, not all sections can be "not done"', Was_blood_sample_collected_pure, 'PD0050']
+                                    lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision PD0050--> {e} - Subject: {subject},  Visit: {visit} ')
 
     excel_writer = load_workbook(path_excel_writer)
     column_names = ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']

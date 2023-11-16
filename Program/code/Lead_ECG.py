@@ -627,7 +627,7 @@ def lead_ECG(df_root, path_excel_writer):
                         except:
                             validador = math.nan
          
-                        if math.isnan(float(validador)) or validador != '-' or validador != np.nan or  str(validador) != 'nan' or float(validador) !=0.0 or str(validador) != '':
+                        if math.isnan(float(validador)) == False:
                             mi_cuenta+=1
                         else:
                             pass
@@ -745,15 +745,16 @@ def lead_ECG(df_root, path_excel_writer):
                         lista_logs.append(f'Revision LE0350--> {e} - Subject: {subject},  Visit: {visit} ')     
                     
                     # Revision LE0420
-                    try: 
-                        if float(Undefined_QTcF_msec_pure) > 350.0 and float(Undefined_QTcF_msec_pure) < 450.0 :
-                            pass
-                        else:
-                            error = [subject, visit, 'Undefined, QTcF (msec)', Undefined_QTcF_msec_form_field_instance ,\
-                                     'The QTcF is not within expected range (350 to 450), therefore the Interpretation cant be Normal.', Undefined_QTcF_msec_pure, 'LE0420']
-                            lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision LE0420--> {e} - Subject: {subject},  Visit: {visit} ')  
+                    if math.isnan(float(Undefined_QTcF_msec_pure)) == False: 
+                        try: 
+                            if float(Undefined_QTcF_msec_pure) > 350.0 and float(Undefined_QTcF_msec_pure) < 450.0 :
+                                pass
+                            else:
+                                error = [subject, visit, 'Undefined, QTcF (msec)', Undefined_QTcF_msec_form_field_instance ,\
+                                        'The QTcF is not within expected range (350 to 450), therefore the Interpretation cant be Normal.', Undefined_QTcF_msec_pure, 'LE0420']
+                                lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision LE0420--> {e} - Subject: {subject},  Visit: {visit} ')  
 
                     # Revision LE0430
                     try: 
@@ -777,52 +778,47 @@ def lead_ECG(df_root, path_excel_writer):
                         ]
 
                     cuenta_validacion_abnormal_undefined = 0
+                    
 
                     try:
                         if float(Undefined_HR_bpm_pure) > 45.0 and float(Undefined_HR_bpm_pure) < 90.0 :
-                            pass
-                        else:
-                            cuenta_validacion_abnormal_undefined +=1                    
+                            cuenta_validacion_abnormal_undefined +=1  
+
+                                              
                     except:
                         pass
-
+                    
                     try:
                         if float(Undefined_RR_msec_pure) > 654.6 and float(Undefined_RR_msec_pure) < 1141.4 :
-                            pass
-                        else:
-                            cuenta_validacion_abnormal_undefined +=1                    
+                            cuenta_validacion_abnormal_undefined +=1                 
                     except:
                         pass
 
+                        
                     try:
                         if float(Undefined_PR_msec_pure) > 12.0 and float(Undefined_PR_msec_pure) < 200.0 :
-                            pass
-                        else:
-                            cuenta_validacion_abnormal_undefined +=1                    
+                            cuenta_validacion_abnormal_undefined +=1                
                     except:
                         pass
-
+                    
+  
                     try:
                         if float(Undefined_QRS_msec_pure) > 70.0 and float(Undefined_QRS_msec_pure) < 120.0 :
-                            pass
-                        else:
-                            cuenta_validacion_abnormal_undefined +=1                    
+                            cuenta_validacion_abnormal_undefined +=1                  
                     except:
                         pass
 
+ 
                     try:
                         if float(Undefined_QT_msec_pure) <= 500.0 :
-                            pass
-                        else:
-                            cuenta_validacion_abnormal_undefined +=1                    
+                            cuenta_validacion_abnormal_undefined +=1                 
                     except:
                         pass 
+                    
 
                     try:
                         if float(Undefined_QTcF_msec_pure) > 350.0 and float(Undefined_QTcF_msec_pure) < 450.0 :
-                            pass
-                        else:
-                            cuenta_validacion_abnormal_undefined +=1                    
+                            cuenta_validacion_abnormal_undefined +=1                 
                     except:
                         pass
 
@@ -886,64 +882,53 @@ def lead_ECG(df_root, path_excel_writer):
                         lista_logs.append(f'Revision LE0360--> {e} - Subject: {subject},  Visit: {visit} ')     
                     
                     # Revision LE0440
-                    try: 
-                        if float(Pre_dose_triplicate_1_QTcF_msec_pure) > 350.0 and float(Pre_dose_triplicate_1_QTcF_msec_pure) < 450.0 :
-                            pass
-                        else:
-                            error = [subject, visit, 'Pre dose triplicate 1, QTcF (msec)', Pre_dose_triplicate_1_QTcF_msec_form_field_instance ,\
-                                     'The QTcF is not within expected range (350 to 450), therefore the Interpretation cant be Normal.', Pre_dose_triplicate_1_QTcF_msec_pure, 'LE0440']
-                            lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision LE0440--> {e} - Subject: {subject},  Visit: {visit} ')  
+                    if math.isnan(float(Pre_dose_triplicate_1_QTcF_msec_pure)) == False:
+                        try: 
+                            if float(Pre_dose_triplicate_1_QTcF_msec_pure) > 350.0 and float(Pre_dose_triplicate_1_QTcF_msec_pure) < 450.0 :
+                                pass
+                            else:
+                                error = [subject, visit, 'Pre dose triplicate 1, QTcF (msec)', Pre_dose_triplicate_1_QTcF_msec_form_field_instance ,\
+                                        'The QTcF is not within expected range (350 to 450), therefore the Interpretation cant be Normal.', Pre_dose_triplicate_1_QTcF_msec_pure, 'LE0440']
+                                lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision LE0440--> {e} - Subject: {subject},  Visit: {visit} ')  
 
 
                     cuenta_validacion_abnormal_predose_1 = 0
 
                     try:
                         if float(Pre_dose_triplicate_1_HR_bpm_pure) > 45.0 and float(Pre_dose_triplicate_1_HR_bpm_pure) < 90.0 :
-                            pass
-                        else:
-                            cuenta_validacion_abnormal_predose_1 +=1                    
+                            cuenta_validacion_abnormal_predose_1 +=1                
                     except:
                         pass
 
                     try:
                         if float(Pre_dose_triplicate_1__RR_msec_pure) > 654.6 and float(Pre_dose_triplicate_1__RR_msec_pure) < 1141.4 :
-                            pass
-                        else:
-                            cuenta_validacion_abnormal_predose_1 +=1                    
+                            cuenta_validacion_abnormal_predose_1 +=1                      
                     except:
                         pass
 
                     try:
                         if float(Pre_dose_triplicate_1_PR_msec_pure) > 12.0 and float(Pre_dose_triplicate_1_PR_msec_pure) < 200.0 :
-                            pass
-                        else:
-                            cuenta_validacion_abnormal_predose_1 +=1                    
+                            cuenta_validacion_abnormal_predose_1 +=1                      
                     except:
                         pass
 
                     try:
                         if float(Pre_dose_triplicate_1_QRS_msec_pure) > 70.0 and float(Pre_dose_triplicate_1_QRS_msec_pure) < 120.0 :
-                            pass
-                        else:
-                            cuenta_validacion_abnormal_predose_1 +=1                    
+                            cuenta_validacion_abnormal_predose_1 +=1                      
                     except:
                         pass
 
                     try:
                         if float(Pre_dose_triplicate_1_QT_msec_pure) <= 500.0 :
-                            pass
-                        else:
                             cuenta_validacion_abnormal_predose_1 +=1                    
                     except:
                         pass 
 
                     try:
                         if float(Pre_dose_triplicate_1_QTcF_msec_pure) > 350.0 and float(Pre_dose_triplicate_1_QTcF_msec_pure) < 450.0 :
-                            pass
-                        else:
-                            cuenta_validacion_abnormal_predose_1 +=1                    
+                            cuenta_validacion_abnormal_predose_1 +=1                  
                     except:
                         pass
 
@@ -1021,64 +1006,53 @@ def lead_ECG(df_root, path_excel_writer):
                         lista_logs.append(f'Revision LE0370--> {e} - Subject: {subject},  Visit: {visit} ')     
                     
                     # Revision LE0460
-                    try: 
-                        if float(Pre_dose_triplicate_2_QTcF_msec_pure) > 350.0 and float(Pre_dose_triplicate_2_QTcF_msec_pure) < 450.0 :
-                            pass
-                        else:
-                            error = [subject, visit, 'Pre dose triplicate 2, QTcF (msec)', Pre_dose_triplicate_2_QTcF_msec_form_field_instance ,\
-                                     'The QTcF is not within expected range (350 to 450), therefore the Interpretation cant be Normal.', Pre_dose_triplicate_2_QTcF_msec_pure, 'LE0460']
-                            lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision LE0460--> {e} - Subject: {subject},  Visit: {visit} ')  
+                    if math.isnan(float(Pre_dose_triplicate_2_QTcF_msec_pure)) == False:
+                        try: 
+                            if float(Pre_dose_triplicate_2_QTcF_msec_pure) > 350.0 and float(Pre_dose_triplicate_2_QTcF_msec_pure) < 450.0 :
+                                pass
+                            else:
+                                error = [subject, visit, 'Pre dose triplicate 2, QTcF (msec)', Pre_dose_triplicate_2_QTcF_msec_form_field_instance ,\
+                                        'The QTcF is not within expected range (350 to 450), therefore the Interpretation cant be Normal.', Pre_dose_triplicate_2_QTcF_msec_pure, 'LE0460']
+                                lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision LE0460--> {e} - Subject: {subject},  Visit: {visit} ')  
 
 
                     cuenta_validacion_abnormal_predose_2 = 0
 
                     try:
                         if float(Pre_dose_triplicate_2_HR_bpm_pure) > 45.0 and float(Pre_dose_triplicate_2_HR_bpm_pure) < 90.0 :
-                            pass
-                        else:
-                            cuenta_validacion_abnormal_predose_2 +=1                    
+                            cuenta_validacion_abnormal_predose_2 +=1               
                     except:
                         pass
 
                     try:
                         if float(Pre_dose_triplicate_2_RR_msec_pure) > 654.6 and float(Pre_dose_triplicate_2_RR_msec_pure) < 1141.4 :
-                            pass
-                        else:
-                            cuenta_validacion_abnormal_predose_2 +=1                    
+                            cuenta_validacion_abnormal_predose_2 +=1                          
                     except:
                         pass
 
                     try:
                         if float(Pre_dose_triplicate_2_PR_msec_pure) > 12.0 and float(Pre_dose_triplicate_2_PR_msec_pure) < 200.0 :
-                            pass
-                        else:
-                            cuenta_validacion_abnormal_predose_2 +=1                    
+                            cuenta_validacion_abnormal_predose_2 +=1                           
                     except:
                         pass
 
                     try:
                         if float(Pre_dose_triplicate_2_QRS_msec_pure) > 70.0 and float(Pre_dose_triplicate_2_QRS_msec_pure) < 120.0 :
-                            pass
-                        else:
-                            cuenta_validacion_abnormal_predose_2 +=1                    
+                            cuenta_validacion_abnormal_predose_2 +=1                          
                     except:
                         pass
 
                     try:
                         if float(Pre_dose_triplicate_2_QT_msec_pure) <= 500.0 :
-                            pass
-                        else:
-                            cuenta_validacion_abnormal_predose_2 +=1                    
+                            cuenta_validacion_abnormal_predose_2 +=1                         
                     except:
                         pass 
 
                     try:
                         if float(Pre_dose_triplicate_2_QTcF_msec_pure) > 350.0 and float(Pre_dose_triplicate_2_QTcF_msec_pure) < 450.0 :
-                            pass
-                        else:
-                            cuenta_validacion_abnormal_predose_2 +=1                    
+                            cuenta_validacion_abnormal_predose_2 +=1                           
                     except:
                         pass
 
@@ -1156,64 +1130,53 @@ def lead_ECG(df_root, path_excel_writer):
                         lista_logs.append(f'Revision LE0380--> {e} - Subject: {subject},  Visit: {visit} ')     
                     
                     # Revision LE0480
-                    try: 
-                        if float(Pre_dose_triplicate_3_QTcF_msec_pure) > 350.0 and float(Pre_dose_triplicate_3_QTcF_msec_pure) < 450.0 :
-                            pass
-                        else:
-                            error = [subject, visit, 'Pre dose triplicate 3, QTcF (msec)', Pre_dose_triplicate_3_QTcF_msec_form_field_instance ,\
-                                     'The QTcF is not within expected range (350 to 450), therefore the Interpretation cant be Normal.', Pre_dose_triplicate_3_QTcF_msec_pure, 'LE0480']
-                            lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision LE0480--> {e} - Subject: {subject},  Visit: {visit} ')  
+                    if math.isnan(float(Pre_dose_triplicate_3_QTcF_msec_pure)) == False:
+                        try: 
+                            if float(Pre_dose_triplicate_3_QTcF_msec_pure) > 350.0 and float(Pre_dose_triplicate_3_QTcF_msec_pure) < 450.0 :
+                                pass
+                            else:
+                                error = [subject, visit, 'Pre dose triplicate 3, QTcF (msec)', Pre_dose_triplicate_3_QTcF_msec_form_field_instance ,\
+                                        'The QTcF is not within expected range (350 to 450), therefore the Interpretation cant be Normal.', Pre_dose_triplicate_3_QTcF_msec_pure, 'LE0480']
+                                lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision LE0480--> {e} - Subject: {subject},  Visit: {visit} ')  
 
 
                     cuenta_validacion_abnormal_predose_3 = 0
 
                     try:
                         if float(Pre_dose_triplicate_3_HR_bpm_pure) > 45.0 and float(Pre_dose_triplicate_3_HR_bpm_pure) < 90.0 :
-                            pass
-                        else:
-                            cuenta_validacion_abnormal_predose_3 +=1                    
+                            cuenta_validacion_abnormal_predose_3 +=1                 
                     except:
                         pass
 
                     try:
                         if float(Pre_dose_triplicate_3_RR_msec_pure) > 654.6 and float(Pre_dose_triplicate_3_RR_msec_pure) < 1141.4 :
-                            pass
-                        else:
                             cuenta_validacion_abnormal_predose_3 +=1                    
                     except:
                         pass
 
                     try:
                         if float(Pre_dose_triplicate_3_PR_msec_pure) > 12.0 and float(Pre_dose_triplicate_3_PR_msec_pure) < 200.0 :
-                            pass
-                        else:
-                            cuenta_validacion_abnormal_predose_3 +=1                    
+                            cuenta_validacion_abnormal_predose_3 +=1                     
                     except:
                         pass
 
                     try:
                         if float(Pre_dose_triplicate_3_QRS_msec_pure) > 70.0 and float(Pre_dose_triplicate_3_QRS_msec_pure) < 120.0 :
-                            pass
-                        else:
                             cuenta_validacion_abnormal_predose_3 +=1                    
                     except:
                         pass
 
                     try:
                         if float(Pre_dose_triplicate_3_QT_msec_pure) <= 500.0 :
-                            pass
-                        else:
-                            cuenta_validacion_abnormal_predose_3 +=1                    
+                            cuenta_validacion_abnormal_predose_3 +=1                      
                     except:
                         pass 
 
                     try:
                         if float(Pre_dose_triplicate_3_QTcF_msec_pure) > 350.0 and float(Pre_dose_triplicate_3_QTcF_msec_pure) < 450.0 :
-                            pass
-                        else:
-                            cuenta_validacion_abnormal_predose_3 +=1                    
+                            cuenta_validacion_abnormal_predose_3 +=1                      
                     except:
                         pass
 
@@ -1291,63 +1254,52 @@ def lead_ECG(df_root, path_excel_writer):
                         lista_logs.append(f'Revision LE0390--> {e} - Subject: {subject},  Visit: {visit} ')     
                     
                     # Revision LE0500
-                    try: 
-                        if float(min_15_post_dose_QTcF_msec_pure) > 350.0 and float(min_15_post_dose_QTcF_msec_pure) < 450.0 :
-                            pass
-                        else:
-                            error = [subject, visit, '15-min post dose, QTcF (msec)', min_15_post_dose_QTcF_msec_form_field_instance ,\
-                                     'The QTcF is not within expected range (350 to 450), therefore the Interpretation cant be Normal.', min_15_post_dose_QTcF_msec_pure, 'LE0500']
-                            lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision LE0500--> {e} - Subject: {subject},  Visit: {visit} ')  
+                    if math.isnan(float(min_15_post_dose_QTcF_msec_pure)) == False: 
+                        try: 
+                            if float(min_15_post_dose_QTcF_msec_pure) > 350.0 and float(min_15_post_dose_QTcF_msec_pure) < 450.0 :
+                                pass
+                            else:
+                                error = [subject, visit, '15-min post dose, QTcF (msec)', min_15_post_dose_QTcF_msec_form_field_instance ,\
+                                        'The QTcF is not within expected range (350 to 450), therefore the Interpretation cant be Normal.', min_15_post_dose_QTcF_msec_pure, 'LE0500']
+                                lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision LE0500--> {e} - Subject: {subject},  Visit: {visit} ')  
 
 
                     cuenta_validacion_abnormal_15_min = 0
 
                     try:
                         if float(min_15_post_dose_HR_bpm_pure) > 45.0 and float(min_15_post_dose_HR_bpm_pure) < 90.0 :
-                            pass
-                        else:
-                            cuenta_validacion_abnormal_15_min +=1                    
+                            cuenta_validacion_abnormal_15_min +=1                   
                     except:
                         pass
 
                     try:
                         if float(min_15_post_dose_RR_msec_pure) > 654.6 and float(min_15_post_dose_RR_msec_pure) < 1141.4 :
-                            pass
-                        else:
-                            cuenta_validacion_abnormal_15_min +=1                    
+                            cuenta_validacion_abnormal_15_min +=1                   
                     except:
                         pass
 
                     try:
                         if float(min_15_post_dose_PR_msec_pure) > 12.0 and float(min_15_post_dose_PR_msec_pure) < 200.0 :
-                            pass
-                        else:
                             cuenta_validacion_abnormal_15_min +=1                    
                     except:
                         pass
 
                     try:
                         if float(min_15_post_dose_QRS_msec_pure) > 70.0 and float(min_15_post_dose_QRS_msec_pure) < 120.0 :
-                            pass
-                        else:
-                            cuenta_validacion_abnormal_15_min +=1                    
+                            cuenta_validacion_abnormal_15_min +=1                   
                     except:
                         pass
 
                     try:
                         if float(min_15_post_dose_QT_msec_pure) <= 500.0 :
-                            pass
-                        else:
-                            cuenta_validacion_abnormal_15_min +=1                    
+                            cuenta_validacion_abnormal_15_min +=1                   
                     except:
                         pass 
 
                     try:
                         if float(min_15_post_dose_QTcF_msec_pure) > 350.0 and float(min_15_post_dose_QTcF_msec_pure) < 450.0 :
-                            pass
-                        else:
                             cuenta_validacion_abnormal_15_min +=1                    
                     except:
                         pass
@@ -1424,64 +1376,53 @@ def lead_ECG(df_root, path_excel_writer):
                         lista_logs.append(f'Revision LE0400--> {e} - Subject: {subject},  Visit: {visit} ')     
                     
                     # Revision LE0520
-                    try: 
-                        if float(min_30_post_dose_QTcF_msec_pure) > 350.0 and float(min_30_post_dose_QTcF_msec_pure) < 450.0 :
-                            pass
-                        else:
-                            error = [subject, visit, '30-min post dose, QTcF (msec)', min_30_post_dose_QTcF_msec_form_field_instance ,\
-                                     'The QTcF is not within expected range (350 to 450), therefore the Interpretation cant be Normal.', min_30_post_dose_QTcF_msec_pure, 'LE0520']
-                            lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision LE0520--> {e} - Subject: {subject},  Visit: {visit} ')  
+                    if math.isnan(float(min_30_post_dose_QTcF_msec_pure)) == False:
+                        try: 
+                            if float(min_30_post_dose_QTcF_msec_pure) > 350.0 and float(min_30_post_dose_QTcF_msec_pure) < 450.0 :
+                                pass
+                            else:
+                                error = [subject, visit, '30-min post dose, QTcF (msec)', min_30_post_dose_QTcF_msec_form_field_instance ,\
+                                        'The QTcF is not within expected range (350 to 450), therefore the Interpretation cant be Normal.', min_30_post_dose_QTcF_msec_pure, 'LE0520']
+                                lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision LE0520--> {e} - Subject: {subject},  Visit: {visit} ')  
 
 
                     cuenta_validacion_abnormal_30_min = 0
 
                     try:
                         if float(min_30_post_dose_HR_bpm_pure) > 45.0 and float(min_30_post_dose_HR_bpm_pure) < 90.0 :
-                            pass
-                        else:
-                            cuenta_validacion_abnormal_30_min +=1                    
+                            cuenta_validacion_abnormal_30_min +=1                   
                     except:
                         pass
 
                     try:
                         if float(min_30_post_dose_RR_msec_pure) > 654.6 and float(min_30_post_dose_RR_msec_pure) < 1141.4 :
-                            pass
-                        else:
                             cuenta_validacion_abnormal_30_min +=1                    
                     except:
                         pass
 
                     try:
                         if float(min_30_post_dose_PR_msec_pure) > 12.0 and float(min_30_post_dose_PR_msec_pure) < 200.0 :
-                            pass
-                        else:
                             cuenta_validacion_abnormal_30_min +=1                    
                     except:
                         pass
 
                     try:
                         if float(min_30_post_dose_QRS_msec_pure) > 70.0 and float(min_30_post_dose_QRS_msec_pure) < 120.0 :
-                            pass
-                        else:
-                            cuenta_validacion_abnormal_30_min +=1                    
+                            cuenta_validacion_abnormal_30_min +=1                      
                     except:
                         pass
 
                     try:
                         if float(min_30_post_dose_QT_msec_pure) <= 500.0 :
-                            pass
-                        else:
-                            cuenta_validacion_abnormal_30_min +=1                    
+                            cuenta_validacion_abnormal_30_min +=1                 
                     except:
                         pass 
 
                     try:
                         if float(min_30_post_dose_QTcF_msec_pure) > 350.0 and float(min_30_post_dose_QTcF_msec_pure) < 450.0 :
-                            pass
-                        else:
-                            cuenta_validacion_abnormal_30_min +=1                    
+                            cuenta_validacion_abnormal_30_min +=1                 
                     except:
                         pass
 
@@ -1560,64 +1501,53 @@ def lead_ECG(df_root, path_excel_writer):
                         lista_logs.append(f'Revision LE0410--> {e} - Subject: {subject},  Visit: {visit} ')     
                     
                     # Revision LE0540
-                    try: 
-                        if float(min_60_post_dose_QTcF_msec_pure) > 350.0 and float(min_60_post_dose_QTcF_msec_pure) < 450.0 :
-                            pass
-                        else:
-                            error = [subject, visit, '60-min post dose, QTcF (msec)', min_60_post_dose_QTcF_msec_form_field_instance ,\
-                                     'The QTcF is not within expected range (350 to 450), therefore the Interpretation cant be Normal.', min_60_post_dose_QTcF_msec_pure, 'LE0540']
-                            lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision LE0540--> {e} - Subject: {subject},  Visit: {visit} ')  
+                    if math.isnan(float(min_60_post_dose_QTcF_msec_pure)) == False:
+                        try: 
+                            if float(min_60_post_dose_QTcF_msec_pure) > 350.0 and float(min_60_post_dose_QTcF_msec_pure) < 450.0 :
+                                pass
+                            else:
+                                error = [subject, visit, '60-min post dose, QTcF (msec)', min_60_post_dose_QTcF_msec_form_field_instance ,\
+                                        'The QTcF is not within expected range (350 to 450), therefore the Interpretation cant be Normal.', min_60_post_dose_QTcF_msec_pure, 'LE0540']
+                                lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision LE0540--> {e} - Subject: {subject},  Visit: {visit} ')  
 
 
                     cuenta_validacion_abnormal_60_min = 0
 
                     try:
                         if float(min_60_post_dose_HR_bpm_pure) > 45.0 and float(min_60_post_dose_HR_bpm_pure) < 90.0 :
-                            pass
-                        else:
-                            cuenta_validacion_abnormal_60_min +=1                    
+                            cuenta_validacion_abnormal_60_min +=1              
                     except:
                         pass
 
                     try:
                         if float(min_60_post_dose_RR_msec_pure) > 654.6 and float(min_60_post_dose_RR_msec_pure) < 1141.4 :
-                            pass
-                        else:
-                            cuenta_validacion_abnormal_60_min +=1                    
+                            cuenta_validacion_abnormal_60_min +=1                   
                     except:
                         pass
 
                     try:
                         if float(min_60_post_dose_PR_msec_pure) > 12.0 and float(min_60_post_dose_PR_msec_pure) < 200.0 :
-                            pass
-                        else:
                             cuenta_validacion_abnormal_60_min +=1                    
                     except:
                         pass
 
                     try:
                         if float(min_60_post_dose_QRS_msec_pure) > 70.0 and float(min_60_post_dose_QRS_msec_pure) < 120.0 :
-                            pass
-                        else:
-                            cuenta_validacion_abnormal_60_min +=1                    
+                            cuenta_validacion_abnormal_60_min +=1                  
                     except:
                         pass
 
                     try:
                         if float(min_60_post_dose_QT_msec_pure) <= 500.0 :
-                            pass
-                        else:
-                            cuenta_validacion_abnormal_60_min +=1                    
+                            cuenta_validacion_abnormal_60_min +=1                 
                     except:
                         pass 
 
                     try:
                         if float(min_60_post_dose_QTcF_msec_pure) > 350.0 and float(min_60_post_dose_QTcF_msec_pure) < 450.0 :
-                            pass
-                        else:
-                            cuenta_validacion_abnormal_60_min +=1                    
+                            cuenta_validacion_abnormal_60_min +=1                
                     except:
                         pass
 

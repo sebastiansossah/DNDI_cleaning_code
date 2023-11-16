@@ -219,9 +219,9 @@ def mRNA_markers(df_root, path_excel_writer):
                             lista_logs.append(f'Revision MR0030 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
                     lista_validacion =[
-                        'Pre-dose',
-                        '04-hours post dose',
-                        '12-hours post dose',
+                        'Pre-dose, Time',
+                        '04-hours post dose, Time',
+                        '12-hours post dose, Time',
                     ]
                     cuenta_validar = 0
                         
@@ -231,20 +231,23 @@ def mRNA_markers(df_root, path_excel_writer):
                         except:
                             validador = math.nan
        
-                        if math.isnan(float(validador)) or float(validador) == 0.0 or validador == '' or validador == '-' or float(validador) == np.nan:
+                        if validador == '':
                             pass
                         else:
-                            cuenta_validar +=1
+                            cuenta_validar += 1
                     
                     # Revision MR0050
-                    try:
-                        if float(Was_blood_sample_collected_pure) == 1.0:
-                            if cuenta_validar == 0:
-                                error = [subject, visit, 'Was blood sample collected?', Was_blood_sample_collected_form_field_instance ,\
-                                        'If the sample was collected, not all sections can be "not done"', Was_blood_sample_collected_pure, 'MR0050']
-                                lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision MR0050--> {e} - Subject: {subject},  Visit: {visit} ')
+                    if visit in ['D1', 'D15' , 'D29']:
+                        try:
+                            if float(Was_blood_sample_collected_pure) == 1.0:
+                                if cuenta_validar > 0:
+                                    pass
+                                else:
+                                    error = [subject, visit, 'Was blood sample collected?', Was_blood_sample_collected_form_field_instance ,\
+                                            'If the sample was collected, not all sections can be "not done"', Was_blood_sample_collected_pure, 'MR0050']
+                                    lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision MR0050--> {e} - Subject: {subject},  Visit: {visit} ')
 
 
     excel_writer = load_workbook(path_excel_writer)

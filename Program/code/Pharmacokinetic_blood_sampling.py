@@ -256,16 +256,16 @@ def Pharmacokinetic_blood_sampling(df_root, path_excel_writer):
 
 
                     lista_validacion = [
-                            'Pre dose',
-                            '05-min post dose',
-                            '10-min post dose',
-                            '15-min post dose',
-                            '20-min post dose',
-                            '25-min post dose',
-                            '30-min post dose',
-                            '45-min post dose',
-                            '60-min post dose',
-                            '75-min post dose',
+                            'Pre dose, Time',
+                            '05-min post dose, Time',
+                            '10-min post dose, Time',
+                            '15-min post dose, Time',
+                            '20-min post dose, Time',
+                            '25-min post dose, Time',
+                            '30-min post dose, Time',
+                            '45-min post dose, Time',
+                            '60-min post dose, Time',
+                            '75-min post dose, Time',
                     ]
 
                     cuenta_validar = 0
@@ -274,18 +274,20 @@ def Pharmacokinetic_blood_sampling(df_root, path_excel_writer):
                         try: 
                             validador = row[validador_raw].split('|')[0]
                         except:
-                            validador = math.nan
+                            validador = ''
        
-                        if math.isnan(float(validador)) or float(validador) == 0.0 or validador == '' or validador == '-' or float(validador) == np.nan:
+                        if validador == '':
                             pass
                         else:
                             cuenta_validar +=1
+                            
 
-                    
                     # Revision PK0050
                     try:
                         if float(Was_any_pharmacokinetic_blood_sample_collected_pure) == 1.0:
-                            if cuenta_validar == 0:
+                            if cuenta_validar > 0:
+                                pass
+                            else:
                                 error = [subject, visit, 'Was blood sample collected?', Was_any_pharmacokinetic_blood_sample_collected_form_field_instance ,\
                                         'If the sample was collected, not all sections can be "not done"', Was_any_pharmacokinetic_blood_sample_collected_pure, 'PK0050']
                                 lista_revision.append(error)
