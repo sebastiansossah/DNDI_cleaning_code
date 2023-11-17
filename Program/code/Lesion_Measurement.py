@@ -89,7 +89,7 @@ def lesion_measurement(df_root, path_excel_writer):
                         Was_the_lesion_measurement_performed_form_field_instance = Was_the_lesion_measurement_performed.split('|')[1] 
                     except Exception as e:
                         Was_the_lesion_measurement_performed_pure = math.nan
-                        Was_the_lesion_measurement_performed_form_field_instance = 'This field doesnt have any data'
+                        Was_the_lesion_measurement_performed_form_field_instance = 'This field does not have any data'
     
                     try:
                         Date_of_assessment_performed = row["Date of assessment performed"]
@@ -97,7 +97,7 @@ def lesion_measurement(df_root, path_excel_writer):
                         Date_of_assessment_performed_form_field_instance = Date_of_assessment_performed.split('|')[1]
                     except Exception as e:
                         Date_of_assessment_performed_pure = ''
-                        Date_of_assessment_performed_form_field_instance = 'This field doesnt have any data'
+                        Date_of_assessment_performed_form_field_instance = 'This field does not have any data'
 
                     # try:
                     #     Provide_the_reason = row["Provide the reason"]
@@ -214,7 +214,7 @@ def lesion_measurement(df_root, path_excel_writer):
 
                             if date_of_test_f != date_of_visit_f:
                                 error = [subject, visit, 'Date of assessment performed', Date_of_assessment_performed_form_field_instance,\
-                                        'The date of assessment cant be before the informed consent date' , \
+                                        'The date of assessment can not be before the informed consent date' , \
                                             f'{Date_of_assessment_performed_pure} - {date_of_visit}', 'LM0030']
                                 lista_revision.append(error)
                             else:
@@ -231,7 +231,7 @@ def lesion_measurement(df_root, path_excel_writer):
 
                             if date_of_test_f < date_inform_consent_f:
                                 error = [subject, visit, 'Date of assessment performed', Date_of_assessment_performed_form_field_instance, \
-                                        'The date of assessment cant be before the informed consent date',f'{Date_of_assessment_performed_pure} - {date_inform_consent}', 'LM0040']
+                                        'The date of assessment can not be before the informed consent date',f'{Date_of_assessment_performed_pure} - {date_inform_consent}', 'LM0040']
                                 lista_revision.append(error)
                             else:
                                 pass

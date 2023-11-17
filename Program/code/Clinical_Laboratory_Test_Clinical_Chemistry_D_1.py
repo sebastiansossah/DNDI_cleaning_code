@@ -104,7 +104,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                         alanine_aminotransferase_out_normal_form_field_instance = alanine_aminotransferase_out_normal.split('|')[1]
                     except Exception as e:
                         alanine_aminotransferase_out_normal_pure = math.nan
-                        alanine_aminotransferase_out_normal_form_field_instance = 'This field doesnt have any data'
+                        alanine_aminotransferase_out_normal_form_field_instance = 'This field does not have any data'
 
                     try:
                         alanine_aminotransferase_result = row['Alanine Aminotransferase (ALT), Result (U/L)']
@@ -112,7 +112,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                         alanine_aminotransferase_result_form_field_instance = alanine_aminotransferase_result.splti('|')[1]
                     except Exception as e:
                         alanine_aminotransferase_result_pure = math.nan
-                        alanine_aminotransferase_result_form_field_instance = 'This field doesnt have any data'
+                        alanine_aminotransferase_result_form_field_instance = 'This field does not have any data'
 
                     try:
                         aspartate_aminotransferase_out_normal = row['Aspartate Aminotransferase (AST), Out of normal range?']
@@ -120,7 +120,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                         aspartate_aminotransferase_out_normal_form_field_instance = aspartate_aminotransferase_out_normal.split('|')[1]
                     except Exception as e:
                         aspartate_aminotransferase_out_normal_pure = math.nan
-                        aspartate_aminotransferase_out_normal_form_field_instance = 'This field doesnt have any data'
+                        aspartate_aminotransferase_out_normal_form_field_instance = 'This field does not have any data'
 
                     try:
                         aspartate_aminotransferase_result = row['Aspartate Aminotransferase (AST), Result (U/L)']
@@ -128,7 +128,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                         aspartate_aminotransferase_result_form_field_instance = aspartate_aminotransferase_result.split('|')[1]
                     except Exception as e:
                         aspartate_aminotransferase_result_pure = math.nan
-                        aspartate_aminotransferase_result_form_field_instance = 'This field doesnt have any data'
+                        aspartate_aminotransferase_result_form_field_instance = 'This field does not have any data'
 
                     try:
                         blood_sample_collected = row['Blood Sample Collected']
@@ -136,7 +136,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                         blood_sample_collected_form_field_instance = blood_sample_collected.split('|')[1]
                     except Exception as e:
                         blood_sample_collected_pure = math.nan
-                        blood_sample_collected_form_field_instance = 'This field doesnt have any data'
+                        blood_sample_collected_form_field_instance = 'This field does not have any data'
 
                     try:
                         creatine_kinase_out_normal = row['Creatine Kinase (CK), Out of normal range?']
@@ -144,7 +144,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                         creatine_kinase_out_normal_form_field_instance = creatine_kinase_out_normal.split('|')[1]
                     except Exception as e:
                         creatine_kinase_out_normal_pure = math.nan
-                        creatine_kinase_out_normal_form_field_instance = 'This field doesnt have any data'
+                        creatine_kinase_out_normal_form_field_instance = 'This field does not have any data'
 
                     try:
                         creatine_kinase_result = row['Creatine Kinase (CK), Result (U/L)']
@@ -152,7 +152,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                         creatine_kinase_result_form_field_instance = creatine_kinase_result.split('|')[1]
                     except Exception as e:
                         creatine_kinase_result_pure = math.nan
-                        creatine_kinase_result_form_field_instance = 'This field doesnt have any data'
+                        creatine_kinase_result_form_field_instance = 'This field does not have any data'
 
                     try:
                         date_collected = row['Date Collected']
@@ -160,7 +160,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                         date_collected_form_field_instance = date_collected.split('|')[1]
                     except Exception as e:
                         date_collected_pure = ''
-                        date_collected_form_field_instance = 'This field doesnt have any data'
+                        date_collected_form_field_instance = 'This field does not have any data'
 
                     try:
                         serum_creatine_out_normal = row['Serum Creatinine, Out of normal range?']
@@ -168,7 +168,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                         serum_creatine_out_normal_form_field_instance =serum_creatine_out_normal.split('|')[1]
                     except Exception as e:
                         serum_creatine_out_normal_pure = math.nan 
-                        serum_creatine_out_normal_form_field_instance = 'This field doesnt have any data'
+                        serum_creatine_out_normal_form_field_instance = 'This field does not have any data'
 
                     try:
                         serum_creatine_result = row['Serum Creatinine, Result (mg/dL)']
@@ -176,7 +176,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                         serum_creatine_result_form_field_instance = serum_creatine_result.split('|')[1]
                     except Exception as e:
                         serum_creatine_result_pure = math.nan
-                        serum_creatine_result_form_field_instance = 'This field doesnt have any data'
+                        serum_creatine_result_form_field_instance = 'This field does not have any data'
                     
                     # -----------------------------------------------------------------------------------------------------------------------------
                     # Revision GE0070
@@ -226,7 +226,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
 
                             if date_of_test_f < date_inform_consent_f:
                                 error = [subject, visit, 'Date Collected', date_collected_form_field_instance ,\
-                                        'The date/time of test performed cant be before the informed consent date/time' ,\
+                                        'The date/time of test performed can not be before the informed consent date/time' ,\
                                             f'{date_collected_pure} - {date_inform_consent}', 'LBD0020']
                                 lista_revision.append(error)
                             else:

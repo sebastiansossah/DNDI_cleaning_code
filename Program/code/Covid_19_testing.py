@@ -89,7 +89,7 @@ def covid_19_testing(df_root, path_excel_writer):
                         was_antigen_performed_form_field_instance = was_antigen_performed.split('|')[1]
                     except Exception as e:
                         was_antigen_performed_pure = math.nan
-                        was_antigen_performed_form_field_instance = 'This field doesnt have any data'
+                        was_antigen_performed_form_field_instance = 'This field does not have any data'
                     
                     try:
                         provide_reason = row['Provide the reason']
@@ -97,7 +97,7 @@ def covid_19_testing(df_root, path_excel_writer):
                         provide_reason_form_field_instance = provide_reason.split('|')[1]
                     except Exception as e:
                         provide_reason_pure = math.nan
-                        provide_reason_form_field_instance = 'This field doesnt have any data'
+                        provide_reason_form_field_instance = 'This field does not have any data'
                     
                     try:
                         date_test_performed = row['Date of test performed']
@@ -105,7 +105,7 @@ def covid_19_testing(df_root, path_excel_writer):
                         date_test_performed_form_field_instance = date_test_performed.split('|')[1] 
                     except Exception as e:
                         date_test_performed_pure = ''
-                        date_test_performed_form_field_instance = 'This field doesnt have any data'
+                        date_test_performed_form_field_instance = 'This field does not have any data'
 
                     try:
                         result = row['Result']
@@ -113,7 +113,7 @@ def covid_19_testing(df_root, path_excel_writer):
                         result_form_field_instance = result.split('|')[1]
                     except Exception as e:
                         result_pure = math.nan
-                        result_form_field_instance = 'This field doesnt have any data'
+                        result_form_field_instance = 'This field does not have any data'
                     
                     # ------------------------------------------------------------------------------
                     # Revision GE0070

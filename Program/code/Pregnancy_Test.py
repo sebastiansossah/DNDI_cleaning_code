@@ -107,7 +107,7 @@ def pregnancy_test(df_root, path_excel_writer):
                         was_pregnancy_test_performed_form_field_isntance = was_pregnancy_test_performed.split('|')[1]
                     except Exception as e:
                         was_pregnancy_test_performed_pure = math.nan
-                        was_pregnancy_test_performed_form_field_isntance = 'This field doesnt have any data'
+                        was_pregnancy_test_performed_form_field_isntance = 'This field does not have any data'
 
                     try:
                         provide_reason = row['Provide the reason']
@@ -115,7 +115,7 @@ def pregnancy_test(df_root, path_excel_writer):
                         provide_reason_form_field_instance = provide_reason.split('|')[1]
                     except Exception as e:
                         provide_reason_pure = ''
-                        provide_reason_form_field_instance = 'This field doesnt have any data'
+                        provide_reason_form_field_instance = 'This field does not have any data'
 
                     try:
                         type_pregnancy_test = row['Type of pregnancy test']
@@ -123,7 +123,7 @@ def pregnancy_test(df_root, path_excel_writer):
                         type_pregnancy_test_form_field_isntance = type_pregnancy_test.split('|')[1]
                     except Exception as e:
                         type_pregnancy_test_pure = ''
-                        type_pregnancy_test_form_field_isntance = 'This field doesnt have any data'
+                        type_pregnancy_test_form_field_isntance = 'This field does not have any data'
 
                     try:
                         date_test_performed = row['Date of test performed']
@@ -131,7 +131,7 @@ def pregnancy_test(df_root, path_excel_writer):
                         date_test_performed_form_field_instance = date_test_performed.split('|')[1]
                     except Exception as e:
                         date_test_performed_pure = ''
-                        date_test_performed_form_field_instance = 'This field doesnt have any data'
+                        date_test_performed_form_field_instance = 'This field does not have any data'
 
                     try:
                         pregnancy_test_result = row['Pregnancy Test Results']
@@ -139,7 +139,7 @@ def pregnancy_test(df_root, path_excel_writer):
                         pregnancy_test_result_form_field_instance = pregnancy_test_result.split('|')[1]
                     except Exception as e:
                         pregnancy_test_result_pure = ''
-                        pregnancy_test_result_form_field_instance = 'This field doesnt have any data'
+                        pregnancy_test_result_form_field_instance = 'This field does not have any data'
 
                     # ------------------------------------------------------------------------------------------
 
@@ -222,7 +222,7 @@ def pregnancy_test(df_root, path_excel_writer):
 
                             if date_of_test_f < date_inform_consent_f:
                                 error = [subject, visit, 'Date of test performed', date_test_performed_form_field_instance, \
-                                        'The date of test performed cant be before the informed consent date', \
+                                        'The date of test performed can not be before the informed consent date', \
                                             f'{date_test_performed_pure} - {date_inform_consent}', 'RP0060']
                                 lista_revision.append(error)
                             else:
@@ -236,7 +236,7 @@ def pregnancy_test(df_root, path_excel_writer):
                             if datetime.strptime(str(date_test_performed_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
                                 pass
                             else: 
-                                error = [subject, visit, 'date of test performed', date_test_performed_form_field_instance ,'The date of test performed cant be after the study/Early withdrawal date.', date_test_performed_pure, 'RP0070']
+                                error = [subject, visit, 'date of test performed', date_test_performed_form_field_instance ,'The date of test performed can not be after the study/Early withdrawal date.', date_test_performed_pure, 'RP0070']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision RP0070 --> {e} - Subject: {subject},  Visit: {visit}  ')

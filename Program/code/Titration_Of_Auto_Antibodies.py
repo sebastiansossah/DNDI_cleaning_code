@@ -88,7 +88,7 @@ def titration_of_auto_antibodies(df_root, path_excel_writer):
                         Anti_ssDNA_Comments_if_any_form_field_instance = Anti_ssDNA_Comments_if_any.split('|')[1]
                     except Exception as e:
                         Anti_ssDNA_Comments_if_any_pure = math.nan
-                        Anti_ssDNA_Comments_if_any_form_field_instance = 'This field doesnt have any data'
+                        Anti_ssDNA_Comments_if_any_form_field_instance = 'This field does not have any data'
 
                     try:
                         date_collected = row["Date Sample Collected"]
@@ -96,7 +96,7 @@ def titration_of_auto_antibodies(df_root, path_excel_writer):
                         date_collected_form_field_instance = date_collected.split('|')[1]
                     except Exception as e:
                         date_collected_pure = '' 
-                        date_collected_form_field_instance = 'This field doesnt have any data'
+                        date_collected_form_field_instance = 'This field does not have any data'
 
 
                     # --------------------------------------------------------------------   

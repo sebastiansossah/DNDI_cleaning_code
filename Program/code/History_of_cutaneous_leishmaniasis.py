@@ -103,7 +103,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                         date_confirmed_diagnosis_form_field_instance = date_confirmed_diagnosis.split('|')[1]
                     except Exception as e:
                         date_confirmed_diagnosis_pure = ''
-                        date_confirmed_diagnosis_form_field_instance = 'This field doesnt have any data'
+                        date_confirmed_diagnosis_form_field_instance = 'This field does not have any data'
 
                     try:
                         date_new_sample = row['Date of new sample taken']
@@ -111,7 +111,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                         date_new_sample_form_field_instance = date_new_sample.split('|')[1]
                     except Exception as e:
                         date_new_sample_pure = ''
-                        date_new_sample_form_field_instance = 'This field doesnt have any data'
+                        date_new_sample_form_field_instance = 'This field does not have any data'
 
                     try:
                         species_identification = row['Species identification']
@@ -119,7 +119,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                         species_identification_form_field_instance = species_identification.split('|')[1]
                     except Exception as e:
                         species_identification_pure = math.nan
-                        species_identification_form_field_instance = 'This field doesnt have any data'
+                        species_identification_form_field_instance = 'This field does not have any data'
 
                     try:
                         species_name = row['Species name']
@@ -127,7 +127,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                         species_name_form_field_instance = species_name.split('|')[1]
                     except Exception as e:
                         species_name_pure = math.nan
-                        species_name_form_field_instance = 'This field doesnt have any data'
+                        species_name_form_field_instance = 'This field does not have any data'
 
                     try:
                         previous_history_leishmaniasis = row['Are there any previous history of leishmaniasis (with a diagnosis in the past)?']
@@ -135,7 +135,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                         previous_history_leishmaniasis_form_field_instance = previous_history_leishmaniasis.split('|')[1]
                     except Exception as e:
                         previous_history_leishmaniasis_pure = math.nan
-                        previous_history_leishmaniasis_form_field_instance = 'This field doesnt have any data'
+                        previous_history_leishmaniasis_form_field_instance = 'This field does not have any data'
 
                     try:
                         date_diagnosis = row['Date of Diagnosis']
@@ -143,7 +143,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                         date_diagnosis_form_field_instance = date_diagnosis.split('|')[1]
                     except Exception as e:
                         date_diagnosis_pure = ''
-                        date_diagnosis_form_field_instance = 'This field doesnt have any data'
+                        date_diagnosis_form_field_instance = 'This field does not have any data'
 
                     #----------------------------------------------------------------------------
 

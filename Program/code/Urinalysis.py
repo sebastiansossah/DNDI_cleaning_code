@@ -90,7 +90,7 @@ def urinalysis(df_root, path_excel_writer):
                         date_collected_form_field_instance = date_collected.split('|')[1]
                     except Exception as e:
                         date_collected_pure = ''   
-                        date_collected_form_field_instance = 'This field doesnt have any data'
+                        date_collected_form_field_instance = 'This field does not have any data'
 
                     try:
                         urine_sample_collected = row['Urine Sample collected']
@@ -98,7 +98,7 @@ def urinalysis(df_root, path_excel_writer):
                         urine_sample_collected_form_field_instance = urine_sample_collected.split('|')[1]
                     except Exception as e:
                         urine_sample_collected_pure = math.nan
-                        urine_sample_collected_form_field_instance = 'This field doesnt have any data' 
+                        urine_sample_collected_form_field_instance = 'This field does not have any data' 
 
                     # --------------------------------------------------
 
@@ -161,7 +161,7 @@ def urinalysis(df_root, path_excel_writer):
 
                             if date_collected_f < date_inform_consent_f:
                                 error = [subject, visit, 'Date Collected', date_collected_form_field_instance,\
-                                        'The date/time of test performed cant be before the informed consent date/time',\
+                                        'The date/time of test performed can not be before the informed consent date/time',\
                                         f'{date_collected_pure} - {date_inform_consent}', 'UR0030']
                                 lista_revision.append(error)
                             else:

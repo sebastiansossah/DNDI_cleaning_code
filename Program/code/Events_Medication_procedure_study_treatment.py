@@ -95,7 +95,7 @@ def ev_med_proce_treatment(df_root, path_excel_writer):
                         were_AE_experienced_since_informed_consent_form_field_instance = were_AE_experienced_since_informed_consent.split('|')[1]
                     except:
                         were_AE_experienced_since_informed_consent_pure = ''
-                        were_AE_experienced_since_informed_consent_form_field_instance = 'This field doesnt have any data'
+                        were_AE_experienced_since_informed_consent_form_field_instance = 'This field does not have any data'
                     
                     try:
                         were_any_concomitant_medication_8_weeks_before = row['Were any concomitant medications taken within 8 weeks before start of screening or during the study?']
@@ -103,7 +103,7 @@ def ev_med_proce_treatment(df_root, path_excel_writer):
                         were_any_concomitant_medication_8_weeks_before_form_field_instance = were_any_concomitant_medication_8_weeks_before.split('|')[1]
                     except:
                         were_any_concomitant_medication_8_weeks_before_pure = ''
-                        were_any_concomitant_medication_8_weeks_before_form_field_instance = 'This field doesnt have any data'
+                        were_any_concomitant_medication_8_weeks_before_form_field_instance = 'This field does not have any data'
                     
                     try:
                         were_concomitant_procedure_performed_during_study = row['Were any concomitant procedures/surgeries performed during the study?']
@@ -111,7 +111,7 @@ def ev_med_proce_treatment(df_root, path_excel_writer):
                         were_concomitant_procedure_performed_during_study_form_field_instance = were_concomitant_procedure_performed_during_study.split('|')[1]
                     except:
                         were_concomitant_procedure_performed_during_study_pure = ''
-                        were_concomitant_procedure_performed_during_study_form_field_instance = 'This field doesnt have any data'
+                        were_concomitant_procedure_performed_during_study_form_field_instance = 'This field does not have any data'
                     
                     try:
                         has_subject_taken_cpg_ODN = row['Has the subject taken at least one dose of CpG ODN D35 study treatment?']
@@ -119,7 +119,7 @@ def ev_med_proce_treatment(df_root, path_excel_writer):
                         has_subject_taken_cpg_ODN_form_field_instance = has_subject_taken_cpg_ODN.split('|')[1]
                     except:
                         has_subject_taken_cpg_ODN_pure = ''
-                        has_subject_taken_cpg_ODN_form_field_instance = 'This field doesnt have any data'
+                        has_subject_taken_cpg_ODN_form_field_instance = 'This field does not have any data'
                     
                     try:
                         has_subject_taken_miltefosine = row['Has the subject taken at least one dose of Miltefosine study treatment?']
@@ -127,7 +127,7 @@ def ev_med_proce_treatment(df_root, path_excel_writer):
                         has_subject_taken_miltefosine_form_field_instance = has_subject_taken_miltefosine.split('|')[1]
                     except:
                         has_subject_taken_miltefosine_pure = ''
-                        has_subject_taken_miltefosine_form_field_instance = 'This field doesnt have any data'
+                        has_subject_taken_miltefosine_form_field_instance = 'This field does not have any data'
                     
                     # -----------------------------------------------------------------------------------------------------------------------------------
                     # Revision SM0010 

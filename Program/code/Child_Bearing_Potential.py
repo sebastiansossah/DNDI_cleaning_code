@@ -109,7 +109,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                         date_of_start_condom_form_field_instance = date_of_start_condom.split('|')[1]
                     except:
                         date_of_start_condom_pure = ''
-                        date_of_start_condom_form_field_instance = 'This field doesnt have any data'
+                        date_of_start_condom_form_field_instance = 'This field does not have any data'
                 
                     try:
                         date_start_contraceptive = row['Date of start of contraceptive method']
@@ -117,7 +117,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                         date_start_contraceptive_form_field_instance = date_start_contraceptive.split('|')[1]
                     except:
                         date_start_contraceptive_pure = ''
-                        date_start_contraceptive_form_field_instance = 'This field doesnt have any data'
+                        date_start_contraceptive_form_field_instance = 'This field does not have any data'
 
                     try:
                         last_mestruation_year = row['Year of Last Menstruation']
@@ -125,7 +125,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                         last_mestruation_year_form_field_instance = last_mestruation_year.split('|')[1]
                     except:
                         last_mestruation_year_pure = math.nan
-                        last_mestruation_year_form_field_instance = 'This field doesnt have any data'
+                        last_mestruation_year_form_field_instance = 'This field does not have any data'
 
                     try:
                         participant_postmenopausical = row['Is the participant postmenopausal?']
@@ -133,7 +133,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                         participant_postmenopausical_form_field_instance = participant_postmenopausical.split('|')[1]
                     except:
                         participant_postmenopausical_pure = math.nan
-                        participant_postmenopausical_form_field_instance = 'This field doesnt have any data'
+                        participant_postmenopausical_form_field_instance = 'This field does not have any data'
 
                     try:
                         last_mestruation_month = row['Month of Last Menstruation']
@@ -141,7 +141,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                         last_mestruation_month_form_field_instance = last_mestruation_month.split('|')[1]
                     except:
                         last_mestruation_month_pure = math.nan
-                        last_mestruation_month_form_field_instance = 'This field doesnt have any data'
+                        last_mestruation_month_form_field_instance = 'This field does not have any data'
 
                     try:
                         fsh_available = row['Is the FSH test result available and ≥ 40 IU/L?']
@@ -149,7 +149,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                         fsh_available_form_field_instance = fsh_available.split('|')[1]
                     except:
                         fsh_available_pure = math.nan
-                        fsh_available_form_field_instance = 'This field doesnt have any data'
+                        fsh_available_form_field_instance = 'This field does not have any data'
                     
                     try:
                         contraception = row['Contraception of non post-menopausal woman']
@@ -157,7 +157,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                         contraception_form_field_instance = contraception.split('|')[1]
                     except:
                         contraception_pure = math.nan
-                        contraception_form_field_instance = 'This field doesnt have any data'
+                        contraception_form_field_instance = 'This field does not have any data'
 
                     try:
                         use_combined_hormonal = row['Use of combined (estrogen and progestogen-containing) hormonal contraception. associated with inhibition of ovulation']
@@ -165,7 +165,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                         use_combined_hormonal_form_field_instance = use_combined_hormonal.split('|')[1]
                     except:
                         use_combined_hormonal_pure = math.nan
-                        use_combined_hormonal_form_field_instance = 'This field doesnt have any data'
+                        use_combined_hormonal_form_field_instance = 'This field does not have any data'
                     
                     try:
                         progeston_hormonal = row['Use of progestogen-only hormonal contraception']
@@ -173,7 +173,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                         progeston_hormonal_form_field_instance = progeston_hormonal.split('|')[1]
                     except:
                         progeston_hormonal_pure = math.nan
-                        progeston_hormonal_form_field_instance = 'This field doesnt have any data'
+                        progeston_hormonal_form_field_instance = 'This field does not have any data'
 
                     # ----------------------------------------------
 
@@ -326,7 +326,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                                     pass
                                 else:
                                     error = [subject, visit, 'Date of start of contraceptive method', date_start_contraceptive_form_field_instance, \
-                                            'The contraceptive method date cant be before the birth date' , date_start_contraceptive_pure, 'CB0140']
+                                            'The contraceptive method date can not be before the birth date' , date_start_contraceptive_pure, 'CB0140']
                                     lista_revision.append(error)
                             except Exception as e:
                                 lista_logs.append(f'Revision CB0140 --> {e} - Subject: {subject},  Visit: {visit} ')

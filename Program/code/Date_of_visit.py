@@ -77,7 +77,7 @@ def date_of_visit(df_root, path_excel_writer):
                     visit_date_form_field_instance = visit_date.split('|')[1]
                 except:
                     visit_date = ''
-                    visit_date_form_field_instance = 'This field doesnt have any data'
+                    visit_date_form_field_instance = 'This field does not have any data'
 
                 
                 if status == 'DATA_ENTRY_COMPLETE':

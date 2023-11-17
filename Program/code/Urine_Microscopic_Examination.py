@@ -51,7 +51,7 @@ def urine_microscopic_examination(df_root, path_excel_writer):
                         was_performed_form_field_instance = was_performed.split('|')[1]
                     except Exception as e:
                         was_performed_pure = math.nan
-                        was_performed_form_field_instance  = 'This field doesnt have any data'
+                        was_performed_form_field_instance  = 'This field does not have any data'
 
 
                     # ------------------------------------------------------- 

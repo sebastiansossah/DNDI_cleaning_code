@@ -91,7 +91,7 @@ def interleukin_6(df_root, path_excel_writer):
                         Provide_the_reason_form_field_instance = Provide_the_reason.split('|')[1]
                     except Exception as e:
                         Provide_the_reason_pure = math.nan
-                        Provide_the_reason_form_field_instance = 'This field doesnt have any data'
+                        Provide_the_reason_form_field_instance = 'This field does not have any data'
 
                     try:
                         date_collected = row["Date Sample Collected"]
@@ -99,7 +99,7 @@ def interleukin_6(df_root, path_excel_writer):
                         date_collected_form_field_instance = date_collected.split('|')[1]
                     except Exception as e:
                         date_collected_pure = ''
-                        date_collected_form_field_instance = 'This field doesnt have any data'
+                        date_collected_form_field_instance = 'This field does not have any data'
 
                     try:
                         Result_pg_ml = row["Result (pg/ml)"]
@@ -107,7 +107,7 @@ def interleukin_6(df_root, path_excel_writer):
                         Result_pg_ml_form_field_instance = Result_pg_ml.split('|')[1]
                     except Exception as e:
                         Result_pg_ml_pure = math.nan
-                        Result_pg_ml_form_field_instance = 'This field doesnt have any data'
+                        Result_pg_ml_form_field_instance = 'This field does not have any data'
 
                     try:
                         Out_of_normal_range = row["Out of normal range?"]
@@ -115,7 +115,7 @@ def interleukin_6(df_root, path_excel_writer):
                         Out_of_normal_range_form_field_instance = Out_of_normal_range.split('|')[1]
                     except Exception as e:
                         Out_of_normal_range_pure = math.nan
-                        Out_of_normal_range_form_field_instance = 'This field doesnt have any data'
+                        Out_of_normal_range_form_field_instance = 'This field does not have any data'
 
                     # ------------------------------------------------------------------------------------------
 
@@ -187,7 +187,7 @@ def interleukin_6(df_root, path_excel_writer):
 
                             if date_of_test_f < date_inform_consent_f:
                                 error = [subject, visit, 'Date Sample Collected', date_collected_form_field_instance ,\
-                                        'The date/time of test performed cant be before the informed consent date/time', f'{date_collected_pure} - {date_inform_consent}', 'IN0040']
+                                        'The date/time of test performed can not be before the informed consent date/time', f'{date_collected_pure} - {date_inform_consent}', 'IN0040']
                                 lista_revision.append(error)
                             else:
                                 pass

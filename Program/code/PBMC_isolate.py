@@ -88,7 +88,7 @@ def PBMC_isolate(df_root, path_excel_writer):
                         was_sample_collected_form_field_instance = was_sample_collected.split('|')[1]
                     except Exception as e:
                         was_sample_collected_pure = ''
-                        was_sample_collected_form_field_instance = 'This field doesnt have any data'
+                        was_sample_collected_form_field_instance = 'This field does not have any data'
 
                     try:
                         provide_reason = row['Provide the reason']
@@ -96,7 +96,7 @@ def PBMC_isolate(df_root, path_excel_writer):
                         provide_reason_form_field_instance = provide_reason.split('|')[1]
                     except Exception as e:
                         provide_reason_pure = ''
-                        provide_reason_form_field_instance = 'This field doesnt have any data'
+                        provide_reason_form_field_instance = 'This field does not have any data'
 
                     try:
                         date_sample_collected = row['Date of the sample collected']
@@ -104,7 +104,7 @@ def PBMC_isolate(df_root, path_excel_writer):
                         date_sample_collected_form_field_instance = date_sample_collected.split('|')[1]
                     except Exception as e:
                         date_sample_collected_pure = ''
-                        date_sample_collected_form_field_instance = 'This field doesnt have any data'
+                        date_sample_collected_form_field_instance = 'This field does not have any data'
 
                     # --------------------------------------------------------------------------
                     # Revision GE0070
@@ -153,7 +153,7 @@ def PBMC_isolate(df_root, path_excel_writer):
 
                             if date_of_test_f < date_inform_consent_f:
                                 error = [subject, visit, 'Date of the sample collected', date_sample_collected_form_field_instance ,\
-                                        'The date/time of sample collected cant be before the informed consent date/time', f'{date_sample_collected_pure} - {date_inform_consent}', 'PB0030']
+                                        'The date/time of sample collected can not  be before the informed consent date/time', f'{date_sample_collected_pure} - {date_inform_consent}', 'PB0030']
                                 lista_revision.append(error)
                             else:
                                 pass

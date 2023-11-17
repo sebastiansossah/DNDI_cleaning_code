@@ -90,7 +90,7 @@ def vital_signs(df_root, path_excel_writer):
                         was_vital_signs_performed_form_field_instance = was_vital_signs_performed.split('|')[1]
                     except Exception as e:
                         was_vital_signs_performed_pure = math.nan
-                        was_vital_signs_performed_form_field_instance = 'This field doesnt have any data'
+                        was_vital_signs_performed_form_field_instance = 'This field does not have any data'
                     
                     try:
                         date_assesment = row['Date of assessment performed']
@@ -98,7 +98,7 @@ def vital_signs(df_root, path_excel_writer):
                         date_assesment_form_field_instance = date_assesment.split('|')[1]
                     except Exception as e:
                         date_assesment_pure = ''
-                        date_assesment_form_field_instance = 'This field doesnt have any data'
+                        date_assesment_form_field_instance = 'This field does not have any data'
                     
                     try:
                         BMI = row['Undefined, BMI']
@@ -106,7 +106,7 @@ def vital_signs(df_root, path_excel_writer):
                         BMI_form_field_instance = BMI.split('|')[1]
                     except Exception as e:
                         BMI_pure = math.nan
-                        BMI_form_field_instance = 'This field doesnt have any data'
+                        BMI_form_field_instance = 'This field does not have any data'
                     
                     try:
                         height = row['Undefined, Height (cm)']
@@ -114,7 +114,7 @@ def vital_signs(df_root, path_excel_writer):
                         height_form_field_instance = height.split('|')[1]
                     except Exception as e:
                         height_pure = math.nan
-                        height_form_field_instance = 'This field doesnt have any data'
+                        height_form_field_instance = 'This field does not have any data'
                     
                     try: 
                         weight = row['Undefined, Weight (kg)']
@@ -122,7 +122,7 @@ def vital_signs(df_root, path_excel_writer):
                         weight_form_field_instance = weight.split('|')[1]                    
                     except Exception as e: 
                         weight_pure = math.nan
-                        weight_form_field_instance = 'This field doesnt have any data'
+                        weight_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Pre_dose_Diastolic_Blood_Pressure = row["Pre dose, Diastolic Blood Pressure"]
@@ -130,7 +130,7 @@ def vital_signs(df_root, path_excel_writer):
                         Pre_dose_Diastolic_Blood_Pressure_form_field_insntance = Pre_dose_Diastolic_Blood_Pressure.split('|')[1]
                     except Exception as e:
                         Pre_dose_Diastolic_Blood_Pressure_pure = math.nan
-                        Pre_dose_Diastolic_Blood_Pressure_form_field_insntance = 'This field doesnt have any data'
+                        Pre_dose_Diastolic_Blood_Pressure_form_field_insntance = 'This field does not have any data'
                     
                     try:
                         Pre_dose_Diastolic_Blood_Pressure_value = row["Pre dose, Diastolic Blood Pressure (Sitting) (mmHg)"]
@@ -138,7 +138,7 @@ def vital_signs(df_root, path_excel_writer):
                         Pre_dose_Diastolic_Blood_Pressure_value_form_field_instance = Pre_dose_Diastolic_Blood_Pressure_value.split('|')[1]
                     except Exception as e:
                         Pre_dose_Diastolic_Blood_Pressure_value_pure = math.nan
-                        Pre_dose_Diastolic_Blood_Pressure_value_form_field_instance = 'This field doesnt have any data'
+                        Pre_dose_Diastolic_Blood_Pressure_value_form_field_instance = 'This field does not have any data'
                     
                     try:
                         mins_60_post_dose_Respiratory_rate = row["60-mins post dose, Respiratory rate"]
@@ -146,7 +146,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_60_post_dose_Respiratory_rate_form_field_instance = mins_60_post_dose_Respiratory_rate.split('|')[1]
                     except Exception as e:
                         mins_60_post_dose_Respiratory_rate_pure = math.nan
-                        mins_60_post_dose_Respiratory_rate_form_field_instance = 'This field doesnt have any data'
+                        mins_60_post_dose_Respiratory_rate_form_field_instance = 'This field does not have any data'
                     
                     try:
                         mins_60_post_dose_Respiratory_rate_value = row["60-mins post dose, Respiratory rate (breaths/min)"]
@@ -154,7 +154,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_60_post_dose_Respiratory_rate_value_form_field_instance = mins_60_post_dose_Respiratory_rate_value.split('|')[1]
                     except Exception as e:
                         mins_60_post_dose_Respiratory_rate_value_pure = math.nan
-                        mins_60_post_dose_Respiratory_rate_value_form_field_instance = 'This field doesnt have any data'
+                        mins_60_post_dose_Respiratory_rate_value_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Undefined_Respiratory_rate = row["Undefined, Respiratory rate"]
@@ -162,7 +162,7 @@ def vital_signs(df_root, path_excel_writer):
                         Undefined_Respiratory_rate_form_field_isntance = Undefined_Respiratory_rate.split('|')[1]
                     except Exception as e:
                         Undefined_Respiratory_rate_pure = math.nan
-                        Undefined_Respiratory_rate_form_field_isntance = 'This field doesnt have any data'
+                        Undefined_Respiratory_rate_form_field_isntance = 'This field does not have any data'
                     
                     try:
                         Undefined_Respiratory_rate_value = row["Undefined, Respiratory rate (breaths/min)"]
@@ -170,7 +170,7 @@ def vital_signs(df_root, path_excel_writer):
                         Undefined_Respiratory_rate_value_form_field_instance = Undefined_Respiratory_rate_value.split('|')[1]
                     except Exception as e:
                         Undefined_Respiratory_rate_value_pure = math.nan
-                        Undefined_Respiratory_rate_value_form_field_instance = 'This field doesnt have any data'
+                        Undefined_Respiratory_rate_value_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Pre_dose_Oral_Temperature = row["Pre dose, Body Temperature"]
@@ -178,7 +178,7 @@ def vital_signs(df_root, path_excel_writer):
                         Pre_dose_Oral_Temperature_form_field_instance = Pre_dose_Oral_Temperature.split('|')[1]
                     except Exception as e:
                         Pre_dose_Oral_Temperature_pure = math.nan
-                        Pre_dose_Oral_Temperature_form_field_instance = 'This field doesnt have any data'
+                        Pre_dose_Oral_Temperature_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Pre_dose_Oral_Temperature_value = row["Pre dose, Oral Temperature (°C)"]
@@ -186,7 +186,7 @@ def vital_signs(df_root, path_excel_writer):
                         Pre_dose_Oral_Temperature_value_form_field_instance = Pre_dose_Oral_Temperature_value.split('|')[1]
                     except Exception as e:
                         Pre_dose_Oral_Temperature_value_pure = math.nan
-                        Pre_dose_Oral_Temperature_value_form_field_instance = 'This field doesnt have any data'
+                        Pre_dose_Oral_Temperature_value_form_field_instance = 'This field does not have any data'
                     
                     try:
                         hours_2_post_dose_Respiratory_rate = row["2-hours post dose, Respiratory rate"]
@@ -194,7 +194,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_2_post_dose_Respiratory_rate_form_field_instance = hours_2_post_dose_Respiratory_rate.split('|')[1]
                     except Exception as e:
                         hours_2_post_dose_Respiratory_rate_pure = math.nan
-                        hours_2_post_dose_Respiratory_rate_form_field_instance = 'This field doesnt have any data'
+                        hours_2_post_dose_Respiratory_rate_form_field_instance = 'This field does not have any data'
                     
                     try:
                         hours_2_post_dose_Respiratory_rate_value = row["2-hours post dose, Respiratory rate (breaths/min)"]
@@ -202,7 +202,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_2_post_dose_Respiratory_rate_value_form_field_instance = hours_2_post_dose_Respiratory_rate_value.split('|')[1]
                     except Exception as e:
                         hours_2_post_dose_Respiratory_rate_value_pure = math.nan
-                        hours_2_post_dose_Respiratory_rate_value_form_field_instance = 'This field doesnt have any data'
+                        hours_2_post_dose_Respiratory_rate_value_form_field_instance = 'This field does not have any data'
                     
                     try:
                         hours_8_post_dose_Diastolic_Blood_Pressure = row["8-hours post dose, Diastolic Blood Pressure"]
@@ -210,7 +210,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_8_post_dose_Diastolic_Blood_Pressure_form_field_instance = hours_8_post_dose_Diastolic_Blood_Pressure.split('|')[1]
                     except Exception as e:
                         hours_8_post_dose_Diastolic_Blood_Pressure_pure = math.nan 
-                        hours_8_post_dose_Diastolic_Blood_Pressure_form_field_instance = 'This field doesnt have any data'
+                        hours_8_post_dose_Diastolic_Blood_Pressure_form_field_instance = 'This field does not have any data'
                     
                     try:
                         hours_8_post_dose_Diastolic_Blood_Pressure_value = row["8-hours post dose, Diastolic Blood Pressure (Sitting) (mmHg)"]
@@ -218,7 +218,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_8_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = hours_8_post_dose_Diastolic_Blood_Pressure_value.split('|')[1]
                     except Exception as e:
                         hours_8_post_dose_Diastolic_Blood_Pressure_value_pure = math.nan
-                        hours_8_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = 'This field doesnt have any data'
+                        hours_8_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = 'This field does not have any data'
                     
                     try:
                         mins_15_post_dose_Diastolic_Blood_Pressure = row["15-mins post dose, Diastolic Blood Pressure"]
@@ -226,7 +226,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_15_post_dose_Diastolic_Blood_Pressure_form_field_instance = mins_15_post_dose_Diastolic_Blood_Pressure.split('|')[1]
                     except Exception as e:
                         mins_15_post_dose_Diastolic_Blood_Pressure_pure = math.nan
-                        mins_15_post_dose_Diastolic_Blood_Pressure_form_field_instance = 'This field doesnt have any data'
+                        mins_15_post_dose_Diastolic_Blood_Pressure_form_field_instance = 'This field does not have any data'
                     
                     try:
                         mins_15_post_dose_Diastolic_Blood_Pressure_value = row["15-mins post dose, Diastolic Blood Pressure (Sitting) (mmHg)"]
@@ -234,7 +234,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_15_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = mins_15_post_dose_Diastolic_Blood_Pressure_value.split('|')[1]
                     except Exception as e:
                         mins_15_post_dose_Diastolic_Blood_Pressure_value_pure = math.nan
-                        mins_15_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = 'This field doesnt have any data'
+                        mins_15_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Undefined_Diastolic_Blood_Pressure = row["Undefined, Diastolic Blood Pressure"]
@@ -242,7 +242,7 @@ def vital_signs(df_root, path_excel_writer):
                         Undefined_Diastolic_Blood_Pressure_form_field_instance = Undefined_Diastolic_Blood_Pressure.split('|')[1]
                     except Exception as e:
                         Undefined_Diastolic_Blood_Pressure_pure = math.nan
-                        Undefined_Diastolic_Blood_Pressure_form_field_instance = 'This field doesnt have any data'
+                        Undefined_Diastolic_Blood_Pressure_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Undefined_Diastolic_Blood_Pressure_value = row['Undefined, Diastolic Blood Pressure (mmHg)']
@@ -250,7 +250,7 @@ def vital_signs(df_root, path_excel_writer):
                         Undefined_Diastolic_Blood_Pressure_value_form_field_instance = Undefined_Diastolic_Blood_Pressure_value.split('|')[1]
                     except Exception as e:
                         Undefined_Diastolic_Blood_Pressure_value_pure = math.nan
-                        Undefined_Diastolic_Blood_Pressure_value_form_field_instance = 'This field doesnt have any data'
+                        Undefined_Diastolic_Blood_Pressure_value_form_field_instance = 'This field does not have any data'
                     
                     try:
                         mins_60_post_dose_Diastolic_Blood_Pressure = row["60-mins post dose, Diastolic Blood Pressure"]
@@ -258,7 +258,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_60_post_dose_Diastolic_Blood_Pressure_form_field_instance = mins_60_post_dose_Diastolic_Blood_Pressure.split('|')[1]
                     except Exception as e:
                         mins_60_post_dose_Diastolic_Blood_Pressure_pure = math.nan 
-                        mins_60_post_dose_Diastolic_Blood_Pressure_form_field_instance = 'This field doesnt have any data'
+                        mins_60_post_dose_Diastolic_Blood_Pressure_form_field_instance = 'This field does not have any data'
                     
                     try:
                         mins_60_post_dose_Diastolic_Blood_Pressure_value = row["60-mins post dose, Diastolic Blood Pressure (Sitting) (mmHg)"]
@@ -266,7 +266,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_60_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = mins_60_post_dose_Diastolic_Blood_Pressure_value.split('|')[1]
                     except Exception as e:
                         mins_60_post_dose_Diastolic_Blood_Pressure_value_pure = math.nan
-                        mins_60_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = 'This field doesnt have any data'
+                        mins_60_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = 'This field does not have any data'
                     
                     try:
                         hours_8_post_dose_Pulse_rate = row["8-hours post dose, Pulse rate"]
@@ -274,7 +274,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_8_post_dose_Pulse_rate_form_field_instance = hours_8_post_dose_Pulse_rate.split('|')[1]
                     except Exception as e:
                         hours_8_post_dose_Pulse_rate_pure = math.nan
-                        hours_8_post_dose_Pulse_rate_form_field_instance = 'This field doesnt have any data'
+                        hours_8_post_dose_Pulse_rate_form_field_instance = 'This field does not have any data'
                     
                     try:
                         hours_8_post_dose_Pulse_rate_value = row["8-hours post dose, Pulse rate (beats/min)"]
@@ -282,7 +282,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_8_post_dose_Pulse_rate_value_form_field_instance = hours_8_post_dose_Pulse_rate_value.split('|')[1]
                     except Exception as e:
                         hours_8_post_dose_Pulse_rate_value_pure = math.nan
-                        hours_8_post_dose_Pulse_rate_value_form_field_instance = 'This field doesnt have any data'
+                        hours_8_post_dose_Pulse_rate_value_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Undefined_Systolic_Blood_Pressure = row["Undefined, Systolic Blood Pressure"]
@@ -290,7 +290,7 @@ def vital_signs(df_root, path_excel_writer):
                         Undefined_Systolic_Blood_Pressure_form_field_instance = Undefined_Systolic_Blood_Pressure.split('|')[1]
                     except Exception as e:
                         Undefined_Systolic_Blood_Pressure_pure = math.nan
-                        Undefined_Systolic_Blood_Pressure_form_field_instance = 'This field doesnt have any data'
+                        Undefined_Systolic_Blood_Pressure_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Undefined_Systolic_Blood_Pressure_value = row["Undefined, Systolic Blood Pressure  (mmHg)"]
@@ -298,7 +298,7 @@ def vital_signs(df_root, path_excel_writer):
                         Undefined_Systolic_Blood_Pressure_value_form_field_instance = Undefined_Systolic_Blood_Pressure_value.split('|')[1]
                     except Exception as e:
                         Undefined_Systolic_Blood_Pressure_value_pure = math.nan
-                        Undefined_Systolic_Blood_Pressure_value_form_field_instance = 'This field doesnt have any data'
+                        Undefined_Systolic_Blood_Pressure_value_form_field_instance = 'This field does not have any data'
                     
                     try:
                         hours_2_post_dose_Diastolic_Blood_Pressure = row["2-hours post dose, Diastolic Blood Pressure"]
@@ -306,7 +306,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_2_post_dose_Diastolic_Blood_Pressure_form_field_instance = hours_2_post_dose_Diastolic_Blood_Pressure.split('|')[1]
                     except Exception as e:
                         hours_2_post_dose_Diastolic_Blood_Pressure_pure = math.nan
-                        hours_2_post_dose_Diastolic_Blood_Pressure_form_field_instance = 'This field doesnt have any data'
+                        hours_2_post_dose_Diastolic_Blood_Pressure_form_field_instance = 'This field does not have any data'
                     
                     try:
                         hours_2_post_dose_Diastolic_Blood_Pressure_value = row["2-hours post dose, Diastolic Blood Pressure (Sitting) (mmHg)"]
@@ -314,7 +314,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_2_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = hours_2_post_dose_Diastolic_Blood_Pressure_value.split('|')[1]
                     except Exception as e:
                         hours_2_post_dose_Diastolic_Blood_Pressure_value_pure = math.nan
-                        hours_2_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = 'This field doesnt have any data'
+                        hours_2_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = 'This field does not have any data'
                     
                     try:
                         hours_2_post_dose_Pulse_rate = row["2-hours post dose, Pulse rate"]
@@ -322,7 +322,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_2_post_dose_Pulse_rate_form_field_instance = hours_2_post_dose_Pulse_rate.split('|')[1]
                     except Exception as e:
                         hours_2_post_dose_Pulse_rate_pure = math.nan
-                        hours_2_post_dose_Pulse_rate_form_field_instance = 'This field doesnt have any data'
+                        hours_2_post_dose_Pulse_rate_form_field_instance = 'This field does not have any data'
                     
                     try:
                         hours_2_post_dose_Pulse_rate_value = row["2-hours post dose, Pulse rate (beats/min)"]
@@ -330,7 +330,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_2_post_dose_Pulse_rate_value_form_field_instance = hours_2_post_dose_Pulse_rate_value.split('|')[1]
                     except Exception as e:
                         hours_2_post_dose_Pulse_rate_value_pure = math.nan
-                        hours_2_post_dose_Pulse_rate_value_form_field_instance = 'This field doesnt have any data'
+                        hours_2_post_dose_Pulse_rate_value_form_field_instance = 'This field does not have any data'
                     
                     try:
                         mins_60_post_dose_Pulse_rate = row["60-mins post dose, Pulse rate"]
@@ -338,7 +338,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_60_post_dose_Pulse_rate_form_field_instance = mins_60_post_dose_Pulse_rate.split('|')[1]
                     except Exception as e:
                         mins_60_post_dose_Pulse_rate_pure = math.nan
-                        mins_60_post_dose_Pulse_rate_form_field_instance = 'This field doesnt have any data'
+                        mins_60_post_dose_Pulse_rate_form_field_instance = 'This field does not have any data'
                     
                     try:
                         mins_60_post_dose_Pulse_rate_value = row["60-mins post dose, Pulse rate (beats/min)"]
@@ -346,7 +346,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_60_post_dose_Pulse_rate_value_form_field_instance = mins_60_post_dose_Pulse_rate_value.split('|')[1]
                     except Exception as e:
                         mins_60_post_dose_Pulse_rate_value_pure = math.nan
-                        mins_60_post_dose_Pulse_rate_value_form_field_instance = 'This field doesnt have any data'
+                        mins_60_post_dose_Pulse_rate_value_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Undefined_Oral_Temperature = row["Undefined, Body Temperature"]
@@ -354,7 +354,7 @@ def vital_signs(df_root, path_excel_writer):
                         Undefined_Oral_Temperature_form_field_instance = Undefined_Oral_Temperature.split('|')[1]
                     except Exception as e:
                         Undefined_Oral_Temperature_pure = math.nan
-                        Undefined_Oral_Temperature_form_field_instance = 'This field doesnt have any data'
+                        Undefined_Oral_Temperature_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Undefined_Oral_Temperature_value = row["Undefined, Oral Temperature (°C)"]
@@ -362,7 +362,7 @@ def vital_signs(df_root, path_excel_writer):
                         Undefined_Oral_Temperature_value_form_field_instance = Undefined_Oral_Temperature_value.split('|')[1]
                     except Exception as e:
                         Undefined_Oral_Temperature_value_pure = math.nan
-                        Undefined_Oral_Temperature_value_form_field_instance = 'This field doesnt have any data'
+                        Undefined_Oral_Temperature_value_form_field_instance = 'This field does not have any data'
                     
                     try:
                         hours_2_post_dose_Oral_Temperature = row["2-hours post dose, Body Temperature"]
@@ -370,7 +370,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_2_post_dose_Oral_Temperature_form_field_instance = hours_2_post_dose_Oral_Temperature.split('|')[1]
                     except Exception as e:
                         hours_2_post_dose_Oral_Temperature_pure = math.nan
-                        hours_2_post_dose_Oral_Temperature_form_field_instance = 'This field doesnt have any data'
+                        hours_2_post_dose_Oral_Temperature_form_field_instance = 'This field does not have any data'
                     
                     try:
                         hours_2_post_dose_Oral_Temperature_value = row["2-hours post dose, Oral Temperature (°C)"]
@@ -378,7 +378,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_2_post_dose_Oral_Temperature_value_form_field_instance = hours_2_post_dose_Oral_Temperature_value.split('|')[1]
                     except Exception as e:
                         hours_2_post_dose_Oral_Temperature_value_pure = math.nan
-                        hours_2_post_dose_Oral_Temperature_value_form_field_instance = 'This field doesnt have any data'
+                        hours_2_post_dose_Oral_Temperature_value_form_field_instance = 'This field does not have any data'
                     
                     try:
                         mins_60_post_dose_Oral_Temperature = row["60-mins post dose, Body Temperature"]
@@ -386,7 +386,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_60_post_dose_Oral_Temperature_form_field_instance = mins_60_post_dose_Oral_Temperature.split('|')[1]
                     except Exception as e:
                         mins_60_post_dose_Oral_Temperature_pure = math.nan
-                        mins_60_post_dose_Oral_Temperature_form_field_instance = 'This field doesnt have any data'
+                        mins_60_post_dose_Oral_Temperature_form_field_instance = 'This field does not have any data'
                     
                     try:
                         mins_60_post_dose_Oral_Temperature_value = row["60-mins post dose, Oral Temperature (°C)"]
@@ -394,7 +394,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_60_post_dose_Oral_Temperature_value_form_field_instance = mins_60_post_dose_Oral_Temperature_value.split('|')[1]
                     except Exception as e:
                         mins_60_post_dose_Oral_Temperature_value_pure = math.nan
-                        mins_60_post_dose_Oral_Temperature_value_form_field_instance = 'This field doesnt have any data'
+                        mins_60_post_dose_Oral_Temperature_value_form_field_instance = 'This field does not have any data'
                     
                     try:
                         hours_8_post_dose_Respiratory_rate = row["8-hours post dose, Respiratory rate"]
@@ -402,7 +402,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_8_post_dose_Respiratory_rate_form_field_instance = hours_8_post_dose_Respiratory_rate.split('|')[1]
                     except Exception as e:
                         hours_8_post_dose_Respiratory_rate_pure = math.nan
-                        hours_8_post_dose_Respiratory_rate_form_field_instance = 'This field doesnt have any data'
+                        hours_8_post_dose_Respiratory_rate_form_field_instance = 'This field does not have any data'
                     
                     try:
                         hours_8_post_dose_Respiratory_rate_value = row["8-hours post dose, Respiratory rate (breaths/min)"]
@@ -410,7 +410,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_8_post_dose_Respiratory_rate_value_form_field_instance = hours_8_post_dose_Respiratory_rate_value.split('|')[1]
                     except Exception as e:
                         hours_8_post_dose_Respiratory_rate_value_pure = math.nan
-                        hours_8_post_dose_Respiratory_rate_value_form_field_instance = 'This field doesnt have any data'
+                        hours_8_post_dose_Respiratory_rate_value_form_field_instance = 'This field does not have any data'
                     
                     try:
                         hours_12_post_dose_Oral_Temperature = row["12-hours post dose, Body Temperature"]
@@ -418,7 +418,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_12_post_dose_Oral_Temperature_form_field_instance = hours_12_post_dose_Oral_Temperature.split('|')[1]
                     except Exception as e:
                         hours_12_post_dose_Oral_Temperature_pure = math.nan
-                        hours_12_post_dose_Oral_Temperature_form_field_instance = 'This field doesnt have any data'
+                        hours_12_post_dose_Oral_Temperature_form_field_instance = 'This field does not have any data'
                     
                     try:
                         hours_12_post_dose_Oral_Temperature_value = row["12-hours post dose, Oral Temperature (°C)"]
@@ -426,7 +426,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_12_post_dose_Oral_Temperature_value_form_field_instance = hours_12_post_dose_Oral_Temperature_value.split('|')[1]
                     except Exception as e:
                         hours_12_post_dose_Oral_Temperature_value_pure = math.nan
-                        hours_12_post_dose_Oral_Temperature_value_form_field_instance = 'This field doesnt have any data'
+                        hours_12_post_dose_Oral_Temperature_value_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Pre_dose_Pulse_rate = row["Pre dose, Pulse rate"]
@@ -434,7 +434,7 @@ def vital_signs(df_root, path_excel_writer):
                         Pre_dose_Pulse_rate_form_field_instance = Pre_dose_Pulse_rate.split('|')[1]
                     except Exception as e:
                         Pre_dose_Pulse_rate_pure = math.nan
-                        Pre_dose_Pulse_rate_form_field_instance = 'This field doesnt have any data'
+                        Pre_dose_Pulse_rate_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Pre_dose_Pulse_rate_value = row["Pre dose, Pulse rate (beats/min)"]
@@ -442,7 +442,7 @@ def vital_signs(df_root, path_excel_writer):
                         Pre_dose_Pulse_rate_value_form_field_instance = Pre_dose_Pulse_rate_value.split('|')[1]
                     except Exception as e:
                         Pre_dose_Pulse_rate_value_pure = math.nan
-                        Pre_dose_Pulse_rate_value_form_field_instance = 'This field doesnt have any data'
+                        Pre_dose_Pulse_rate_value_form_field_instance = 'This field does not have any data'
                     
                     try:
                         hours_8_post_dose_Systolic_Blood_Pressure = row["8-hours post dose, Systolic Blood Pressure"]
@@ -450,7 +450,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_8_post_dose_Systolic_Blood_Pressure_form_field_instance = hours_8_post_dose_Systolic_Blood_Pressure.split('|')[1]
                     except Exception as e:
                         hours_8_post_dose_Systolic_Blood_Pressure_pure = math.nan
-                        hours_8_post_dose_Systolic_Blood_Pressure_form_field_instance = 'This field doesnt have any data'
+                        hours_8_post_dose_Systolic_Blood_Pressure_form_field_instance = 'This field does not have any data'
                     
                     try:
                         hours_8_post_dose_Systolic_Blood_Pressure_value = row["8-hours post dose, Systolic Blood Pressure  (Sitting) (mmHg)"]
@@ -458,7 +458,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_8_post_dose_Systolic_Blood_Pressure_value_form_field_instance = hours_8_post_dose_Systolic_Blood_Pressure_value.split('|')[1]
                     except Exception as e:
                         hours_8_post_dose_Systolic_Blood_Pressure_value_pure = math.nan
-                        hours_8_post_dose_Systolic_Blood_Pressure_value_form_field_instance = 'This field doesnt have any data'
+                        hours_8_post_dose_Systolic_Blood_Pressure_value_form_field_instance = 'This field does not have any data'
                     
                     try:
                         mins_30_post_dose_Systolic_Blood_Pressure = row["30-mins post dose, Systolic Blood Pressure"]
@@ -466,7 +466,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_30_post_dose_Systolic_Blood_Pressure_form_field_instance = mins_30_post_dose_Systolic_Blood_Pressure.split('|')[1]
                     except Exception as e:
                         mins_30_post_dose_Systolic_Blood_Pressure_pure = math.nan
-                        mins_30_post_dose_Systolic_Blood_Pressure_form_field_instance = 'This field doesnt have any data'
+                        mins_30_post_dose_Systolic_Blood_Pressure_form_field_instance = 'This field does not have any data'
                     
                     try:
                         mins_30_post_dose_Systolic_Blood_Pressure_value = row["30-mins post dose, Systolic Blood Pressure  (Sitting) (mmHg)"]
@@ -474,7 +474,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_30_post_dose_Systolic_Blood_Pressure_value_form_field_instance = mins_30_post_dose_Systolic_Blood_Pressure_value.split('|')[1]
                     except Exception as e:
                         mins_30_post_dose_Systolic_Blood_Pressure_value_pure = math.nan
-                        mins_30_post_dose_Systolic_Blood_Pressure_value_form_field_instance = 'This field doesnt have any data'
+                        mins_30_post_dose_Systolic_Blood_Pressure_value_form_field_instance = 'This field does not have any data'
  
                     try:
                         hours_4_post_dose_Respiratory_rate = row["4-hours post dose, Respiratory rate"]
@@ -482,7 +482,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_4_post_dose_Respiratory_rate_form_field_instance = hours_4_post_dose_Respiratory_rate.split('|')[1]
                     except Exception as e:
                         hours_4_post_dose_Respiratory_rate_pure = math.nan
-                        hours_4_post_dose_Respiratory_rate_form_field_instance = 'This field doesnt have any data'
+                        hours_4_post_dose_Respiratory_rate_form_field_instance = 'This field does not have any data'
                     
                     try:
                         hours_4_post_dose_Respiratory_rate_value = row["4-hours post dose, Respiratory rate (breaths/min)"]
@@ -490,7 +490,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_4_post_dose_Respiratory_rate_value_form_field_instance = hours_4_post_dose_Respiratory_rate_value.split('|')[1]
                     except Exception as e:
                         hours_4_post_dose_Respiratory_rate_value_pure = math.nan
-                        hours_4_post_dose_Respiratory_rate_value_form_field_instance = 'This field doesnt have any data'
+                        hours_4_post_dose_Respiratory_rate_value_form_field_instance = 'This field does not have any data'
                     
                     try:
                         mins_30_post_dose_Diastolic_Blood_Pressure = row["30-mins post dose, Diastolic Blood Pressure"]
@@ -498,7 +498,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_30_post_dose_Diastolic_Blood_Pressure_form_field_instance = mins_30_post_dose_Diastolic_Blood_Pressure.split('|')[1]
                     except Exception as e:
                         mins_30_post_dose_Diastolic_Blood_Pressure_pure = math.nan
-                        mins_30_post_dose_Diastolic_Blood_Pressure_form_field_instance = 'This field doesnt have any data'
+                        mins_30_post_dose_Diastolic_Blood_Pressure_form_field_instance = 'This field does not have any data'
                     
                     try:
                         mins_30_post_dose_Diastolic_Blood_Pressure_value = row["30-mins post dose, Diastolic Blood Pressure (Sitting) (mmHg)"]
@@ -506,7 +506,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_30_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = mins_30_post_dose_Diastolic_Blood_Pressure_value.split('|')[1]
                     except Exception as e:
                         mins_30_post_dose_Diastolic_Blood_Pressure_value_pure = math.nan
-                        mins_30_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = 'This field doesnt have any data'
+                        mins_30_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = 'This field does not have any data'
                     
                     try:
                         mins_30_post_dose_Pulse_rate = row["30-mins post dose, Pulse rate"]
@@ -514,7 +514,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_30_post_dose_Pulse_rate_form_field_instance = mins_30_post_dose_Pulse_rate.split('|')[1]
                     except Exception as e:
                         mins_30_post_dose_Pulse_rate_pure = math.nan
-                        mins_30_post_dose_Pulse_rate_form_field_instance = 'This field doesnt have any data'
+                        mins_30_post_dose_Pulse_rate_form_field_instance = 'This field does not have any data'
                     
                     try:
                         mins_30_post_dose_Pulse_rate_value = row["30-mins post dose, Pulse rate (beats/min)"]
@@ -522,7 +522,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_30_post_dose_Pulse_rate_value_form_field_instance = mins_30_post_dose_Pulse_rate_value.split('|')[1]
                     except Exception as e:
                         mins_30_post_dose_Pulse_rate_value_pure = math.nan
-                        mins_30_post_dose_Pulse_rate_value_form_field_instance = 'This field doesnt have any data'
+                        mins_30_post_dose_Pulse_rate_value_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Pre_dose_Respiratory_rate = row["Pre dose, Respiratory rate"]
@@ -530,7 +530,7 @@ def vital_signs(df_root, path_excel_writer):
                         Pre_dose_Respiratory_rate_form_field_instance = Pre_dose_Respiratory_rate.split('|')[1]
                     except Exception as e:
                         Pre_dose_Respiratory_rate_pure = math.nan
-                        Pre_dose_Respiratory_rate_form_field_instance = 'This field doesnt have any data'
+                        Pre_dose_Respiratory_rate_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Pre_dose_Respiratory_rate_value = row["Pre dose, Respiratory rate (breaths/min)"]
@@ -538,7 +538,7 @@ def vital_signs(df_root, path_excel_writer):
                         Pre_dose_Respiratory_rate_value_form_field_instance = Pre_dose_Respiratory_rate_value.split('|')[1]
                     except Exception as e:
                         Pre_dose_Respiratory_rate_value_pure = math.nan
-                        Pre_dose_Respiratory_rate_value_form_field_instance = 'This field doesnt have any data'
+                        Pre_dose_Respiratory_rate_value_form_field_instance = 'This field does not have any data'
                     
                     try:
                         hours_12_post_dose_Respiratory_rate = row["12-hours post dose, Respiratory rate"]
@@ -546,7 +546,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_12_post_dose_Respiratory_rate_form_field_instance = hours_12_post_dose_Respiratory_rate.split('|')[1]
                     except Exception as e:
                         hours_12_post_dose_Respiratory_rate_pure = math.nan
-                        hours_12_post_dose_Respiratory_rate_form_field_instance = 'This field doesnt have any data'
+                        hours_12_post_dose_Respiratory_rate_form_field_instance = 'This field does not have any data'
                     
                     try:
                         hours_12_post_dose_Respiratory_rate_value = row["12-hours post dose, Respiratory rate (breaths/min)"]
@@ -554,7 +554,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_12_post_dose_Respiratory_rate_value_form_field_instance = hours_12_post_dose_Respiratory_rate_value.split('|')[1]
                     except Exception as e:
                         hours_12_post_dose_Respiratory_rate_value_pure = math.nan
-                        hours_12_post_dose_Respiratory_rate_value_form_field_instance = 'This field doesnt have any data'
+                        hours_12_post_dose_Respiratory_rate_value_form_field_instance = 'This field does not have any data'
                     
                     try:
                         hours_12_post_dose_Pulse_rate = row["12-hours post dose, Pulse rate"]
@@ -562,7 +562,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_12_post_dose_Pulse_rate_form_field_instance = hours_12_post_dose_Pulse_rate.split('|')[1]
                     except Exception as e:
                         hours_12_post_dose_Pulse_rate_pure = math.nan
-                        hours_12_post_dose_Pulse_rate_form_field_instance = 'This field doesnt have any data'
+                        hours_12_post_dose_Pulse_rate_form_field_instance = 'This field does not have any data'
                     
                     try:
                         hours_12_post_dose_Pulse_rate_value = row["12-hours post dose, Pulse rate (beats/min)"]
@@ -570,7 +570,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_12_post_dose_Pulse_rate_value_form_field_instance = hours_12_post_dose_Pulse_rate_value.split('|')[1]
                     except Exception as e:
                         hours_12_post_dose_Pulse_rate_value_pure = math.nan
-                        hours_12_post_dose_Pulse_rate_value_form_field_instance = 'This field doesnt have any data'
+                        hours_12_post_dose_Pulse_rate_value_form_field_instance = 'This field does not have any data'
                     
                     try:
                         hours_2_post_dose_Systolic_Blood_Pressure = row["2-hours post dose, Systolic Blood Pressure"]
@@ -578,7 +578,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_2_post_dose_Systolic_Blood_Pressure_form_field_instance = hours_2_post_dose_Systolic_Blood_Pressure.split('|')[1]
                     except Exception as e:
                         hours_2_post_dose_Systolic_Blood_Pressure_pure = math.nan
-                        hours_2_post_dose_Systolic_Blood_Pressure_form_field_instance = 'This field doesnt have any data'
+                        hours_2_post_dose_Systolic_Blood_Pressure_form_field_instance = 'This field does not have any data'
                     
                     try:
                         hours_2_post_dose_Systolic_Blood_Pressure_value = row["2-hours post dose, Systolic Blood Pressure  (Sitting) (mmHg)"]
@@ -586,7 +586,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_2_post_dose_Systolic_Blood_Pressure_value_form_field_instance = hours_2_post_dose_Systolic_Blood_Pressure_value.split('|')[1]
                     except Exception as e:
                         hours_2_post_dose_Systolic_Blood_Pressure_value_pure = math.nan
-                        hours_2_post_dose_Systolic_Blood_Pressure_value_form_field_instance = 'This field doesnt have any data'
+                        hours_2_post_dose_Systolic_Blood_Pressure_value_form_field_instance = 'This field does not have any data'
                     
                     try:
                         hours_8_post_dose_Oral_Temperature = row["8-hours post dose, Body Temperature"]
@@ -594,7 +594,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_8_post_dose_Oral_Temperature_form_field_instance = hours_8_post_dose_Oral_Temperature.split('|')[1]
                     except Exception as e:
                         hours_8_post_dose_Oral_Temperature_pure = math.nan 
-                        hours_8_post_dose_Oral_Temperature_form_field_instance = 'This field doesnt have any data'
+                        hours_8_post_dose_Oral_Temperature_form_field_instance = 'This field does not have any data'
                     
                     try:
                         hours_8_post_dose_Oral_Temperature_value = row["8-hours post dose, Oral Temperature (°C)"]
@@ -602,7 +602,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_8_post_dose_Oral_Temperature_value_form_field_instance = hours_8_post_dose_Oral_Temperature_value.split('|')[1]
                     except Exception as e:
                         hours_8_post_dose_Oral_Temperature_value_pure = math.nan
-                        hours_8_post_dose_Oral_Temperature_value_form_field_instance = 'This field doesnt have any data'
+                        hours_8_post_dose_Oral_Temperature_value_form_field_instance = 'This field does not have any data'
                     
                     try:
                         mins_60_post_dose_Systolic_Blood_Pressure = row["60-mins post dose, Systolic Blood Pressure"]
@@ -610,7 +610,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_60_post_dose_Systolic_Blood_Pressure_form_field_instance = mins_60_post_dose_Systolic_Blood_Pressure.split('|')[1]
                     except Exception as e:
                         mins_60_post_dose_Systolic_Blood_Pressure_pure = math.nan
-                        mins_60_post_dose_Systolic_Blood_Pressure_form_field_instance = 'This field doesnt have any data'
+                        mins_60_post_dose_Systolic_Blood_Pressure_form_field_instance = 'This field does not have any data'
                     
                     try:
                         mins_60_post_dose_Systolic_Blood_Pressure_value = row["60-mins post dose, Systolic Blood Pressure  (Sitting) (mmHg)"]
@@ -618,7 +618,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_60_post_dose_Systolic_Blood_Pressure_value_form_field_instance = mins_60_post_dose_Systolic_Blood_Pressure_value.split('|')[1]
                     except Exception as e:
                         mins_60_post_dose_Systolic_Blood_Pressure_value_pure = math.nan
-                        mins_60_post_dose_Systolic_Blood_Pressure_value_form_field_instance = 'This field doesnt have any data'
+                        mins_60_post_dose_Systolic_Blood_Pressure_value_form_field_instance = 'This field does not have any data'
                     
                     try:
                         mins_15_post_dose_Oral_Temperature = row["15-mins post dose, Body Temperature"]
@@ -626,7 +626,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_15_post_dose_Oral_Temperature_form_field_instance = mins_15_post_dose_Oral_Temperature.split('|')[1]
                     except Exception as e:
                         mins_15_post_dose_Oral_Temperature_pure = math.nan
-                        mins_15_post_dose_Oral_Temperature_form_field_instance = 'This field doesnt have any data'
+                        mins_15_post_dose_Oral_Temperature_form_field_instance = 'This field does not have any data'
                     
                     try:
                         mins_15_post_dose_Oral_Temperature_value = row["15-mins post dose, Oral Temperature (°C)"]
@@ -634,7 +634,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_15_post_dose_Oral_Temperature_value_form_field_instance = mins_15_post_dose_Oral_Temperature_value.split('|')[1]
                     except Exception as e:
                         mins_15_post_dose_Oral_Temperature_value_pure = math.nan
-                        mins_15_post_dose_Oral_Temperature_value_form_field_instance = 'This field doesnt have any data'
+                        mins_15_post_dose_Oral_Temperature_value_form_field_instance = 'This field does not have any data'
                     
                     try:
                         hours_4_post_dose_Pulse_rate = row["4-hours post dose, Pulse rate"]
@@ -642,7 +642,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_4_post_dose_Pulse_rate_form_field_instance = hours_4_post_dose_Pulse_rate.split('|')[1]
                     except Exception as e:
                         hours_4_post_dose_Pulse_rate_pure = math.nan
-                        hours_4_post_dose_Pulse_rate_form_field_instance = 'This field doesnt have any data'
+                        hours_4_post_dose_Pulse_rate_form_field_instance = 'This field does not have any data'
                     
                     try:
                         hours_4_post_dose_Pulse_rate_value = row["4-hours post dose, Pulse rate (beats/min)"]
@@ -650,7 +650,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_4_post_dose_Pulse_rate_value_form_field_instance = hours_4_post_dose_Pulse_rate_value.split('|')[1]
                     except Exception as e:
                         hours_4_post_dose_Pulse_rate_value_pure = math.nan
-                        hours_4_post_dose_Pulse_rate_value_form_field_instance = 'This field doesnt have any data'
+                        hours_4_post_dose_Pulse_rate_value_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Pre_dose_Systolic_Blood_Pressure = row["Pre dose, Systolic Blood Pressure"]
@@ -658,7 +658,7 @@ def vital_signs(df_root, path_excel_writer):
                         Pre_dose_Systolic_Blood_Pressure_form_field_instance = Pre_dose_Systolic_Blood_Pressure.split('|')[1]
                     except Exception as e:
                         Pre_dose_Systolic_Blood_Pressure_pure = math.nan
-                        Pre_dose_Systolic_Blood_Pressure_form_field_instance = 'This field doesnt have any data'
+                        Pre_dose_Systolic_Blood_Pressure_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Pre_dose_Systolic_Blood_Pressure_value = row["Pre dose, Systolic Blood Pressure  (Sitting) (mmHg)"]
@@ -666,7 +666,7 @@ def vital_signs(df_root, path_excel_writer):
                         Pre_dose_Systolic_Blood_Pressure_value_form_field_instance = Pre_dose_Systolic_Blood_Pressure_value.split('|')[1]
                     except Exception as e:
                         Pre_dose_Systolic_Blood_Pressure_value_pure = math.nan
-                        Pre_dose_Systolic_Blood_Pressure_value_form_field_instance = 'This field doesnt have any data'
+                        Pre_dose_Systolic_Blood_Pressure_value_form_field_instance = 'This field does not have any data'
                     
                     try:
                         hours_12_post_dose_Systolic_Blood_Pressure = row["12-hours post dose, Systolic Blood Pressure"]
@@ -674,7 +674,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_12_post_dose_Systolic_Blood_Pressure_form_field_instance = hours_12_post_dose_Systolic_Blood_Pressure.split('|')[1]
                     except Exception as e:
                         hours_12_post_dose_Systolic_Blood_Pressure_pure = math.nan
-                        hours_12_post_dose_Systolic_Blood_Pressure_form_field_instance = 'This field doesnt have any data'
+                        hours_12_post_dose_Systolic_Blood_Pressure_form_field_instance = 'This field does not have any data'
                     
                     try:
                         hours_12_post_dose_Systolic_Blood_Pressure_value = row["12-hours post dose, Systolic Blood Pressure  (Sitting) (mmHg)"]
@@ -682,7 +682,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_12_post_dose_Systolic_Blood_Pressure_value_form_field_instance = hours_12_post_dose_Systolic_Blood_Pressure_value.split('|')[1]
                     except Exception as e:
                         hours_12_post_dose_Systolic_Blood_Pressure_value_pure = math.nan
-                        hours_12_post_dose_Systolic_Blood_Pressure_value_form_field_instance = 'This field doesnt have any data'
+                        hours_12_post_dose_Systolic_Blood_Pressure_value_form_field_instance = 'This field does not have any data'
                     
                     try:
                         mins_30_post_dose_Oral_Temperature = row["30-mins post dose, Body Temperature"]
@@ -690,7 +690,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_30_post_dose_Oral_Temperature_form_field_instance = mins_30_post_dose_Oral_Temperature.split('|')[1]
                     except Exception as e:
                         mins_30_post_dose_Oral_Temperature_pure = math.nan 
-                        mins_30_post_dose_Oral_Temperature_form_field_instance = 'This field doesnt have any data'
+                        mins_30_post_dose_Oral_Temperature_form_field_instance = 'This field does not have any data'
                     
                     try:
                         mins_30_post_dose_Oral_Temperature_value = row["30-mins post dose, Oral Temperature (°C)"]
@@ -698,7 +698,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_30_post_dose_Oral_Temperature_value_form_field_instance = mins_30_post_dose_Oral_Temperature_value.split('|')[1]
                     except Exception as e:
                         mins_30_post_dose_Oral_Temperature_value_pure = math.nan
-                        mins_30_post_dose_Oral_Temperature_value_form_field_instance = 'This field doesnt have any data'
+                        mins_30_post_dose_Oral_Temperature_value_form_field_instance = 'This field does not have any data'
                    
                     try:
                         hours_4_post_dose_Oral_Temperature = row["4-hours post dose, Body Temperature"]
@@ -706,7 +706,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_4_post_dose_Oral_Temperature_form_field_instance = hours_4_post_dose_Oral_Temperature.split('|')[1]
                     except Exception as e:
                         hours_4_post_dose_Oral_Temperature_pure = math.nan
-                        hours_4_post_dose_Oral_Temperature_form_field_instance = 'This field doesnt have any data'
+                        hours_4_post_dose_Oral_Temperature_form_field_instance = 'This field does not have any data'
                    
                     try:
                         hours_4_post_dose_Oral_Temperature_value = row["4-hours post dose, Oral Temperature (°C)"]
@@ -714,7 +714,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_4_post_dose_Oral_Temperature_value_form_field_instance = hours_4_post_dose_Oral_Temperature_value.split('|')[1]
                     except Exception as e:
                         hours_4_post_dose_Oral_Temperature_value_pure = math.nan
-                        hours_4_post_dose_Oral_Temperature_value_form_field_instance = 'This field doesnt have any data'
+                        hours_4_post_dose_Oral_Temperature_value_form_field_instance = 'This field does not have any data'
                    
                     try:
                         hours_12_post_dose_Diastolic_Blood_Pressure = row["12-hours post dose, Diastolic Blood Pressure"]
@@ -722,7 +722,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_12_post_dose_Diastolic_Blood_Pressure_form_field_instance = hours_12_post_dose_Diastolic_Blood_Pressure.split('|')[1]
                     except Exception as e:
                         hours_12_post_dose_Diastolic_Blood_Pressure_pure = math.nan 
-                        hours_12_post_dose_Diastolic_Blood_Pressure_form_field_instance = 'This field doesnt have any data'
+                        hours_12_post_dose_Diastolic_Blood_Pressure_form_field_instance = 'This field does not have any data'
                    
                     try:
                         hours_12_post_dose_Diastolic_Blood_Pressure_value = row["12-hours post dose, Diastolic Blood Pressure (Sitting) (mmHg)"]
@@ -730,7 +730,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_12_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = hours_12_post_dose_Diastolic_Blood_Pressure_value.split('|')[1]
                     except Exception as e:
                         hours_12_post_dose_Diastolic_Blood_Pressure_value_pure = math.nan
-                        hours_12_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = 'This field doesnt have any data'
+                        hours_12_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = 'This field does not have any data'
                    
                     try:
                         mins_15_post_dose_Systolic_Blood_Pressure = row["15-mins post dose, Systolic Blood Pressure"]
@@ -738,7 +738,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_15_post_dose_Systolic_Blood_Pressure_form_field_instance = mins_15_post_dose_Systolic_Blood_Pressure.split('|')[1]
                     except Exception as e:
                         mins_15_post_dose_Systolic_Blood_Pressure_pure = math.nan
-                        mins_15_post_dose_Systolic_Blood_Pressure_form_field_instance = 'This field doesnt have any data'
+                        mins_15_post_dose_Systolic_Blood_Pressure_form_field_instance = 'This field does not have any data'
                    
                     try:
                         mins_15_post_dose_Systolic_Blood_Pressure_value = row["15-mins post dose, Systolic Blood Pressure  (Sitting) (mmHg)"]
@@ -746,7 +746,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_15_post_dose_Systolic_Blood_Pressure_value_form_field_instance = mins_15_post_dose_Systolic_Blood_Pressure_value.split('|')[1]
                     except Exception as e:
                         mins_15_post_dose_Systolic_Blood_Pressure_value_pure = math.nan
-                        mins_15_post_dose_Systolic_Blood_Pressure_value_form_field_instance = 'This field doesnt have any data'
+                        mins_15_post_dose_Systolic_Blood_Pressure_value_form_field_instance = 'This field does not have any data'
                    
                     try:
                         hours_4_post_dose_Diastolic_Blood_Pressure = row["4-hours post dose, Diastolic Blood Pressure"]
@@ -754,7 +754,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_4_post_dose_Diastolic_Blood_Pressure_form_field_instance = hours_4_post_dose_Diastolic_Blood_Pressure.split('|')[1]
                     except Exception as e:
                         hours_4_post_dose_Diastolic_Blood_Pressure_pure =math.nan
-                        hours_4_post_dose_Diastolic_Blood_Pressure_form_field_instance = 'This field doesnt have any data'
+                        hours_4_post_dose_Diastolic_Blood_Pressure_form_field_instance = 'This field does not have any data'
                     
                     try:
                         hours_4_post_dose_Diastolic_Blood_Pressure_value = row["4-hours post dose, Diastolic Blood Pressure (Sitting) (mmHg)"]
@@ -762,7 +762,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_4_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = hours_4_post_dose_Diastolic_Blood_Pressure_value.split('|')[1]
                     except Exception as e:
                         hours_4_post_dose_Diastolic_Blood_Pressure_value_pure = math.nan 
-                        hours_4_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = 'This field doesnt have any data'
+                        hours_4_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = 'This field does not have any data'
                   
                     try:
                         Undefined_Pulse_rate = row["Undefined, Pulse rate"]
@@ -770,7 +770,7 @@ def vital_signs(df_root, path_excel_writer):
                         Undefined_Pulse_rate_form_field_instance = Undefined_Pulse_rate.split('|')[1]
                     except Exception as e:
                         Undefined_Pulse_rate_pure = math.nan
-                        Undefined_Pulse_rate_form_field_instance = 'This field doesnt have any data'
+                        Undefined_Pulse_rate_form_field_instance = 'This field does not have any data'
                    
                     try:
                         Undefined_Pulse_rate_value = row["Undefined, Pulse rate (beats/min)"]
@@ -778,7 +778,7 @@ def vital_signs(df_root, path_excel_writer):
                         Undefined_Pulse_rate_value_form_field_instance = Undefined_Pulse_rate_value.split('|')[1]
                     except Exception as e:
                         Undefined_Pulse_rate_value_pure = math.nan
-                        Undefined_Pulse_rate_value_form_field_instance = 'This field doesnt have any data'
+                        Undefined_Pulse_rate_value_form_field_instance = 'This field does not have any data'
                     
                     try:
                         hours_4_post_dose_Systolic_Blood_Pressure = row["4-hours post dose, Systolic Blood Pressure"]
@@ -786,7 +786,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_4_post_dose_Systolic_Blood_Pressure_form_field_instance = hours_4_post_dose_Systolic_Blood_Pressure.split('|')[1]
                     except Exception as e:
                         hours_4_post_dose_Systolic_Blood_Pressure_pure = math.nan
-                        hours_4_post_dose_Systolic_Blood_Pressure_form_field_instance = 'This field doesnt have any data'
+                        hours_4_post_dose_Systolic_Blood_Pressure_form_field_instance = 'This field does not have any data'
                    
                     try:
                         hours_4_post_dose_Systolic_Blood_Pressure_value = row["4-hours post dose, Systolic Blood Pressure  (Sitting) (mmHg)"]
@@ -794,7 +794,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_4_post_dose_Systolic_Blood_Pressure_value_form_field_instance = hours_4_post_dose_Systolic_Blood_Pressure_value.split('|')[1]
                     except Exception as e:
                         hours_4_post_dose_Systolic_Blood_Pressure_value_pure = math.nan
-                        hours_4_post_dose_Systolic_Blood_Pressure_value_form_field_instance = 'This field doesnt have any data'
+                        hours_4_post_dose_Systolic_Blood_Pressure_value_form_field_instance = 'This field does not have any data'
                   
                     try:
                         mins_15_post_dose_Respiratory_rate = row["15-mins post dose, Respiratory rate"]
@@ -802,7 +802,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_15_post_dose_Respiratory_rate_form_field_instance = mins_15_post_dose_Respiratory_rate.split('|')[1]
                     except Exception as e:
                         mins_15_post_dose_Respiratory_rate_pure = math.nan
-                        mins_15_post_dose_Respiratory_rate_form_field_instance = 'This field doesnt have any data'
+                        mins_15_post_dose_Respiratory_rate_form_field_instance = 'This field does not have any data'
                   
                     try:
                         mins_15_post_dose_Respiratory_rate_value = row["15-mins post dose, Respiratory rate (breaths/min)"]
@@ -810,7 +810,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_15_post_dose_Respiratory_rate_value_form_field_instance = mins_15_post_dose_Respiratory_rate_value.split('|')[1]
                     except Exception as e:
                         mins_15_post_dose_Respiratory_rate_value_pure = math.nan
-                        mins_15_post_dose_Respiratory_rate_value_form_field_instance = 'This field doesnt have any data'
+                        mins_15_post_dose_Respiratory_rate_value_form_field_instance = 'This field does not have any data'
                    
                     try:
                         mins_30_post_dose_Respiratory_rate = row["30-mins post dose, Respiratory rate"]
@@ -818,7 +818,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_30_post_dose_Respiratory_rate_form_field_instance = mins_30_post_dose_Respiratory_rate.split('|')[1]
                     except Exception as e:
                         mins_30_post_dose_Respiratory_rate_pure = math.nan
-                        mins_30_post_dose_Respiratory_rate_form_field_instance = 'This field doesnt have any data'
+                        mins_30_post_dose_Respiratory_rate_form_field_instance = 'This field does not have any data'
                     
                     try:
                         mins_30_post_dose_Respiratory_rate_value = row["30-mins post dose, Respiratory rate (breaths/min)"]
@@ -826,7 +826,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_30_post_dose_Respiratory_rate_value_form_field_instance = mins_30_post_dose_Respiratory_rate_value.split('|')[1]
                     except Exception as e:
                         mins_30_post_dose_Respiratory_rate_value_pure = math.nan
-                        mins_30_post_dose_Respiratory_rate_value_form_field_instance = 'This field doesnt have any data'
+                        mins_30_post_dose_Respiratory_rate_value_form_field_instance = 'This field does not have any data'
                               
                     try:
                         mins_15_post_dose_Pulse_rate = row["15-mins post dose, Pulse rate"]
@@ -834,7 +834,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_15_post_dose_Pulse_rate_form_field_instance = mins_15_post_dose_Pulse_rate.split('|')[1]
                     except Exception as e:
                         mins_15_post_dose_Pulse_rate_pure = math.nan 
-                        mins_15_post_dose_Pulse_rate_form_field_instance = 'This field doesnt have any data'
+                        mins_15_post_dose_Pulse_rate_form_field_instance = 'This field does not have any data'
                     
                     try:
                         mins_15_post_dose_Pulse_rate_value = row["15-mins post dose, Pulse rate (beats/min)"]
@@ -842,7 +842,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_15_post_dose_Pulse_rate_value_form_field_instance = mins_15_post_dose_Pulse_rate_value.split('|')[1]
                     except Exception as e:
                         mins_15_post_dose_Pulse_rate_value_pure = math.nan
-                        mins_15_post_dose_Pulse_rate_value_form_field_instance = 'This field doesnt have any data'
+                        mins_15_post_dose_Pulse_rate_value_form_field_instance = 'This field does not have any data'
 
 
                     # --------------------------------------------------------------------------------------------------------   
@@ -886,7 +886,7 @@ def vital_signs(df_root, path_excel_writer):
 
                             if date_of_test_f < date_inform_consent_f:
                                 error = [subject, visit, 'Date of assessment performed', date_assesment_form_field_instance,\
-                                        'The date/time of test performed cant be before the informed consent date/time', f'{date_assesment_pure} - {date_inform_consent}', 'VS0030']
+                                        'The date/time of test performed can not be before the informed consent date/time', f'{date_assesment_pure} - {date_inform_consent}', 'VS0030']
                                 lista_revision.append(error)
                             else:
                                 pass
@@ -945,7 +945,7 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, 'Undefined, Diastolic Blood Pressure', Undefined_Diastolic_Blood_Pressure_value_form_field_instance,\
-                                         'The Diastolic Blood Pressure is not within expected range (50 to 90), therefore the Interpretation cant be Normal.', \
+                                         'The Diastolic Blood Pressure is not within expected range (50 to 90), therefore the Interpretation can not be Normal.', \
                                             Undefined_Diastolic_Blood_Pressure_value_pure, 'VS0080']
                                 lista_revision.append(error)
 
@@ -966,7 +966,7 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, 'Pre dose, Diastolic Blood Pressure', Pre_dose_Diastolic_Blood_Pressure_value_form_field_instance ,\
-                                         'The Diastolic Blood Pressure is not within expected range (50 to 90), therefore the Interpretation cant be Normal.', Pre_dose_Diastolic_Blood_Pressure_value_pure, 'VS0090']
+                                         'The Diastolic Blood Pressure is not within expected range (50 to 90), therefore the Interpretation can not be Normal.', Pre_dose_Diastolic_Blood_Pressure_value_pure, 'VS0090']
                                 lista_revision.append(error)
 
                         # Revision VS0180
@@ -985,7 +985,7 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '15-mins post dose, Diastolic Blood Pressure', mins_15_post_dose_Diastolic_Blood_Pressure_value_form_field_instance,\
-                                         'The Diastolic Blood Pressure is not within expected range (50 to 90), therefore the Interpretation cant be Normal.', \
+                                         'The Diastolic Blood Pressure is not within expected range (50 to 90), therefore the Interpretation can not be Normal.', \
                                             mins_15_post_dose_Diastolic_Blood_Pressure_value_pure, 'VS0100']
                                 lista_revision.append(error)
 
@@ -1006,7 +1006,7 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '30-mins post dose, Diastolic Blood Pressure', mins_30_post_dose_Diastolic_Blood_Pressure_value_form_field_instance,\
-                                         'The Diastolic Blood Pressure is not within expected range (50 to 90), therefore the Interpretation cant be Normal.', \
+                                         'The Diastolic Blood Pressure is not within expected range (50 to 90), therefore the Interpretation can not be Normal.', \
                                             mins_30_post_dose_Diastolic_Blood_Pressure_value_pure, 'VS0110']
                                 lista_revision.append(error)
 
@@ -1027,7 +1027,7 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '30-mins post dose, Diastolic Blood Pressure', mins_60_post_dose_Diastolic_Blood_Pressure_value_form_field_instance ,\
-                                         'The Diastolic Blood Pressure is not within expected range (50 to 90), therefore the Interpretation cant be Normal.', \
+                                         'The Diastolic Blood Pressure is not within expected range (50 to 90), therefore the Interpretation can not be Normal.', \
                                             mins_60_post_dose_Diastolic_Blood_Pressure_value_pure, 'VS0120']
                                 lista_revision.append(error)
 
@@ -1048,7 +1048,7 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '2-hours post dose, Diastolic Blood Pressure', hours_2_post_dose_Diastolic_Blood_Pressure_value_form_field_instance ,\
-                                         'The Diastolic Blood Pressure is not within expected range (50 to 90), therefore the Interpretation cant be Normal.', \
+                                         'The Diastolic Blood Pressure is not within expected range (50 to 90), therefore the Interpretation can not be Normal.', \
                                             hours_2_post_dose_Diastolic_Blood_Pressure_value_pure, 'VS0130']
                                 lista_revision.append(error)
 
@@ -1069,7 +1069,7 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '4-hours post dose, Diastolic Blood Pressure', hours_4_post_dose_Diastolic_Blood_Pressure_value_form_field_instance,\
-                                         'The Diastolic Blood Pressure is not within expected range (50 to 90), therefore the Interpretation cant be Normal.', \
+                                         'The Diastolic Blood Pressure is not within expected range (50 to 90), therefore the Interpretation can not be Normal.', \
                                             hours_4_post_dose_Diastolic_Blood_Pressure_value_pure, 'VS0140']
                                 lista_revision.append(error)
 
@@ -1090,7 +1090,7 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '8-hours post dose, Diastolic Blood Pressure', hours_8_post_dose_Diastolic_Blood_Pressure_value_form_field_instance ,\
-                                         'The Diastolic Blood Pressure is not within expected range (50 to 90), therefore the Interpretation cant be Normal.', \
+                                         'The Diastolic Blood Pressure is not within expected range (50 to 90), therefore the Interpretation can not be Normal.', \
                                             hours_8_post_dose_Diastolic_Blood_Pressure_value_pure, 'VS0150']
                                 lista_revision.append(error)
 
@@ -1111,7 +1111,7 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '12-hours post dose, Diastolic Blood Pressure', hours_12_post_dose_Diastolic_Blood_Pressure_value_form_field_instance ,\
-                                         'The Diastolic Blood Pressure is not within expected range (50 to 90), therefore the Interpretation cant be Normal.', \
+                                         'The Diastolic Blood Pressure is not within expected range (50 to 90), therefore the Interpretation can not be Normal.', \
                                             hours_12_post_dose_Diastolic_Blood_Pressure_value_pure, 'VS0160']
                                 lista_revision.append(error)
 
@@ -1138,14 +1138,14 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, 'Undefined, Oral Temperature', Undefined_Oral_Temperature_value_form_field_instance ,\
-                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', Undefined_Oral_Temperature_value_pure, 'VS0260']
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', Undefined_Oral_Temperature_value_pure, 'VS0260']
                                 lista_revision.append(error)
 
                         # Revision VS0350
                         elif float(Undefined_Oral_Temperature_pure) == 2.0:
                             if float(Undefined_Oral_Temperature_value_pure) <  35.0 or float(Undefined_Oral_Temperature_value_pure) > 37.5 :
                                 error = [subject, visit, 'Undefined, Oral Temperature', Undefined_Oral_Temperature_value_form_field_instance ,\
-                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', Undefined_Oral_Temperature_value_pure, 'VS0350']
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', Undefined_Oral_Temperature_value_pure, 'VS0350']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0260--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1157,14 +1157,14 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '15-mins post dose, Body Temperature', mins_15_post_dose_Oral_Temperature_value_form_field_instance ,\
-                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', mins_15_post_dose_Oral_Temperature_value_pure, 'VS0280']
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', mins_15_post_dose_Oral_Temperature_value_pure, 'VS0280']
                                 lista_revision.append(error)
 
                         # Revision VS0370
                         elif float(mins_15_post_dose_Oral_Temperature_pure) == 2.0:
                             if float(mins_15_post_dose_Oral_Temperature_value_pure) <  35.0 or float(mins_15_post_dose_Oral_Temperature_value_pure) > 37.5  :
                                 error = [subject, visit, '15-mins post dose, Body Temperature', mins_15_post_dose_Oral_Temperature_value_form_field_instance,\
-                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', mins_15_post_dose_Oral_Temperature_value_pure, 'VS0370']
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', mins_15_post_dose_Oral_Temperature_value_pure, 'VS0370']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0280--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1176,14 +1176,14 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, 'Pre dose, Body Temperature', Pre_dose_Oral_Temperature_value_form_field_instance ,\
-                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', Pre_dose_Oral_Temperature_value_pure, 'VS0270']
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', Pre_dose_Oral_Temperature_value_pure, 'VS0270']
                                 lista_revision.append(error)
 
                         # Revision VS0360
                         elif float(Pre_dose_Oral_Temperature_pure) == 2.0:
                             if float(Pre_dose_Oral_Temperature_value_pure) <  35.0 or float(Pre_dose_Oral_Temperature_value_pure) > 37.5 :
                                 error = [subject, visit, 'Pre dose, Body Temperature', Pre_dose_Oral_Temperature_value_form_field_instance ,\
-                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', Pre_dose_Oral_Temperature_value_pure, 'VS0360']
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', Pre_dose_Oral_Temperature_value_pure, 'VS0360']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0270--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1195,14 +1195,14 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '30-mins post dose, Body Temperature', mins_30_post_dose_Oral_Temperature_value_form_field_instance ,\
-                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', mins_30_post_dose_Oral_Temperature_value_pure, 'VS0290']
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', mins_30_post_dose_Oral_Temperature_value_pure, 'VS0290']
                                 lista_revision.append(error)
 
                         # Revision VS0380
                         elif float(mins_30_post_dose_Oral_Temperature_pure) == 2.0:
                             if float(mins_30_post_dose_Oral_Temperature_value_pure) <  35.0 or float(mins_30_post_dose_Oral_Temperature_value_pure) > 37.5  :
                                 error = [subject, visit, '30-mins post dose, Body Temperature', mins_30_post_dose_Oral_Temperature_value_form_field_instance ,\
-                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', mins_30_post_dose_Oral_Temperature_value_pure, 'VS0380']
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', mins_30_post_dose_Oral_Temperature_value_pure, 'VS0380']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0290--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1214,14 +1214,14 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '60-mins post dose, Oral Temperature', mins_60_post_dose_Oral_Temperature_value_form_field_instance ,\
-                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', mins_60_post_dose_Oral_Temperature_value_pure, 'VS0300']
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', mins_60_post_dose_Oral_Temperature_value_pure, 'VS0300']
                                 lista_revision.append(error)
 
                         # Revision VS0390
                         elif float(mins_60_post_dose_Oral_Temperature_pure) == 2.0:
                             if float(mins_60_post_dose_Oral_Temperature_value_pure) <  35.0 or float(mins_60_post_dose_Oral_Temperature_value_pure) > 37.5  :
                                 error = [subject, visit, '60-mins post dose, Oral Temperature', mins_60_post_dose_Oral_Temperature_value_form_field_instance ,\
-                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', mins_60_post_dose_Oral_Temperature_value_pure, 'VS0390']
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', mins_60_post_dose_Oral_Temperature_value_pure, 'VS0390']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0300--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1233,14 +1233,14 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '2-hours post dose, Oral Temperature', hours_2_post_dose_Oral_Temperature_value_form_field_instance ,\
-                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', hours_2_post_dose_Oral_Temperature_value_pure, 'VS0310']
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', hours_2_post_dose_Oral_Temperature_value_pure, 'VS0310']
                                 lista_revision.append(error)
 
                         # Revision VS0400
                         elif float(hours_2_post_dose_Oral_Temperature_pure) == 2.0:
                             if float(hours_2_post_dose_Oral_Temperature_value_pure) <  35.0 or float(hours_2_post_dose_Oral_Temperature_value_pure) > 37.5  :
                                 error = [subject, visit, '2-hours post dose, Oral Temperature', hours_2_post_dose_Oral_Temperature_value_form_field_instance ,\
-                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', hours_2_post_dose_Oral_Temperature_value_pure, 'VS0400']
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', hours_2_post_dose_Oral_Temperature_value_pure, 'VS0400']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0310--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1252,14 +1252,14 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '8-hours post dose, Oral Temperature', hours_8_post_dose_Oral_Temperature_value_form_field_instance ,\
-                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', hours_8_post_dose_Oral_Temperature_value_pure, 'VS0330']
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', hours_8_post_dose_Oral_Temperature_value_pure, 'VS0330']
                                 lista_revision.append(error)
 
                         # Revision VS0420
                         elif float(hours_8_post_dose_Oral_Temperature_pure) == 2.0:
                             if float(hours_8_post_dose_Oral_Temperature_value_pure) <  35.0 or float(hours_8_post_dose_Oral_Temperature_value_pure) > 37.5  :
                                 error = [subject, visit, '8-hours post dose, Oral Temperature', hours_8_post_dose_Oral_Temperature_value_form_field_instance ,\
-                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', hours_8_post_dose_Oral_Temperature_value_pure, 'VS0420']
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', hours_8_post_dose_Oral_Temperature_value_pure, 'VS0420']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0330--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1271,14 +1271,14 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '4-hours post dose, Oral Temperature', hours_4_post_dose_Oral_Temperature_value_form_field_instance,\
-                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', hours_4_post_dose_Oral_Temperature_value_pure, 'VS0320']
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', hours_4_post_dose_Oral_Temperature_value_pure, 'VS0320']
                                 lista_revision.append(error)
 
                         # Revision VS0410
                         elif float(hours_4_post_dose_Oral_Temperature_pure) == 2.0:
                             if float(hours_4_post_dose_Oral_Temperature_value_pure) <  35.0 or float(hours_4_post_dose_Oral_Temperature_value_pure) > 37.5  :
                                 error = [subject, visit, '4-hours post dose, Oral Temperature', hours_4_post_dose_Oral_Temperature_value_form_field_instance,\
-                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', hours_4_post_dose_Oral_Temperature_value_pure, 'VS0410']
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', hours_4_post_dose_Oral_Temperature_value_pure, 'VS0410']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0320--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1290,14 +1290,14 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '12-hours post dose, Oral Temperature', hours_12_post_dose_Oral_Temperature_value_form_field_instance,\
-                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', hours_12_post_dose_Oral_Temperature_value_pure, 'VS0340']
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', hours_12_post_dose_Oral_Temperature_value_pure, 'VS0340']
                                 lista_revision.append(error)
 
                         # Revision VS0430
                         elif float(hours_12_post_dose_Oral_Temperature_pure) == 2.0:
                             if float(hours_12_post_dose_Oral_Temperature_value_pure) <  35.0 or float(hours_12_post_dose_Oral_Temperature_value_pure) > 37.5  :
                                 error = [subject, visit, '12-hours post dose, Oral Temperature', hours_12_post_dose_Oral_Temperature_value_form_field_instance ,\
-                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation cant be Normal.', hours_12_post_dose_Oral_Temperature_value_pure, 'VS0430']
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', hours_12_post_dose_Oral_Temperature_value_pure, 'VS0430']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0340--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1310,14 +1310,14 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, 'Undefined, Pulse rate', Undefined_Pulse_rate_value_form_field_instance ,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', Undefined_Pulse_rate_value_pure, 'VS0440']
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', Undefined_Pulse_rate_value_pure, 'VS0440']
                                 lista_revision.append(error)
 
                         # Revision VS0530
                         elif float(Undefined_Pulse_rate_pure) == 2.0:
                             if float(Undefined_Pulse_rate_value_pure) <  45.0 or float(Undefined_Pulse_rate_value_pure) > 100.5  :
                                 error = [subject, visit, 'Undefined, Pulse rate', Undefined_Pulse_rate_value_form_field_instance,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', Undefined_Pulse_rate_value_pure, 'VS0530']
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', Undefined_Pulse_rate_value_pure, 'VS0530']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0440--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1329,14 +1329,14 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, 'Pre dose, Pulse rate', Pre_dose_Pulse_rate_value_form_field_instance ,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', Pre_dose_Pulse_rate_value_pure, 'VS0450']
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', Pre_dose_Pulse_rate_value_pure, 'VS0450']
                                 lista_revision.append(error)
 
                         # Revision VS0540
                         elif float(Pre_dose_Pulse_rate_pure) == 2.0:
                             if float(Pre_dose_Pulse_rate_value_pure) <  45.0 or float(Pre_dose_Pulse_rate_value_pure) > 100.5  :
                                 error = [subject, visit, 'Pre dose, Pulse rate', Pre_dose_Pulse_rate_value_form_field_instance,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', Pre_dose_Pulse_rate_value_pure, 'VS0540']
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', Pre_dose_Pulse_rate_value_pure, 'VS0540']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0450--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1348,14 +1348,14 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '15-mins post dose, Pulse rate', mins_15_post_dose_Pulse_rate_value_form_field_instance ,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', mins_15_post_dose_Pulse_rate_value_pure, 'VS0460']
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', mins_15_post_dose_Pulse_rate_value_pure, 'VS0460']
                                 lista_revision.append(error)
 
                         # Revision VS0550
                         elif float(mins_15_post_dose_Pulse_rate_pure) == 2.0:
                             if float(mins_15_post_dose_Pulse_rate_value_pure) <  45.0 or float(mins_15_post_dose_Pulse_rate_value_pure) > 100.5  :
                                 error = [subject, visit, '15-mins post dose, Pulse rate', mins_15_post_dose_Pulse_rate_value_form_field_instance ,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', mins_15_post_dose_Pulse_rate_value_pure, 'VS0550']
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', mins_15_post_dose_Pulse_rate_value_pure, 'VS0550']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0460--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1367,14 +1367,14 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '15-mins post dose, Pulse rate', mins_30_post_dose_Pulse_rate_value_form_field_instance,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', mins_30_post_dose_Pulse_rate_value_pure, 'VS0470']
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', mins_30_post_dose_Pulse_rate_value_pure, 'VS0470']
                                 lista_revision.append(error)
 
                         # Revision VS0560
                         elif float(mins_30_post_dose_Pulse_rate_pure) == 2.0:
                             if float(mins_30_post_dose_Pulse_rate_value_pure) <  45.0 or float(mins_30_post_dose_Pulse_rate_value_pure) > 100.5  :
                                 error = [subject, visit, '15-mins post dose, Pulse rate', mins_30_post_dose_Pulse_rate_value_form_field_instance ,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', mins_30_post_dose_Pulse_rate_value_pure, 'VS0560']
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', mins_30_post_dose_Pulse_rate_value_pure, 'VS0560']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0470--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1386,14 +1386,14 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '60-mins post dose, Pulse rate', mins_60_post_dose_Pulse_rate_value_form_field_instance ,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', mins_60_post_dose_Pulse_rate_value_pure, 'VS0480']
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', mins_60_post_dose_Pulse_rate_value_pure, 'VS0480']
                                 lista_revision.append(error)
 
                         # Revision VS0570
                         elif float(mins_60_post_dose_Pulse_rate_pure) == 2.0:
                             if float(mins_60_post_dose_Pulse_rate_value_pure) <  45.0 or float(mins_60_post_dose_Pulse_rate_value_pure) > 100.5  :
                                 error = [subject, visit, '60-mins post dose, Pulse rate', mins_60_post_dose_Pulse_rate_value_form_field_instance,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', mins_60_post_dose_Pulse_rate_value_pure, 'VS0570']
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', mins_60_post_dose_Pulse_rate_value_pure, 'VS0570']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0480--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1405,14 +1405,14 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '2-hours post dose, Pulse rate', hours_2_post_dose_Pulse_rate_value_form_field_instance ,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', hours_2_post_dose_Pulse_rate_value_pure, 'VS0490']
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', hours_2_post_dose_Pulse_rate_value_pure, 'VS0490']
                                 lista_revision.append(error)
 
                         # Revision VS0580
                         elif float(hours_2_post_dose_Pulse_rate_pure) == 2.0:
                             if float(hours_2_post_dose_Pulse_rate_value_pure) <  45.0 or float(hours_2_post_dose_Pulse_rate_value_pure) > 100.5  :
                                 error = [subject, visit, '2-hours post dose, Pulse rate', hours_2_post_dose_Pulse_rate_value_form_field_instance ,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', hours_2_post_dose_Pulse_rate_value_pure, 'VS0580']
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', hours_2_post_dose_Pulse_rate_value_pure, 'VS0580']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0490--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1424,14 +1424,14 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '2-hours post dose, Pulse rate', hours_2_post_dose_Pulse_rate_value_form_field_instance ,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', hours_2_post_dose_Pulse_rate_value_pure, 'VS0490']
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', hours_2_post_dose_Pulse_rate_value_pure, 'VS0490']
                                 lista_revision.append(error)
 
                         # Revision VS0580
                         elif float(hours_2_post_dose_Pulse_rate_pure) == 2.0:
                             if float(hours_2_post_dose_Pulse_rate_value_pure) <  45.0 or float(hours_2_post_dose_Pulse_rate_value_pure) > 100.5  :
                                 error = [subject, visit, '2-hours post dose, Pulse rate', hours_2_post_dose_Pulse_rate_value_form_field_instance ,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', hours_2_post_dose_Pulse_rate_value_pure, 'VS0580']
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', hours_2_post_dose_Pulse_rate_value_pure, 'VS0580']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0490--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1443,14 +1443,14 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '4-hours post dose, Pulse rate', hours_4_post_dose_Pulse_rate_value_form_field_instance ,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', hours_4_post_dose_Pulse_rate_value_pure, 'VS0500']
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', hours_4_post_dose_Pulse_rate_value_pure, 'VS0500']
                                 lista_revision.append(error)
 
                         # Revision VS0590
                         elif float(hours_4_post_dose_Pulse_rate_pure) == 2.0:
                             if float(hours_4_post_dose_Pulse_rate_value_pure) <  45.0 or float(hours_4_post_dose_Pulse_rate_value_pure) > 100.5  :
                                 error = [subject, visit, '4-hours post dose, Pulse rate', hours_4_post_dose_Pulse_rate_value_form_field_instance ,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', hours_4_post_dose_Pulse_rate_value_pure, 'VS0590']
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', hours_4_post_dose_Pulse_rate_value_pure, 'VS0590']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0500--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1462,14 +1462,14 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '8-hours post dose, Pulse rate', hours_8_post_dose_Pulse_rate_value_form_field_instance ,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', hours_8_post_dose_Pulse_rate_value_pure, 'VS0510']
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', hours_8_post_dose_Pulse_rate_value_pure, 'VS0510']
                                 lista_revision.append(error)
 
                         # Revision VS0600
                         elif float(hours_8_post_dose_Pulse_rate_pure) == 2.0:
                             if float(hours_4_post_dose_Pulse_rate_value_pure) <  45.0 or float(hours_8_post_dose_Pulse_rate_value_pure) > 100.5  :
                                 error = [subject, visit, '8-hours post dose, Pulse rate', hours_8_post_dose_Pulse_rate_value_form_field_instance ,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', hours_8_post_dose_Pulse_rate_value_pure, 'VS0600']
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', hours_8_post_dose_Pulse_rate_value_pure, 'VS0600']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0510--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1481,14 +1481,14 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '12-hours post dose, Pulse rate', hours_12_post_dose_Pulse_rate_value_form_field_instance ,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', hours_12_post_dose_Pulse_rate_value_pure, 'VS0520']
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', hours_12_post_dose_Pulse_rate_value_pure, 'VS0520']
                                 lista_revision.append(error)
 
                         # Revision VS0610
                         elif float(hours_12_post_dose_Pulse_rate_pure) == 2.0:
                             if float(hours_12_post_dose_Pulse_rate_value_pure) <  45.0 or float(hours_12_post_dose_Pulse_rate_value_pure) > 100.5  :
                                 error = [subject, visit, '12-hours post dose, Pulse rate', hours_12_post_dose_Pulse_rate_value_form_field_instance ,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation cant be Normal.', hours_12_post_dose_Pulse_rate_value_pure, 'VS0610']
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', hours_12_post_dose_Pulse_rate_value_pure, 'VS0610']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0520--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1501,7 +1501,7 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, 'Undefined, Respiratory rate', Undefined_Respiratory_rate_value_form_field_instance ,\
-                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', \
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', \
                                             Undefined_Respiratory_rate_value_pure, 'VS0620']
                                 lista_revision.append(error)
 
@@ -1509,7 +1509,7 @@ def vital_signs(df_root, path_excel_writer):
                         elif float(Undefined_Respiratory_rate_pure) == 2.0:
                             if float(Undefined_Respiratory_rate_value_pure) <  12.0 or float(Undefined_Respiratory_rate_value_pure) > 18.0  :
                                 error = [subject, visit, 'Undefined, Respiratory rate', Undefined_Respiratory_rate_value_form_field_instance ,\
-                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', Undefined_Respiratory_rate_value_pure, 'VS0710']
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', Undefined_Respiratory_rate_value_pure, 'VS0710']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0620--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1521,14 +1521,14 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, 'Pre dose, Respiratory rate', Pre_dose_Respiratory_rate_value_form_field_instance ,\
-                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', Pre_dose_Respiratory_rate_value_pure, 'VS0630']
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', Pre_dose_Respiratory_rate_value_pure, 'VS0630']
                                 lista_revision.append(error)
 
                         # Revision VS0720
                         elif float(Pre_dose_Respiratory_rate_pure) == 2.0:
                             if float(Pre_dose_Respiratory_rate_value_pure) <  12.0 or float(Pre_dose_Respiratory_rate_value_pure) > 18.0  :
                                 error = [subject, visit, 'Pre dose, Respiratory rate', Pre_dose_Respiratory_rate_value_form_field_instance ,\
-                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', Pre_dose_Respiratory_rate_value_pure, 'VS0720']
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', Pre_dose_Respiratory_rate_value_pure, 'VS0720']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0630--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1540,14 +1540,14 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '15-mins post dose, Respiratory rate', mins_15_post_dose_Respiratory_rate_value_form_field_instance ,\
-                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', mins_15_post_dose_Respiratory_rate_value_pure, 'VS0640']
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', mins_15_post_dose_Respiratory_rate_value_pure, 'VS0640']
                                 lista_revision.append(error)
 
                         # Revision VS0730
                         elif float(mins_15_post_dose_Respiratory_rate_pure) == 2.0:
                             if float(mins_15_post_dose_Respiratory_rate_value_pure) <  12.0 or float(mins_15_post_dose_Respiratory_rate_value_pure) > 18.0  :
                                 error = [subject, visit, '15-mins post dose, Respiratory rate', mins_15_post_dose_Respiratory_rate_value_form_field_instance ,\
-                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', mins_15_post_dose_Respiratory_rate_value_pure, 'VS0730']
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', mins_15_post_dose_Respiratory_rate_value_pure, 'VS0730']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0640--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1559,14 +1559,14 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '30-mins post dose, Respiratory rate', mins_30_post_dose_Respiratory_rate_value_form_field_instance ,\
-                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', mins_30_post_dose_Respiratory_rate_value_pure, 'VS0650']
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', mins_30_post_dose_Respiratory_rate_value_pure, 'VS0650']
                                 lista_revision.append(error)
 
                         # Revision VS0740
                         elif float(mins_30_post_dose_Respiratory_rate_pure) == 2.0:
                             if float(mins_30_post_dose_Respiratory_rate_value_pure) <  12.0 or float(mins_30_post_dose_Respiratory_rate_value_pure) > 18.0  :
                                 error = [subject, visit, '30-mins post dose, Respiratory rate', mins_30_post_dose_Respiratory_rate_value_form_field_instance ,\
-                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', mins_30_post_dose_Respiratory_rate_value_pure, 'VS0740']
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', mins_30_post_dose_Respiratory_rate_value_pure, 'VS0740']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0650--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1578,14 +1578,14 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '60-mins post dose, Respiratory rate', mins_60_post_dose_Respiratory_rate_value_form_field_instance ,\
-                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', mins_60_post_dose_Respiratory_rate_value_pure, 'VS0660']
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', mins_60_post_dose_Respiratory_rate_value_pure, 'VS0660']
                                 lista_revision.append(error)
 
                         # Revision VS0750
                         elif float(mins_60_post_dose_Respiratory_rate_pure) == 2.0:
                             if float(mins_60_post_dose_Respiratory_rate_value_pure) <  12.0 or float(mins_60_post_dose_Respiratory_rate_value_pure) > 18.0  :
                                 error = [subject, visit, '60-mins post dose, Respiratory rate', mins_60_post_dose_Respiratory_rate_value_form_field_instance ,\
-                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', mins_60_post_dose_Respiratory_rate_value_pure, 'VS0750']
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', mins_60_post_dose_Respiratory_rate_value_pure, 'VS0750']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0660--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1597,14 +1597,14 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '2-hours post dose, Respiratory rate', hours_2_post_dose_Respiratory_rate_value_form_field_instance ,\
-                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', hours_2_post_dose_Respiratory_rate_value_pure, 'VS0670']
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', hours_2_post_dose_Respiratory_rate_value_pure, 'VS0670']
                                 lista_revision.append(error)
 
                         # Revision VS0760
                         elif float(hours_2_post_dose_Respiratory_rate_pure) == 2.0:
                             if float(hours_2_post_dose_Respiratory_rate_value_pure) <  12.0 or float(hours_2_post_dose_Respiratory_rate_value_pure) > 18.0  :
                                 error = [subject, visit, '2-hours post dose, Respiratory rate', hours_2_post_dose_Respiratory_rate_value_form_field_instance ,\
-                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', hours_2_post_dose_Respiratory_rate_value_pure, 'VS0760']
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', hours_2_post_dose_Respiratory_rate_value_pure, 'VS0760']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0670--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1616,14 +1616,14 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '4-hours post dose, Respiratory rate', hours_4_post_dose_Respiratory_rate_value_form_field_instance ,\
-                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', hours_4_post_dose_Respiratory_rate_value_pure, 'VS0680']
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', hours_4_post_dose_Respiratory_rate_value_pure, 'VS0680']
                                 lista_revision.append(error)
 
                         # Revision VS0770
                         elif float(hours_4_post_dose_Respiratory_rate_pure) == 2.0:
                             if float(hours_4_post_dose_Respiratory_rate_value_pure) <  12.0 or float(hours_4_post_dose_Respiratory_rate_value_pure) > 18.0  :
                                 error = [subject, visit, '4-hours post dose, Respiratory rate', hours_4_post_dose_Respiratory_rate_value_form_field_instance ,\
-                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', hours_4_post_dose_Respiratory_rate_value_pure, 'VS0770']
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', hours_4_post_dose_Respiratory_rate_value_pure, 'VS0770']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0680--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1635,14 +1635,14 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '8-hours post dose, Respiratory rate', hours_8_post_dose_Respiratory_rate_value_form_field_instance ,\
-                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', hours_8_post_dose_Respiratory_rate_value_pure, 'VS0690']
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', hours_8_post_dose_Respiratory_rate_value_pure, 'VS0690']
                                 lista_revision.append(error)
 
                         # Revision VS0780
                         elif float(hours_8_post_dose_Respiratory_rate_pure) == 2.0:
                             if float(hours_8_post_dose_Respiratory_rate_value_pure) <  12.0 or float(hours_8_post_dose_Respiratory_rate_value_pure) > 18.0  :
                                 error = [subject, visit, '8-hours post dose, Respiratory rate', hours_8_post_dose_Respiratory_rate_value_form_field_instance ,\
-                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', hours_8_post_dose_Respiratory_rate_value_pure, 'VS0780']
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', hours_8_post_dose_Respiratory_rate_value_pure, 'VS0780']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0690--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1654,14 +1654,14 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '12-hours post dose, Respiratory rate', hours_12_post_dose_Respiratory_rate_value_form_field_instance ,\
-                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', hours_12_post_dose_Respiratory_rate_value_pure, 'VS0700']
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', hours_12_post_dose_Respiratory_rate_value_pure, 'VS0700']
                                 lista_revision.append(error)
 
                         # Revision VS0790
                         elif float(hours_12_post_dose_Respiratory_rate_pure) == 2.0:
                             if float(hours_12_post_dose_Respiratory_rate_value_pure) <  12.0 or float(hours_12_post_dose_Respiratory_rate_value_pure) > 18.0  :
                                 error = [subject, visit, '12-hours post dose, Respiratory rate', hours_12_post_dose_Respiratory_rate_value_form_field_instance ,\
-                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation cant be Normal.', hours_12_post_dose_Respiratory_rate_value_pure, 'VS0790']
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', hours_12_post_dose_Respiratory_rate_value_pure, 'VS0790']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0700--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1674,14 +1674,14 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, 'Undefined, Systolic Blood Pressure', Undefined_Systolic_Blood_Pressure_value_form_field_instance ,\
-                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation cant be Normal.' , Undefined_Systolic_Blood_Pressure_value_pure, 'VS0800']
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.' , Undefined_Systolic_Blood_Pressure_value_pure, 'VS0800']
                                 lista_revision.append(error)
 
                         # Revision VS0890
                         elif float(Undefined_Systolic_Blood_Pressure_pure) == 2.0:
                             if float(Undefined_Systolic_Blood_Pressure_value_pure) <  100.0 or float(Undefined_Systolic_Blood_Pressure_value_pure) > 140.0  :
                                 error = [subject, visit, 'Undefined, Systolic Blood Pressure', Undefined_Systolic_Blood_Pressure_value_form_field_instance ,\
-                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation cant be Normal.', Undefined_Systolic_Blood_Pressure_value_pure, 'VS0890']
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', Undefined_Systolic_Blood_Pressure_value_pure, 'VS0890']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0800--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1690,14 +1690,14 @@ def vital_signs(df_root, path_excel_writer):
                         # # Revision VS0800
                         # if float(Pre_dose_Systolic_Blood_Pressure) == 1.0:
                         #     if float(Pre_dose_Systolic_Blood_Pressure_value) > 12.0 and float(Pre_dose_Systolic_Blood_Pressure_value) < 18.0 :
-                        #         error = [subject, visit, 'Pre dose, Systolic Blood Pressure' ,'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation cant be Normal.' , Pre_dose_Systolic_Blood_Pressure_value, 'VS0800']
+                        #         error = [subject, visit, 'Pre dose, Systolic Blood Pressure' ,'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.' , Pre_dose_Systolic_Blood_Pressure_value, 'VS0800']
                         #         lista_revision.append(error)
 
                         # Revision VS0890
                         if float(Pre_dose_Systolic_Blood_Pressure_pure) == 2.0:
                             if float(Pre_dose_Systolic_Blood_Pressure_value_pure) <  12.0 or float(Pre_dose_Systolic_Blood_Pressure_value_pure) > 18.0  :
                                 error = [subject, visit, 'Pre dose, Systolic Blood Pressure', Pre_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
-                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation cant be Normal.', Pre_dose_Systolic_Blood_Pressure_value_pure, 'VS0890']
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', Pre_dose_Systolic_Blood_Pressure_value_pure, 'VS0890']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0890--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1709,7 +1709,7 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '15-mins post dose, Systolic Blood Pressure', mins_15_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
-                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation cant be Normal.',\
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.',\
                                               mins_15_post_dose_Systolic_Blood_Pressure_value_pure, 'VS0820']
                                 lista_revision.append(error)
 
@@ -1717,7 +1717,7 @@ def vital_signs(df_root, path_excel_writer):
                         elif float(mins_15_post_dose_Systolic_Blood_Pressure_pure) == 2.0:
                             if float(mins_15_post_dose_Systolic_Blood_Pressure_value_pure) <  100.0 or float(mins_15_post_dose_Systolic_Blood_Pressure_value_pure) > 140.0  :
                                 error = [subject, visit, '15-mins post dose, Systolic Blood Pressure', mins_15_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
-                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation cant be Normal.', \
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', \
                                             mins_15_post_dose_Systolic_Blood_Pressure_value_pure, 'VS0910']
                                 lista_revision.append(error)                     
                     except Exception as e:
@@ -1730,7 +1730,7 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '30-mins post dose, Systolic Blood Pressure', mins_30_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
-                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation cant be Normal.', \
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', \
                                             mins_30_post_dose_Systolic_Blood_Pressure_value_pure, 'VS0830']
                                 lista_revision.append(error)
 
@@ -1738,7 +1738,7 @@ def vital_signs(df_root, path_excel_writer):
                         elif float(mins_30_post_dose_Systolic_Blood_Pressure_pure) == 2.0:
                             if float(mins_30_post_dose_Systolic_Blood_Pressure_value_pure) <  100.0 or float(mins_30_post_dose_Systolic_Blood_Pressure_value_pure) > 140.0  :
                                 error = [subject, visit, '30-mins post dose, Systolic Blood Pressure', mins_30_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
-                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation cant be Normal.', \
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', \
                                             mins_30_post_dose_Systolic_Blood_Pressure_value_pure, 'VS0920']
                                 lista_revision.append(error)                     
                     except Exception as e:
@@ -1751,7 +1751,7 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '60-mins post dose, Systolic Blood Pressure', mins_60_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
-                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation cant be Normal.', \
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', \
                                             mins_60_post_dose_Systolic_Blood_Pressure_value_pure, 'VS0840']
                                 lista_revision.append(error)
 
@@ -1759,7 +1759,7 @@ def vital_signs(df_root, path_excel_writer):
                         elif float(mins_60_post_dose_Systolic_Blood_Pressure_pure) == 2.0:
                             if float(mins_60_post_dose_Systolic_Blood_Pressure_value_pure) <  100.0 or float(mins_60_post_dose_Systolic_Blood_Pressure_value_pure) > 140.0  :
                                 error = [subject, visit, '60-mins post dose, Systolic Blood Pressure', mins_60_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
-                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation cant be Normal.', \
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', \
                                             mins_60_post_dose_Systolic_Blood_Pressure_value_pure, 'VS0930']
                                 lista_revision.append(error)                     
                     except Exception as e:
@@ -1772,7 +1772,7 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '2-hours post dose, Systolic Blood Pressure', hours_2_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
-                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation cant be Normal.', \
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', \
                                             hours_2_post_dose_Systolic_Blood_Pressure_value_pure, 'VS0850']
                                 lista_revision.append(error)
 
@@ -1780,7 +1780,7 @@ def vital_signs(df_root, path_excel_writer):
                         elif float(hours_2_post_dose_Systolic_Blood_Pressure_pure) == 2.0:
                             if float(hours_2_post_dose_Systolic_Blood_Pressure_value_pure) <  100.0 or float(hours_2_post_dose_Systolic_Blood_Pressure_value_pure) > 140.0  :
                                 error = [subject, visit, '2-hours post dose, Systolic Blood Pressure', hours_2_post_dose_Systolic_Blood_Pressure_value_form_field_instance,\
-                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation cant be Normal.', \
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', \
                                             hours_2_post_dose_Systolic_Blood_Pressure_value_pure, 'VS0940']
                                 lista_revision.append(error)                     
                     except Exception as e:
@@ -1793,7 +1793,7 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '4-hours post dose, Systolic Blood Pressure', hours_4_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
-                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation cant be Normal.', \
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', \
                                             hours_4_post_dose_Systolic_Blood_Pressure_value_pure, 'VS0860']
                                 lista_revision.append(error)
 
@@ -1801,7 +1801,7 @@ def vital_signs(df_root, path_excel_writer):
                         elif float(hours_4_post_dose_Systolic_Blood_Pressure_pure) == 2.0:
                             if float(hours_4_post_dose_Systolic_Blood_Pressure_value_pure) <  100.0 or float(hours_4_post_dose_Systolic_Blood_Pressure_value_pure) > 140.0  :
                                 error = [subject, visit, '4-hours post dose, Systolic Blood Pressure', hours_4_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
-                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation cant be Normal.', \
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', \
                                             hours_4_post_dose_Systolic_Blood_Pressure_value_pure, 'VS0950']
                                 lista_revision.append(error)                     
                     except Exception as e:
@@ -1814,7 +1814,7 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '8-hours post dose, Systolic Blood Pressure', hours_8_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
-                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation cant be Normal.', \
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', \
                                             hours_8_post_dose_Systolic_Blood_Pressure_value_pure, 'VS0870']
                                 lista_revision.append(error)
 
@@ -1822,7 +1822,7 @@ def vital_signs(df_root, path_excel_writer):
                         elif float(hours_8_post_dose_Systolic_Blood_Pressure_pure) == 2.0:
                             if float(hours_8_post_dose_Systolic_Blood_Pressure_value_pure) <  100.0 or float(hours_8_post_dose_Systolic_Blood_Pressure_value_pure) > 140.0  :
                                 error = [subject, visit, '8-hours post dose, Systolic Blood Pressure', hours_8_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
-                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation cant be Normal.', \
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', \
                                             hours_8_post_dose_Systolic_Blood_Pressure_value_pure, 'VS0960']
                                 lista_revision.append(error)                     
                     except Exception as e:
@@ -1835,7 +1835,7 @@ def vital_signs(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '12-hours post dose, Systolic Blood Pressure', hours_12_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
-                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation cant be Normal.', \
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', \
                                             hours_12_post_dose_Systolic_Blood_Pressure_value_pure, 'VS0880']
                                 lista_revision.append(error)
 
@@ -1843,7 +1843,7 @@ def vital_signs(df_root, path_excel_writer):
                         elif float(hours_12_post_dose_Systolic_Blood_Pressure_pure) == 2.0:
                             if float(hours_12_post_dose_Systolic_Blood_Pressure_value_pure) <  100.0 or float(hours_12_post_dose_Systolic_Blood_Pressure_value_pure) > 140.0  :
                                 error = [subject, visit, '12-hours post dose, Systolic Blood Pressure', hours_12_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
-                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation cant be Normal.', \
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', \
                                             hours_12_post_dose_Systolic_Blood_Pressure_value_pure, 'VS0970']
                                 lista_revision.append(error)                     
                     except Exception as e:

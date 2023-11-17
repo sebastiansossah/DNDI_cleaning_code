@@ -88,7 +88,7 @@ def physical_examination(df_root, path_excel_writer):
                         was_physical_performed_form_field_instance = was_physical_performed.split('|')[1]
                     except Exception as e:
                         was_physical_performed_pure = math.nan
-                        was_physical_performed_form_field_instance = 'This field doesnt have any data'
+                        was_physical_performed_form_field_instance = 'This field does not have any data'
 
                     # try:
                     #     provide_the_reason = row['Provide the reason']
@@ -101,7 +101,7 @@ def physical_examination(df_root, path_excel_writer):
                         date_examination_performed_form_field_instance = date_examination_performed.split('|')[1] 
                     except Exception as e:
                         date_examination_performed_pure = ''
-                        date_examination_performed_form_field_instance = 'This field doesnt have any data'
+                        date_examination_performed_form_field_instance = 'This field does not have any data'
 
                     try:
                         undefined_clinical = row['Undefined, Clinical interpretation?']
@@ -109,7 +109,7 @@ def physical_examination(df_root, path_excel_writer):
                         undefined_clinical_form_field_instance = undefined_clinical.split('|')[1]
                     except Exception as e:
                         undefined_clinical_pure = math.nan
-                        undefined_clinical_form_field_instance = 'This field doesnt have any data'
+                        undefined_clinical_form_field_instance = 'This field does not have any data'
 
                     try:
                         undefined_body_system = row['Undefined, Body System']
@@ -117,7 +117,7 @@ def physical_examination(df_root, path_excel_writer):
                         undefined_body_system_form_field_instance = undefined_body_system.split('|')[1]
                     except Exception as e:
                         undefined_body_system_pure = math.nan
-                        undefined_body_system_form_field_instance = 'This field doesnt have any data'
+                        undefined_body_system_form_field_instance = 'This field does not have any data'
 
                     try:
                         predose_clinical = row['Pre dose, Clinical interpretation?']
@@ -125,7 +125,7 @@ def physical_examination(df_root, path_excel_writer):
                         predose_clinical_form_field_instance = predose_clinical.split('|')[1] 
                     except Exception as e:
                         predose_clinical_pure = math.nan
-                        predose_clinical_form_field_instance = 'This field doesnt have any data'
+                        predose_clinical_form_field_instance = 'This field does not have any data'
 
                     try:
                         two_hours = row['2-hours post dose, Clinical interpretation?']
@@ -133,7 +133,7 @@ def physical_examination(df_root, path_excel_writer):
                         two_hours_form_field_instance = two_hours.split('|')[1]
                     except Exception as e:
                         two_hours_pure = math.nan
-                        two_hours_form_field_instance = 'This field doesnt have any data'
+                        two_hours_form_field_instance = 'This field does not have any data'
 
                     try:
                         four_hours = row['4-hours post dose, Clinical interpretation?']
@@ -141,7 +141,7 @@ def physical_examination(df_root, path_excel_writer):
                         four_hours_form_field_instance = four_hours.split('|')[1]
                     except Exception as e:
                         four_hours_pure = math.nan
-                        four_hours_form_field_instance = 'This field doesnt have any data'
+                        four_hours_form_field_instance = 'This field does not have any data'
 
                     try:
                         eight_hours = row['8-hours post dose, Clinical interpretation?']
@@ -149,7 +149,7 @@ def physical_examination(df_root, path_excel_writer):
                         eight_hours_form_field_instance = eight_hours.split('|')[1]
                     except Exception as e:
                         eight_hours_pure = math.nan
-                        eight_hours_form_field_instance = 'This field doesnt have any data'
+                        eight_hours_form_field_instance = 'This field does not have any data'
                                         
                     # ----------------------------------------------------------------------------------------
 
@@ -199,7 +199,7 @@ def physical_examination(df_root, path_excel_writer):
 
                             if date_of_test_f < date_inform_consent_f:
                                 error = [subject, visit, 'Date of examination performed', date_examination_performed_form_field_instance,\
-                                        'The date/time of test performed cant be before the informed consent date/time' ,f'{date_examination_performed_pure} - {date_inform_consent}', 'PE0030']
+                                        'The date/time of test performed can not be before the informed consent date/time' ,f'{date_examination_performed_pure} - {date_inform_consent}', 'PE0030']
                                 lista_revision.append(error)
                             else:
                                 pass

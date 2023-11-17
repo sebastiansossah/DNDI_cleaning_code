@@ -91,7 +91,7 @@ def vein_assesment(df_root, path_excel_writer):
                         vein_assessment_performed_form_field_instance =  vein_assessment_performed.split('|')[1]
                     except Exception as e:
                         vein_assessment_performed_pure = math.nan
-                        vein_assessment_performed_form_field_instance = 'This field doesnt have any data'
+                        vein_assessment_performed_form_field_instance = 'This field does not have any data'
 
                     # try:
                     #     provide_reason = row['Provide the reason']
@@ -99,7 +99,7 @@ def vein_assesment(df_root, path_excel_writer):
                     #     provide_reason_form_field_intance = provide_reason.split('|')[1]
                     # except Exception as e:
                     #     provide_reason_pure = ''
-                    #     provide_reason_form_field_intance = 'This field doesnt have any data'
+                    #     provide_reason_form_field_intance = 'This field does not have any data'
 
                     try:
                         date_of_assesment = row['Date of assessment performed']
@@ -107,7 +107,7 @@ def vein_assesment(df_root, path_excel_writer):
                         date_of_assesment_form_field_instance = date_of_assesment.split('|')[1]
                     except Exception as e:
                         date_of_assesment_pure = ''
-                        date_of_assesment_form_field_instance = 'This field doesnt have any data'
+                        date_of_assesment_form_field_instance = 'This field does not have any data'
 
                     # try:
                     #     suitable_veins = row['Suitable veins for multiple venepunctures/cannulations found?']
@@ -115,7 +115,7 @@ def vein_assesment(df_root, path_excel_writer):
                     #     suitable_veins_form_field_isntance = suitable_veins.split('|')[1]
                     # except Exception as e:
                     #     suitable_veins_pure = ''
-                    #     suitable_veins_form_field_isntance = 'This field doesnt have any data'
+                    #     suitable_veins_form_field_isntance = 'This field does not have any data'
                     
                     # ----------------------------------------------------------------------
                     # Revision GE0070
@@ -193,7 +193,7 @@ def vein_assesment(df_root, path_excel_writer):
 
                             if date_of_assesment_f < date_inform_consentf:
                                 error = [subject, visit, 'Date of assessment performed', date_of_assesment_form_field_instance, \
-                                        'The date of assessment cant be before the informed consent date',\
+                                        'The date of assessment can not be before the informed consent date',\
                                             f'{date_of_assesment_pure} - {date_inform_consent}', 'VA0040']
                                 lista_revision.append(error)
                             else:

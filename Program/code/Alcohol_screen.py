@@ -91,7 +91,7 @@ def alcohol_screen(df_root, path_excel_writer):
                         was_serum_test_performed_form_field_instance = was_serum_test_performed.split('|')[1]
                     except Exception as e:
                         was_serum_test_performed_pure = math.nan
-                        was_serum_test_performed_form_field_instance = 'This field doesnt have any data'
+                        was_serum_test_performed_form_field_instance = 'This field does not have any data'
 
                     try:
                         please_provide_reason = row['Please provide the reason']
@@ -99,7 +99,7 @@ def alcohol_screen(df_root, path_excel_writer):
                         please_provide_reason_form_field_instance = please_provide_reason.split('|')[1]
                     except Exception as e:
                         please_provide_reason_pure = ''
-                        please_provide_reason_form_field_instance = 'This field doesnt have any data'
+                        please_provide_reason_form_field_instance = 'This field does not have any data'
 
                     try:
                         date_test_performed = row['Date of test performed']
@@ -107,7 +107,7 @@ def alcohol_screen(df_root, path_excel_writer):
                         date_test_performed_form_field_instance = date_test_performed.split('|')[1]
                     except Exception as e:
                         date_test_performed_pure = ''
-                        date_test_performed_form_field_instance = 'This field doesnt have any data'
+                        date_test_performed_form_field_instance = 'This field does not have any data'
 
                     try:
                         test_result = row['Test result']
@@ -115,7 +115,7 @@ def alcohol_screen(df_root, path_excel_writer):
                         test_result_form_field_instance = test_result.split('|')[1]
                     except Exception as e:
                         test_result_pure = math.nan
-                        test_result_form_field_instance = 'This field doesnt have any data'
+                        test_result_form_field_instance = 'This field does not have any data'
                     
                     try:
                         levels_alcohol_percentaje = row['Levels of alcohol in the serum (BAC) (%)']
@@ -123,7 +123,7 @@ def alcohol_screen(df_root, path_excel_writer):
                         levels_alcohol_percentaje_form_field_instance = levels_alcohol_percentaje.split('|')[1]
                     except Exception as e:
                         levels_alcohol_percentaje_pure = math.nan
-                        levels_alcohol_percentaje_form_field_instance = 'This field doesnt have any data'
+                        levels_alcohol_percentaje_form_field_instance = 'This field does not have any data'
                     
                     try:
                         levels_alcohol_mg_dl = row['Levels of alcohol in the serum (BAC) (mg/dL)']
@@ -131,7 +131,7 @@ def alcohol_screen(df_root, path_excel_writer):
                         levels_alcohol_mg_dl_form_field_instance = levels_alcohol_mg_dl.split('|')[1]
                     except Exception as e:
                         levels_alcohol_mg_dl_pure = math.nan
-                        levels_alcohol_mg_dl_form_field_instance = 'This field doesnt have any data'
+                        levels_alcohol_mg_dl_form_field_instance = 'This field does not have any data'
 
                     # -----------------------------------------------------------------------
                     # Revision GE0070
@@ -226,7 +226,7 @@ def alcohol_screen(df_root, path_excel_writer):
 
                             if date_of_test_f < date_inform_consent_f:
                                 error = [subject, visit, 'Date of test performed', date_test_performed_form_field_instance ,\
-                                        'The date of test performed cant be before the informed consent date', \
+                                        'The date of test performed can not be before the informed consent date', \
                                             f'{date_test_performed_pure} - {date_inform_consent}', 'AS0070']
                                 
                                 lista_revision.append(error)

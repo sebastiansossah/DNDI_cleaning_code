@@ -90,7 +90,7 @@ def urinary_drug_screen(df_root, path_excel_writer):
                         was_urine_test_performed_form_field_isntance = was_urine_test_performed.split('|')[1]
                     except Exception as e:
                         was_urine_test_performed_pure = math.nan
-                        was_urine_test_performed_form_field_isntance = 'This field doesnt have any data'
+                        was_urine_test_performed_form_field_isntance = 'This field does not have any data'
 
                     try:
                         provide_reason = row['Please provide the reason']
@@ -98,7 +98,7 @@ def urinary_drug_screen(df_root, path_excel_writer):
                         provide_reason_form_field_isntance = provide_reason.split('|')[1]
                     except Exception as e:
                         provide_reason_pure = ''
-                        provide_reason_form_field_isntance = 'This field doesnt have any data'
+                        provide_reason_form_field_isntance = 'This field does not have any data'
                     
                     try:
                         date_of_test = row['Date of test performed']
@@ -106,7 +106,7 @@ def urinary_drug_screen(df_root, path_excel_writer):
                         date_of_test_form_field_isntance = date_of_test.split('|')[1]
                     except Exception as e:
                         date_of_test_pure = ''
-                        date_of_test_form_field_isntance = 'This field doesnt have any data'
+                        date_of_test_form_field_isntance = 'This field does not have any data'
                     
                     try:
                         check_below_trace = row['Check below trace/positive results']
@@ -114,7 +114,7 @@ def urinary_drug_screen(df_root, path_excel_writer):
                         check_below_trace_form_field_isntance = check_below_trace.split('|')[1]
                     except Exception as e:
                         check_below_trace_pure = ''
-                        check_below_trace_form_field_isntance = 'This field doesnt have any data'
+                        check_below_trace_form_field_isntance = 'This field does not have any data'
                     
                     #----------------------------------------------------------------------------------------------
 
@@ -192,7 +192,7 @@ def urinary_drug_screen(df_root, path_excel_writer):
 
                             if date_of_test_f < date_inform_consent_f:
                                 error = [subject, visit, 'Date of test performed', date_of_test_form_field_isntance, \
-                                        'The date of test performed cant be before the informed consent date', \
+                                        'The date of test performed can not be before the informed consent date', \
                                             f'{date_of_test_pure} - {date_inform_consent}', 'UD0050']
                                 lista_revision.append(error)
                             else:

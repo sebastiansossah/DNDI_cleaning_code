@@ -94,7 +94,7 @@ def lead_ECG(df_root, path_excel_writer):
                         were_ECG_performed_form_field_instance = were_ECG_performed.split('|')[1]
                     except Exception as e:
                         were_ECG_performed_pure = math.nan
-                        were_ECG_performed_form_field_instance = 'This field doesnt have any data'
+                        were_ECG_performed_form_field_instance = 'This field does not have any data'
                     
                     try: 
                         date_of_egc = row['Date of ECG Performed']
@@ -102,7 +102,7 @@ def lead_ECG(df_root, path_excel_writer):
                         date_of_egc_form_field_instance = date_of_egc.split('|')[1]
                     except Exception as e:
                         date_of_egc_pure = ''
-                        date_of_egc_form_field_instance = 'This field doesnt have any data'
+                        date_of_egc_form_field_instance = 'This field does not have any data'
                     
                     try:                    
                         Undefined_HR_bpm = row["Undefined, HR (bpm)"] 
@@ -110,7 +110,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Undefined_HR_bpm_form_field_instance = Undefined_HR_bpm.split('|')[1]
                     except Exception as e:
                         Undefined_HR_bpm_pure = math.nan
-                        Undefined_HR_bpm_form_field_instance = 'This field doesnt have any data'
+                        Undefined_HR_bpm_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Pre_dose_triplicate_1_Interpretation = row['Pre dose triplicate 1, Interpretation']
@@ -118,7 +118,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_1_Interpretation_form_field_instance = Pre_dose_triplicate_1_Interpretation.split('|')[1]
                     except Exception as e:
                         Pre_dose_triplicate_1_Interpretation_pure = math.nan 
-                        Pre_dose_triplicate_1_Interpretation_form_field_instance = 'This field doesnt have any data'
+                        Pre_dose_triplicate_1_Interpretation_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Pre_dose_triplicate_1_HR_bpm = row["Pre dose triplicate 1, HR (bpm)"]
@@ -126,7 +126,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_1_HR_bpm_form_field_instance = Pre_dose_triplicate_1_HR_bpm.split('|')[1]
                     except Exception as e:
                         Pre_dose_triplicate_1_HR_bpm_pure = math.nan
-                        Pre_dose_triplicate_1_HR_bpm_form_field_instance = 'This field doesnt have any data'
+                        Pre_dose_triplicate_1_HR_bpm_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Pre_dose_triplicate_2_HR_bpm = row["Pre dose triplicate 2, HR (bpm)"]
@@ -134,7 +134,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_2_HR_bpm_form_field_instance = Pre_dose_triplicate_2_HR_bpm.split('|')[1]
                     except Exception as e:
                         Pre_dose_triplicate_2_HR_bpm_pure = math.nan
-                        Pre_dose_triplicate_2_HR_bpm_form_field_instance = 'This field doesnt have any data'
+                        Pre_dose_triplicate_2_HR_bpm_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Pre_dose_triplicate_3_HR_bpm = row["Pre dose triplicate 3, HR (bpm)"]
@@ -142,7 +142,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_3_HR_bpm_form_field_instance = Pre_dose_triplicate_3_HR_bpm.split('|')[1]
                     except Exception as e:
                         Pre_dose_triplicate_3_HR_bpm_pure = math.nan
-                        Pre_dose_triplicate_3_HR_bpm_form_field_instance = 'This field doesnt have any data'
+                        Pre_dose_triplicate_3_HR_bpm_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Pre_dose_triplicate_1__RR_msec = row['Pre dose triplicate 1, RR (msec)']
@@ -150,7 +150,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_1__RR_msec_form_field_instance = Pre_dose_triplicate_1__RR_msec.split('|')[1]
                     except Exception as e:
                         Pre_dose_triplicate_1__RR_msec_pure = math.nan
-                        Pre_dose_triplicate_1__RR_msec_form_field_instance = 'This field doesnt have any data'
+                        Pre_dose_triplicate_1__RR_msec_form_field_instance = 'This field does not have any data'
                     
                     try:
                         min_15_post_dose_HR_bpm = row["15-min post dose, HR (bpm)"]
@@ -158,7 +158,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_15_post_dose_HR_bpm_form_field_instance = min_15_post_dose_HR_bpm.split('|')[1]
                     except Exception as e:
                         min_15_post_dose_HR_bpm_pure = math.nan
-                        min_15_post_dose_HR_bpm_form_field_instance = 'This field doesnt have any data'
+                        min_15_post_dose_HR_bpm_form_field_instance = 'This field does not have any data'
                     
                     try:
                         min_30_post_dose_HR_bpm = row["30-min post dose, HR (bpm)"]
@@ -166,7 +166,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_30_post_dose_HR_bpm_form_field_instance = min_30_post_dose_HR_bpm.split('|')[1]
                     except Exception as e:
                         min_30_post_dose_HR_bpm_pure = math.nan
-                        min_30_post_dose_HR_bpm_form_field_instance = 'This field doesnt have any data'
+                        min_30_post_dose_HR_bpm_form_field_instance = 'This field does not have any data'
                     
                     try:
                         min_60_post_dose_HR_bpm = row["60-min post dose, HR (bpm)"]
@@ -174,7 +174,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_60_post_dose_HR_bpm_form_field_instance = min_60_post_dose_HR_bpm.split('|')[1]
                     except Exception as e:
                         min_60_post_dose_HR_bpm_pure = math.nan 
-                        min_60_post_dose_HR_bpm_form_field_instance = 'This field doesnt have any data'
+                        min_60_post_dose_HR_bpm_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Undefined_PR_msec = row["Undefined, PR (msec)"]
@@ -182,7 +182,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Undefined_PR_msec_form_field_instance = Undefined_PR_msec.split('|')[1]
                     except Exception as e:
                         Undefined_PR_msec_pure = math.nan
-                        Undefined_PR_msec_form_field_instance = 'This field doesnt have any data'
+                        Undefined_PR_msec_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Pre_dose_triplicate_2_PR_msec = row["Pre dose triplicate 2, PR (msec)"]
@@ -190,7 +190,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_2_PR_msec_form_field_instance = Pre_dose_triplicate_2_PR_msec.split('|')[1]
                     except Exception as e:
                         Pre_dose_triplicate_2_PR_msec_pure = math.nan
-                        Pre_dose_triplicate_2_PR_msec_form_field_instance = 'This field doesnt have any data'
+                        Pre_dose_triplicate_2_PR_msec_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Pre_dose_triplicate_3_PR_msec = row["Pre dose triplicate 3, PR (msec)"]
@@ -198,7 +198,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_3_PR_msec_form_field_instance = Pre_dose_triplicate_3_PR_msec.split('|')[1]
                     except Exception as e:
                         Pre_dose_triplicate_3_PR_msec_pure = math.nan
-                        Pre_dose_triplicate_3_PR_msec_form_field_instance = 'This field doesnt have any data'
+                        Pre_dose_triplicate_3_PR_msec_form_field_instance = 'This field does not have any data'
                     
                     try:
                         min_15_post_dose_PR_msec = row["15-min post dose, PR (msec)"]
@@ -206,7 +206,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_15_post_dose_PR_msec_form_field_instance = min_15_post_dose_PR_msec.split('|')[1]
                     except Exception as e:
                         min_15_post_dose_PR_msec_pure = math.nan
-                        min_15_post_dose_PR_msec_form_field_instance = 'This field doesnt have any data'
+                        min_15_post_dose_PR_msec_form_field_instance = 'This field does not have any data'
                     
                     try:
                         min_30_post_dose_PR_msec = row["30-min post dose, PR (msec)"]
@@ -214,7 +214,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_30_post_dose_PR_msec_form_field_instance = min_30_post_dose_PR_msec.split('|')[1]
                     except Exception as e:
                         min_30_post_dose_PR_msec_pure = math.nan
-                        min_30_post_dose_PR_msec_form_field_instance = 'This field doesnt have any data'
+                        min_30_post_dose_PR_msec_form_field_instance = 'This field does not have any data'
                     
                     try:
                         min_60_post_dose_PR_msec = row["60-min post dose, PR (msec)"]
@@ -222,7 +222,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_60_post_dose_PR_msec_form_field_instance = min_60_post_dose_PR_msec.split('|')[1]
                     except Exception as e:
                         min_60_post_dose_PR_msec_pure = math.nan
-                        min_60_post_dose_PR_msec_form_field_instance = 'This field doesnt have any data'
+                        min_60_post_dose_PR_msec_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Undefined_QRS_msec = row["Undefined, QRS (msec)"]
@@ -230,7 +230,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Undefined_QRS_msec_form_field_instance = Undefined_QRS_msec.split('|')[1]
                     except Exception as e:
                         Undefined_QRS_msec_pure = math.nan
-                        Undefined_QRS_msec_form_field_instance = 'This field doesnt have any data'
+                        Undefined_QRS_msec_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Undefined_RR_msec = row["Undefined, RR (msec)"]
@@ -238,7 +238,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Undefined_RR_msec_form_field_instance = Undefined_RR_msec.split('|')[1]
                     except Exception as e:
                         Undefined_RR_msec_pure = math.nan
-                        Undefined_RR_msec_form_field_instance = 'This field doesnt have any data'
+                        Undefined_RR_msec_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Pre_dose_triplicate_1_QRS_msec = row["Pre dose triplicate 1, QRS (msec)"]
@@ -246,7 +246,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_1_QRS_msec_form_field_instance = Pre_dose_triplicate_1_QRS_msec.split('|')[1]
                     except Exception as e:
                         Pre_dose_triplicate_1_QRS_msec_pure = math.nan
-                        Pre_dose_triplicate_1_QRS_msec_form_field_instance = 'This field doesnt have any data'
+                        Pre_dose_triplicate_1_QRS_msec_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Pre_dose_triplicate_2_QRS_msec = row["Pre dose triplicate 2, QRS (msec)"]
@@ -254,7 +254,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_2_QRS_msec_form_field_instance = Pre_dose_triplicate_2_QRS_msec.split('|')[1]
                     except Exception as e:
                         Pre_dose_triplicate_2_QRS_msec_pure = math.nan
-                        Pre_dose_triplicate_2_QRS_msec_form_field_instance = 'This field doesnt have any data'
+                        Pre_dose_triplicate_2_QRS_msec_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Pre_dose_triplicate_2_RR_msec = row['Pre dose triplicate 2, RR (msec)']
@@ -262,7 +262,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_2_RR_msec_form_field_instance = Pre_dose_triplicate_2_RR_msec.split('|')[1]
                     except Exception as e:
                         Pre_dose_triplicate_2_RR_msec_pure = math.nan
-                        Pre_dose_triplicate_2_RR_msec_form_field_instance = 'This field doesnt have any data'
+                        Pre_dose_triplicate_2_RR_msec_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Pre_dose_triplicate_3_QRS_msec = row["Pre dose triplicate 3, QRS (msec)"]
@@ -270,7 +270,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_3_QRS_msec_form_field_instance = Pre_dose_triplicate_3_QRS_msec.split('|')[1]
                     except Exception as e:
                         Pre_dose_triplicate_3_QRS_msec_pure = math.nan
-                        Pre_dose_triplicate_3_QRS_msec_form_field_instance = 'This field doesnt have any data'
+                        Pre_dose_triplicate_3_QRS_msec_form_field_instance = 'This field does not have any data'
                     
                     try:
                         min_15_post_dose_QRS_msec = row["15-min post dose, QRS (msec)"]
@@ -278,7 +278,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_15_post_dose_QRS_msec_form_field_instance = min_15_post_dose_QRS_msec.split('|')[1]
                     except Exception as e:
                         min_15_post_dose_QRS_msec_pure = math.nan
-                        min_15_post_dose_QRS_msec_form_field_instance = 'This field doesnt have any data'
+                        min_15_post_dose_QRS_msec_form_field_instance = 'This field does not have any data'
                     
                     try:
                         min_30_post_dose_QRS_msec = row["30-min post dose, QRS (msec)"]
@@ -286,7 +286,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_30_post_dose_QRS_msec_form_field_instance = min_30_post_dose_QRS_msec.split('|')[1]
                     except Exception as e:
                         min_30_post_dose_QRS_msec_pure = math.nan
-                        min_30_post_dose_QRS_msec_form_field_instance = 'This field doesnt have any data'
+                        min_30_post_dose_QRS_msec_form_field_instance = 'This field does not have any data'
                     
                     try:
                         min_60_post_dose_QRS_msec = row["60-min post dose, QRS (msec)"]
@@ -294,7 +294,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_60_post_dose_QRS_msec_form_field_instance = min_60_post_dose_QRS_msec.split('|')[1]
                     except Exception as e:
                         min_60_post_dose_QRS_msec_pure = math.nan
-                        min_60_post_dose_QRS_msec_form_field_instance = 'This field doesnt have any data'
+                        min_60_post_dose_QRS_msec_form_field_instance = 'This field does not have any data'
                     
                     try:
                         min_15_post_dose_RR_msec = row['15-min post dose, RR (msec)']
@@ -302,7 +302,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_15_post_dose_RR_msec_form_field_instance = min_15_post_dose_RR_msec.split('|')[1]
                     except Exception as e:
                         min_15_post_dose_RR_msec_pure = math.nan
-                        min_15_post_dose_RR_msec_form_field_instance = 'This field doesnt have any data'
+                        min_15_post_dose_RR_msec_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Undefined_QT_msec = row["Undefined, QT (msec)"]
@@ -310,7 +310,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Undefined_QT_msec_form_field_instance = Undefined_QT_msec.split('|')[1]
                     except Exception as e:
                         Undefined_QT_msec_pure = math.nan
-                        Undefined_QT_msec_form_field_instance = 'This field doesnt have any data'
+                        Undefined_QT_msec_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Pre_dose_triplicate_1_QT_msec = row["Pre dose triplicate 1, QT (msec)"]
@@ -318,7 +318,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_1_QT_msec_form_field_instance = Pre_dose_triplicate_1_QT_msec.split('|')[1]
                     except Exception as e:
                         Pre_dose_triplicate_1_QT_msec_pure = math.nan
-                        Pre_dose_triplicate_1_QT_msec_form_field_instance = 'This field doesnt have any data'
+                        Pre_dose_triplicate_1_QT_msec_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Pre_dose_triplicate_1_PR_msec = row['Pre dose triplicate 1, PR (msec)']
@@ -326,7 +326,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_1_PR_msec_form_field_instance = Pre_dose_triplicate_1_PR_msec.split('|')[1]
                     except Exception as e:
                         Pre_dose_triplicate_1_PR_msec_pure = math.nan
-                        Pre_dose_triplicate_1_PR_msec_form_field_instance = 'This field doesnt have any data'
+                        Pre_dose_triplicate_1_PR_msec_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Pre_dose_triplicate_2_QT_msec = row["Pre dose triplicate 2, QT (msec)"]
@@ -334,7 +334,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_2_QT_msec_form_field_instance = Pre_dose_triplicate_2_QT_msec.split('|')[1]
                     except Exception as e:
                         Pre_dose_triplicate_2_QT_msec_pure = math.nan
-                        Pre_dose_triplicate_2_QT_msec_form_field_instance = 'This field doesnt have any data'
+                        Pre_dose_triplicate_2_QT_msec_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Pre_dose_triplicate_3_QT_msec = row["Pre dose triplicate 3, QT (msec)"]
@@ -342,7 +342,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_3_QT_msec_form_field_instance = Pre_dose_triplicate_3_QT_msec.split('|')[1]
                     except Exception as e:
                         Pre_dose_triplicate_3_QT_msec_pure = math.nan
-                        Pre_dose_triplicate_3_QT_msec_form_field_instance = 'This field doesnt have any data'
+                        Pre_dose_triplicate_3_QT_msec_form_field_instance = 'This field does not have any data'
                     
                     try:
                         min_30_post_dose_RR_msec = row['30-min post dose, RR (msec)']
@@ -350,7 +350,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_30_post_dose_RR_msec_form_field_instance = min_30_post_dose_RR_msec.split('|')[1]
                     except Exception as e:
                         min_30_post_dose_RR_msec_pure = math.nan
-                        min_30_post_dose_RR_msec_form_field_instance = 'This field doesnt have any data'
+                        min_30_post_dose_RR_msec_form_field_instance = 'This field does not have any data'
                     
                     try:
                         min_15_post_dose_QT_msec = row["15-min post dose, QT (msec)"]
@@ -358,7 +358,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_15_post_dose_QT_msec_form_field_instance = min_15_post_dose_QT_msec.split('|')[1]
                     except Exception as e:
                         min_15_post_dose_QT_msec_pure = math.nan
-                        min_15_post_dose_QT_msec_form_field_instance = 'This field doesnt have any data'
+                        min_15_post_dose_QT_msec_form_field_instance = 'This field does not have any data'
                     
                     try:
                         min_60_post_dose_RR_msec = row['60-min post dose, RR (msec)']
@@ -366,7 +366,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_60_post_dose_RR_msec_form_field_instance = min_60_post_dose_RR_msec.split('|')[1]
                     except Exception as e:
                         min_60_post_dose_RR_msec_pure = math.nan
-                        min_60_post_dose_RR_msec_form_field_instance = 'This field doesnt have any data'
+                        min_60_post_dose_RR_msec_form_field_instance = 'This field does not have any data'
                     
                     try: 
                         Pre_dose_triplicate_3_RR_msec = row['Pre dose triplicate 3, RR (msec)']
@@ -374,7 +374,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_3_RR_msec_form_field_instance = Pre_dose_triplicate_3_RR_msec.split('|')[1]
                     except Exception as e:
                         Pre_dose_triplicate_3_RR_msec_pure = math.nan
-                        Pre_dose_triplicate_3_RR_msec_form_field_instance = 'This field doesnt have any data'
+                        Pre_dose_triplicate_3_RR_msec_form_field_instance = 'This field does not have any data'
                     
                     try:
                         min_30_post_dose_QT_msec = row["30-min post dose, QT (msec)"]
@@ -382,7 +382,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_30_post_dose_QT_msec_form_field_instance = min_30_post_dose_QT_msec.split('|')[1]
                     except Exception as e:
                         min_30_post_dose_QT_msec_pure = math.nan
-                        min_30_post_dose_QT_msec_form_field_instance = 'This field doesnt have any data'
+                        min_30_post_dose_QT_msec_form_field_instance = 'This field does not have any data'
                     
                     try:
                         min_60_post_dose_QT_msec = row["60-min post dose, QT (msec)"]
@@ -390,7 +390,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_60_post_dose_QT_msec_form_field_instance = min_60_post_dose_QT_msec.split('|')[1]
                     except Exception as e:
                         min_60_post_dose_QT_msec_pure = math.nan
-                        min_60_post_dose_QT_msec_form_field_instance = 'This field doesnt have any data'
+                        min_60_post_dose_QT_msec_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Undefined_QTcF_msec = row["Undefined, QTcF (msec)"]
@@ -398,7 +398,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Undefined_QTcF_msec_form_field_instance = Undefined_QTcF_msec.split('|')[1]
                     except Exception as e:
                         Undefined_QTcF_msec_pure = math.nan
-                        Undefined_QTcF_msec_form_field_instance = 'This field doesnt have any data'
+                        Undefined_QTcF_msec_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Pre_dose_triplicate_1_QTcF_msec = row["Pre dose triplicate 1, QTcF (msec)"]
@@ -406,7 +406,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_1_QTcF_msec_form_field_instance = Pre_dose_triplicate_1_QTcF_msec.split('|')[1]
                     except Exception as e:
                         Pre_dose_triplicate_1_QTcF_msec_pure = math.nan
-                        Pre_dose_triplicate_1_QTcF_msec_form_field_instance = 'This field doesnt have any data'
+                        Pre_dose_triplicate_1_QTcF_msec_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Pre_dose_triplicate_2_QTcF_msec = row["Pre dose triplicate 2, QTcF (msec)"]
@@ -414,7 +414,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_2_QTcF_msec_form_field_instance = Pre_dose_triplicate_2_QTcF_msec.split('|')[1]
                     except Exception as e:
                         Pre_dose_triplicate_2_QTcF_msec_pure = math.nan
-                        Pre_dose_triplicate_2_QTcF_msec_form_field_instance = 'This field doesnt have any data'
+                        Pre_dose_triplicate_2_QTcF_msec_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Pre_dose_triplicate_3_QTcF_msec = row["Pre dose triplicate 3, QTcF (msec)"]
@@ -422,7 +422,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_3_QTcF_msec_form_field_instance = Pre_dose_triplicate_3_QTcF_msec.split('|')[1]
                     except Exception as e:
                         Pre_dose_triplicate_3_QTcF_msec_pure = math.nan
-                        Pre_dose_triplicate_3_QTcF_msec_form_field_instance = 'This field doesnt have any data'
+                        Pre_dose_triplicate_3_QTcF_msec_form_field_instance = 'This field does not have any data'
                     
                     try:
                         min_15_post_dose_QTcF_msec = row["15-min post dose, QTcF (msec)"]
@@ -430,7 +430,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_15_post_dose_QTcF_msec_form_field_instance = min_15_post_dose_QTcF_msec.split('|')[1]
                     except Exception as e:
                         min_15_post_dose_QTcF_msec_pure = math.nan
-                        min_15_post_dose_QTcF_msec_form_field_instance = 'This field doesnt have any data'
+                        min_15_post_dose_QTcF_msec_form_field_instance = 'This field does not have any data'
                     
                     try:
                         min_30_post_dose_QTcF_msec = row["30-min post dose, QTcF (msec)"]
@@ -438,7 +438,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_30_post_dose_QTcF_msec_form_field_instance = min_30_post_dose_QTcF_msec.split('|')[1]
                     except Exception as e:
                         min_30_post_dose_QTcF_msec_pure = math.nan
-                        min_30_post_dose_QTcF_msec_form_field_instance = 'This field doesnt have any data'
+                        min_30_post_dose_QTcF_msec_form_field_instance = 'This field does not have any data'
                     
                     try:
                         min_60_post_dose_QTcF_msec = row["60-min post dose, QTcF (msec)"]
@@ -446,7 +446,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_60_post_dose_QTcF_msec_form_field_instance = min_60_post_dose_QTcF_msec.split('|')[1]
                     except Exception as e:
                         min_60_post_dose_QTcF_msec_pure = math.nan
-                        min_60_post_dose_QTcF_msec_form_field_instance = 'This field doesnt have any data'
+                        min_60_post_dose_QTcF_msec_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Undefined_Interpretation = row["Undefined, Interpretation"]
@@ -454,7 +454,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Undefined_Interpretation_form_field_instance = Undefined_Interpretation.split('|')[1]
                     except Exception as e:
                         Undefined_Interpretation_pure = math.nan
-                        Undefined_Interpretation_form_field_instance = 'This field doesnt have any data'
+                        Undefined_Interpretation_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Pre_dose_triplicate_1_Interpretation = row["Pre dose triplicate 1, Interpretation"]
@@ -462,7 +462,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_1_Interpretation_form_field_instance = Pre_dose_triplicate_1_Interpretation.split('|')[1]
                     except Exception as e:
                         Pre_dose_triplicate_1_Interpretation_pure = math.nan
-                        Pre_dose_triplicate_1_Interpretation_form_field_instance = 'This field doesnt have any data'
+                        Pre_dose_triplicate_1_Interpretation_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Pre_dose_triplicate_2_Interpretation = row["Pre dose triplicate 2, Interpretation"]
@@ -470,7 +470,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_2_Interpretation_form_field_instance = Pre_dose_triplicate_2_Interpretation.split('|')[1]
                     except Exception as e:
                         Pre_dose_triplicate_2_Interpretation_pure = math.nan
-                        Pre_dose_triplicate_2_Interpretation_form_field_instance = 'This field doesnt have any data'
+                        Pre_dose_triplicate_2_Interpretation_form_field_instance = 'This field does not have any data'
                     
                     try:
                         Pre_dose_triplicate_3_Interpretation = row["Pre dose triplicate 3, Interpretation"]
@@ -478,7 +478,7 @@ def lead_ECG(df_root, path_excel_writer):
                         Pre_dose_triplicate_3_Interpretation_form_field_instance = Pre_dose_triplicate_3_Interpretation.split('|')[1]
                     except Exception as e:
                         Pre_dose_triplicate_3_Interpretation_pure = math.nan
-                        Pre_dose_triplicate_3_Interpretation_form_field_instance = 'This field doesnt have any data'
+                        Pre_dose_triplicate_3_Interpretation_form_field_instance = 'This field does not have any data'
                     
                     try:
                         min_15_post_dose_Interpretation = row["15-min post dose, Interpretation"]
@@ -486,7 +486,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_15_post_dose_Interpretation_form_field_instance = min_15_post_dose_Interpretation.split('|')[1]
                     except Exception as e:
                         min_15_post_dose_Interpretation_pure = math.nan
-                        min_15_post_dose_Interpretation_form_field_instance = 'This field doesnt have any data'
+                        min_15_post_dose_Interpretation_form_field_instance = 'This field does not have any data'
                     
                     try:
                         min_30_post_dose_Interpretation = row["30-min post dose, Interpretation"]
@@ -494,7 +494,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_30_post_dose_Interpretation_form_field_instance = min_30_post_dose_Interpretation.split('|')[1]
                     except Exception as e:
                         min_30_post_dose_Interpretation_pure = math.nan
-                        min_30_post_dose_Interpretation_form_field_instance = 'This field doesnt have any data'
+                        min_30_post_dose_Interpretation_form_field_instance = 'This field does not have any data'
                     
                     try:
                         min_60_post_dose_Interpretation = row["60-min post dose, Interpretation"]
@@ -502,7 +502,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_60_post_dose_Interpretation_form_field_instance = min_60_post_dose_Interpretation.split('|')[1]
                     except Exception as e:
                         min_60_post_dose_Interpretation_pure = math.nan
-                        min_60_post_dose_Interpretation_form_field_instance = 'This field doesnt have any data'
+                        min_60_post_dose_Interpretation_form_field_instance = 'This field does not have any data'
                     
                     try:
                         undefined_time = row['Undefined, Interpretation', 'Pre dose triplicate 1, Time 24 hrs']
@@ -511,7 +511,7 @@ def lead_ECG(df_root, path_excel_writer):
                         undefined_time_formated = datetime.strptime(undefined_time_pure, time_format)
                     except:
                         undefined_time_pure = math.nan
-                        undefined_time_form_field_instance = 'This field doesnt have any data'
+                        undefined_time_form_field_instance = 'This field does not have any data'
                         undefined_time_formated = math.nan
                     
                     try:
@@ -521,7 +521,7 @@ def lead_ECG(df_root, path_excel_writer):
                         predose_triplicate_1_time_formated = datetime.strptime(predose_triplicate_1_time_pure, time_format)
                     except:
                         predose_triplicate_1_time_pure = math.nan
-                        predose_triplicate_1_time_form_field_instance = 'This field doesnt have any data'
+                        predose_triplicate_1_time_form_field_instance = 'This field does not have any data'
                         predose_triplicate_1_time_formated = math.nan
 
                     try:
@@ -531,7 +531,7 @@ def lead_ECG(df_root, path_excel_writer):
                         predose_triplicate_2_time_formated = datetime.strptime(predose_triplicate_2_time_pure, time_format)
                     except:
                         predose_triplicate_2_time_pure = math.nan
-                        predose_triplicate_2_time_form_field_instance = 'This field doesnt have any data'
+                        predose_triplicate_2_time_form_field_instance = 'This field does not have any data'
                         predose_triplicate_2_time_formated = math.nan
 
                     try:
@@ -541,7 +541,7 @@ def lead_ECG(df_root, path_excel_writer):
                         predose_triplicate_3_time_formated = datetime.strptime(predose_triplicate_3_time_pure, time_format)
                     except:
                         predose_triplicate_3_time_pure = math.nan
-                        predose_triplicate_3_time_form_field_instance = 'This field doesnt have any data'
+                        predose_triplicate_3_time_form_field_instance = 'This field does not have any data'
                         predose_triplicate_3_time_formated = math.nan
                     
                     try:
@@ -551,7 +551,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_15_time_time_formated = datetime.strptime(min_15_time_pure, time_format)
                     except:
                         min_15_time_pure = math.nan
-                        min_15_time_form_field_instance = 'This field doesnt have any data'
+                        min_15_time_form_field_instance = 'This field does not have any data'
                         min_15_time_time_formated = math.nan
 
                     try:
@@ -561,7 +561,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_30_time_time_formated = datetime.strptime(min_30_time_pure, time_format)
                     except:
                         min_30_time_pure = math.nan
-                        min_30_time_form_field_instance = 'This field doesnt have any data'
+                        min_30_time_form_field_instance = 'This field does not have any data'
                         min_30_time_time_formated = math.nan
 
                     try:
@@ -571,7 +571,7 @@ def lead_ECG(df_root, path_excel_writer):
                         min_60_time_time_formated = datetime.strptime(min_60_time_pure, time_format)
                     except:
                         min_60_time_pure = math.nan
-                        min_60_time_form_field_instance = 'This field doesnt have any data'
+                        min_60_time_form_field_instance = 'This field does not have any data'
                         min_60_time_time_formated = math.nan          
 
                     #----------------------------------------------------------------------------------------------------------------------------
@@ -670,7 +670,7 @@ def lead_ECG(df_root, path_excel_writer):
 
                             if date_of_test_f < date_inform_consent_f:
                                 error = [subject, visit, 'Date of ECG Performed', date_of_egc_form_field_instance,\
-                                        'The date/time of ECG cant be before the informed consent date/time' ,f'{date_of_egc_pure} - {date_inform_consent}', 'LE0050']
+                                        'The date/time of ECG can not be before the informed consent date/time' ,f'{date_of_egc_pure} - {date_inform_consent}', 'LE0050']
                                 lista_revision.append(error)
                             else:
                                 pass
@@ -696,7 +696,7 @@ def lead_ECG(df_root, path_excel_writer):
                             
                             if float(Undefined_HR_bpm_pure) < 45.0 or float(Undefined_HR_bpm_pure) > 90.0 :
                                 error = [subject, visit, 'Undefined, HR (bpm)', Undefined_HR_bpm_form_field_instance ,\
-                                         'The HR is not within expected range (45 to 90), therefore the Interpretation cant be Normal.', Undefined_HR_bpm_pure, 'LE0070']
+                                         'The HR is not within expected range (45 to 90), therefore the Interpretation can not be Normal.', Undefined_HR_bpm_pure, 'LE0070']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -707,7 +707,7 @@ def lead_ECG(df_root, path_excel_writer):
                         if float(Undefined_Interpretation_pure) == 1.0:
                             if float(Undefined_RR_msec_pure) < 654.6 or float(Undefined_RR_msec_pure) > 1141.4 :
                                 error = [subject, visit, 'Undefined, RR (msec)', Undefined_RR_msec_form_field_instance ,\
-                                         'The RR is not within expected range (654.6 to 1141.4), therefore the Interpretation cant be Normal.', Undefined_RR_msec_pure, 'LE0140']
+                                         'The RR is not within expected range (654.6 to 1141.4), therefore the Interpretation can not be Normal.', Undefined_RR_msec_pure, 'LE0140']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -718,7 +718,7 @@ def lead_ECG(df_root, path_excel_writer):
                         if float(Undefined_Interpretation_pure) == 1.0:
                             if float(Undefined_PR_msec_pure) < 120.0 or float(Undefined_PR_msec_pure) > 200.0 :
                                 error = [subject, visit, 'Undefined, PR (msec)', Undefined_PR_msec_form_field_instance,\
-                                         'The PR is not within expected range (120 to 200), therefore the Interpretation cant be Normal.', Undefined_PR_msec_pure, 'LE0210']
+                                         'The PR is not within expected range (120 to 200), therefore the Interpretation can not be Normal.', Undefined_PR_msec_pure, 'LE0210']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision LE0210--> {e} - Subject: {subject},  Visit: {visit} ') 
@@ -728,7 +728,7 @@ def lead_ECG(df_root, path_excel_writer):
                         if float(Undefined_Interpretation_pure) == 1.0:
                             if float(Undefined_QRS_msec_pure) < 70.0 or float(Undefined_QRS_msec_pure) > 120.0 :
                                 error = [subject, visit, 'Undefined, QRS (msec)', Undefined_RR_msec_form_field_instance ,\
-                                         'The QRS  is not within expected range (70 to 120), therefore the Interpretation cant be Normal.', Undefined_QRS_msec_pure, 'LE0280']
+                                         'The QRS  is not within expected range (70 to 120), therefore the Interpretation can not be Normal.', Undefined_QRS_msec_pure, 'LE0280']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -739,7 +739,7 @@ def lead_ECG(df_root, path_excel_writer):
                         if float(Undefined_Interpretation_pure) == 1.0:
                             if float(Undefined_QT_msec_pure) > 500.0 :
                                 error = [subject, visit, 'Undefined, QT (msec)', Undefined_QT_msec_form_field_instance ,\
-                                         'The QT is not within expected range (below or equal to 500 msec), therefore the Interpretation cant be Normal.', Undefined_QT_msec_pure, 'LE0350']
+                                         'The QT is not within expected range (below or equal to 500 msec), therefore the Interpretation can not be Normal.', Undefined_QT_msec_pure, 'LE0350']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision LE0350--> {e} - Subject: {subject},  Visit: {visit} ')     
@@ -751,7 +751,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, 'Undefined, QTcF (msec)', Undefined_QTcF_msec_form_field_instance ,\
-                                        'The QTcF is not within expected range (350 to 450), therefore the Interpretation cant be Normal.', Undefined_QTcF_msec_pure, 'LE0420']
+                                        'The QTcF is not within expected range (350 to 450), therefore the Interpretation can not be Normal.', Undefined_QTcF_msec_pure, 'LE0420']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision LE0420--> {e} - Subject: {subject},  Visit: {visit} ')  
@@ -761,7 +761,7 @@ def lead_ECG(df_root, path_excel_writer):
                         if float(Undefined_Interpretation_pure) == 1.0:
                             if float(Undefined_QTcF_msec_pure) > 500.0:
                                 error = [subject, visit, 'Undefined, QTcF (msec)',  Undefined_QTcF_msec_form_field_instance ,\
-                                         'The value is above 500 msec, therefore the Interpretation should be abnormal / clinically significant. Please consider reporting an adverse event',\
+                                         'The value is above 500 msec, therefore the Interpretation should be abnormal / clinically significan not. Please consider reporting an adverse event',\
                                               Undefined_QTcF_msec_pure, 'LE0430']
                                 lista_revision.append(error)
                     except Exception as e:
@@ -828,7 +828,7 @@ def lead_ECG(df_root, path_excel_writer):
                         if float(Undefined_Interpretation_pure) == 2.0:
                             if cuenta_validacion_abnormal_undefined == 0:
                                 error = [subject, visit, 'Undefined, interpretation', Undefined_Interpretation_form_field_instance,\
-                                         'None of the measurements are out of range, the interpretation cant be abnormal', Undefined_Interpretation_pure, 'LE0620']
+                                         'None of the measurements are out of range, the interpretation can not be abnormal', Undefined_Interpretation_pure, 'LE0620']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -854,7 +854,7 @@ def lead_ECG(df_root, path_excel_writer):
                         if float(Pre_dose_triplicate_1_Interpretation_pure) == 1.0:
                             if float(Pre_dose_triplicate_1__RR_msec_pure) < 654.6 or float(Pre_dose_triplicate_1__RR_msec_pure) > 1141.4 :
                                 error = [subject, visit, 'Pre dose triplicate 1, RR (msec)', Pre_dose_triplicate_1__RR_msec_form_field_instance,\
-                                         'The RR is not within expected range (654.6 to 1141.4), therefore the Interpretation cant be Normal.', Pre_dose_triplicate_1__RR_msec_pure, 'LE0150']
+                                         'The RR is not within expected range (654.6 to 1141.4), therefore the Interpretation can not be Normal.', Pre_dose_triplicate_1__RR_msec_pure, 'LE0150']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -865,7 +865,7 @@ def lead_ECG(df_root, path_excel_writer):
                         if float(Pre_dose_triplicate_1_Interpretation_pure) == 1.0:
                             if float(Pre_dose_triplicate_1_QRS_msec_pure) < 70.0 or float(Pre_dose_triplicate_1_QRS_msec_pure) > 120.0 :
                                 error = [subject, visit, 'Pre dose triplicate 1, QRS (msec)', Pre_dose_triplicate_1_QRS_msec_form_field_instance ,\
-                                         'The QRS  is not within expected range (70 to 120), therefore the Interpretation cant be Normal.', Pre_dose_triplicate_1_QRS_msec_pure, 'LE0290']
+                                         'The QRS  is not within expected range (70 to 120), therefore the Interpretation can not be Normal.', Pre_dose_triplicate_1_QRS_msec_pure, 'LE0290']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -876,7 +876,7 @@ def lead_ECG(df_root, path_excel_writer):
                         if float(Pre_dose_triplicate_1_Interpretation_pure) == 1.0:
                             if float(Pre_dose_triplicate_1_QT_msec_pure) > 500.0 :
                                 error = [subject, visit, 'Pre dose triplicate 1, QT (msec)', Pre_dose_triplicate_1_QRS_msec_form_field_instance,\
-                                         'The QT is not within expected range (below or equal to 500 msec), therefore the Interpretation cant be Normal.', Pre_dose_triplicate_1_QT_msec_pure, 'LE0360']
+                                         'The QT is not within expected range (below or equal to 500 msec), therefore the Interpretation can not be Normal.', Pre_dose_triplicate_1_QT_msec_pure, 'LE0360']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision LE0360--> {e} - Subject: {subject},  Visit: {visit} ')     
@@ -888,7 +888,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, 'Pre dose triplicate 1, QTcF (msec)', Pre_dose_triplicate_1_QTcF_msec_form_field_instance ,\
-                                        'The QTcF is not within expected range (350 to 450), therefore the Interpretation cant be Normal.', Pre_dose_triplicate_1_QTcF_msec_pure, 'LE0440']
+                                        'The QTcF is not within expected range (350 to 450), therefore the Interpretation can not be Normal.', Pre_dose_triplicate_1_QTcF_msec_pure, 'LE0440']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision LE0440--> {e} - Subject: {subject},  Visit: {visit} ')  
@@ -938,7 +938,7 @@ def lead_ECG(df_root, path_excel_writer):
                         if float(Pre_dose_triplicate_1_Interpretation_pure) == 2.0:
                             if cuenta_validacion_abnormal_predose_1 == 0:
                                 error = [subject, visit, 'Pre dose triplicate 1, interpretation', Pre_dose_triplicate_1_Interpretation_form_field_instance ,\
-                                         'None of the measurements are out of range, the interpretation cant be abnormal', Pre_dose_triplicate_1_Interpretation_pure, 'LE0630']
+                                         'None of the measurements are out of range, the interpretation can not be abnormal', Pre_dose_triplicate_1_Interpretation_pure, 'LE0630']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -965,7 +965,7 @@ def lead_ECG(df_root, path_excel_writer):
                         if float(Pre_dose_triplicate_2_Interpretation_pure) == 1.0:
                             if float(Pre_dose_triplicate_2_RR_msec_pure) < 654.6 or float(Pre_dose_triplicate_2_RR_msec_pure) > 1141.4 :
                                 error = [subject, visit, 'Pre dose triplicate 2, RR (msec)', Pre_dose_triplicate_2_RR_msec_form_field_instance ,\
-                                         'The RR is not within expected range (654.6 to 1141.4), therefore the Interpretation cant be Normal.', Pre_dose_triplicate_2_RR_msec_pure, 'LE0160']
+                                         'The RR is not within expected range (654.6 to 1141.4), therefore the Interpretation can not be Normal.', Pre_dose_triplicate_2_RR_msec_pure, 'LE0160']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -977,7 +977,7 @@ def lead_ECG(df_root, path_excel_writer):
                         if float(Pre_dose_triplicate_2_Interpretation_pure) == 1.0:
                             if float(Pre_dose_triplicate_2_PR_msec_pure) < 120.0 or float(Pre_dose_triplicate_2_PR_msec_pure) > 200.0 :
                                 error = [subject, visit, 'Pre dose triplicate 2, PR (msec)', Pre_dose_triplicate_2_Interpretation_form_field_instance ,\
-                                         'The PR is not within expected range (120 to 200), therefore the Interpretation cant be Normal.', Pre_dose_triplicate_2_Interpretation_pure, 'LE0230']
+                                         'The PR is not within expected range (120 to 200), therefore the Interpretation can not be Normal.', Pre_dose_triplicate_2_Interpretation_pure, 'LE0230']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -988,7 +988,7 @@ def lead_ECG(df_root, path_excel_writer):
                         if float(Pre_dose_triplicate_2_Interpretation_pure) == 1.0:
                             if float(Pre_dose_triplicate_2_QRS_msec_pure) < 70.0 or float(Pre_dose_triplicate_2_QRS_msec_pure) > 120.0 :
                                 error = [subject, visit, 'Pre dose triplicate 2, QRS (msec)', Pre_dose_triplicate_2_QRS_msec_form_field_instance ,\
-                                         'The QRS  is not within expected range (70 to 120), therefore the Interpretation cant be Normal.', Pre_dose_triplicate_2_QRS_msec_pure, 'LE0300']
+                                         'The QRS  is not within expected range (70 to 120), therefore the Interpretation can not be Normal.', Pre_dose_triplicate_2_QRS_msec_pure, 'LE0300']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -999,7 +999,7 @@ def lead_ECG(df_root, path_excel_writer):
                         if float(Pre_dose_triplicate_2_Interpretation_pure) == 1.0:
                             if float(Pre_dose_triplicate_2_QT_msec_pure) > 500.0 :
                                 error = [subject, visit, 'Pre dose triplicate 2, QT (msec)', Pre_dose_triplicate_2_QT_msec_form_field_instance ,\
-                                         'The QT is not within expected range (below or equal to 500 msec), therefore the Interpretation cant be Normal.', Pre_dose_triplicate_2_QT_msec_pure, 'LE0370']
+                                         'The QT is not within expected range (below or equal to 500 msec), therefore the Interpretation can not be Normal.', Pre_dose_triplicate_2_QT_msec_pure, 'LE0370']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1012,7 +1012,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, 'Pre dose triplicate 2, QTcF (msec)', Pre_dose_triplicate_2_QTcF_msec_form_field_instance ,\
-                                        'The QTcF is not within expected range (350 to 450), therefore the Interpretation cant be Normal.', Pre_dose_triplicate_2_QTcF_msec_pure, 'LE0460']
+                                        'The QTcF is not within expected range (350 to 450), therefore the Interpretation can not be Normal.', Pre_dose_triplicate_2_QTcF_msec_pure, 'LE0460']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision LE0460--> {e} - Subject: {subject},  Visit: {visit} ')  
@@ -1062,7 +1062,7 @@ def lead_ECG(df_root, path_excel_writer):
                         if float(Pre_dose_triplicate_2_Interpretation_pure) == 2.0:
                             if cuenta_validacion_abnormal_predose_2 == 0:
                                 error = [subject, visit, 'Pre dose triplicate 2, interpretation', Pre_dose_triplicate_2_Interpretation_form_field_instance ,\
-                                         'None of the measurements are out of range, the interpretation cant be abnormal', Pre_dose_triplicate_2_Interpretation_pure, 'LE0640']
+                                         'None of the measurements are out of range, the interpretation can not be abnormal', Pre_dose_triplicate_2_Interpretation_pure, 'LE0640']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1089,7 +1089,7 @@ def lead_ECG(df_root, path_excel_writer):
                         if float(Pre_dose_triplicate_3_Interpretation_pure) == 1.0:
                             if float(Pre_dose_triplicate_3_RR_msec_pure) < 654.6 or float(Pre_dose_triplicate_3_RR_msec_pure) > 1141.4 :
                                 error = [subject, visit, 'Pre dose triplicate 3, RR (msec)', Pre_dose_triplicate_3_RR_msec_form_field_instance ,\
-                                         'The RR is not within expected range (654.6 to 1141.4), therefore the Interpretation cant be Normal.', Pre_dose_triplicate_3_RR_msec_pure, 'LE0170']
+                                         'The RR is not within expected range (654.6 to 1141.4), therefore the Interpretation can not be Normal.', Pre_dose_triplicate_3_RR_msec_pure, 'LE0170']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1101,7 +1101,7 @@ def lead_ECG(df_root, path_excel_writer):
                         if float(Pre_dose_triplicate_3_Interpretation_pure) == 1.0:
                             if float(Pre_dose_triplicate_3_PR_msec_pure) < 120.0 or float(Pre_dose_triplicate_3_PR_msec_pure) > 200.0 :
                                 error = [subject, visit, 'Pre dose triplicate 3, PR (msec)', Pre_dose_triplicate_3_PR_msec_form_field_instance,\
-                                         'The PR is not within expected range (120 to 200), therefore the Interpretation cant be Normal.', Pre_dose_triplicate_3_PR_msec_pure, 'LE0240']
+                                         'The PR is not within expected range (120 to 200), therefore the Interpretation can not be Normal.', Pre_dose_triplicate_3_PR_msec_pure, 'LE0240']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1112,7 +1112,7 @@ def lead_ECG(df_root, path_excel_writer):
                         if float(Pre_dose_triplicate_3_Interpretation_pure) == 1.0:
                             if float(Pre_dose_triplicate_3_QRS_msec_pure) < 70.0 or float(Pre_dose_triplicate_3_QRS_msec_pure) > 120.0 :
                                 error = [subject, visit, 'Pre dose triplicate 3, QRS (msec)', Pre_dose_triplicate_3_QRS_msec_form_field_instance ,\
-                                         'The QRS  is not within expected range (70 to 120), therefore the Interpretation cant be Normal.', Pre_dose_triplicate_3_QRS_msec_pure, 'LE0310']
+                                         'The QRS  is not within expected range (70 to 120), therefore the Interpretation can not be Normal.', Pre_dose_triplicate_3_QRS_msec_pure, 'LE0310']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1123,7 +1123,7 @@ def lead_ECG(df_root, path_excel_writer):
                         if float(Pre_dose_triplicate_3_Interpretation_pure) == 1.0:
                             if float(Pre_dose_triplicate_3_QT_msec_pure) > 500.0 :
                                 error = [subject, visit, 'Pre dose triplicate 3, QT (msec)', Pre_dose_triplicate_3_QT_msec_form_field_instance ,\
-                                         'The QT is not within expected range (below or equal to 500 msec), therefore the Interpretation cant be Normal.', Pre_dose_triplicate_3_QT_msec_pure, 'LE0380']
+                                         'The QT is not within expected range (below or equal to 500 msec), therefore the Interpretation can not be Normal.', Pre_dose_triplicate_3_QT_msec_pure, 'LE0380']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1136,7 +1136,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, 'Pre dose triplicate 3, QTcF (msec)', Pre_dose_triplicate_3_QTcF_msec_form_field_instance ,\
-                                        'The QTcF is not within expected range (350 to 450), therefore the Interpretation cant be Normal.', Pre_dose_triplicate_3_QTcF_msec_pure, 'LE0480']
+                                        'The QTcF is not within expected range (350 to 450), therefore the Interpretation can not be Normal.', Pre_dose_triplicate_3_QTcF_msec_pure, 'LE0480']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision LE0480--> {e} - Subject: {subject},  Visit: {visit} ')  
@@ -1186,7 +1186,7 @@ def lead_ECG(df_root, path_excel_writer):
                         if float(Pre_dose_triplicate_3_Interpretation_pure) == 2.0:
                             if cuenta_validacion_abnormal_predose_3 == 0:
                                 error = [subject, visit, 'Pre dose triplicate 3, interpretation', Pre_dose_triplicate_3_Interpretation_form_field_instance ,\
-                                         'None of the measurements are out of range, the interpretation cant be abnormal', Pre_dose_triplicate_3_Interpretation_pure, 'LE0650']
+                                         'None of the measurements are out of range, the interpretation can not be abnormal', Pre_dose_triplicate_3_Interpretation_pure, 'LE0650']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1213,7 +1213,7 @@ def lead_ECG(df_root, path_excel_writer):
                         if float(min_15_post_dose_Interpretation_pure) == 1.0:
                             if float(min_15_post_dose_RR_msec_pure) < 654.6 or float(min_15_post_dose_RR_msec_pure) > 1141.4 :
                                 error = [subject, visit, '15-min post dose, RR (msec)', min_15_post_dose_RR_msec_form_field_instance ,\
-                                         'The RR is not within expected range (654.6 to 1141.4), therefore the Interpretation cant be Normal.', min_15_post_dose_RR_msec_pure, 'LE0180']
+                                         'The RR is not within expected range (654.6 to 1141.4), therefore the Interpretation can not be Normal.', min_15_post_dose_RR_msec_pure, 'LE0180']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1225,7 +1225,7 @@ def lead_ECG(df_root, path_excel_writer):
                         if float(min_15_post_dose_Interpretation_pure) == 1.0:
                             if float(min_15_post_dose_PR_msec_pure) < 120.0 or float(min_15_post_dose_PR_msec_pure) > 200.0 :
                                 error = [subject, visit, '15-min post dose, PR (msec)', min_15_post_dose_PR_msec_form_field_instance ,\
-                                         'The PR is not within expected range (120 to 200), therefore the Interpretation cant be Normal.', min_15_post_dose_PR_msec_pure, 'LE0250']
+                                         'The PR is not within expected range (120 to 200), therefore the Interpretation can not be Normal.', min_15_post_dose_PR_msec_pure, 'LE0250']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1236,7 +1236,7 @@ def lead_ECG(df_root, path_excel_writer):
                         if float(min_15_post_dose_Interpretation_pure) == 1.0:
                             if float(min_15_post_dose_QRS_msec_pure) < 70.0 or float(min_15_post_dose_QRS_msec_pure) > 120.0 :
                                 error = [subject, visit, '15-min post dose, QRS (msec)', min_15_post_dose_QRS_msec_form_field_instance ,\
-                                         'The QRS  is not within expected range (70 to 120), therefore the Interpretation cant be Normal.', min_15_post_dose_QRS_msec_pure, 'LE0320']
+                                         'The QRS  is not within expected range (70 to 120), therefore the Interpretation can not be Normal.', min_15_post_dose_QRS_msec_pure, 'LE0320']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1247,7 +1247,7 @@ def lead_ECG(df_root, path_excel_writer):
                         if float(min_15_post_dose_Interpretation_pure) == 1.0:
                             if float(min_15_post_dose_QT_msec_pure) > 500.0 :
                                 error = [subject, visit, '15-min post dose, QRS (msec)', min_15_post_dose_QT_msec_form_field_instance ,\
-                                         'The QT is not within expected range (below or equal to 500 msec), therefore the Interpretation cant be Normal.', min_15_post_dose_QT_msec_pure, 'LE0390']
+                                         'The QT is not within expected range (below or equal to 500 msec), therefore the Interpretation can not be Normal.', min_15_post_dose_QT_msec_pure, 'LE0390']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1260,7 +1260,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '15-min post dose, QTcF (msec)', min_15_post_dose_QTcF_msec_form_field_instance ,\
-                                        'The QTcF is not within expected range (350 to 450), therefore the Interpretation cant be Normal.', min_15_post_dose_QTcF_msec_pure, 'LE0500']
+                                        'The QTcF is not within expected range (350 to 450), therefore the Interpretation can not be Normal.', min_15_post_dose_QTcF_msec_pure, 'LE0500']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision LE0500--> {e} - Subject: {subject},  Visit: {visit} ')  
@@ -1310,7 +1310,7 @@ def lead_ECG(df_root, path_excel_writer):
                         if float(min_15_post_dose_Interpretation_pure) == 2.0:
                             if cuenta_validacion_abnormal_15_min == 0:
                                 error = [subject, visit, '15-min post dose, interpretation', min_15_post_dose_Interpretation_form_field_instance ,\
-                                         'None of the measurements are out of range, the interpretation cant be abnormal', min_15_post_dose_Interpretation_pure, 'LE0660']
+                                         'None of the measurements are out of range, the interpretation can not be abnormal', min_15_post_dose_Interpretation_pure, 'LE0660']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1336,7 +1336,7 @@ def lead_ECG(df_root, path_excel_writer):
                         if float(min_30_post_dose_Interpretation_pure) == 1.0:
                             if float(min_30_post_dose_RR_msec_pure) < 654.6 or float(min_30_post_dose_RR_msec_pure) > 1141.4 :
                                 error = [subject, visit, '30-min post dose, RR (msec)', min_30_post_dose_RR_msec_form_field_instance ,\
-                                         'The RR is not within expected range (654.6 to 1141.4), therefore the Interpretation cant be Normal.', min_30_post_dose_RR_msec_pure, 'LE0190']
+                                         'The RR is not within expected range (654.6 to 1141.4), therefore the Interpretation can not be Normal.', min_30_post_dose_RR_msec_pure, 'LE0190']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1348,7 +1348,7 @@ def lead_ECG(df_root, path_excel_writer):
                         if float(min_30_post_dose_Interpretation_pure) == 1.0:
                             if float(min_30_post_dose_PR_msec_pure) < 120.0 or float(min_30_post_dose_PR_msec_pure) > 200.0 :
                                 error = [subject, visit, '30-min post dose, PR (msec)', min_30_post_dose_PR_msec_form_field_instance,\
-                                         'The PR is not within expected range (120 to 200), therefore the Interpretation cant be Normal.', min_30_post_dose_PR_msec_pure, 'LE0260']
+                                         'The PR is not within expected range (120 to 200), therefore the Interpretation can not be Normal.', min_30_post_dose_PR_msec_pure, 'LE0260']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1359,7 +1359,7 @@ def lead_ECG(df_root, path_excel_writer):
                         if float(min_30_post_dose_Interpretation_pure) == 1.0:
                             if float(min_30_post_dose_QRS_msec_pure) < 70.0 or float(min_30_post_dose_QRS_msec_pure) > 120.0 :
                                 error = [subject, visit, '30-min post dose, QRS (msec)', min_30_post_dose_QRS_msec_form_field_instance ,\
-                                         'The QRS  is not within expected range (70 to 120), therefore the Interpretation cant be Normal.', min_30_post_dose_QRS_msec_pure, 'LE0330']
+                                         'The QRS  is not within expected range (70 to 120), therefore the Interpretation can not be Normal.', min_30_post_dose_QRS_msec_pure, 'LE0330']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1370,7 +1370,7 @@ def lead_ECG(df_root, path_excel_writer):
                         if float(min_30_post_dose_Interpretation_pure) == 1.0:
                             if float(min_30_post_dose_QT_msec_pure) > 500.0 :
                                 error = [subject, visit, '30-min post dose, QRS (msec)', min_30_post_dose_QT_msec_form_field_instance ,\
-                                         'The QT is not within expected range (below or equal to 500 msec), therefore the Interpretation cant be Normal.', min_30_post_dose_QT_msec_pure, 'LE0400']
+                                         'The QT is not within expected range (below or equal to 500 msec), therefore the Interpretation can not be Normal.', min_30_post_dose_QT_msec_pure, 'LE0400']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision LE0400--> {e} - Subject: {subject},  Visit: {visit} ')     
@@ -1382,7 +1382,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '30-min post dose, QTcF (msec)', min_30_post_dose_QTcF_msec_form_field_instance ,\
-                                        'The QTcF is not within expected range (350 to 450), therefore the Interpretation cant be Normal.', min_30_post_dose_QTcF_msec_pure, 'LE0520']
+                                        'The QTcF is not within expected range (350 to 450), therefore the Interpretation can not be Normal.', min_30_post_dose_QTcF_msec_pure, 'LE0520']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision LE0520--> {e} - Subject: {subject},  Visit: {visit} ')  
@@ -1432,7 +1432,7 @@ def lead_ECG(df_root, path_excel_writer):
                         if float(min_30_post_dose_Interpretation_pure) == 2.0:
                             if cuenta_validacion_abnormal_30_min == 0:
                                 error = [subject, visit, '30-min post dose, interpretation', min_30_post_dose_Interpretation_form_field_instance ,\
-                                         'None of the measurements are out of range, the interpretation cant be abnormal', min_30_post_dose_Interpretation_pure, 'LE0670']
+                                         'None of the measurements are out of range, the interpretation can not be abnormal', min_30_post_dose_Interpretation_pure, 'LE0670']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1460,7 +1460,7 @@ def lead_ECG(df_root, path_excel_writer):
                         if float(min_60_post_dose_Interpretation_pure) == 1.0:
                             if float(min_60_post_dose_RR_msec_pure) < 654.6 or float(min_60_post_dose_RR_msec_pure) > 1141.4 :
                                 error = [subject, visit, '60-min post dose, RR (msec)', min_60_post_dose_RR_msec_form_field_instance,\
-                                         'The RR is not within expected range (654.6 to 1141.4), therefore the Interpretation cant be Normal.', min_60_post_dose_RR_msec_pure, 'LE0200']
+                                         'The RR is not within expected range (654.6 to 1141.4), therefore the Interpretation can not be Normal.', min_60_post_dose_RR_msec_pure, 'LE0200']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1472,7 +1472,7 @@ def lead_ECG(df_root, path_excel_writer):
                         if float(min_60_post_dose_Interpretation_pure) == 1.0:
                             if float(min_60_post_dose_PR_msec_pure) < 120.0 or float(min_60_post_dose_PR_msec_pure) > 200.0 :
                                 error = [subject, visit, '60-min post dose, PR (msec)', min_60_post_dose_PR_msec_form_field_instance ,\
-                                         'The PR is not within expected range (120 to 200), therefore the Interpretation cant be Normal.', min_60_post_dose_PR_msec_pure, 'LE0270']
+                                         'The PR is not within expected range (120 to 200), therefore the Interpretation can not be Normal.', min_60_post_dose_PR_msec_pure, 'LE0270']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1483,7 +1483,7 @@ def lead_ECG(df_root, path_excel_writer):
                         if float(min_60_post_dose_Interpretation_pure) == 1.0:
                             if float(min_60_post_dose_QRS_msec_pure) < 70.0 or float(min_60_post_dose_QRS_msec_pure) > 120.0 :
                                 error = [subject, visit, '60-min post dose, QRS (msec)', min_60_post_dose_QRS_msec_form_field_instance ,\
-                                         'The QRS  is not within expected range (70 to 120), therefore the Interpretation cant be Normal.', min_60_post_dose_QRS_msec_pure, 'LE0340']
+                                         'The QRS  is not within expected range (70 to 120), therefore the Interpretation can not be Normal.', min_60_post_dose_QRS_msec_pure, 'LE0340']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1494,7 +1494,7 @@ def lead_ECG(df_root, path_excel_writer):
                         if float(min_60_post_dose_Interpretation_pure) == 1.0:
                             if float(min_60_post_dose_QT_msec_pure) > 500.0 :
                                 error = [subject, visit, '60-min post dose, QRS (msec)', min_60_post_dose_QT_msec_form_field_instance,\
-                                         'The QT is not within expected range (below or equal to 500 msec), therefore the Interpretation cant be Normal.', min_60_post_dose_QT_msec_pure, 'LE0410']
+                                         'The QT is not within expected range (below or equal to 500 msec), therefore the Interpretation can not be Normal.', min_60_post_dose_QT_msec_pure, 'LE0410']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1507,7 +1507,7 @@ def lead_ECG(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, '60-min post dose, QTcF (msec)', min_60_post_dose_QTcF_msec_form_field_instance ,\
-                                        'The QTcF is not within expected range (350 to 450), therefore the Interpretation cant be Normal.', min_60_post_dose_QTcF_msec_pure, 'LE0540']
+                                        'The QTcF is not within expected range (350 to 450), therefore the Interpretation can not be Normal.', min_60_post_dose_QTcF_msec_pure, 'LE0540']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision LE0540--> {e} - Subject: {subject},  Visit: {visit} ')  
@@ -1557,7 +1557,7 @@ def lead_ECG(df_root, path_excel_writer):
                         if float(min_60_post_dose_Interpretation_pure) == 2.0:
                             if cuenta_validacion_abnormal_60_min == 0:
                                 error = [subject, visit, '60-min post dose, interpretation', min_60_post_dose_Interpretation_form_field_instance,\
-                                         'None of the measurements are out of range, the interpretation cant be abnormal', min_60_post_dose_Interpretation_pure, 'LE0680']
+                                         'None of the measurements are out of range, the interpretation can not be abnormal', min_60_post_dose_Interpretation_pure, 'LE0680']
                                 lista_revision.append(error)
 
                     except Exception as e:

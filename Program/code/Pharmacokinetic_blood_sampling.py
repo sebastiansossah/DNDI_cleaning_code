@@ -89,7 +89,7 @@ def Pharmacokinetic_blood_sampling(df_root, path_excel_writer):
                         Was_any_pharmacokinetic_blood_sample_collected_form_field_instance = Was_any_pharmacokinetic_blood_sample_collected.split('|')[1]
                     except Exception as e:
                         Was_any_pharmacokinetic_blood_sample_collected_pure = math.nan
-                        Was_any_pharmacokinetic_blood_sample_collected_form_field_instance = 'This field doesnt have any data'
+                        Was_any_pharmacokinetic_blood_sample_collected_form_field_instance = 'This field does not have any data'
 
                     # try:
                     #     Provide_the_reason = row["Provide the reason"]
@@ -102,7 +102,7 @@ def Pharmacokinetic_blood_sampling(df_root, path_excel_writer):
                         Date_of_blood_sample_collected_form_field_instance = Date_of_blood_sample_collected.split('|')[1]
                     except Exception as e:
                         Date_of_blood_sample_collected_pure = ''
-                        Date_of_blood_sample_collected_form_field_instance = 'This field doesnt have any data'
+                        Date_of_blood_sample_collected_form_field_instance = 'This field does not have any data'
 
                     # try:
                     #     Pre_dose = row["Pre dose"]
@@ -235,7 +235,7 @@ def Pharmacokinetic_blood_sampling(df_root, path_excel_writer):
 
                             if date_of_test_f < date_inform_consent_f:
                                 error = [subject, visit, 'Date of blood sample collected', Date_of_blood_sample_collected_form_field_instance ,\
-                                        'The date of sample collected cant be before the informed consent date', f'{Date_of_blood_sample_collected_pure} - {date_inform_consent}', 'PK0030']
+                                        'The date of sample collected can not be before the informed consent date', f'{Date_of_blood_sample_collected_pure} - {date_inform_consent}', 'PK0030']
                                 lista_revision.append(error)
                             else:
                                 pass

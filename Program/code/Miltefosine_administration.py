@@ -103,7 +103,7 @@ def miltefosine_administration(df_root, path_excel_writer):
                         date_dosing_form_field_instance = date_dosing.split('|')[1]
                     except:
                         date_dosing_pure = ''
-                        date_dosing_form_field_instance = 'This field doesnt have any data'
+                        date_dosing_form_field_instance = 'This field does not have any data'
 
                     try:                    
                         time_dosing = row['Time of Dosing']
@@ -111,7 +111,7 @@ def miltefosine_administration(df_root, path_excel_writer):
                         time_dosing_form_field_instance = time_dosing.split('|')[1]
                     except:
                         time_dosing_pure = ''
-                        time_dosing_form_field_instance = 'This field doesnt have any data'
+                        time_dosing_form_field_instance = 'This field does not have any data'
                     
                     try:
                         dose_mg = row['Dose (mg)']
@@ -119,7 +119,7 @@ def miltefosine_administration(df_root, path_excel_writer):
                         dose_mg_form_field_instance = dose_mg.split('|')[1]
                     except:
                         dose_mg_pure = ''
-                        dose_mg_form_field_instance = 'This field doesnt have any data'
+                        dose_mg_form_field_instance = 'This field does not have any data'
                         
                     try:
                         fasting_status = row['Fasting status']
@@ -127,7 +127,7 @@ def miltefosine_administration(df_root, path_excel_writer):
                         fasting_status_form_field_instance = fasting_status.split('|')[1]
                     except:
                         fasting_status_pure = ''
-                        fasting_status_form_field_instance = 'This field doesnt have any data'
+                        fasting_status_form_field_instance = 'This field does not have any data'
                     
                     try:
                         miltefosine_administration_id = row['Miltefosine Administration ID']
@@ -135,7 +135,7 @@ def miltefosine_administration(df_root, path_excel_writer):
                         miltefosine_administration_id_form_field_instance = miltefosine_administration_id.split('|')[1]
                     except:
                         miltefosine_administration_id_pure = ''
-                        miltefosine_administration_id_form_field_instance = 'This field doesnt have any data'
+                        miltefosine_administration_id_form_field_instance = 'This field does not have any data'
                     
                     try:
                         dosing_event = row['Dosing Event']
@@ -143,7 +143,7 @@ def miltefosine_administration(df_root, path_excel_writer):
                         dosing_event_form_field_instance = dosing_event.split('|')[1]
                     except:
                         dosing_event_pure = ''
-                        dosing_event_form_field_instance = 'This field doesnt have any data'
+                        dosing_event_form_field_instance = 'This field does not have any data'
 
                     try:
                         reason_adjustment = row['Reason for dose adjustment']
@@ -151,7 +151,7 @@ def miltefosine_administration(df_root, path_excel_writer):
                         reason_adjustment_form_field_instance = reason_adjustment.split('|')[1]
                     except:
                         reason_adjustment_pure = ''
-                        reason_adjustment_form_field_instance = 'This field doesnt have any data'
+                        reason_adjustment_form_field_instance = 'This field does not have any data'
                     
                     try:
                         subject_vomited = row['Subject vomited']
@@ -159,7 +159,7 @@ def miltefosine_administration(df_root, path_excel_writer):
                         subject_vomited_form_field_instance = subject_vomited.split('|')[1]
                     except:
                         subject_vomited_pure = ''
-                        subject_vomited_form_field_instance = 'This field doesnt have any data'
+                        subject_vomited_form_field_instance = 'This field does not have any data'
                  #--------------------------------------------------------------------------------------------------------
                     if date_dosing_pure == '':
                         pass
@@ -182,7 +182,7 @@ def miltefosine_administration(df_root, path_excel_writer):
                     try:
                         if date_dosing_pure in date_dosing_historico_list:
                             error = [subject, visit, 'Date of dosing', date_dosing_form_field_instance, \
-                                            'The dosing date cant be repeated', date_dosing_pure, 'ECML0030']
+                                            'The dosing date can not be repeated', date_dosing_pure, 'ECML0030']
                             lista_revision.append(error)
                         else:
                             date_dosing_historico_list.append(date_dosing_pure)
@@ -205,7 +205,7 @@ def miltefosine_administration(df_root, path_excel_writer):
                         if datetime.strptime(str(date_dosing_pure), '%d-%b-%Y') >= datetime.strptime(str(visita_randomization), '%d-%b-%Y'):
                             pass
                         else: 
-                            error = [subject, visit, 'The date/time of dosing cant be before the randomization date/time', \
+                            error = [subject, visit, 'The date/time of dosing can not be before the randomization date/time', \
                                      date_dosing_form_field_instance, \
                                         'The date must not be before the informed consent date', \
                                             f'{date_dosing_pure} - {visita_randomization}', 'ECML0050']
@@ -261,7 +261,7 @@ def miltefosine_administration(df_root, path_excel_writer):
                             if str(date_dosing_pure) == str(fecha_adverse):
                                 pass
                             else: 
-                                error = [subject, visit, 'The date/time of dosing cant be before the randomization date/time', \
+                                error = [subject, visit, 'The date/time of dosing can not be before the randomization date/time', \
                                         date_dosing_form_field_instance, \
                                             'The date must not be before the informed consent date', date_dosing_pure, 'ECML0050']
                                 lista_revision.append(error)

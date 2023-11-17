@@ -370,7 +370,7 @@ def eligibility(df_root, path_excel_writer):
                             if float(subject_eligible_for_study_pure) == 1.0:
                                 if float(age_participant) < 18 or float(age_participant) > 50:
                                     error = [subject, visit, 'Is the subject eligible for the study?', subject_eligible_for_study_form_field_instance, \
-                                            'The Subject cant be eligible because he/she is not between 18 and 50 years old, please review', age_participant, 'IE0220']
+                                            'The Subject can not be eligible because he/she is not between 18 and 50 years old, please review', age_participant, 'IE0220']
                                     lista_revision.append(error)
                                 else:
                                     pass
@@ -382,7 +382,7 @@ def eligibility(df_root, path_excel_writer):
                             if float(subject_eligible_for_study_pure) == 1.0:
                                 if float(covid_result) == 1.0:
                                     error = [subject, visit, 'Is the subject eligible for the study?', subject_eligible_for_study_form_field_instance, \
-                                            'The Subject cant be eligible because he/she had a positive COVID-19 test result, please review', covid_result, 'IE0270']
+                                            'The Subject can not be eligible because he/she had a positive COVID-19 test result, please review', covid_result, 'IE0270']
                                     lista_revision.append(error)
                                 else:
                                     pass
@@ -394,7 +394,7 @@ def eligibility(df_root, path_excel_writer):
                             if float(subject_eligible_for_study_pure) == 1.0:
                                 if float(urinary_test) != 0.0:
                                     error = [subject, visit, 'Is the subject eligible for the study?', subject_eligible_for_study_form_field_instance, \
-                                            'The participant cant be eligible because he/she has trace/positive results in the urinary drug screen', urinary_test, 'IE0350']
+                                            'The participant can not be eligible because he/she has trace/positive results in the urinary drug screen', urinary_test, 'IE0350']
                                     lista_revision.append(error)
                                 else:
                                     pass
@@ -406,7 +406,7 @@ def eligibility(df_root, path_excel_writer):
                             if float(subject_eligible_for_study_pure) == 1.0:
                                 if float(hiv1_result) == 1.0 or float(hiv2_result) == 1.0 or float(hbsag_result) == 1.0  or float(hcv_result) == 1.0:
                                     error = [subject, visit, 'Is the subject eligible for the study?', subject_eligible_for_study_form_field_instance, \
-                                            'The participant cant be eligible because he/she has positive virology results', subject_eligible_for_study_pure, 'IE0441']
+                                            'The participant can not be eligible because he/she has positive virology results', subject_eligible_for_study_pure, 'IE0441']
                                     lista_revision.append(error)
                                 else:
                                     pass
@@ -459,7 +459,7 @@ def eligibility(df_root, path_excel_writer):
                             if float(subject_eligible_for_study_pure) == 1.0:
                                 if float(abnormal_specify) == 2.0:
                                     error = [subject, visit, 'Is the subject eligible for the study?', subject_eligible_for_study_form_field_instance, \
-                                            'The participant has a Clinically significant ECG,he/she should not be eligible for the study', abnormal_specify, 'IE0463']
+                                            'The participant has a Clinically significan not ECG,he/she should not be eligible for the study', abnormal_specify, 'IE0463']
                                     lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision IE0463 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -524,7 +524,7 @@ def eligibility(df_root, path_excel_writer):
                             if float(participant_randomization_pure) == 1.0:
                                 if float(age_participant) < 18.0 or float(age_participant) > 50:
                                     error = [subject, visit, 'Is the participant eligible to randomization?', participant_randomization_form_field_instance, \
-                                            'The Subject cant be eligible because he/she is not between 18 and 50 years old, please review', age_participant, 'IE0210']
+                                            'The Subject can not be eligible because he/she is not between 18 and 50 years old, please review', age_participant, 'IE0210']
                                     lista_revision.append(error)
                                 else:
                                     pass
@@ -536,7 +536,7 @@ def eligibility(df_root, path_excel_writer):
                             if float(participant_randomization_pure) == 1.0:
                                 if float(covid_result) == 1.0:
                                     error = [subject, visit, 'Is the participant eligible to randomization?', participant_randomization_form_field_instance, \
-                                            'The Subject cant be eligible because he/she had a positive COVID-19 test result, please review', covid_result, 'IE0260']
+                                            'The Subject can not be eligible because he/she had a positive COVID-19 test result, please review', covid_result, 'IE0260']
                                     lista_revision.append(error)
                                 else:
                                     pass
@@ -548,7 +548,7 @@ def eligibility(df_root, path_excel_writer):
                             if float(participant_randomization_pure) == 1.0:
                                 if float(hiv1_result) == 1.0 or float(hiv2_result) == 1.0 or float(hbsag_result) == 1.0  or float(hcv_result) == 1.0:
                                     error = [subject, visit, 'Is the participant eligible to randomization?', participant_randomization_form_field_instance, \
-                                            'The participant cant be eligible because he/she has positive virology results', participant_randomization_pure, 'IE0440']
+                                            'The participant can not be eligible because he/she has positive virology results', participant_randomization_pure, 'IE0440']
                                     lista_revision.append(error)
                                 else:
                                     pass
@@ -602,7 +602,7 @@ def eligibility(df_root, path_excel_writer):
                             if float(participant_randomization_pure) == 1.0:
                                 if float(abnormal_specify) == 2.0:
                                     error = [subject, visit, 'Is the participant eligible to randomization?', participant_randomization_form_field_instance, \
-                                            'The participant has a Clinically significant ECG,he/she should not be eligible for randomization', abnormal_specify, 'IE0462']
+                                            'The participant has a Clinically significan not ECG,he/she should not be eligible for randomization', abnormal_specify, 'IE0462']
                                     lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision IE0462 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -656,7 +656,7 @@ def eligibility(df_root, path_excel_writer):
                         if float(subject_eligible_for_study_pure) == 1.0:
                             if float(vein_assesment) == 0.0:
                                 error = [subject, visit, 'Is the subject eligible for the study?', subject_eligible_for_study_form_field_instance, \
-                                         'The participant cant be eligible because he/she doesnt have suitable veins for multiple venepunctures/cannulations found (Vein assessment)', vein_assesment, 'IE0310']
+                                         'The participant can not be eligible because he/she doesnt have suitable veins for multiple venepunctures/cannulations found (Vein assessment)', vein_assesment, 'IE0310']
                                 lista_revision.append(error)
                             else:
                                 pass

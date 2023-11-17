@@ -93,7 +93,7 @@ def injection_site_examination(df_root, path_excel_writer):
                         was_injection_performed_form_field_instance = was_injection_performed.split('|')[1]
                     except Exception as e:
                         was_injection_performed_pure = math.nan
-                        was_injection_performed_form_field_instance = 'This field doesnt have any data'
+                        was_injection_performed_form_field_instance = 'This field does not have any data'
 
                     try:
                         provide_the_reason = row['Provide the reason']
@@ -101,7 +101,7 @@ def injection_site_examination(df_root, path_excel_writer):
                         provide_the_reason_form_field_instance = provide_the_reason.split('|')[1]
                     except Exception as e:
                         provide_the_reason_pure = ''
-                        provide_the_reason_form_field_instance = 'This field doesnt have any data'
+                        provide_the_reason_form_field_instance = 'This field does not have any data'
 
                     try:
                         date_injection = row['Date of the Injection site examination']
@@ -109,7 +109,7 @@ def injection_site_examination(df_root, path_excel_writer):
                         date_injection_form_field_instace = date_injection.split('|')[1]
                     except Exception as e:
                         date_injection_pure = ''
-                        date_injection_form_field_instace = 'This field doesnt have any data'
+                        date_injection_form_field_instace = 'This field does not have any data'
 
                     try:
                         predose_injection_site = row['Predose, Injection site']
@@ -117,7 +117,7 @@ def injection_site_examination(df_root, path_excel_writer):
                         predose_injection_site_form_field_instance = predose_injection_site.split('|')[1]
                     except Exception as e:
                         predose_injection_site_pure = math.nan
-                        predose_injection_site_form_field_instance = 'This field doesnt have any data'
+                        predose_injection_site_form_field_instance = 'This field does not have any data'
 
                     try:
                         post_dose_2_hours = row['2-hours post dose, Injection site']
@@ -125,7 +125,7 @@ def injection_site_examination(df_root, path_excel_writer):
                         post_dose_2_hours_form_field_instance = post_dose_2_hours.split('|')[1]
                     except Exception as e:
                         post_dose_2_hours_pure = math.nan
-                        post_dose_2_hours_form_field_instance = 'This field doesnt have any data'
+                        post_dose_2_hours_form_field_instance = 'This field does not have any data'
                         
                     try:
                         post_dose_4_hours = row['4-hours post dose, Injection site']
@@ -133,7 +133,7 @@ def injection_site_examination(df_root, path_excel_writer):
                         post_dose_4_hours_form_field_instance = post_dose_4_hours.split('|')[1]
                     except Exception as e:
                         post_dose_4_hours_pure = math.nan
-                        post_dose_4_hours_form_field_instance = 'This field doesnt have any data'
+                        post_dose_4_hours_form_field_instance = 'This field does not have any data'
 
                     try:
                         post_dose_8_hours = row['8-hours post dose, Injection site']
@@ -141,7 +141,7 @@ def injection_site_examination(df_root, path_excel_writer):
                         post_dose_8_hours_form_field_instance = post_dose_8_hours.split('|')[1]
                     except Exception as e:
                         post_dose_8_hours_pure = math.nan
-                        post_dose_8_hours_form_field_instance = 'This field doesnt have any data'
+                        post_dose_8_hours_form_field_instance = 'This field does not have any data'
 
                     # ---------------------------------------------------------------------------------------------
                     # Revision GE0070

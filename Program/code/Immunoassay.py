@@ -90,7 +90,7 @@ def immunoassay(df_root, path_excel_writer):
                         blood_sample_collected_form_field_instance = blood_sample_collected.split('|')[1]
                     except Exception as e:
                         blood_sample_collected_pure = math.nan  
-                        blood_sample_collected_form_field_instance  = 'This field doesnt have any data'
+                        blood_sample_collected_form_field_instance  = 'This field does not have any data'
 
                     try:
                         date_collected = row['Date Sample Collected']
@@ -98,7 +98,7 @@ def immunoassay(df_root, path_excel_writer):
                         date_collected_form_field_instance = date_collected.split('|')[1]
                     except Exception as e:
                         date_collected_pure = ''
-                        date_collected_form_field_instance = 'This field doesnt have any data'
+                        date_collected_form_field_instance = 'This field does not have any data'
 
                     try:
                         provide_reason = row['Provide the reason']
@@ -106,7 +106,7 @@ def immunoassay(df_root, path_excel_writer):
                         provide_reason_form_field_instance = provide_reason.split('|')[1]
                     except Exception as e:
                         provide_reason_pure = math.nan  
-                        provide_reason_form_field_instance = 'This field doesnt have any data'
+                        provide_reason_form_field_instance = 'This field does not have any data'
 
                     try:
                         TSH = row['TSH']
@@ -114,7 +114,7 @@ def immunoassay(df_root, path_excel_writer):
                         TSH_form_field_instance = TSH.split('|')[1]
                     except Exception as e:
                         TSH_pure = math.nan  
-                        TSH_form_field_instance = 'This field doesnt have any data'
+                        TSH_form_field_instance = 'This field does not have any data'
 
                     try:
                         TSH_specify = row['TSH, If abnormal, Specify']
@@ -122,7 +122,7 @@ def immunoassay(df_root, path_excel_writer):
                         TSH_specify_form_field_instnace = TSH_specify.split('|')[1]
                     except Exception as e:
                         TSH_specify_pure = math.nan  
-                        TSH_specify_form_field_instnace = 'This field doesnt have any data'
+                        TSH_specify_form_field_instnace = 'This field does not have any data'
 
                     try:
                         TSH_out_normal = row['TSH, Out of normal range?']
@@ -130,7 +130,7 @@ def immunoassay(df_root, path_excel_writer):
                         TSH_out_normal_form_field_instance = TSH_out_normal.split('|')[1]
                     except Exception as e:
                         TSH_out_normal_pure = math.nan  
-                        TSH_out_normal_form_field_instance = 'This field doesnt have any data'
+                        TSH_out_normal_form_field_instance = 'This field does not have any data'
 
                     try:
                         TSH_result = row['TSH, Result (uIU/mL)']
@@ -138,7 +138,7 @@ def immunoassay(df_root, path_excel_writer):
                         TSH_result_form_field_instance = TSH_result.split('|')[1]
                     except Exception as e:
                         TSH_result_pure = math.nan  
-                        TSH_result_form_field_instance = 'This field doesnt have any data'
+                        TSH_result_form_field_instance = 'This field does not have any data'
 
                     # -----------------------------------------------------------------------------------------------------------------
 
@@ -188,7 +188,7 @@ def immunoassay(df_root, path_excel_writer):
 
                             if date_collected_f < date_inform_consent_f:
                                 error = [subject, visit, 'Date Sample Collected', date_collected_form_field_instance, \
-                                        'The date/time of test performed cant be before the informed consent date/time',\
+                                        'The date/time of test performed can not be before the informed consent date/time',\
                                             f'{date_collected_pure} - {date_inform_consent}', 'IM0020']
                                 lista_revision.append(error)
                             else:
@@ -211,7 +211,7 @@ def immunoassay(df_root, path_excel_writer):
                     try:
                         if float(blood_sample_collected_pure) == 1.0 and float(TSH_pure) == 0.0:
                             error = [subject, visit, 'TSH', TSH_form_field_instance, \
-                                     'It doesnt seem right that the TSH was not done but the sample was collected, please review', \
+                                     'It does not seem right that the TSH was not done but the sample was collected, please review', \
                                         f'{blood_sample_collected_pure} - {TSH_pure}', 'IM0050']
                             lista_revision.append(error)
                         else:

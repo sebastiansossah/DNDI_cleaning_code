@@ -77,7 +77,7 @@ def demographic(df_root, path_excel_writer):
                         birth_year_form_field_instance = birth_year.split('|')[1]
                     except:
                         birth_year = ''
-                        birth_year_form_field_instance = 'This field doesnt have any data'
+                        birth_year_form_field_instance = 'This field does not have any data'
                     
                     try:
                         age_at_consent =  row['Age at consent']
@@ -85,7 +85,7 @@ def demographic(df_root, path_excel_writer):
                         age_at_consent_form_field_instance = age_at_consent.split('|')[1]   
                     except:
                         age_at_consent_pure = ''
-                        age_at_consent_form_field_instance = 'This field doesnt have any data'
+                        age_at_consent_form_field_instance = 'This field does not have any data'
                     
                     try:
                         año_visita = row['Valor'].split('-')[2]
@@ -99,7 +99,7 @@ def demographic(df_root, path_excel_writer):
                         if age_at_consent_pure >= año_calculado -1 and age_at_consent_pure <= año_calculado + 1:
                             pass
                         else:
-                            error = [subject, visit, 'Age at consent', age_at_consent_form_field_instance ,'The subject AGE at consent doesnt match the AGE according to the month and year of birth' ,\
+                            error = [subject, visit, 'Age at consent', age_at_consent_form_field_instance ,'The subject AGE at consent does not match the AGE according to the month and year of birth' ,\
                                       f'{age_at_consent_pure} - {año_calculado}', 'DM0030']
                             lista_revision.append(error)
                     except Exception as e:

@@ -96,7 +96,7 @@ def end_of_study(df_root, path_excel_writer):
                 date_last_treatment_administration_miltefosine_form_field_instance = date_last_treatment_administration_miltefosine.split('|')[1]
             except:
                 date_last_treatment_administration_miltefosine_pure = ''
-                date_last_treatment_administration_miltefosine_form_field_instance = 'This field doesnt have any data'
+                date_last_treatment_administration_miltefosine_form_field_instance = 'This field does not have any data'
 
             try:
                 was_study_treatment_complited_protocol_miltefosine = row[next(filter(lambda x: x.split('|')[1] == 'DSMILCMP', columnas_dataset))]          
@@ -104,7 +104,7 @@ def end_of_study(df_root, path_excel_writer):
                 was_study_treatment_complited_protocol_miltefosine_form_field_instance = was_study_treatment_complited_protocol_miltefosine.split('|')[1]
             except:
                 was_study_treatment_complited_protocol_miltefosine_pure = math.nan
-                was_study_treatment_complited_protocol_miltefosine_form_field_instance = 'This field doesnt have any data'
+                was_study_treatment_complited_protocol_miltefosine_form_field_instance = 'This field does not have any data'
 
             try:
                 primary_reason_not_completing_miltefosine = row[next(filter(lambda x: x.split('|')[1] == 'DSMILCAT', columnas_dataset))]
@@ -112,7 +112,7 @@ def end_of_study(df_root, path_excel_writer):
                 primary_reason_not_completing_miltefosine_form_field_instance = primary_reason_not_completing_miltefosine.split('|')[1]
             except:
                 primary_reason_not_completing_miltefosine_pure = math.nan
-                primary_reason_not_completing_miltefosine_form_field_instance = 'This field doesnt have any data'
+                primary_reason_not_completing_miltefosine_form_field_instance = 'This field does not have any data'
             
             # --------------------------------------------------------------------------------------
             try:
@@ -121,7 +121,7 @@ def end_of_study(df_root, path_excel_writer):
                 date_last_treatment_administration_CPG_form_field_instance = date_last_treatment_administration_CPG.split('|')[1]
             except:
                 date_last_treatment_administration_CPG_pure = ''
-                date_last_treatment_administration_CPG_form_field_instance = 'This field doesnt have any data'
+                date_last_treatment_administration_CPG_form_field_instance = 'This field does not have any data'
             
             try:
                 was_study_treatment_complited_protocol_CPG = row[next(filter(lambda x: x.split('|')[1] == 'DSCPGCMP', columnas_dataset))]
@@ -129,7 +129,7 @@ def end_of_study(df_root, path_excel_writer):
                 was_study_treatment_complited_protocol_CPG_form_field_instance = was_study_treatment_complited_protocol_CPG.split('|')[1]
             except:
                 was_study_treatment_complited_protocol_CPG_pure = math.nan
-                was_study_treatment_complited_protocol_CPG_form_field_instance = 'This field doesnt have any data'
+                was_study_treatment_complited_protocol_CPG_form_field_instance = 'This field does not have any data'
             
             try:
                 primary_reason_not_completing_CPG =  row[next(filter(lambda x: x.split('|')[1] == 'DSCPGCAT', columnas_dataset))]
@@ -137,7 +137,7 @@ def end_of_study(df_root, path_excel_writer):
                 primary_reason_not_completing_CPG_form_field_instance = primary_reason_not_completing_CPG.split('|')[1]
             except:
                 primary_reason_not_completing_CPG_pure = math.nan
-                primary_reason_not_completing_CPG_form_field_instance = 'This field doesnt have any data'
+                primary_reason_not_completing_CPG_form_field_instance = 'This field does not have any data'
             # --------------------------------------------------------------------------------------
             try:
                 end_of_study_date_general = row[next(filter(lambda x: x.split('|')[1] == 'DSDAT', columnas_dataset))]
@@ -145,7 +145,7 @@ def end_of_study(df_root, path_excel_writer):
                 end_of_study_date_general_form_field_instance = end_of_study_date_general.split('|')[1]
             except:
                 end_of_study_date_general_pure = ''
-                end_of_study_date_general_form_field_instance = 'This field doesnt have any data'
+                end_of_study_date_general_form_field_instance = 'This field does not have any data'
             
             try:
                 did_participant_complete_study = row[next(filter(lambda x: x.split('|')[1] == 'DSSTCMP', columnas_dataset))]
@@ -153,7 +153,7 @@ def end_of_study(df_root, path_excel_writer):
                 did_participant_complete_study_form_field_instance = did_participant_complete_study.split('|')[1]
             except:
                 did_participant_complete_study_pure = math.nan
-                did_participant_complete_study_form_field_instance = 'This field doesnt have any data'
+                did_participant_complete_study_form_field_instance = 'This field does not have any data'
             
             try:
                 primary_reason_not_completing_general = row[next(filter(lambda x: x.split('|')[1] == 'DSCAT', columnas_dataset))]
@@ -161,7 +161,7 @@ def end_of_study(df_root, path_excel_writer):
                 primary_reason_not_completing_general_form_field_instance = primary_reason_not_completing_general.split('|')[1]
             except:
                 primary_reason_not_completing_general_pure = math.nan
-                primary_reason_not_completing_general_form_field_instance = 'This field doesnt have any data'
+                primary_reason_not_completing_general_form_field_instance = 'This field does not have any data'
 
             # --------------------------------------------------------------------------------------------------------------------------------------------------
             if date_last_treatment_administration_miltefosine_pure == '':
@@ -217,7 +217,7 @@ def end_of_study(df_root, path_excel_writer):
             try:
                 if datetime.strptime(str(end_of_study_date_general_pure), '%d-%b-%Y') <= datetime.strptime(str(inform_consent_date), '%d-%b-%Y'):
                     error = [subject, visit, 'End of study/Early withdrawal date', end_of_study_date_general_form_field_instance, \
-                            'End of study/Early withdrawal date cant be before the informed consent date', \
+                            'End of study/Early withdrawal date can not be before the informed consent date', \
                                 end_of_study_date_general_pure, 'ES0030']
                     lista_revision.append(error)
             except Exception as e:
@@ -298,7 +298,7 @@ def end_of_study(df_root, path_excel_writer):
                         pass
                     else:
                         error = [subject, visit, 'Was the study treatment completed per protocol? (CpG ODN D35)', was_study_treatment_complited_protocol_CPG_form_field_instance, \
-                            'According to the CpG ODN D35 administration form, where there is a dosing event selected as "Permanently discontinued". the subject cant have completed the treatment per protocol', \
+                            'According to the CpG ODN D35 administration form, where there is a dosing event selected as "Permanently discontinued". the subject can not have completed the treatment per protocol', \
                             was_study_treatment_complited_protocol_CPG_pure, 'ES0210']
                         lista_revision.append(error)
             except Exception as e:
@@ -322,7 +322,7 @@ def end_of_study(df_root, path_excel_writer):
                         pass
                     else:
                         error = [subject, visit, 'Was the study treatment completed per protocol? (Miltefosine)', was_study_treatment_complited_protocol_miltefosine_form_field_instance, \
-                            'According to the Miltefosine administration form, where there is a dosing event selected as "Permanently discontinued". the subject cant have completed the treatment per protocol', \
+                            'According to the Miltefosine administration form, where there is a dosing event selected as "Permanently discontinued". the subject can not have completed the treatment per protocol', \
                             was_study_treatment_complited_protocol_miltefosine_pure, 'ES0230']
                         lista_revision.append(error)
             except Exception as e:

@@ -147,7 +147,7 @@ def adminsitration_CpG_ODN(df_root, path_excel_writer):
                             pass
                         else: 
                             error = [subject, visit, 'Date of dosing', date_dosing_form_field_instance, \
-                                        'The date/time of dosing cant be before the informed consent date/time', date_dosing_pure, 'IMP0040']
+                                        'The date/time of dosing can not  be before the informed consent date/time', date_dosing_pure, 'IMP0040']
                             lista_revision.append(error)
                     except Exception as e:
                             lista_logs.append(f'Revision IMP0040 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -159,7 +159,7 @@ def adminsitration_CpG_ODN(df_root, path_excel_writer):
                         else: 
                             error = [subject, visit, 'Date of dosing', \
                                      date_dosing_form_field_instance, \
-                                        'The date/time of dosing cant be before the randomization date/time', \
+                                        'The date/time of dosing can not  be before the randomization date/time', \
                                             f'{date_dosing_pure} - {visita_randomization}', 'IMP0050']
                             lista_revision.append(error)
                     except Exception as e:
@@ -173,7 +173,7 @@ def adminsitration_CpG_ODN(df_root, path_excel_writer):
                             if date_dosing_pure in date_dosing_list_review:
                                 error = [subject, visit, 'Date of dosing', \
                                         date_dosing_form_field_instance, \
-                                        'The dosing date cant be repeated', date_dosing_pure, 'IMP0060']
+                                        'The dosing date can not  be repeated', date_dosing_pure, 'IMP0060']
                                 lista_revision.append(error)
                             else: 
                                 date_dosing_list_review.append(date_dosing_pure)

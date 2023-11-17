@@ -137,7 +137,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                         concomitant_medication_id_form_field_instance = concomitant_medication_id.split('|')[1]
                     except:
                         concomitant_medication_id_pure = ''
-                        concomitant_medication_id_form_field_instance = 'This field doesnt have any data'
+                        concomitant_medication_id_form_field_instance = 'This field does not have any data'
                     
                     try:
                         drug_name = row['Drug Name']
@@ -145,7 +145,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                         drug_name_form_field_instance = drug_name.split('|')[1]
                     except:
                         drug_name_pure = ''
-                        drug_name_form_field_instance = 'This field doesnt have any data'
+                        drug_name_form_field_instance = 'This field does not have any data'
                     
                     try:
                         adverse_event_id = row['Adverse Event ID']
@@ -153,7 +153,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                         adverse_event_id_form_field_instance = adverse_event_id.split('|')[1]
                     except:
                         adverse_event_id_pure = ''
-                        adverse_event_id_form_field_instance = 'This field doesnt have any data'
+                        adverse_event_id_form_field_instance = 'This field does not have any data'
                         
                     try:
                         indication = row['Indication']
@@ -161,7 +161,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                         indication_form_field_instance = indication.split('|')[1]
                     except:
                         indication_pure = ''
-                        indication_form_field_instance = 'This field doesnt have any data'
+                        indication_form_field_instance = 'This field does not have any data'
                     
                     try:
                         indication_category = row['Indication Category']
@@ -169,7 +169,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                         indication_category_form_field_instance = indication_category.split('|')[1]
                     except:
                         indication_category_pure = ''
-                        indication_category_form_field_instance = 'This field doesnt have any data'
+                        indication_category_form_field_instance = 'This field does not have any data'
                     
                     try:
                         dose_per_administration = row['Dose per Administration']
@@ -177,7 +177,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                         dose_per_administration_form_field_instance = dose_per_administration.split('|')[1]
                     except:
                         dose_per_administration_pure = ''
-                        dose_per_administration_form_field_instance = 'This field doesnt have any data'
+                        dose_per_administration_form_field_instance = 'This field does not have any data'
                     
                     try:
                         unit = row['Unit']
@@ -185,7 +185,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                         unit_form_field_instance = unit.split('|')[1]
                     except:
                         unit_pure = ''
-                        unit_form_field_instance = 'This field doesnt have any data'
+                        unit_form_field_instance = 'This field does not have any data'
                     
                     try:
                         frequency = row['Frequency']
@@ -193,7 +193,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                         frequency_form_field_instance = frequency.split('|')[1]
                     except:
                         frequency_pure = ''
-                        frequency_form_field_instance = 'This field doesnt have any data'
+                        frequency_form_field_instance = 'This field does not have any data'
                     
                     try:
                         route = row['Route']
@@ -201,7 +201,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                         route_form_field_instance = route.split('|')[1]
                     except:
                         route_pure = ''
-                        route_form_field_instance = 'This field doesnt have any data'
+                        route_form_field_instance = 'This field does not have any data'
                     
                     try:
                         start_date = row['Start date']
@@ -209,7 +209,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                         start_date_form_field_instance = start_date.split('|')[1]
                     except:
                         start_date_pure = ''
-                        start_date_form_field_instance = 'This field doesnt have any data'
+                        start_date_form_field_instance = 'This field does not have any data'
 
                     try:
                         end_date = row['End date']
@@ -217,7 +217,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                         end_date_form_field_instance = end_date.split('|')[1]
                     except:
                         end_date_pure = ''
-                        end_date_form_field_instance = 'This field doesnt have any data'
+                        end_date_form_field_instance = 'This field does not have any data'
 
                     try:
                         ongoing = row['Ongoing']
@@ -225,7 +225,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                         ongoing_form_field_instance = ongoing.split('|')[1]
                     except:
                         ongoing_pure = ''
-                        ongoing_form_field_instance = 'This field doesnt have any data'
+                        ongoing_form_field_instance = 'This field does not have any data'
                     
                     try:
                         rescue_medication = row['Rescue Medication']
@@ -233,7 +233,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                         rescue_medication_form_field_instance = rescue_medication.split('|')[1]
                     except:
                         rescue_medication_pure = ''
-                        rescue_medication_form_field_instance = 'This field doesnt have any data'
+                        rescue_medication_form_field_instance = 'This field does not have any data'
                     
                     try:
                         aditional_adverse_event = row['Aditional Adverse Event ID']
@@ -241,7 +241,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                         aditional_adverse_event_form_field_instance = aditional_adverse_event.split('|')[1]
                     except:
                         aditional_adverse_event_pure = ''
-                        aditional_adverse_event_form_field_instance = 'This field doesnt have any data'
+                        aditional_adverse_event_form_field_instance = 'This field does not have any data'
                     
                     # -------------------------------------------------------------------------------------------
 
@@ -280,7 +280,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                     try:
                         if concomitant_medication_id_pure in concomitant_medication_id_review:
                             error =  [subject, visit, 'Concomitant Medication ID', concomitant_medication_id_form_field_instance, \
-                                        'This value should be unique, it cant be repeated', \
+                                        'This value should be unique, it can not be repeated', \
                                             concomitant_medication_id_pure, 'CM0010']
                             lista_revision.append(error)
                         else:
@@ -295,7 +295,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
 
                         if tuple_to_compare in list_of_tuples_name_medication_dates:
                             error =  [subject, visit, 'Drug Name', drug_name_form_field_instance, \
-                                        'This value should be unique, it cant be repeated', \
+                                        'This value should be unique, it can not be repeated', \
                                             drug_name_pure, 'CM0020']
                             lista_revision.append(error)
                         else:
@@ -411,7 +411,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                         days_to_validate = datetime.strptime(str(end_date_pure), '%d-%b-%Y') - datetime.strptime(str(inform_consent_date), '%d-%b-%Y')
                         if days_to_validate > 56 or days_to_validate < -56:
                             error = [subject, visit, 'End date', end_date_form_field_instance, \
-                                        'The end date cant be more than 8 weeks before the inform consent date', end_date_pure, 'CM0160']
+                                        'The end date can not be more than 8 weeks before the inform consent date', end_date_pure, 'CM0160']
                             lista_revision.append(error)
                     except Exception as e:
                             lista_logs.append(f'Revision CM0160 --> {e} - Subject: {subject},  Visit: {visit} ')

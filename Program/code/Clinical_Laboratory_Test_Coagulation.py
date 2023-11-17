@@ -92,7 +92,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                         blood_sample_collected_form_field_instance = blood_sample_collected.split('|')[1]
                     except Exception as e:
                         blood_sample_collected_pure = math.nan
-                        blood_sample_collected_form_field_instance = 'This field doesnt have any data'
+                        blood_sample_collected_form_field_instance = 'This field does not have any data'
 
                     try:
                         date_collected = row['Date Collected']
@@ -100,7 +100,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                         date_collected_form_field_instance = date_collected.split('|')[1] 
                     except Exception as e:
                         date_collected_pure = ''
-                        blood_sample_collected_form_field_instance = 'This field doesnt have any data'
+                        blood_sample_collected_form_field_instance = 'This field does not have any data'
 
                     # try:
                     #     provide_reason = row['Provide the reason']
@@ -113,7 +113,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                         INR_form_field_instance = INR.split('|')[1]
                     except Exception as e:
                         INR_pure = math.nan
-                        INR_form_field_instance = 'This field doesnt have any data'
+                        INR_form_field_instance = 'This field does not have any data'
 
                     # try:
                     #     INR_specify = row['INR, If abnormal, Specify']
@@ -126,7 +126,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                         INR_out_normal_range_form_field_instance = INR_out_normal_range.split('|')[1]
                     except Exception as e:
                         INR_out_normal_range_pure = math.nan
-                        INR_out_normal_range_form_field_instance = 'This field doesnt have any data'
+                        INR_out_normal_range_form_field_instance = 'This field does not have any data'
 
                     try:
                         INR_result = row['INR, Result']
@@ -134,7 +134,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                         INR_result_form_field_instance = INR_result.split('|')[1]
                     except Exception as e:
                         INR_result_pure = ''
-                        INR_result_form_field_instance = 'This field doesnt have any data'
+                        INR_result_form_field_instance = 'This field does not have any data'
 
                     try:
                         PT = row['PT']
@@ -142,7 +142,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                         PT_form_field_isntance = PT.split('|')[1]
                     except Exception as e:
                         PT_pure = math.nan
-                        PT_form_field_isntance = 'This field doesnt have any data'
+                        PT_form_field_isntance = 'This field does not have any data'
 
                     # try:
                     #     PT_specify = row['PT, If abnormal, Specify']
@@ -155,7 +155,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                         PT_out_normal_range_form_field_instance = PT_out_normal_range.split('|')[1]
                     except Exception as e:
                         PT_out_normal_range_pure = math.nan
-                        PT_out_normal_range_form_field_instance   = 'This field doesnt have any data'
+                        PT_out_normal_range_form_field_instance   = 'This field does not have any data'
 
                     try:
                         PT_result = row['PT, Result (Seconds)']
@@ -163,7 +163,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                         PT_result_form_field_instance = PT_result.split('|')[1]
                     except Exception as e:
                         PT_result_pure = math.nan     
-                        PT_result_form_field_instance = 'This field doesnt have any data'
+                        PT_result_form_field_instance = 'This field does not have any data'
 
                     try:
                         aPTT = row['aPTT']
@@ -171,7 +171,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                         aPTT_form_field_instance = aPTT.split('|')[1]
                     except Exception as e:
                         aPTT_pure = math.nan
-                        aPTT_form_field_instance = 'This field doesnt have any data'
+                        aPTT_form_field_instance = 'This field does not have any data'
 
                     # try:
                     #     aPTT_specify = row['aPTT, If abnormal, Specify']
@@ -184,7 +184,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                         aPTT_out_normal_range_form_field_instance = aPTT_out_normal_range.split('|')[1]
                     except Exception as e:
                         aPTT_out_normal_range_pure = math.nan
-                        aPTT_out_normal_range_form_field_instance = 'This field doesnt have any data'
+                        aPTT_out_normal_range_form_field_instance = 'This field does not have any data'
 
                     try:
                         aPTT_result = row['aPTT, Result (Seconds)']
@@ -192,7 +192,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                         aPTT_result_form_field_instance = aPTT_result.split('|')[1]
                     except Exception as e:
                         aPTT_result_pure = math.nan
-                        aPTT_result_form_field_instance = 'This field doesnt have any data'
+                        aPTT_result_form_field_instance = 'This field does not have any data'
 
                     # ------------------------------------------------------------------------------------------------------------
                     # Revision GE0070
@@ -241,7 +241,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
 
                             if date_collected_f < date_inform_consent_f:
                                 error = [subject, visit, 'Date Collected', date_collected_pure,\
-                                        'The date/time of test performed cant be before the informed consent date/time',\
+                                        'The date/time of test performed can not be before the informed consent date/time',\
                                             f'{date_collected_pure} - {date_inform_consent}', 'LBO0020']
                                 lista_revision.append(error)
                             else:

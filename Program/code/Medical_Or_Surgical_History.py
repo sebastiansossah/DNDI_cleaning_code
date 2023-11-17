@@ -77,7 +77,7 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
                         any_relevant_medical_form_field_instance = any_relevant_medical.split('|')[1]
                     except:
                         any_relevant_medical_pure = math.nan
-                        any_relevant_medical_form_field_instance = 'This field doesnt have any data'
+                        any_relevant_medical_form_field_instance = 'This field does not have any data'
                     
                     try:
                         medical_surgical = row['Medical/Surgical History/Current Condition']
@@ -85,7 +85,7 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
                         medical_surgical_form_field_instance = medical_surgical.split('|')[1]
                     except Exception as e:
                         medical_surgical_pure = math.nan
-                        medical_surgical_form_field_instance = 'This field doesnt have any data'
+                        medical_surgical_form_field_instance = 'This field does not have any data'
 
                     try:
                         onset_date = row['Onset Date/First Diagnosis/Surgery']
@@ -93,7 +93,7 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
                         onset_date_form_field_instance = onset_date.split('|')[1]
                     except Exception as e:
                         onset_date_pure = ''
-                        onset_date_form_field_instance = 'This field doesnt have any data'
+                        onset_date_form_field_instance = 'This field does not have any data'
 
                     try:
                         end_date = row['End Date']
@@ -101,7 +101,7 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
                         end_date_form_field_instance = end_date.split('|')[1]
                     except Exception as e:
                         end_date_pure = ''
-                        end_date_form_field_instance = 'This field doesnt have any data'
+                        end_date_form_field_instance = 'This field does not have any data'
 
                     # condition_ongoing = ''
                     # severity = ''
