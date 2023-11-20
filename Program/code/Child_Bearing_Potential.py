@@ -46,6 +46,31 @@ def child_bearing_potential(df_root, path_excel_writer):
     df_visit_done = df_visit_done[['Visit','Participante','Valor_completo']]
     df_visit_done = df_visit_done.rename(columns={'Participante':'Subject', 'Valor_completo':'was_DV_performed'})
 
+    df_contraception = df_root[df_root['name']== 'Prior And Concomitant Medications']
+    df_contraception = df_contraception[['Visit','Participante', 'Campo', 'Valor', 'Instancia']]
+    df_contraception = df_contraception.sort_values(by=['FormFieldInstance Id'])
+    df_contraception = df_contraception.reset_index(drop=True)
+    date_indices = df_contraception.index[df_contraception['Campo'] == 'Concomitant Medication ID'].tolist()
+    subdatasets = [df_contraception.iloc[start:end] for start, end in zip(date_indices, date_indices[1:] + [None])]
+    df_to_join = pd.DataFrame()
+    for sub in subdatasets:
+        #if sub['Valor'].tolist()  in [5, 5.0, '5', '5.0', 9]:
+        if len([float(x) for x in sub['Valor'].tolist() if x in [5, 5.0, '5', '5.0', 9]]) != 0:
+            df_to_join = sub[(sub['Campo'] == 'Indication Category') | (sub['Campo'] == 'Start date')]
+            sujeto = df_to_join.Participante.unique()
+            df_to_join = df_to_join[['Campo', 'Valor']].T
+            new_columns = df_to_join.iloc[0]
+            df_to_join = df_to_join[1:].set_axis(new_columns, axis=1)
+            df_to_join['Subject'] = sujeto
+            break
+    df_to_join = df_to_join.rename(columns={'Participante':'Subject', 'Start date':'start_date_combined_hormonal'})
+
+    df_medical_surgical = df_root[df_root['name']== 'Medical Or Surgical History (other than Leishmaniasis)']
+    df_medical_surgical = df_medical_surgical[['Visit','Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
+    df_medical_surgical = df_medical_surgical[df_medical_surgical['Campo']== 'Onset Date/First Diagnosis/Surgery']
+    df_medical_surgical['Date of start of contraceptive method'] = df_medical_surgical['Valor']
+    df_medical_surgical = df_medical_surgical[['Visit','Participante','Valor', 'Date of start of contraceptive method']]
+    df_medical_surgical = df_medical_surgical.rename(columns={'Participante':'Subject', 'Valor':'onset_date_medical_contraceptive'})
 
     lista_revision = []
     lista_logs = ['Child Bearing Potential']
@@ -67,6 +92,8 @@ def child_bearing_potential(df_root, path_excel_writer):
             pru = pru.merge(df_demographic, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_demographic_age, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
+            pru = pru.merge(df_to_join, on=['Subject'], how='left')
+            pru = pru.merge(df_medical_surgical, on=['Subject', 'Date of start of contraceptive method' ], how='left')
 
             for index, row in pru.iterrows():
                 status = row['status']
@@ -74,6 +101,9 @@ def child_bearing_potential(df_root, path_excel_writer):
                 was_DV_performed = row['was_DV_performed']
                 was_DV_performed_pure = was_DV_performed.split('|')[0]
                 was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
+
+                start_date_combined_hormonal = row['start_date_combined_hormonal']
+                onset_date_medical_contraceptive = row['onset_date_medical_contraceptive']
 
                 if status == 'DATA_ENTRY_COMPLETE':
 
@@ -331,9 +361,45 @@ def child_bearing_potential(df_root, path_excel_writer):
                             except Exception as e:
                                 lista_logs.append(f'Revision CB0140 --> {e} - Subject: {subject},  Visit: {visit} ')
 
-                        # if float(contraception_pure) == 1.0:
+                        # Revision CB0070
+                        if float(contraception_pure) == 1.0:
+                            if str(date_start_contraceptive_pure) != str(start_date_combined_hormonal):
+                                    error = [subject, visit, 'Contraception method used by Female of child-bearing potential', date_start_contraceptive_form_field_instance, \
+                                            'The concomitant medication form related to this contraception method is not accurate (date) or the medication has not been added, please review', \
+                                                date_start_contraceptive_pure, 'CB0070']
+                                    lista_revision.append(error)
 
+                        # Revision CB0080
+                        if float(contraception_pure) == 2.0:
+                            if str(date_start_contraceptive_pure) != str(start_date_combined_hormonal):
+                                    error = [subject, visit, 'Contraception method used by Female of child-bearing potential', date_start_contraceptive_form_field_instance, \
+                                            'The concomitant medication form related to this contraception method is not accurate (date) or the medication has not been added, please review', \
+                                                date_start_contraceptive_pure, 'CB0080']
+                                    lista_revision.append(error)
+                       
+                        # Revision CB0090
+                        if float(contraception_pure) == 3.0:
+                            if str(date_start_contraceptive_pure) != str(start_date_combined_hormonal):
+                                    error = [subject, visit, 'Contraception method used by Female of child-bearing potential', date_start_contraceptive_form_field_instance, \
+                                            'The concomitant medication form related to this contraception method is not accurate (date) or the medication has not been added, please review', \
+                                                date_start_contraceptive_pure, 'CB0090']
+                                    lista_revision.append(error)
 
+                        # Revision CB0100
+                        if float(contraception_pure) == 4.0:
+                            if math.isnan(onset_date_medical_contraceptive):
+                                    error = [subject, visit, 'Contraception method used by Female of child-bearing potential', date_start_contraceptive_form_field_instance, \
+                                            'The concomitant medication form related to this contraception method is not accurate (date) or the medication has not been added, please review', \
+                                                date_start_contraceptive_pure, 'CB0090']
+                                    lista_revision.append(error)
+
+                        # Revision CB0120
+                        if float(contraception_pure) == 5.0:
+                            if math.isnan(onset_date_medical_contraceptive):
+                                    error = [subject, visit, 'Contraception method used by Female of child-bearing potential', date_start_contraceptive_form_field_instance, \
+                                            'The concomitant medication form related to this contraception method is not accurate (date) or the medication has not been added, please review', \
+                                                date_start_contraceptive_pure, 'CB0120']
+                                    lista_revision.append(error)
 
     excel_writer = load_workbook(path_excel_writer)
     column_names =  ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']
