@@ -83,7 +83,7 @@ def urinary_drug_screen(df_root, path_excel_writer):
                 end_study_date = row['end_study_date']
 
                 
-                if status == 'DATA_ENTRY_COMPLETE':
+                if status != '':
                     try:
                         was_urine_test_performed = row['Was the urine test performed for drug screening?']
                         was_urine_test_performed_pure = was_urine_test_performed.split('|')[0]

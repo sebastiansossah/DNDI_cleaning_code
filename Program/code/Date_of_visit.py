@@ -80,7 +80,7 @@ def date_of_visit(df_root, path_excel_writer):
                     visit_date_form_field_instance = 'This field does not have any data'
 
                 
-                if status == 'DATA_ENTRY_COMPLETE':
+                if status != '':
                     try:
                         # Primera  revision general de formato de fecha ->GE0020
                         f = revision_fecha(visit_date_pure)

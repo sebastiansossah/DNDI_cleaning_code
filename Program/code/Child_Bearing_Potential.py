@@ -47,7 +47,7 @@ def child_bearing_potential(df_root, path_excel_writer):
     df_visit_done = df_visit_done.rename(columns={'Participante':'Subject', 'Valor_completo':'was_DV_performed'})
 
     df_contraception = df_root[df_root['name']== 'Prior And Concomitant Medications']
-    df_contraception = df_contraception[['Visit','Participante', 'Campo', 'Valor', 'Instancia']]
+    df_contraception = df_contraception[['Visit','Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
     df_contraception = df_contraception.sort_values(by=['FormFieldInstance Id'])
     df_contraception = df_contraception.reset_index(drop=True)
     date_indices = df_contraception.index[df_contraception['Campo'] == 'Concomitant Medication ID'].tolist()
@@ -105,7 +105,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                 start_date_combined_hormonal = row['start_date_combined_hormonal']
                 onset_date_medical_contraceptive = row['onset_date_medical_contraceptive']
 
-                if status == 'DATA_ENTRY_COMPLETE':
+                if status != '':
 
                     try:
                         subject = row['Subject']

@@ -88,7 +88,7 @@ def ev_med_proce_treatment(df_root, path_excel_writer):
                 date_cpg_administration = row['date_cpg_adminsitration']
                 date_miltefosine_administration = row['date_miltefosine_adminsitration']
 
-                if status == 'DATA_ENTRY_COMPLETE':
+                if status != '':
                     try:
                         were_AE_experienced_since_informed_consent = row['Were any adverse events experienced since Informed Consent?']
                         were_AE_experienced_since_informed_consent_pure = were_AE_experienced_since_informed_consent.split('|')[0]

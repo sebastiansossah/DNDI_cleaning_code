@@ -81,7 +81,7 @@ def physical_examination(df_root, path_excel_writer):
                 was_DV_performed_pure = was_DV_performed.split('|')[0]
                 was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
                 
-                if status == 'DATA_ENTRY_COMPLETE':
+                if status != '':
                     try:
                         was_physical_performed = row['Was the physical examination performed?']
                         was_physical_performed_pure = was_physical_performed.split('|')[0]

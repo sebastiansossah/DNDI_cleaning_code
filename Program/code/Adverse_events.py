@@ -235,7 +235,7 @@ def adverse_events(df_root, path_excel_writer):
                 
 
                 #if status == 'DATA_ENTRY_COMPLETE':
-                if status != 'DATA_ENTRY_COMPLETE':
+                if status != '':
   
                     try:
                         adverse_event_id = row['Adverse Event ID']

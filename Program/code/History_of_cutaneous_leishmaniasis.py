@@ -95,7 +95,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
 
                 date_inform_consent = row['Informed_consent_date']
 
-                if status == 'DATA_ENTRY_COMPLETE':
+                if status != '':
                
                     try:
                         date_confirmed_diagnosis = row['Date of confirmed diagnosis of CL']

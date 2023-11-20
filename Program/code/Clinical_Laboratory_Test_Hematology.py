@@ -90,7 +90,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                 genero = row['Genero']
                 end_study_date = row['end_study_date']
 
-                if status == 'DATA_ENTRY_COMPLETE':
+                if status != '':
     
                     try:
                         absolute_Neutrophil = row['Absolute Neutrophil count, Out of normal range?']

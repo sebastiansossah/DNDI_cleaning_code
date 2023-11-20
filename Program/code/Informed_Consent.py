@@ -90,7 +90,7 @@ def informed_consent_revision(df_root, path_excel_writer):
 
                 date_format = '%d-%b-%Y'
 
-                if status == 'DATA_ENTRY_COMPLETE':
+                if status != '':
 
                     # Revision GE0070
                     if float(was_DV_performed_pure) !=  1.0:

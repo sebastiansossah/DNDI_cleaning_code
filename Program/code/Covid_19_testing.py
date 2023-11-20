@@ -81,7 +81,7 @@ def covid_19_testing(df_root, path_excel_writer):
                 was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
    
                 
-                if status == 'DATA_ENTRY_COMPLETE':
+                if status != '':
 
                     try:
                         was_antigen_performed = row['Was the SARS-CoV-2 antigen test performed?']

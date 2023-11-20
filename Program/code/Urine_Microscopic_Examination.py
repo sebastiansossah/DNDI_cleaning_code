@@ -44,7 +44,7 @@ def urine_microscopic_examination(df_root, path_excel_writer):
                 subject = row['Subject']
                 visit = row['Visit']
 
-                if status == 'DATA_ENTRY_COMPLETE':
+                if status != '':
                     try:
                         was_performed = row['Was the urine microscopic examination performed?']
                         was_performed_pure = was_performed.split('|')[0]
@@ -69,9 +69,9 @@ def urine_microscopic_examination(df_root, path_excel_writer):
                         try: 
                             validador = row[validador_raw].split('|')[0]
                         except:
-                            validador = math.nan
+                            validador = ''
 
-                        if math.isnan(float(validador)) or validador != '-' or validador != np.nan or  str(validador) != 'nan'  or str(validador) != '':
+                        if str(validador) != '':
                             mi_cuenta+=1
                         else:
                             pass
@@ -103,11 +103,9 @@ def urine_microscopic_examination(df_root, path_excel_writer):
                         try: 
                             validador_contador = row[validador_raw_resultados].split('|')[0]
                         except:
-                            validador_contador = math.nan
+                            validador_contador = ''
 
-                        if math.isnan(float(validador_contador)):
-                            pass
-                        else:
+                        if validador_contador:
                             mi_cuenta_resultados +=1
 
 

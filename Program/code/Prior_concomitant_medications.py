@@ -130,7 +130,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                 inform_consent_date = row['Inform_consent_date']
                 end_study_date = row['end_study_date']
 
-                if status == 'DATA_ENTRY_COMPLETE':
+                if status != '':
                     try:
                         concomitant_medication_id = row['Concomitant Medication ID']
                         concomitant_medication_id_pure  = concomitant_medication_id.split('|')[0]

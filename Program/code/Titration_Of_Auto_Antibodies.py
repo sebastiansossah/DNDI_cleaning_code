@@ -81,7 +81,7 @@ def titration_of_auto_antibodies(df_root, path_excel_writer):
                 date_inform_consent = row['Informed_consent_date']
                 end_study_date = row['end_study_date']
 
-                if status == 'DATA_ENTRY_COMPLETE':
+                if status != '':
                     try:
                         Anti_ssDNA_Comments_if_any = row["Anti-ssDNA, Comments if any"]
                         Anti_ssDNA_Comments_if_any_pure = Anti_ssDNA_Comments_if_any.split('|')[0]

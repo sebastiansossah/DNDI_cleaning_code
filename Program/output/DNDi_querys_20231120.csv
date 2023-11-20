@@ -1,0 +1,41 @@
+id;FormFieldInstance_id;comment
+0;18027;SEC - In order to comply with the correct date format the date will be changed to 02-NOV-2023
+1;88;According to the result the value is out of range please review.
+2;92;According to the result the value is out of range please review.
+3;116;According to the result the value is out of range please review.
+4;120;According to the result the value is out of range please review.
+5;124;According to the result the value is out of range please review.
+6;128;According to the result the value is out of range please review.
+7;156;According to the result the value is out of range please review.
+8;10034;According to the result the value is out of range please review.
+9;10074;According to the result the value is out of range please review.
+10;10215;According to the result the value is out of range please review.
+11;10255;According to the result the value is out of range please review.
+12;10579;According to the result the value is out of range please review.
+13;10619;According to the result the value is out of range please review.
+14;10954;According to the result the value is out of range please review.
+15;10994;According to the result the value is out of range please review.
+16;11419;According to the result the value is out of range please review.
+17;11459;According to the result the value is out of range please review.
+18;201;According to the result the value is out of range please review.
+19;209;According to the result the value is not out of range please review.
+20;11051;According to the result the value is out of range please review.
+21;11063;According to the result the value is out of range please review.
+22;11516;According to the result the value is out of range please review.
+23;11528;According to the result the value is out of range please review.
+24;318;If Urine Sample Collected is checked as Yes not all laboratory tests can be not done
+25;9788;If Urine Sample Collected is checked as Yes not all laboratory tests can be not done
+26;11156;If Urine Sample Collected is checked as Yes not all laboratory tests can be not done
+27;11637;If Urine Sample Collected is checked as Yes not all laboratory tests can be not done
+28;997;Only at Screening
+29;994;Only at Screening
+30;12057;The Respiratory rate is not within expected range (12 to 18) therefore the Interpretation can not be Normal.
+31;11946;The Systolic Blood Pressure is not within expected range (100 to 140) therefore the Interpretation can not be Normal.
+32;11963;The Systolic Blood Pressure is not within expected range (100 to 140) therefore the Interpretation can not be Normal.
+33;19621;The Oral Temperature is not within expected range (35 to 37.5)  therefore the Interpretation can not be Normal.
+34;545;The RR is not within expected range (654.6 to 1141.4) therefore the Interpretation can not be Normal.
+35;546;The PR is not within expected range (120 to 200) therefore the Interpretation can not be Normal.
+36;9617;Pre dose triplicate 2 Time should be within 2 minutes after Pre dose triplicate 1 Time
+37;12083;The QTcF is not within expected range (350 to 450) therefore the Interpretation can not be Normal.
+38;832;The Clinical chemistry  D-1 form should not  be completed if the Clinical chemistry form was completed
+39;20449;End of study/Early withdrawal date can not be before the informed consent date

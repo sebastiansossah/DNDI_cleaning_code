@@ -99,7 +99,7 @@ def pregnancy_test(df_root, path_excel_writer):
                 was_DV_performed_pure = was_DV_performed.split('|')[0]
                 was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
                 
-                if status == 'DATA_ENTRY_COMPLETE':
+                if status != '':
 
                     try:
                         was_pregnancy_test_performed = row['Was the Pregnancy Test performed?']

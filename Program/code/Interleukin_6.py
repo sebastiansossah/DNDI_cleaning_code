@@ -83,7 +83,7 @@ def interleukin_6(df_root, path_excel_writer):
                 was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
    
 
-                if status == 'DATA_ENTRY_COMPLETE':
+                if status != '':
 
                     try:
                         Provide_the_reason = row["Provide the reason"]

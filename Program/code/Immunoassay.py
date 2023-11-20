@@ -83,7 +83,7 @@ def immunoassay(df_root, path_excel_writer):
                 date_inform_consent = row['Informed_consent_date']
                 end_study_date = row['end_study_date']
 
-                if status == 'DATA_ENTRY_COMPLETE':
+                if status != '':
                     try:
                         blood_sample_collected = row['Blood Sample Collected']
                         blood_sample_collected_pure = blood_sample_collected.split('|')[0]

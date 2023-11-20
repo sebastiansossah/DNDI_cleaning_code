@@ -86,7 +86,7 @@ def lead_ECG(df_root, path_excel_writer):
                 time_format = '%H:%M'
 
                 
-                if status == 'DATA_ENTRY_COMPLETE':
+                if status != '':
 
                     try:
                         were_ECG_performed = row['Were the ECG performed?']

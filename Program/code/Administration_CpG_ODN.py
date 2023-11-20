@@ -89,7 +89,7 @@ def adminsitration_CpG_ODN(df_root, path_excel_writer):
                 action_taken_CpG = row['action_taken_study_treatment']
 
 
-                if status == 'DATA_ENTRY_COMPLETE':
+                if status != '':
                     try:
                         date_dosing = row['Date of dosing']
                         date_dosing_pure = date_dosing.split('|')[0]

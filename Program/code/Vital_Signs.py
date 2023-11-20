@@ -83,7 +83,7 @@ def vital_signs(df_root, path_excel_writer):
                 was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
    
                 
-                if status == 'DATA_ENTRY_COMPLETE':
+                if status != '':
                     try: 
                         was_vital_signs_performed = row['Was the vital signs assessment performed?']
                         was_vital_signs_performed_pure = was_vital_signs_performed.split('|')[0]

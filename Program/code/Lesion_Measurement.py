@@ -82,7 +82,7 @@ def lesion_measurement(df_root, path_excel_writer):
                 was_DV_performed_pure = was_DV_performed.split('|')[0]
                 was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
    
-                if status == 'DATA_ENTRY_COMPLETE':
+                if status != '':
                     try:
                         Was_the_lesion_measurement_performed = row["Was the lesion measurement performed?"]
                         Was_the_lesion_measurement_performed_pure = Was_the_lesion_measurement_performed.split('|')[0]

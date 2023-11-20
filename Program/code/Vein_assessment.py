@@ -78,7 +78,7 @@ def vein_assesment(df_root, path_excel_writer):
                 was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
                 
         
-                if status == 'DATA_ENTRY_COMPLETE':
+                if status != '':
                     subject = row['Subject']
                     visit = row['Visit']
                     date_of_visit = row['Date_of_visit']

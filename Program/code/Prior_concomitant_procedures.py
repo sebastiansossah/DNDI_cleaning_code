@@ -129,7 +129,7 @@ def prior_concomitant_procedures(df_root, path_excel_writer):
                 inform_consent_date = row['Inform_consent_date']
                 end_study_date = row['end_study_date']
 
-                if status == 'DATA_ENTRY_COMPLETE':
+                if status != '':
 
                     try: 
                         procedure_id = row['Procedure ID']

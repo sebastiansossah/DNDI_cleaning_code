@@ -83,7 +83,7 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer):
                 was_DV_performed_pure = was_DV_performed.split('|')[0]
                 was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
    
-                if status == 'DATA_ENTRY_COMPLETE':
+                if status != '':
                     try:
                         Was_blood_sample_collected = row["Was blood sample collected?"]
                         Was_blood_sample_collected_pure = Was_blood_sample_collected.split('|')[0]
