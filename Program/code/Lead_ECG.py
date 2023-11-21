@@ -511,7 +511,7 @@ def lead_ECG(df_root, path_excel_writer):
                     except:
                         undefined_time_pure = math.nan
                         undefined_time_form_field_instance = 'This field does not have any data'
-                        undefined_time_formated = math.nan
+                        undefined_time_formated = ''  
                     
                     try:
                         predose_triplicate_1_time = row['Pre dose triplicate 1, Time 24 hrs']
@@ -521,7 +521,7 @@ def lead_ECG(df_root, path_excel_writer):
                     except:
                         predose_triplicate_1_time_pure = math.nan
                         predose_triplicate_1_time_form_field_instance = 'This field does not have any data'
-                        predose_triplicate_1_time_formated = math.nan
+                        predose_triplicate_1_time_formated = ''  
 
                     try:
                         predose_triplicate_2_time = row['Pre dose triplicate 2, Time 24 hrs']
@@ -531,7 +531,7 @@ def lead_ECG(df_root, path_excel_writer):
                     except:
                         predose_triplicate_2_time_pure = math.nan
                         predose_triplicate_2_time_form_field_instance = 'This field does not have any data'
-                        predose_triplicate_2_time_formated = math.nan
+                        predose_triplicate_2_time_formated = ''  
 
                     try:
                         predose_triplicate_3_time = row['Pre dose triplicate 3, Time 24 hrs']
@@ -541,7 +541,7 @@ def lead_ECG(df_root, path_excel_writer):
                     except:
                         predose_triplicate_3_time_pure = math.nan
                         predose_triplicate_3_time_form_field_instance = 'This field does not have any data'
-                        predose_triplicate_3_time_formated = math.nan
+                        predose_triplicate_3_time_formated = ''  
                     
                     try:
                         min_15_time  = row['15-min post dose, Time 24 hrs']
@@ -551,7 +551,7 @@ def lead_ECG(df_root, path_excel_writer):
                     except:
                         min_15_time_pure = math.nan
                         min_15_time_form_field_instance = 'This field does not have any data'
-                        min_15_time_time_formated = math.nan
+                        min_15_time_time_formated = ''  
 
                     try:
                         min_30_time  = row['30-min post dose, Time 24 hrs']
@@ -561,7 +561,7 @@ def lead_ECG(df_root, path_excel_writer):
                     except:
                         min_30_time_pure = math.nan
                         min_30_time_form_field_instance = 'This field does not have any data'
-                        min_30_time_time_formated = math.nan
+                        min_30_time_time_formated = ''  
 
                     try:
                         min_60_time  = row['60-min post dose, Time 24 hrs']
@@ -571,7 +571,7 @@ def lead_ECG(df_root, path_excel_writer):
                     except:
                         min_60_time_pure = math.nan
                         min_60_time_form_field_instance = 'This field does not have any data'
-                        min_60_time_time_formated = math.nan          
+                        min_60_time_time_formated = ''       
 
                     #----------------------------------------------------------------------------------------------------------------------------
 
@@ -1565,22 +1565,24 @@ def lead_ECG(df_root, path_excel_writer):
                     # -------------------------------------------- Time Revisions ---------------------------------------------------------------------------------------
 
                     # Revision LE0570
-                    try:
-                        if float((predose_triplicate_2_time_formated - predose_triplicate_1_time_formated).total_seconds()/60) > 2.0:
-                            error = [subject, visit, 'Pre dose triplicate 2, Time 24 hrs', predose_triplicate_2_time_form_field_instance,\
-                                         'Pre dose triplicate 2 Time should be within 2 minutes after Pre dose triplicate 1, Time', predose_triplicate_2_time_pure, 'LE0570']
-                            lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision LE0570--> {e} - Subject: {subject},  Visit: {visit} ')  
+                    if str(predose_triplicate_2_time_formated) != '' and str(predose_triplicate_1_time_formated) != '':
+                        try:
+                            if float((predose_triplicate_2_time_formated - predose_triplicate_1_time_formated).total_seconds()/60) > 2.0:
+                                error = [subject, visit, 'Pre dose triplicate 2, Time 24 hrs', predose_triplicate_2_time_form_field_instance,\
+                                            'Pre dose triplicate 2 Time should be within 2 minutes after Pre dose triplicate 1, Time', predose_triplicate_2_time_pure, 'LE0570']
+                                lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision LE0570--> {e} - Subject: {subject},  Visit: {visit} ')  
 
                     # Revision LE0580
-                    try:
-                        if float((predose_triplicate_3_time_formated - predose_triplicate_2_time_formated).total_seconds()/60) > 2.0:
-                            error = [subject, visit, 'Pre dose triplicate 3, Time 24 hrs', predose_triplicate_3_time_form_field_instance,\
-                                         'Pre dose triplicate 3 Time should be within 2 minutes after Pre dose triplicate 2, Time', predose_triplicate_3_time_pure, 'LE0580']
-                            lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision LE0580--> {e} - Subject: {subject},  Visit: {visit} ')  
+                    if  str(predose_triplicate_2_time_formated) != '' and str(predose_triplicate_3_time_formated) != '':
+                        try:
+                            if float((predose_triplicate_3_time_formated - predose_triplicate_2_time_formated).total_seconds()/60) > 2.0:
+                                error = [subject, visit, 'Pre dose triplicate 3, Time 24 hrs', predose_triplicate_3_time_form_field_instance,\
+                                            'Pre dose triplicate 3 Time should be within 2 minutes after Pre dose triplicate 2, Time', predose_triplicate_3_time_pure, 'LE0580']
+                                lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision LE0580--> {e} - Subject: {subject},  Visit: {visit} ')  
                     
 
     excel_writer = load_workbook(path_excel_writer)

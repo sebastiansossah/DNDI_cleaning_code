@@ -1,4 +1,5 @@
 import pandas as pd
+import math
 from datetime import datetime
 from revision_fechas import revision_fecha
 from log_writer import log_writer
@@ -70,7 +71,7 @@ def adminsitration_CpG_ODN(df_root, path_excel_writer):
             pru = pru[1:].set_axis(new_columns, axis=1)
             pru['Subject'] = sujeto
             pru['Visit'] = 'unscheduled'
-            pru['status'] = subdataset['activityState'].unique()
+            pru['status'] = 'doesnt matter'
             pru['to_join'] = pru['Date of dosing'].str.split('|').str[0]
             pru = pru.merge(df_date_visit, on=['Subject', 'to_join'], how='left')
             pru = pru.merge(df_informed, on=['Subject'], how='left')
@@ -103,7 +104,7 @@ def adminsitration_CpG_ODN(df_root, path_excel_writer):
                         reason_dose_adjustment_pure = reason_dose_adjustment.split('|')[0]
                         reason_dose_adjustment_form_field_instance = reason_dose_adjustment.split('|')[1]
                     except:
-                        reason_dose_adjustment_pure = ''
+                        reason_dose_adjustment_pure = math.nan
                         reason_dose_adjustment_form_field_instance = 'This field doesnt have any data'
                     
                     try:
@@ -111,7 +112,7 @@ def adminsitration_CpG_ODN(df_root, path_excel_writer):
                         dosing_event_pure = dosing_event.split('|')[0]
                         dosing_event_form_field_instance = dosing_event.split('|')[1]
                     except:
-                        dosing_event_pure = ''
+                        dosing_event_pure =  math.nan
                         dosing_event_form_field_instance = 'This field doesnt have any data'
 
                     # ---------------------------------------------------------------------------------------
