@@ -185,16 +185,16 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                     else:
                         try:
                             date_format = '%d-%b-%Y'
-                            date_of_test_f = datetime.strptime(date_confirmed_diagnosis_pure, date_format)
-                            date_of_visit_f = datetime.strptime(date_of_visit, date_format)
+                            date_birth_cured = f'01-{month_birth}-{year_birth}'
+                            date_birth_format = datetime.strptime(date_birth_cured, '%d-%m-%Y')
+                            date__confirmed_diagnosis_f = datetime.strptime(date_confirmed_diagnosis_pure, date_format)
 
-                            if date_of_test_f != date_of_visit_f:
-                                error = [subject, visit, 'Date of confirmed diagnosis of CL', date_confirmed_diagnosis_form_field_instance ,\
-                                        'The year of diagnosis of CL must be equal or after the year of birth in DEMOGRAPHIC' , f'{date_confirmed_diagnosis_pure} - {date_of_visit}', 'CL0010']
+                            if date__confirmed_diagnosis_f <  date_birth_format:
+                                error = [subject, visit, 'Date of confirmed diagnosis of CL', date_confirmed_diagnosis_form_field_instance,\
+                                        'The year of diagnosis of CL must be equal or after the year of birth in DEMOGRAPHIC' , date_confirmed_diagnosis_pure, 'CL0010']
                                 lista_revision.append(error)
                             else:
                                 pass
-
                         except Exception as e:
                             lista_logs.append(f'Revision CL0010--> {e} - Subject: {subject},  Visit: {visit} ')
                     
@@ -340,7 +340,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                             date_format = '%d-%b-%Y'
                             date_birth_cured = f'01-{month_birth}-{year_birth}'
                             date_birth_format = datetime.strptime(date_birth_cured, '%d-%m-%Y')
-                            date_diagnosis_f = datetime.strptime(date_format(date_diagnosis_pure), date_format)
+                            date_diagnosis_f = datetime.strptime(date_diagnosis_pure, date_format)
 
                             if date_diagnosis_f <  date_birth_format:
                                 error = [subject, visit, 'History of Leishmaniasis Details - Date of Diagnosis', date_diagnosis_form_field_instance,\

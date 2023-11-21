@@ -215,7 +215,7 @@ def end_of_study(df_root, path_excel_writer):
 
             # Revision ES0030
             try:
-                if datetime.strptime(str(end_of_study_date_general_pure), '%d-%b-%Y') <= datetime.strptime(str(inform_consent_date), '%d-%b-%Y'):
+                if datetime.strptime(str(end_of_study_date_general_pure), '%d-%b-%Y') < datetime.strptime(str(inform_consent_date), '%d-%b-%Y'):
                     error = [subject, visit, 'End of study/Early withdrawal date', end_of_study_date_general_form_field_instance, \
                             'End of study/Early withdrawal date can not be before the informed consent date', \
                                 end_of_study_date_general_pure, 'ES0030']

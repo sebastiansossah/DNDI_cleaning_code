@@ -60,15 +60,15 @@ def revision_fecha(fecha):
                         new =  'Value is not a valid date'
 
 
-                if len(division_interna[0]) !=2:
-                    if division_interna[0] == 'UNK':
-                            pass
+                # if len(division_interna[0]) !=2:
+                #     if division_interna[0] == 'UNK':
+                #             pass
 
-                    elif len(str(division_interna[0]))==1:
-                        new[0] = '0' + str(division_interna[0])
+                #     elif len(str(division_interna[0]))==1:
+                #         new[0] = '0' + str(division_interna[0])
 
-                    else:
-                        new = 'Value is not a valid date'
+                #     else:
+                #         new = 'Value is not a valid date'
 
 
                 return f'SEC - In order to comply with the correct date format, the date will be changed to {"-".join(new)}'
@@ -98,15 +98,15 @@ def revision_fecha(fecha):
                 ultimo =  'Value is not a valid date'
 
 
-        if len(divided[0]) !=2:
-            if divided[0] == 'UNK':
-                pass
+        # if len(divided[0]) !=2:
+        #     if divided[0] == 'UNK':
+        #         pass
 
-            elif len(str(divided[0]))==1:
-                ultimo[0] = '0' + str(divided[0])
+        #     elif len(str(divided[0]))==1:
+        #         ultimo[0] = '0' + str(divided[0])
 
-            else:
-                ultimo=  'Value is not a valid date'
+        #     else:
+        #         ultimo=  'Value is not a valid date'
         
         if ultimo == 'Value is not a valid date':
             return 'Value is not a valid date'

@@ -676,7 +676,7 @@ def eligibility(df_root, path_excel_writer):
     excel_writer = load_workbook(path_excel_writer)
     column_names = ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']
     eligibility_output = pd.DataFrame(lista_revision, columns=column_names)
-
+    eligibility_output = eligibility_output.drop_duplicates()
     sheet = excel_writer.create_sheet("Eligibility")
 
     for row in dataframe_to_rows(eligibility_output, index=False, header=True):
@@ -686,7 +686,7 @@ def eligibility(df_root, path_excel_writer):
     
     log_writer(lista_logs)
 
-    return eligibility_output[['Form Field Instance ID' ,'Standard Error Message']].replace({',': '', ';': ''}, regex=True).drop_duplicates(inplace=True)
+    return eligibility_output[['Form Field Instance ID' ,'Standard Error Message']].replace({',': '', ';': ''}, regex=True)
 
 if __name__ == '__main__':
     path_excel = r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\Program\output\prueba.xlsx"
