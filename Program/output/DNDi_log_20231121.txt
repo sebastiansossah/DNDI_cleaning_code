@@ -1,0 +1,218 @@
+----------------------------------------------------------
+Date of visit
+-----------------------------
+Revision VS0050 --> time data '' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D16  
+Revision VS0050 --> time data '' does not match format '%d-%b-%Y' - Subject: S002,  Visit: Screening Visit  
+Revision VS0050 --> time data '' does not match format '%d-%b-%Y' - Subject: S003,  Visit: Screening Visit  
+----------------------------------------------------------
+Informed Consent
+-----------------------------
+----------------------------------------------------------
+Demographics
+-----------------------------
+----------------------------------------------------------
+Child Bearing Potential
+-----------------------------
+----------------------------------------------------------
+History of cutaneous leishmaniasis
+-----------------------------
+Revision CL0020--> time data '' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: Screening Visit 
+Revision CL0020--> time data '' does not match format '%d-%b-%Y' - Subject: S002,  Visit: Screening Visit 
+Revision CL0020--> time data '' does not match format '%d-%b-%Y' - Subject: S003,  Visit: Screening Visit 
+----------------------------------------------------------
+Eligibility
+-----------------------------
+----------------------------------------------------------
+Medical Or Surgical History (other than Leishmaniasis)
+-----------------------------
+Revision MS0040 --> time data 'UNK-UNK-UNK' does not match format '%d-%b-%Y' - Subject: S002,  Visit: Screening Visit 
+Revision MS0050 --> invalid literal for int() with base 10: 'UNK' - Subject: S002,  Visit: Screening Visit 
+----------------------------------------------------------
+Vein Assesment
+-----------------------------
+Revision VA0050 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: Screening Visit  
+Revision VA0050 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D-1  
+Revision VA0050 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D14  
+Revision VA0050 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: S002,  Visit: Screening Visit  
+----------------------------------------------------------
+Urinary drug screen
+-----------------------------
+Revision UD0060 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: Screening Visit  
+Revision UD0060 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D-1  
+Revision UD0060 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D14  
+----------------------------------------------------------
+Pregnancy test
+-----------------------------
+----------------------------------------------------------
+Clinical Laboratory - Test Hematology
+-----------------------------
+Revision LBT0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: Screening Visit  
+Revision LBT0010--> time data '' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D-1 
+Revision LBT0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D2  
+Revision LBT0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D3  
+Revision LBT0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D4  
+Revision LBT0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D7  
+Revision LBT0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D14  
+----------------------------------------------------------
+Clinical Laboratory Test - Clinical Chemistry
+-----------------------------
+Revision LBC0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: Screening Visit  
+Revision LBC0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D-1  
+Revision LBC0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D2  
+Revision LBC0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D3  
+Revision LBC0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D4  
+Revision LBC0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D7  
+Revision LBC0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D14  
+----------------------------------------------------------
+Clinical Laboratory Test - Coagulation
+-----------------------------
+Revision LBO0030 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: Screening Visit  
+Revision LBO0030 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D2  
+----------------------------------------------------------
+Immunoassay (Thyroid Stimulating Hormone)
+-----------------------------
+Revision IM0030 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: Screening Visit  
+----------------------------------------------------------
+Urinalysis
+-----------------------------
+Revision UR0040 --> time data 'nan' does not match format '%d-%b-%Y'  - Subject: 011001,  Visit: Screening Visit 
+Revision UR0040 --> time data 'nan' does not match format '%d-%b-%Y'  - Subject: 011001,  Visit: D2 
+Revision UR0040 --> time data 'nan' does not match format '%d-%b-%Y'  - Subject: 011001,  Visit: D7 
+Revision UR0040 --> time data 'nan' does not match format '%d-%b-%Y'  - Subject: 011001,  Visit: D14 
+----------------------------------------------------------
+Urine Microscopic Examination
+-----------------------------
+----------------------------------------------------------
+Virology
+-----------------------------
+Revision VR0030 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: Screening Visit  
+----------------------------------------------------------
+Lesion Measurement
+-----------------------------
+Revision LM0050 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: Screening Visit  
+Revision LM0050 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D-1  
+Revision LM0050 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D7  
+Revision LM0050 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D14  
+Revision LM0050 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: S002,  Visit: Screening Visit  
+----------------------------------------------------------
+Physical Examination
+-----------------------------
+Revision PE0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: Screening Visit  
+Revision PE0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D-1  
+Revision PE0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D1  
+Revision PE0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D2  
+Revision PE0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D4  
+Revision PE0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D7  
+Revision PE0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D14  
+Revision PE0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D15  
+Revision PE0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D16  
+Revision PE0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: S002,  Visit: Screening Visit  
+----------------------------------------------------------
+Vital Signs
+-----------------------------
+Revision VS0040 --> time data 'nan' does not match format '%d-%b-%Y'  - Subject: 011001,  Visit: Screening Visit 
+Revision VS0040 --> time data 'nan' does not match format '%d-%b-%Y'  - Subject: 011001,  Visit: D-1 
+Revision VS0040 --> time data 'nan' does not match format '%d-%b-%Y'  - Subject: 011001,  Visit: D1 
+Revision VS0040 --> time data 'nan' does not match format '%d-%b-%Y'  - Subject: 011001,  Visit: D2 
+Revision VS0040 --> time data 'nan' does not match format '%d-%b-%Y'  - Subject: 011001,  Visit: D3 
+Revision VS0040 --> time data 'nan' does not match format '%d-%b-%Y'  - Subject: 011001,  Visit: D15 
+Revision VS0040 --> time data 'nan' does not match format '%d-%b-%Y'  - Subject: S002,  Visit: Screening Visit 
+----------------------------------------------------------
+12-Lead ECG
+-----------------------------
+Revision LE0060 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: Screening Visit  
+Revision LE0570--> 'float' object has no attribute 'total_seconds' - Subject: 011001,  Visit: Screening Visit 
+Revision LE0580--> 'float' object has no attribute 'total_seconds' - Subject: 011001,  Visit: Screening Visit 
+Revision LE0570--> 'float' object has no attribute 'total_seconds' - Subject: 011001,  Visit: D-1 
+Revision LE0580--> 'float' object has no attribute 'total_seconds' - Subject: 011001,  Visit: D-1 
+Revision LE0060 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D1  
+Revision LE0060 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D15  
+Revision LE0570--> unsupported operand type(s) for -: 'float' and 'datetime.datetime' - Subject: 011001,  Visit: D15 
+Revision LE0580--> 'float' object has no attribute 'total_seconds' - Subject: 011001,  Visit: D15 
+----------------------------------------------------------
+Covid 19 testing
+-----------------------------
+Revision LBCOV0050 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: Screening Visit  
+Revision LBCOV0050 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D-1  
+Revision LBCOV0050 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D14  
+----------------------------------------------------------
+Alcohol Screen
+-----------------------------
+Revision AS0080 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: Screening Visit  
+Revision AS0080 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D-1  
+Revision AS0080 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D14  
+----------------------------------------------------------
+Clinical Laboratory Test - Clinical Chemistry D-1
+-----------------------------
+Revision LBD0030 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D-1  
+----------------------------------------------------------
+Interleukin-6
+-----------------------------
+Revision IN0050 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D-1 
+----------------------------------------------------------
+Titration Of Auto-Antibodies
+-----------------------------
+Revision TI0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D-1  
+Revision TI0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D14  
+----------------------------------------------------------
+Injection Site Examination
+-----------------------------
+Revision IS0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D1  
+Revision IS0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D2  
+Revision IS0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D4  
+Revision IS0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D7  
+Revision IS0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D14  
+----------------------------------------------------------
+PBMC Isolate
+-----------------------------
+Revision PB0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D1  
+Revision PB0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D2  
+Revision PB0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D7  
+Revision PB0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D15  
+Revision PB0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D16  
+----------------------------------------------------------
+Pharmacokinetic Blood Sampling (PK)
+-----------------------------
+Revision PK0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D1  
+Revision PK0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D15  
+----------------------------------------------------------
+Pharmacodynamic Blood Sampling (PD) -Cytokines/Chemokines
+-----------------------------
+Revision PD0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D1  
+Revision PD0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D2  
+Revision PD0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D3  
+Revision PD0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D4  
+Revision PD0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D7  
+Revision PD0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D15  
+Revision PD0040 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D16  
+----------------------------------------------------------
+mRNA Markers
+-----------------------------
+Revision MR0030 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D1  
+Revision MR0030 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D2  
+Revision MR0030 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D3  
+Revision MR0030 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D15  
+Revision MR0030 --> time data 'nan' does not match format '%d-%b-%Y' - Subject: 011001,  Visit: D16  
+----------------------------------------------------------
+CpG ODN D35 Administration
+-----------------------------
+Revision IMP0080 --> could not convert string to float: '' - Subject: 011001,  Visit: unscheduled 
+Revision IMP0090 --> could not convert string to float: '' - Subject: 011001,  Visit: unscheduled 
+----------------------------------------------------------
+Miltefosine Administration
+-----------------------------
+----------------------------------------------------------
+Prior And Concomitant Medications
+-----------------------------
+----------------------------------------------------------
+Prior And Concomitant Procedures
+-----------------------------
+----------------------------------------------------------
+Ev, Med, Proc And Study Treatment Summary
+-----------------------------
+----------------------------------------------------------
+End of Study Treatment
+-----------------------------
+----------------------------------------------------------
+Adverse Events
+-----------------------------

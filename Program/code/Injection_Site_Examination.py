@@ -29,11 +29,11 @@ def injection_site_examination(df_root, path_excel_writer):
     df_informed = df_root[df_root['name']=='Informed Consent']
     df_informed = df_informed[['Visit','Participante', 'Campo', 'Valor']]
     df_informed = df_informed[df_informed['Campo']=='Informed consent signature date']
-    df_informed = df_informed[['Visit','Participante','Valor']]
+    df_informed = df_informed[['Participante','Valor']]
     df_informed = df_informed.rename(columns={'Participante':'Subject', 'Valor':'Informed_consent_date'})
 
     df_end_study_general = df_root[df_root['name']== 'End of Study Treatment (Miltefosine)']
-    df_end_study_general = df_end_study_general[['Visit','Participante', 'Campo', 'Valor', 'Variable' ]]
+    df_end_study_general = df_end_study_general[['Participante', 'Campo', 'Valor', 'Variable' ]]
     df_end_study_general = df_end_study_general[df_end_study_general['Variable'] == 'DSDAT']
     df_end_study_general = df_end_study_general[['Participante', 'Valor']]
     df_end_study_general = df_end_study_general.rename(columns={'Participante':'Subject', 'Valor':'end_study_date'})
@@ -69,7 +69,7 @@ def injection_site_examination(df_root, path_excel_writer):
             pru['Visit'] = visita
             pru['status'] = pru_1['activityState'].unique()
             pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
-            pru = pru.merge(df_informed, on=['Subject', 'Visit'], how='left')
+            pru = pru.merge(df_informed, on=['Subject'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
             pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
 

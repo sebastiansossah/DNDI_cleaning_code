@@ -28,9 +28,8 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer):
     df_visit_date = df_visit_date.rename(columns={'Participante':'Subject', 'Valor': 'Date_of_visit'})
 
     df_informed = df_root[df_root['name']=='Informed Consent']
-    df_informed = df_informed[['Visit','Participante', 'Campo', 'Valor']]
+    df_informed = df_informed[['Participante', 'Campo', 'Valor']]
     df_informed = df_informed[df_informed['Campo']=='Informed consent signature date']
-    df_informed = df_informed[['Visit','Participante','Valor']]
     df_informed = df_informed.rename(columns={'Participante':'Subject', 'Valor':'Informed_consent_date'})
 
     df_end_study_general = df_root[df_root['name']== 'End of Study Treatment (Miltefosine)']
@@ -65,7 +64,7 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer):
             pru['Visit'] = visita
             pru['status'] = pru_1['activityState'].unique()
             pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
-            pru = pru.merge(df_informed, on=['Subject', 'Visit'], how='left')
+            pru = pru.merge(df_informed, on=['Subject'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
             pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
 
@@ -197,13 +196,13 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer):
                             lista_logs.append(f'Revision PD0020--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> PD0040
-                    if Date_of_blood_sample_collected != '':
+                    if Date_of_blood_sample_collected_pure != '':
                         try:
-                            if datetime.strptime(str(Date_of_blood_sample_collected), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
+                            if datetime.strptime(str(Date_of_blood_sample_collected_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
                                 pass
                             else: 
                                 error = [subject, visit, 'Date of blood sample collected', Date_of_blood_sample_collected,\
-                                        'Date of blood sample collected must be before the End of study/Early withdrawal date. ', Date_of_blood_sample_collected, 'PD0040']
+                                        'Date of blood sample collected must be before the End of study/Early withdrawal date. ', Date_of_blood_sample_collected_pure, 'PD0040']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision PD0040 --> {e} - Subject: {subject},  Visit: {visit}  ')

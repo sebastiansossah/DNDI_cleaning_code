@@ -84,7 +84,7 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
                         medical_surgical_pure = medical_surgical.split('|')[0]
                         medical_surgical_form_field_instance = medical_surgical.split('|')[1]
                     except Exception as e:
-                        medical_surgical_pure = math.nan
+                        medical_surgical_pure = ''
                         medical_surgical_form_field_instance = 'This field does not have any data'
 
                     try:
@@ -151,7 +151,7 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
                             if type(medical_surgical_pure) == pd.Series:
                                 print('revision MS0010 revisar medical or surgical')
                                 pass
-                            elif math.isnan(float(medical_surgical_pure)) :
+                            elif medical_surgical_pure == '' :
                                 pass
                             else:
                                 error = [subject, visit, 'Are there any relevant medical history or surgical history?', any_relevant_medical_form_field_instance,\
@@ -166,7 +166,7 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
                             if type(medical_surgical_pure) != pd.Series:
                                 print('revision MS0020 revisar medical or surgical')
                                 pass
-                            elif math.isnan(float(medical_surgical_pure)):
+                            elif medical_surgical_pure == '':
                                 pass
                             else:
                                 error = [subject, visit, 'Are there any relevant medical history or surgical history?', any_relevant_medical_form_field_instance,\
@@ -175,56 +175,56 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
                     except Exception as e:
                         lista_logs.append(f'Revision MS0020 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
-                    try:
-                        if float(any_relevant_medical_pure) == 1.0:
-                            # Revision  MS0040
-                            try:
-                                date_format = '%d-%b-%Y'
-                                onset_date_f = datetime.strptime(onset_date_pure, date_format)
-                                end_date_f = datetime.strptime(end_date_pure, date_format)
 
-                                if onset_date_f > end_date_f:
-                                    error = [subject, visit, 'End Date', end_date_form_field_instance ,\
-                                        'End date must be after Onset Date/First Diagnosis/Surgery.' , end_date_pure, 'MS0040']
-                                    lista_revision.append(error)
-                                else:
-                                    pass
-                            except Exception as e:
-                                lista_logs.append(f'Revision MS0040 --> {e} - Subject: {subject},  Visit: {visit} ')
+                    if float(any_relevant_medical_pure) == 1.0:
+                        # Revision  MS0040
+                        try:
+                            date_format = '%d-%b-%Y'
+                            onset_date_f = datetime.strptime(onset_date_pure, date_format)
+                            end_date_f = datetime.strptime(end_date_pure, date_format)
 
-                            # Revision MS0050
-                            try: 
-                                if type(onset_date_pure) == pd.Series:
-                                    print('revision MS0050 revisar medical or surgical')
-                                    for date in onset_date_pure:
-                                        onset_date_year = str(date).split('-')[2]
-                                        if int(onset_date_year) < int(demographic_year):
-                                            error = [subject, visit, 'Onset Date/First Diagnosis/Surgery'  ,'The year and month of  Onset Date/First taken must be equal or after the month and year of birth in DEMOGRAPHIC Diagnosis/Surgery.' , onset_date_year, 'MS0050']
-                                            lista_revision.append(error)
-                                else:
-                                    onset_date_year = str(onset_date_pure).split('-')[2]
-                                    if int(onset_date_year) < int(demographic_year):
-                                        error = [subject, visit, 'Onset Date/First Diagnosis/Surgery', onset_date_form_field_instance , \
-                                                 'The year and month of  Onset Date/First taken must be equal or after the month and year of birth in DEMOGRAPHIC Diagnosis/Surgery.' , onset_date_year, 'MS0050']
-                                        lista_revision.append(error)
-                            except Exception as e:
-                                lista_logs.append(f'Revision MS0050 --> {e} - Subject: {subject},  Visit: {visit} ')
-                            
-                            # Revision MS0060
-                            if math.isnan(float(medical_surgical_pure)):
+                            if onset_date_f > end_date_f:
+                                error = [subject, visit, 'End Date', end_date_form_field_instance ,\
+                                    'End date must be after Onset Date/First Diagnosis/Surgery.' , end_date_pure, 'MS0040']
+                                lista_revision.append(error)
+                            else:
                                 pass
-                            else: 
-                                try:
-                                    medical_date_history = (medical_surgical_pure, onset_date_pure, end_date_pure)
+                        except Exception as e:
+                            lista_logs.append(f'Revision MS0040 --> {e} - Subject: {subject},  Visit: {visit} ')
 
-                                    if medical_date_history in lista_comprobacion_overlap:
-                                            error = [subject, visit, 'Medical/Surgical History/ Current Condition', medical_surgical_form_field_instance , \
+                        # Revision MS0050
+                        try: 
+                            if type(onset_date_pure) == pd.Series:
+                                print('revision MS0050 revisar medical or surgical')
+                                for date in onset_date_pure:
+                                    onset_date_year = str(date).split('-')[2]
+                                    if int(onset_date_year) < int(demographic_year):
+                                        error = [subject, visit, 'Onset Date/First Diagnosis/Surgery'  ,'The year and month of  Onset Date/First taken must be equal or after the month and year of birth in DEMOGRAPHIC Diagnosis/Surgery.' , onset_date_year, 'MS0050']
+                                        lista_revision.append(error)
+                            else:
+                                onset_date_year = str(onset_date_pure).split('-')[2]
+                                if int(onset_date_year) < int(demographic_year):
+                                    error = [subject, visit, 'Onset Date/First Diagnosis/Surgery', onset_date_form_field_instance , \
+                                                 'The year and month of  Onset Date/First taken must be equal or after the month and year of birth in DEMOGRAPHIC Diagnosis/Surgery.' , onset_date_year, 'MS0050']
+                                    lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision MS0050 --> {e} - Subject: {subject},  Visit: {visit} ')
+                            
+                        # Revision MS0060
+                        if medical_surgical_pure == '':
+                                pass
+                        else: 
+                            try:
+                                medical_date_history = (medical_surgical_pure, onset_date_pure, end_date_pure)
+
+                                if medical_date_history in lista_comprobacion_overlap:
+                                        error = [subject, visit, 'Medical/Surgical History/ Current Condition', medical_surgical_form_field_instance , \
                                                     'The Medica/Surgical History/ Current Condition shuold not be enter twice if the dates overlap2' , medical_surgical_pure, 'MS0060']
-                                            lista_revision.append(error)
-                                    else:
-                                        lista_comprobacion_overlap.append(medical_date_history)
-                                except Exception as e:
-                                    lista_logs.append(f'Revision MS0060 --> {e} - Subject: {subject},  Visit: {visit} ')
+                                        lista_revision.append(error)
+                                else:
+                                    lista_comprobacion_overlap.append(medical_date_history)
+                            except Exception as e:
+                                lista_logs.append(f'Revision MS0060 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                             # Revision MS070
                             try:
@@ -233,8 +233,6 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
                             except:
                                 pass
         
-                    except Exception as e:
-                        lista_logs.append(f'Revision desde MS0040 hasta MS0060 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
 
 

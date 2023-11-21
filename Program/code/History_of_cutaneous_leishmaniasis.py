@@ -28,9 +28,8 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
     df_visit_date = df_visit_date.rename(columns={'Participante':'Subject', 'Valor': 'Date_of_visit'})
 
     df_informed = df_root[df_root['name']=='Informed Consent']
-    df_informed = df_informed[['Visit','Participante', 'Campo', 'Valor']]
+    df_informed = df_informed[['Participante', 'Campo', 'Valor']]
     df_informed = df_informed[df_informed['Campo']=='Informed consent signature date']
-    df_informed = df_informed[['Visit','Participante','Valor']]
     df_informed = df_informed.rename(columns={'Participante':'Subject', 'Valor':'Informed_consent_date'})
 
     df_demographic_age_year = df_root[df_root['name']=='Demographics']
@@ -72,7 +71,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
             pru['Visit'] = visita
             pru['status'] = pru_1['activityState'].unique()
             pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
-            pru = pru.merge(df_informed, on=['Subject', 'Visit'], how='left')
+            pru = pru.merge(df_informed, on=['Subject'], how='left')
             pru = pru.merge(df_demographic_age_month, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_demographic_age_year, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
@@ -186,7 +185,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                     else:
                         try:
                             date_format = '%d-%b-%Y'
-                            date_of_test_f = datetime.strptime(date_format(str(date_confirmed_diagnosis_pure)), date_format)
+                            date_of_test_f = datetime.strptime(date_confirmed_diagnosis_pure, date_format)
                             date_of_visit_f = datetime.strptime(date_of_visit, date_format)
 
                             if date_of_test_f != date_of_visit_f:
@@ -205,8 +204,8 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                     else:
                         try:
                             date_format = '%d-%b-%Y'
-                            date_confirmed_diagnosis_f = datetime.strptime(date_format(str(date_confirmed_diagnosis_pure)), date_format)
-                            date_new_sample_f = datetime.strptime(date_format(date_new_sample_pure), date_format)
+                            date_confirmed_diagnosis_f = datetime.strptime(date_confirmed_diagnosis_pure, date_format)
+                            date_new_sample_f = datetime.strptime(date_new_sample_pure, date_format)
 
                             if date_confirmed_diagnosis_f < date_new_sample_f:
                                 error = [subject, visit, 'Date of Sample used for Diagnosis taken', date_new_sample_form_field_instance ,\
@@ -225,7 +224,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                             date_format = '%d-%b-%Y'
                             date_birth_cured = f'01-{month_birth}-{year_birth}'
                             date_birth_format = datetime.strptime(date_birth_cured, '%d-%m-%Y')
-                            date_new_sample_f = datetime.strptime(date_format(str(date_new_sample_pure)), date_format)
+                            date_new_sample_f = datetime.strptime(date_new_sample_pure, date_format)
 
                             if  date_new_sample_f <  date_birth_format:
                                 error = [subject, visit, 'Date of Sample used for Diagnosis taken', date_new_sample_form_field_instance,  \

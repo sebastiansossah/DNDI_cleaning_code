@@ -26,7 +26,7 @@ def end_of_study(df_root, path_excel_writer):
     df['Campo_Variable'] = df['Campo'].astype(str) + '|' + df['Variable'].astype(str)
 
     df_informed = df_root[df_root['name']=='Informed Consent']
-    df_informed = df_informed[['Visit','Participante', 'Campo', 'Valor']]
+    df_informed = df_informed[['Participante', 'Campo', 'Valor']]
     df_informed = df_informed[df_informed['Campo']=='Informed consent signature date']
     df_informed = df_informed[['Participante','Valor']]
     df_informed = df_informed.rename(columns={'Participante':'Subject', 'Valor':'Inform_consent_date'})

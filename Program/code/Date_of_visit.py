@@ -1,3 +1,4 @@
+import math
 import pandas as pd
 from datetime import datetime
 from revision_fechas import revision_fecha
@@ -22,9 +23,8 @@ def date_of_visit(df_root, path_excel_writer):
 
 
     df_informed = df_root[df_root['name']=='Informed Consent']
-    df_informed = df_informed[['Visit','Participante', 'Campo', 'Valor']]
+    df_informed = df_informed[['Participante', 'Campo', 'Valor']]
     df_informed = df_informed[df_informed['Campo']=='Informed consent signature date']
-    df_informed = df_informed[['Visit','Participante','Valor']]
     df_informed = df_informed.rename(columns={'Participante':'Subject'})
 
     df_end_study_general = df_root[df_root['name']== 'End of Study Treatment (Miltefosine)']
@@ -58,7 +58,7 @@ def date_of_visit(df_root, path_excel_writer):
             pru['Subject'] = sujeto
             pru['Visit'] = visita
             pru['status'] = pru_1['activityState'].unique()
-            pru = pru.merge(df_informed, on=['Subject', 'Visit'], how='left')
+            pru = pru.merge(df_informed, on=['Subject'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
             
 
@@ -108,14 +108,17 @@ def date_of_visit(df_root, path_excel_writer):
                         lista_logs.append(f'Revision VS0050 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
                     # Revision -> VS0030
-                    try:
-                        if datetime.strptime(str(visit_date_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
-                            pass
-                        else: 
-                            error = [subject, visit, 'Visit Date', visit_date_form_field_instance ,'Visit Date must be before the End of study/Early withdrawal date. ', visit_date_pure, 'VS0030']
-                            lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision VS0030 --> {e} - Subject: {subject},  Visit: {visit}  ')
+                    if  str(end_study_date) == '' or   str(end_study_date) == 'nan': 
+                        pass
+                    else:
+                        try:
+                            if datetime.strptime(str(visit_date_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
+                                pass
+                            else: 
+                                error = [subject, visit, 'Visit Date', visit_date_form_field_instance ,'Visit Date must be before the End of study/Early withdrawal date. ', visit_date_pure, 'VS0030']
+                                lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision VS0030 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
         
         # Codigo para verificar si las fechas de las visitas, son mayores consecutivamente -> VS0020

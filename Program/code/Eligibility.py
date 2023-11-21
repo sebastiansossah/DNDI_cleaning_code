@@ -116,9 +116,8 @@ def eligibility(df_root, path_excel_writer):
     df_lead_egc_if_abnormal = df_lead_egc_if_abnormal.rename(columns={'Participante':'Subject', 'Valor':'abnormal_specify'})
 
     df_informed = df_root[df_root['name']=='Informed Consent']
-    df_informed = df_informed[['Visit','Participante', 'Campo', 'Valor']]
+    df_informed = df_informed[['Participante', 'Campo', 'Valor']]
     df_informed = df_informed[df_informed['Campo']=='Informed consent signature date']
-    df_informed = df_informed[['Visit','Participante','Valor']]
     df_informed = df_informed.rename(columns={'Participante':'Subject'})
 
     df_lead_egc_undefined = df_root[df_root['name']=='12-Lead ECG']
@@ -154,7 +153,7 @@ def eligibility(df_root, path_excel_writer):
             pru['Visit'] = visita
             pru['status'] = pru_1['activityState'].unique()
        
-            pru = pru.merge(df_informed, on=['Subject', 'Visit'], how='left')
+            pru = pru.merge(df_informed, on=['Subject'], how='left')
             pru = pru.merge(df_demographic_age, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_covid, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_vein, on=['Subject', 'Visit'], how='left')

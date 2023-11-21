@@ -27,9 +27,8 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
     df_visit_date = df_visit_date.rename(columns={'Participante':'Subject', 'Valor': 'Date_of_visit'})
 
     df_informed = df_root[df_root['name']=='Informed Consent']
-    df_informed = df_informed[['Visit','Participante', 'Campo', 'Valor']]
+    df_informed = df_informed[['Participante', 'Campo', 'Valor']]
     df_informed = df_informed[df_informed['Campo']=='Informed consent signature date']
-    df_informed = df_informed[['Visit','Participante','Valor']]
     df_informed = df_informed.rename(columns={'Participante':'Subject', 'Valor':'Informed_consent_date'})
 
     df_demographic = df_root[df_root['name']=='Demographics']
@@ -76,7 +75,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
             pru['Visit'] = visita
             pru['status'] = pru_1['activityState'].unique()
             pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
-            pru = pru.merge(df_informed, on=['Subject', 'Visit'], how='left')
+            pru = pru.merge(df_informed, on=['Subject'], how='left')
             pru = pru.merge(df_demographic, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_demographic_age, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
@@ -111,7 +110,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         Alanine_result_pure = Alanine_result.split('|')[0]
                         Alanine_result_form_field_isntance = Alanine_result.split('|')[1]
                     except Exception as e:
-                        Alanine_result_pure = ''
+                        Alanine_result_pure = math.nan
                         Alanine_result_form_field_isntance = 'This field does not have any data'
 
                     try:
@@ -119,7 +118,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         Albumin_out_normal_pure = Albumin_out_normal.split('|')[0]
                         Albumin_out_normal_form_field_isntance = Albumin_out_normal.split('|')[1]
                     except Exception as e:
-                        Albumin_out_normal_pure = ''
+                        Albumin_out_normal_pure = math.nan
                         Albumin_out_normal_form_field_isntance = 'This field does not have any data'
 
                     try:
@@ -127,7 +126,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         Albumin_result_pure = Albumin_result.split('|')[0]
                         Albumin_result_form_field_instance = Albumin_result.split('|')[1]
                     except Exception as e:
-                        Albumin_result_pure = ''
+                        Albumin_result_pure = math.nan
                         Albumin_result_form_field_instance = 'This field does not have any data'
 
                     try:
@@ -135,7 +134,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         Alkaline_out_normal_pure = Alkaline_out_normal.split('|')[0]
                         Alkaline_out_normal_form_field_instance = Alkaline_out_normal.split('|')[1] 
                     except Exception as e:
-                        Alkaline_out_normal_pure = ''
+                        Alkaline_out_normal_pure = math.nan
                         Alkaline_out_normal_form_field_instance = 'This field does not have any data'
 
                     try:
@@ -143,7 +142,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         Alkaline_result_pure = Alkaline_result.split('|')[0]
                         Alkaline_result_form_field_instance = Alkaline_result.split('|')[1]
                     except Exception as e:
-                        Alkaline_result_pure = ''
+                        Alkaline_result_pure = math.nan
                         Alkaline_result_form_field_instance = 'This field does not have any data'
 
                     try:
@@ -151,7 +150,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         Aspartate_out_normal_pure = Aspartate_out_normal.split('|')[0]
                         Aspartate_out_normal_form_field_instance = Aspartate_out_normal.split('|')[1]
                     except Exception as e:
-                        Aspartate_out_normal_pure = ''
+                        Aspartate_out_normal_pure = math.nan
                         Aspartate_out_normal_form_field_instance = 'This field does not have any data'
 
                     try:
@@ -159,7 +158,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         Aspartate_result_pure = Aspartate_result.split('|')[0]
                         Aspartate_result_form_field_instance = Aspartate_result.split('|')[1]
                     except Exception as e:
-                        Aspartate_result_pure = ''
+                        Aspartate_result_pure = math.nan
                         Aspartate_result_form_field_instance = 'This field does not have any data'
 
                     try:
@@ -167,7 +166,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         Bicarbonate_out_normal_pure = Bicarbonate_out_normal.split('|')[0]
                         Bicarbonate_out_normal_form_field_instance = Bicarbonate_out_normal.split('|')[1]
                     except Exception as e:
-                        Bicarbonate_out_normal_pure = ''
+                        Bicarbonate_out_normal_pure = math.nan
                         Bicarbonate_out_normal_form_field_instance = 'This field does not have any data'
 
                     try:
@@ -175,7 +174,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         Bicarbonate_result_pure = Bicarbonate_result.split('|')[0]
                         Bicarbonate_result_form_field_instance = Bicarbonate_result.split('|')[1]
                     except Exception as e:
-                        Bicarbonate_result_pure = ''
+                        Bicarbonate_result_pure = math.nan
                         Bicarbonate_result_form_field_instance = 'This field does not have any data'
 
                     try:
@@ -183,7 +182,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         Bilirubin_direct_out_normal_pure = Bilirubin_direct_out_normal.split('|')[0]
                         Bilirubin_direct_out_normal_form_field_instance = Bilirubin_direct_out_normal.split('|')[1]
                     except Exception as e:
-                        Bilirubin_direct_out_normal_pure = ''
+                        Bilirubin_direct_out_normal_pure = math.nan
                         Bilirubin_direct_out_normal_form_field_instance = 'This field does not have any data'
                     
                     try:
@@ -191,7 +190,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         Bilirubin_direct_result_pure = Bilirubin_direct_result.split('|')[0]
                         Bilirubin_direct_result_form_field_instance = Bilirubin_direct_result.split('|')[1]                   
                     except Exception as e:
-                        Bilirubin_direct_result_pure = ''
+                        Bilirubin_direct_result_pure = math.nan
                         Bilirubin_direct_result_form_field_instance = 'This field does not have any data'
 
                     try:
@@ -199,7 +198,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         Bilirubin_out_normal_pure = Bilirubin_out_normal.split('|')[0]
                         Bilirubin_out_normal_form_field_instance = Bilirubin_out_normal.split('|')[1]
                     except Exception as e:
-                        Bilirubin_out_normal_pure = ''
+                        Bilirubin_out_normal_pure = math.nan
                         Bilirubin_out_normal_form_field_instance = 'This field does not have any data'
 
                     try:
@@ -207,7 +206,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         Bilirubin_result_pure = Bilirubin_result.split('|')[0]
                         Bilirubin_result_form_field_instance = Bilirubin_result.split('|')[1]   
                     except Exception as e:
-                        Bilirubin_result_pure = ''
+                        Bilirubin_result_pure = math.nan
                         Bilirubin_result_form_field_instance = 'This field does not have any data'
 
                     try:
@@ -215,7 +214,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         blood_sample_collected_pure = blood_sample_collected.split('|')[0]
                         blood_sample_collected_form_field_instance = blood_sample_collected.split('|')[1]
                     except Exception as e:
-                        blood_sample_collected_pure = ''  
+                        blood_sample_collected_pure = math.nan
                         blood_sample_collected_form_field_instance = 'This field does not have any data'
 
                     try:
@@ -223,7 +222,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         C_Reactive_out_normal_pure = C_Reactive_out_normal.split('|')[0]
                         C_Reactive_out_normal_form_field_instance = C_Reactive_out_normal.split('|')[1]
                     except Exception as e:
-                        C_Reactive_out_normal_pure = ''
+                        C_Reactive_out_normal_pure = math.nan
                         C_Reactive_out_normal_form_field_instance = 'This field does not have any data'
 
                     try:
@@ -231,7 +230,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         C_Reactive_result_pure = C_Reactive_result.split('|')[0]
                         C_Reactive_result_form_field_instance = C_Reactive_result.split('|')[1]
                     except Exception as e:
-                        C_Reactive_result_pure = ''
+                        C_Reactive_result_pure = math.nan
                         C_Reactive_result_form_field_instance = 'This field does not have any data'
 
                     try:
@@ -239,7 +238,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         Calcium_out_normal_pure = Calcium_out_normal.split('|')[0]
                         Calcium_out_normal_form_field_instance = Calcium_out_normal.split('|')[1]
                     except Exception as e:
-                        Calcium_out_normal_pure = ''
+                        Calcium_out_normal_pure = math.nan
                         Calcium_out_normal_form_field_instance = 'This field does not have any data'
 
                     try:
@@ -247,7 +246,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         Calcium_result_pure = Calcium_result.split('|')[0]
                         Calcium_result_form_field_instance = Calcium_result.split('|')[1]
                     except Exception as e:
-                        Calcium_result_pure = ''
+                        Calcium_result_pure = math.nan
                         Calcium_result_form_field_instance = 'This field does not have any data'
 
                     try:
@@ -255,7 +254,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         Chloride_out_normal_pure = Chloride_out_normal.split('|')[0]
                         Chloride_out_normal_form_field_instance = Chloride_out_normal.split('|')[1]
                     except Exception as e:
-                        Chloride_out_normal_pure = ''
+                        Chloride_out_normal_pure = math.nan
                         Chloride_out_normal_form_field_instance = 'This field does not have any data'
 
                     try:
@@ -263,7 +262,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         Chloride_result_pure = Chloride_result.split('|')[0]
                         Chloride_result_form_field_instacnce = Chloride_result.split('|')[1]
                     except Exception as e:
-                        Chloride_result_pure = ''
+                        Chloride_result_pure = math.nan
                         Chloride_result_form_field_instacnce = 'This field does not have any data'
 
                     try:
@@ -271,7 +270,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         Cholesterol_out_normal_pure = Cholesterol_out_normal.split('|')[0]
                         Cholesterol_out_normal_form_field_instance = Cholesterol_out_normal.split('|')[1]
                     except Exception as e:
-                        Cholesterol_out_normal_pure = ''
+                        Cholesterol_out_normal_pure = math.nan
                         Cholesterol_out_normal_form_field_instance = 'This field does not have any data'
 
                     try:
@@ -279,7 +278,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         Cholesterol_result_pure = Cholesterol_result.split('|')[0]
                         Cholesterol_result_form_field_instance = Cholesterol_result.split('|')[1]
                     except Exception as e:
-                        Cholesterol_result_pure = ''
+                        Cholesterol_result_pure = math.nan
                         Cholesterol_result_form_field_instance = 'This field does not have any data'
 
                     try:
@@ -287,7 +286,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         Creatine_out_normal_pure = Creatine_out_normal.split('|')[0]
                         Creatine_out_normal_form_field_instance = Creatine_out_normal.split('|')[1]
                     except Exception as e:
-                        Creatine_out_normal_pure = ''
+                        Creatine_out_normal_pure = math.nan
                         Creatine_out_normal_form_field_instance = 'This field does not have any data'
                      
                     try:
@@ -295,7 +294,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         Creatine_result_pure = Creatine_result.split('|')[0]
                         Creatine_result_form_field_instance = Creatine_result.split('|')[1]
                     except Exception as e:
-                        Creatine_result_pure = ''
+                        Creatine_result_pure = math.nan
                         Creatine_result_form_field_instance = 'This field does not have any data'
 
                     try:

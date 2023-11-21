@@ -28,7 +28,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
     df_informed = df_root[df_root['name']=='Informed Consent']
     df_informed = df_informed[['Visit','Participante', 'Campo', 'Valor']]
     df_informed = df_informed[df_informed['Campo']=='Informed consent signature date']
-    df_informed = df_informed[['Visit','Participante','Valor']]
+    df_informed = df_informed[['Participante','Valor']]
     df_informed = df_informed.rename(columns={'Participante':'Subject', 'Valor':'Informed_consent_date'})
 
     df_demographic = df_root[df_root['name']=='Demographics']
@@ -75,7 +75,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
             pru['Visit'] = visita
             pru['status'] = pru_1['activityState'].unique()
             pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
-            pru = pru.merge(df_informed, on=['Subject', 'Visit'], how='left')
+            pru = pru.merge(df_informed, on=['Subject'], how='left')
             pru = pru.merge(df_demographic, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(clicinical_chemestry_principal, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
