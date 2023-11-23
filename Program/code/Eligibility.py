@@ -73,15 +73,14 @@ def eligibility(df_root, path_excel_writer):
     df_virology_Hcv = df_virology_Hcv[['Visit','Participante','Valor']]
     df_virology_Hcv = df_virology_Hcv.rename(columns={'Participante':'Subject', 'Valor':'hcv_result'})
 
-    df__lession  = df_root[df_root['name']=='Lesion Measurement']
-    df__lession = df__lession[['Visit','Participante', 'Campo', 'Valor']]
-    df__lession = df__lession[df__lession['Campo']=='Anatomical Location']
-    df__lession = df__lession[['Visit','Participante','Valor']]
-    df__lession = df__lession.rename(columns={'Participante':'Subject', 'Valor':'lesion_measurement'})
-    subject_counts = df__lession['Subject'].value_counts().reset_index()
-    subject_counts.columns = ['Subject', 'Count']
-    df_with_counts = df__lession.merge(subject_counts, left_on='Subject', right_on='Subject')
-    df_with_counts = df_with_counts[['Visit','Subject','Count']]
+    df__lession_count  = df_root[df_root['name']=='Lesion Measurement']
+    df__lession_count = df__lession_count[['Visit','Participante', 'Campo', 'Valor']]
+    df__lession_count = df__lession_count[df__lession_count['Visit']=='Screening Visit']
+    df__lession_count = df__lession_count[df__lession_count['Campo']=='Anatomical Location']
+    df__lession_count = df__lession_count[['Visit','Participante','Valor']]
+    df__lession_count = df__lession_count.rename(columns={'Participante':'Subject', 'Valor':'lesion_measurement'})
+    df__lession_count['Count'] = len(df__lession_count['lesion_measurement'])
+    df__lession_count = df__lession_count[['Visit','Subject','Count']]
 
     df__lession_dia  = df_root[df_root['name']=='Lesion Measurement']
     df__lession_dia = df__lession_dia[['Visit','Participante', 'Campo', 'Valor']]
@@ -163,7 +162,7 @@ def eligibility(df_root, path_excel_writer):
             pru = pru.merge(df_virology_HIV, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_virology_HIV2, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df__lession_dia, on=['Subject', 'Visit'], how='left')
-            pru = pru.merge(df_with_counts, on=['Subject', 'Visit'], how='left')
+            pru = pru.merge(df__lession_count, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_vital, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_vital_sis, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_lead_egc, on=['Subject', 'Visit'], how='left')
@@ -413,9 +412,11 @@ def eligibility(df_root, path_excel_writer):
                             lista_logs.append(f'Revision IE0441 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                         # Revision para IE447
+                        #if math.isnan(cuenta_lesiones) != False and  math.isnan(diametro_lesiones):
                         try:
                             if float(subject_eligible_for_study_pure) == 1.0:
                                 if float(cuenta_lesiones) > 4.0 or float(diametro_lesiones) > 400.0:
+                                    print(cuenta_lesiones - diametro_lesiones)
                                     error = [subject, visit, 'Is the subject eligible for the study?', subject_eligible_for_study_form_field_instance, \
                                             'The participant has more than 4 lesions, or lesions over 4cm long in diameter or lesions with mucosal involvement in the Lesion Measurement form, he/she should not be eligible for randomization', \
                                                 cuenta_lesiones, 'IE0447']
@@ -558,6 +559,7 @@ def eligibility(df_root, path_excel_writer):
                         try:
                             if float(participant_randomization_pure) == 1.0:
                                 if float(cuenta_lesiones) > 4.0 or float(diametro_lesiones) > 400.0:
+                                    print(cuenta_lesiones - diametro_lesiones)
                                     error = [subject, visit, 'Is the participant eligible to randomization?', \
                                             participant_randomization_form_field_instance,\
                                                 'The participant has more than 4 lesions, or lesions over 4cm long in diameter or lesions with mucosal involvement in the Lesion Measurement form, he/she should not be eligible for randomization', \
@@ -690,5 +692,7 @@ def eligibility(df_root, path_excel_writer):
 
 if __name__ == '__main__':
     path_excel = r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\Program\output\prueba.xlsx"
-    df_root = pd.read_excel(r'C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\data\newDNDI.xlsx')
+    df_root = pd.read_excel(R'C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\Program\data\f90c554a-361a-4054-a2bb-a64a72c9b621.xlsx')
+    df_root.rename(columns = {'Instancia':'FormFieldInstance Id'}, inplace = True)
+    df_root = df_root[(df_root['activityState']== 'DATA_VERIFIED') | (df_root['activityState']== 'DATA_ENTRY_COMPLETE')]
     eligibility(df_root, path_excel) 

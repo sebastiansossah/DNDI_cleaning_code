@@ -14,7 +14,6 @@ def miltefosine_administration(df_root, path_excel_writer):
     Esta funcion tiene como finalidad la revision de cada uno de los puntos 
     del edit check para el formulario de Miltefosine Administration
     '''
-    print('Falta crear revision 0020, 0060 y 0070')
 
     df = df_root[df_root['name']== 'Miltefosine Administration'] 
     lista_sujetos = df['Participante'].unique()
