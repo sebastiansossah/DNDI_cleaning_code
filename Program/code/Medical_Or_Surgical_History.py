@@ -159,7 +159,7 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
                             if type(medical_surgical_pure) == pd.Series:
                                 print('revision MS0010 revisar medical or surgical')
                                 pass
-                            elif medical_surgical_pure == '' :
+                            elif medical_surgical_pure != '' :
                                 pass
                             else:
                                 error = [subject, visit, 'Are there any relevant medical history or surgical history?', any_relevant_medical_form_field_instance,\

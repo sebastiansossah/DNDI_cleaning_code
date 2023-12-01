@@ -59,12 +59,12 @@ def urine_microscopic_examination(df_root, path_excel_writer):
                     # ------------------------------------------------------- 
 
                     lista_validacion = [
-                        'RBC',
-                        'WBC',
-                        'Epithelial Cells',
-                        'Crystals',
-                        'Casts',
-                        'Bacteria',
+                    'RBC, Result (/hpf)',
+                    'WBC, Result (/hpf)',
+                    'Epithelial Cells, Result (/hpf)',
+                    'Crystals, Result',
+                    'Casts, Result (/lpf)',
+                    'Bacteria, Result'
                     ]
                     mi_cuenta= 0
                     for validador_raw in lista_validacion:
@@ -91,51 +91,51 @@ def urine_microscopic_examination(df_root, path_excel_writer):
                     except Exception as e:
                         lista_logs.append(f'Revision URM0010--> {e} - Subject: {subject},  Visit: {visit} ')
                     
-                    lista_validacion_resultados = [
-                    'RBC, Result (/hpf)',
-                    'WBC, Result (/hpf)',
-                    'Epithelial Cells, Result (/hpf)',
-                    'Crystals, Result',
-                    'Casts, Result (/lpf)',
-                    'Bacteria, Result',
-                    ]
-                    mi_cuenta_resultados = 0
+                    # lista_validacion_resultados = [
+                    # 'RBC, Result (/hpf)',
+                    # 'WBC, Result (/hpf)',
+                    # 'Epithelial Cells, Result (/hpf)',
+                    # 'Crystals, Result',
+                    # 'Casts, Result (/lpf)',
+                    # 'Bacteria, Result',
+                    # ]
+                    # mi_cuenta_resultados = 0
 
-                    for validador_raw_resultados in lista_validacion_resultados:
-                        try: 
-                            validador_contador = row[validador_raw_resultados].split('|')[0]
-                        except:
-                            validador_contador = ''
+                    # for validador_raw_resultados in lista_validacion_resultados:
+                    #     try: 
+                    #         validador_contador = row[validador_raw_resultados].split('|')[0]
+                    #     except:
+                    #         validador_contador = ''
 
-                        if validador_contador:
-                            mi_cuenta_resultados +=1
+                    #     if validador_contador:
+                    #         mi_cuenta_resultados +=1
 
 
-                    # Revision URM0020
-                    try:
-                        if float(was_performed_pure) == 1.0: 
-                            if mi_cuenta_resultados != 0:
-                                pass
-                            else:
-                                error = [subject, visit, 'Was the urine microscopic examination performed?', was_performed_form_field_instance,\
-                                         'None of the result of the urinalysis form is >=+, therefore this examination is not required', \
-                                            was_performed_disname, 'URM0020']
-                                lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision URM0020--> {e} - Subject: {subject},  Visit: {visit} ')
+                    # # Revision URM0020
+                    # try:
+                    #     if float(was_performed_pure) == 1.0: 
+                    #         if mi_cuenta_resultados != 0:
+                    #             pass
+                    #         else:
+                    #             error = [subject, visit, 'Was the urine microscopic examination performed?', was_performed_form_field_instance,\
+                    #                      'None of the result of the urinalysis form is >=+, therefore this examination is not required', \
+                    #                         was_performed_disname, 'URM0020']
+                    #             lista_revision.append(error)
+                    # except Exception as e:
+                    #     lista_logs.append(f'Revision URM0020--> {e} - Subject: {subject},  Visit: {visit} ')
                     
-                    # Revision URM0030
-                    try:
-                        if float(was_performed_pure) == 0.0: 
-                            if mi_cuenta_resultados == 0:
-                                pass
-                            else:
-                                error = [subject, visit, 'Was the urine microscopic examination performed?', was_performed_form_field_instance,\
-                                         'if Was the urine microscopic examination performed? ="No" and any of the results from the urinalysis at the same visit is >= +', \
-                                            was_performed_disname, 'URM0030']
-                                lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision URM0030--> {e} - Subject: {subject},  Visit: {visit} ')
+                    # # Revision URM0030
+                    # try:
+                    #     if float(was_performed_pure) == 0.0: 
+                    #         if mi_cuenta_resultados == 0:
+                    #             pass
+                    #         else:
+                    #             error = [subject, visit, 'Was the urine microscopic examination performed?', was_performed_form_field_instance,\
+                    #                      'if Was the urine microscopic examination performed? ="No" and any of the results from the urinalysis at the same visit is >= +', \
+                    #                         was_performed_disname, 'URM0030']
+                    #             lista_revision.append(error)
+                    # except Exception as e:
+                    #     lista_logs.append(f'Revision URM0030--> {e} - Subject: {subject},  Visit: {visit} ')
 
 
     excel_writer = load_workbook(path_excel_writer)
