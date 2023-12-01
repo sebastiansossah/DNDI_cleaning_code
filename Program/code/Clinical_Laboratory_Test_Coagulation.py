@@ -21,8 +21,9 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
 
     df= df_root[df_root['name']== 'Clinical Laboratory Test - Coagulation']
     lista_sujetos = df['Participante'].unique()
-    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
-    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)
+    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id', 'displayName']]
+    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)  + '|' + df['displayName'].astype(str)
+
 
     df_visit_date = df_root[df_root['name']=='Date of visit']
     df_visit_date = df_visit_date[['Visit','Participante', 'Campo', 'Valor']]
@@ -89,17 +90,21 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                         blood_sample_collected = row['Blood Sample Collected']
                         blood_sample_collected_pure = blood_sample_collected.split('|')[0]
                         blood_sample_collected_form_field_instance = blood_sample_collected.split('|')[1]
+                        blood_sample_collected_disname = blood_sample_collected.split('|')[2]
                     except Exception as e:
                         blood_sample_collected_pure = math.nan
                         blood_sample_collected_form_field_instance = 'This field does not have any data'
+                        blood_sample_collected_disname = 'Empty'
 
                     try:
                         date_collected = row['Date Collected']
                         date_collected_pure = date_collected.split('|')[0]
                         date_collected_form_field_instance = date_collected.split('|')[1] 
+                        date_collected_disname = date_collected.split('|')[2] 
                     except Exception as e:
                         date_collected_pure = ''
                         blood_sample_collected_form_field_instance = 'This field does not have any data'
+                        date_collected_disname = 'Empty'
 
                     # try:
                     #     provide_reason = row['Provide the reason']
@@ -110,9 +115,11 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                         INR = row['INR']
                         INR_pure = INR.split('|')[0]
                         INR_form_field_instance = INR.split('|')[1]
+                        INR_disname = INR.split('|')[2]
                     except Exception as e:
                         INR_pure = math.nan
                         INR_form_field_instance = 'This field does not have any data'
+                        INR_disname = 'Empty'
 
                     # try:
                     #     INR_specify = row['INR, If abnormal, Specify']
@@ -123,26 +130,32 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                         INR_out_normal_range = row['INR, Out of normal range?']
                         INR_out_normal_range_pure = INR_out_normal_range.split('|')[0]
                         INR_out_normal_range_form_field_instance = INR_out_normal_range.split('|')[1]
+                        INR_out_normal_range_disname = INR_out_normal_range.split('|')[2]
                     except Exception as e:
                         INR_out_normal_range_pure = math.nan
                         INR_out_normal_range_form_field_instance = 'This field does not have any data'
+                        INR_out_normal_range_disname = 'Empty'
 
                     try:
                         INR_result = row['INR, Result']
                         INR_result_pure = INR_result.split('|')[0]
                         INR_result_form_field_instance = INR_result.split('|')[1]
+                        INR_result_disname = INR_result.split('|')[2]
                     except Exception as e:
                         INR_result_pure = ''
                         INR_result_form_field_instance = 'This field does not have any data'
+                        INR_result_disname = 'Empty'
 
                     try:
                         PT = row['PT']
                         PT_pure = PT.split('|')[0]
                         PT_form_field_isntance = PT.split('|')[1]
+                        PT_disname = PT.split('|')[2]
                     except Exception as e:
                         PT_pure = math.nan
                         PT_form_field_isntance = 'This field does not have any data'
-
+                        PT_disname = 'Empty'
+                        
                     # try:
                     #     PT_specify = row['PT, If abnormal, Specify']
                     # except Exception as e:
@@ -152,25 +165,31 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                         PT_out_normal_range = row['PT, Out of normal range?']
                         PT_out_normal_range_pure = PT_out_normal_range.split('|')[0]
                         PT_out_normal_range_form_field_instance = PT_out_normal_range.split('|')[1]
+                        PT_out_normal_range_disname = PT_out_normal_range.split('|')[2]
                     except Exception as e:
                         PT_out_normal_range_pure = math.nan
                         PT_out_normal_range_form_field_instance   = 'This field does not have any data'
+                        PT_out_normal_range_disname = 'Empty'
 
                     try:
                         PT_result = row['PT, Result (Seconds)']
                         PT_result_pure = PT_result.split('|')[0]
                         PT_result_form_field_instance = PT_result.split('|')[1]
+                        PT_result_disname = PT_result.split('|')[2]
                     except Exception as e:
                         PT_result_pure = math.nan     
                         PT_result_form_field_instance = 'This field does not have any data'
+                        PT_result_disname = 'Empty'
 
                     try:
                         aPTT = row['aPTT']
                         aPTT_pure = aPTT.split('|')[0]
                         aPTT_form_field_instance = aPTT.split('|')[1]
+                        aPTT_disname = aPTT.split('|')[2]
                     except Exception as e:
                         aPTT_pure = math.nan
                         aPTT_form_field_instance = 'This field does not have any data'
+                        aPTT_disname = 'Empty'
 
                     # try:
                     #     aPTT_specify = row['aPTT, If abnormal, Specify']
@@ -181,17 +200,21 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                         aPTT_out_normal_range =  row['aPTT, Out of normal range?']
                         aPTT_out_normal_range_pure = aPTT_out_normal_range.split('|')[0]
                         aPTT_out_normal_range_form_field_instance = aPTT_out_normal_range.split('|')[1]
+                        aPTT_out_normal_range_disname = aPTT_out_normal_range.split('|')[2]
                     except Exception as e:
                         aPTT_out_normal_range_pure = math.nan
                         aPTT_out_normal_range_form_field_instance = 'This field does not have any data'
+                        aPTT_out_normal_range_disname = 'Empty'
 
                     try:
                         aPTT_result = row['aPTT, Result (Seconds)']
                         aPTT_result_pure = aPTT_result.split('|')[0]
                         aPTT_result_form_field_instance = aPTT_result.split('|')[1]
+                        aPTT_result_disname = aPTT_result.split('|')[2]
                     except Exception as e:
                         aPTT_result_pure = math.nan
                         aPTT_result_form_field_instance = 'This field does not have any data'
+                        aPTT_result_disname = 'Empty'
 
                     # ------------------------------------------------------------------------------------------------------------
                     # Revision GE0070
@@ -208,7 +231,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                             if f == None:
                                 pass
                             else:
-                                error = [subject, visit, 'Date collected', date_collected_form_field_instance ,f , date_collected_pure, 'GE0020']
+                                error = [subject, visit, 'Date collected', date_collected_form_field_instance ,f , date_collected_disname, 'GE0020']
                                 lista_revision.append(error)     
 
                         except Exception as e:
@@ -224,7 +247,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                             if date_collected_f != date_of_visit_f:
                                 error = [subject, visit, 'Date Collected', date_collected_form_field_instance,\
                                         'The date should be the same as the visit date in the "Date of Visit" Form', \
-                                            f'{date_collected_pure} - {date_of_visit}', 'LBO0010']
+                                            f'{date_collected_disname} - {date_of_visit}', 'LBO0010']
                                 lista_revision.append(error)
                             else:
                                 pass
@@ -239,9 +262,9 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                             date_inform_consent_f = datetime.strptime(date_inform_consent, date_format)
 
                             if date_collected_f < date_inform_consent_f:
-                                error = [subject, visit, 'Date Collected', date_collected_pure,\
+                                error = [subject, visit, 'Date Collected', date_collected_form_field_instance,\
                                         'The date/time of test performed can not be before the informed consent date/time',\
-                                            f'{date_collected_pure} - {date_inform_consent}', 'LBO0020']
+                                            f'{date_collected_disname} - {date_inform_consent}', 'LBO0020']
                                 lista_revision.append(error)
                             else:
                                 pass
@@ -254,7 +277,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                             if datetime.strptime(str(date_collected_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
                                 pass
                             else: 
-                                error = [subject, visit, 'Visit Date', date_collected_form_field_instance ,'Date Collected must be before the End of study/Early withdrawal date. ', date_collected_pure, 'LBO0030']
+                                error = [subject, visit, 'Visit Date', date_collected_form_field_instance ,'Date Collected must be before the End of study/Early withdrawal date. ', date_collected_disname, 'LBO0030']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision LBO0030 --> {e} - Subject: {subject},  Visit: {visit}  ')
@@ -267,7 +290,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                             else:
                                 error = [subject, visit, 'Blood Sample Collected', blood_sample_collected_form_field_instance,\
                                          'The "Not Required" option can only be selected if visit is D-1 and the D-1 visit date =Screening visit date or normal and done in the previous 10 days', \
-                                            blood_sample_collected_pure, 'LBO0050']
+                                            blood_sample_collected_disname, 'LBO0050']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision LBO0050--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -307,7 +330,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                             else:
                                 error = [subject, visit, 'Blood Sample Collected', blood_sample_collected_form_field_instance,\
                                          'If Blood Sample Collected is checked as "Yes", not all laboratory tests can be "not done"', \
-                                            blood_sample_collected_pure, 'LBO0060']
+                                            blood_sample_collected_disname, 'LBO0060']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision LBO0060--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -317,14 +340,14 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                         if float(aPTT_out_normal_range_pure) == 1.0:
                             if float(aPTT_result_pure) > 23.6 and float(aPTT_result_pure) < 34.8 :
                                 error = [subject, visit, 'aPTT, Out of normal range?', aPTT_result_form_field_instance ,\
-                                         'According to the result, the value is not out of range, please review.', aPTT_result_pure, 'LBO0080']
+                                         'According to the result, the value is not out of range, please review.', aPTT_result_disname, 'LBO0080']
                                 lista_revision.append(error)
 
                         # Revision LBO0100
                         elif float(aPTT_out_normal_range_pure) == 0.0:
                             if float(aPTT_result_pure) <  23.6  or float(aPTT_result_pure) > 34.8 :
                                 error = [subject, visit, 'aPTT, Out of normal range?', aPTT_result_form_field_instance,\
-                                         'According to the result, the value is out of range, please review.', aPTT_result_pure, 'LBO0100']
+                                         'According to the result, the value is out of range, please review.', aPTT_result_disname, 'LBO0100']
                                 lista_revision.append(error)
                                             
                     except Exception as e:
@@ -335,14 +358,14 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                         if float(PT_out_normal_range_pure) == 1.0:
                             if float(PT_result_pure) > 11.7 and float(PT_result_pure) < 15.3 :
                                 error = [subject, visit, 'PT, Out of normal range?', PT_result_form_field_instance ,\
-                                         'According to the result, the value is not out of range, please review.', PT_result_pure, 'LBO0090']
+                                         'According to the result, the value is not out of range, please review.', PT_result_disname, 'LBO0090']
                                 lista_revision.append(error)
 
                         # Revision LBO0110
                         elif float(PT_out_normal_range_pure) == 0.0:
                             if float(PT_result_pure) <  11.7  or float(PT_result_pure) > 15.3 :
                                 error = [subject, visit, 'PT, Out of normal range? ', PT_result_form_field_instance ,\
-                                         'According to the result, the value is out of range, please review.', PT_result_pure, 'LBO0110']
+                                         'According to the result, the value is out of range, please review.', PT_result_disname, 'LBO0110']
                                 lista_revision.append(error)
                                             
                     except Exception as e:
@@ -353,14 +376,14 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                         if float(INR_out_normal_range_pure) == 1.0:
                             if float(INR_result_pure) > 0.8 and float(INR_result_pure) < 1.1 :
                                 error = [subject, visit, 'INR, Out of normal range?', INR_result_form_field_instance ,\
-                                         'According to the result, the value is not out of range, please review.', INR_result_pure, 'LBO0120']
+                                         'According to the result, the value is not out of range, please review.', INR_result_disname, 'LBO0120']
                                 lista_revision.append(error)
 
                         # Revision LBO0130
                         elif float(INR_out_normal_range_pure) == 0.0:
                             if float(INR_result_pure) < 0.8  or float(INR_result_pure) > 1.1 :
                                 error = [subject, visit, 'INR, Out of normal range?', INR_result_form_field_instance ,\
-                                         'According to the result, the value is out of range, please review.', INR_result_pure, 'LBO0130']
+                                         'According to the result, the value is out of range, please review.', INR_result_disname, 'LBO0130']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision LBO0130--> {e} - Subject: {subject},  Visit: {visit} ')

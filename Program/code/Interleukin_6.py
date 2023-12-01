@@ -17,8 +17,8 @@ def interleukin_6(df_root, path_excel_writer):
 
     df= df_root[df_root['name']== 'Interleukin-6']
     lista_sujetos = df['Participante'].unique()
-    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
-    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)
+    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id', 'displayName']]
+    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)  + '|' + df['displayName'].astype(str)
 
 
     df_visit_date = df_root[df_root['name']=='Date of visit']
@@ -88,33 +88,41 @@ def interleukin_6(df_root, path_excel_writer):
                         Provide_the_reason = row["Provide the reason"]
                         Provide_the_reason_pure = Provide_the_reason.split('|')[0]
                         Provide_the_reason_form_field_instance = Provide_the_reason.split('|')[1]
+                        Provide_the_reason_disname = Provide_the_reason.split('|')[2]
                     except Exception as e:
                         Provide_the_reason_pure = math.nan
                         Provide_the_reason_form_field_instance = 'This field does not have any data'
+                        Provide_the_reason_disname = 'Empty'
 
                     try:
                         date_collected = row["Date Sample Collected"]
                         date_collected_pure = date_collected.split('|')[0]
                         date_collected_form_field_instance = date_collected.split('|')[1]
+                        date_collected_disname = date_collected.split('|')[2]
                     except Exception as e:
                         date_collected_pure = ''
                         date_collected_form_field_instance = 'This field does not have any data'
+                        date_collected_disname = 'Empty'
 
                     try:
                         Result_pg_ml = row["Result (pg/ml)"]
                         Result_pg_ml_pure = Result_pg_ml.split('|')[0]
                         Result_pg_ml_form_field_instance = Result_pg_ml.split('|')[1]
+                        Result_pg_ml_disname = Result_pg_ml.split('|')[2]
                     except Exception as e:
                         Result_pg_ml_pure = math.nan
                         Result_pg_ml_form_field_instance = 'This field does not have any data'
+                        Result_pg_ml_disname = 'Empty'
 
                     try:
                         Out_of_normal_range = row["Out of normal range?"]
                         Out_of_normal_range_pure = Out_of_normal_range.split('|')[0]
                         Out_of_normal_range_form_field_instance = Out_of_normal_range.split('|')[1]
+                        Out_of_normal_range_disname = Out_of_normal_range.split('|')[2]
                     except Exception as e:
                         Out_of_normal_range_pure = math.nan
                         Out_of_normal_range_form_field_instance = 'This field does not have any data'
+                        Out_of_normal_range_disname = 'Empty'
 
                     # ------------------------------------------------------------------------------------------
 
@@ -133,7 +141,7 @@ def interleukin_6(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, 'Date Sample Collected', date_collected_form_field_instance,\
-                                        f , date_collected_pure, 'GE0020']
+                                        f , date_collected_disname, 'GE0020']
                                 lista_revision.append(error)     
 
                         except Exception as e:
@@ -144,7 +152,7 @@ def interleukin_6(df_root, path_excel_writer):
                         if float(Out_of_normal_range_pure) == 0.0:
                             if float(Result_pg_ml_pure) > 3.4:
                                     error = [subject, visit, 'Out of normal range?', Result_pg_ml_form_field_instance ,\
-                                             'According to the result, the value is out of range, please review', Result_pg_ml_pure, 'IN0010']
+                                             'According to the result, the value is out of range, please review', Result_pg_ml_disname, 'IN0010']
                                     lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision IN0010 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -154,7 +162,7 @@ def interleukin_6(df_root, path_excel_writer):
                         if float(Out_of_normal_range_pure) == 1.0:
                             if float(Result_pg_ml_pure) < 3.4:
                                     error = [subject, visit, 'Out of normal range?', Result_pg_ml_form_field_instance ,\
-                                             'According to the result, the value is not out of range, please review', Result_pg_ml_pure, 'IN0020']
+                                             'According to the result, the value is not out of range, please review', Result_pg_ml_disname, 'IN0020']
                                     lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision IN0020 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -169,7 +177,7 @@ def interleukin_6(df_root, path_excel_writer):
 
                             if date_of_test_f != date_of_visit_f:
                                 error = [subject, visit, 'Date Sample Collected', date_collected_form_field_instance,\
-                                        'The date should be the same as the visit date in the "Date of Visit" Form' , f'{date_collected_pure} - {date_of_visit}', 'IN0030']
+                                        'The date should be the same as the visit date in the "Date of Visit" Form' , f'{date_collected_disname} - {date_of_visit}', 'IN0030']
                                 lista_revision.append(error)
                             else:
                                 pass
@@ -186,7 +194,7 @@ def interleukin_6(df_root, path_excel_writer):
 
                             if date_of_test_f < date_inform_consent_f:
                                 error = [subject, visit, 'Date Sample Collected', date_collected_form_field_instance ,\
-                                        'The date/time of test performed can not be before the informed consent date/time', f'{date_collected_pure} - {date_inform_consent}', 'IN0040']
+                                        'The date/time of test performed can not be before the informed consent date/time', f'{date_collected_disname} - {date_inform_consent}', 'IN0040']
                                 lista_revision.append(error)
                             else:
                                 pass
@@ -200,7 +208,7 @@ def interleukin_6(df_root, path_excel_writer):
                                 pass
                             else: 
                                 error = [subject, visit, 'Date Sample Collected', date_collected_form_field_instance ,\
-                                        'Date Sample Collected must be before the End of study/Early withdrawal date. ', date_collected_pure, 'IN0050']
+                                        'Date Sample Collected must be before the End of study/Early withdrawal date. ', date_collected_disname, 'IN0050']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision IN0050 --> {e} - Subject: {subject},  Visit: {visit} ')

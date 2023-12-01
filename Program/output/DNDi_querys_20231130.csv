@@ -1,0 +1,51 @@
+id;FormFieldInstance_id;comment
+0;54;The Subject can not be eligible because he/she had a positive COVID-19 test result please review
+1;18046;If the answer is Yes at least one section of Medical or Surgical History Detail should be added
+2;88;According to the result the value is out of range please review.
+3;92;According to the result the value is out of range please review.
+4;116;According to the result the value is out of range please review.
+5;120;According to the result the value is out of range please review.
+6;124;According to the result the value is out of range please review.
+7;128;According to the result the value is out of range please review.
+8;156;According to the result the value is out of range please review.
+9;10034;According to the result the value is out of range please review.
+10;10074;According to the result the value is out of range please review.
+11;10215;According to the result the value is out of range please review.
+12;10255;According to the result the value is out of range please review.
+13;10579;According to the result the value is out of range please review.
+14;10619;According to the result the value is out of range please review.
+15;10954;According to the result the value is out of range please review.
+16;10994;According to the result the value is out of range please review.
+17;11419;According to the result the value is out of range please review.
+18;11459;According to the result the value is out of range please review.
+19;12598;According to the result the value is out of range please review.
+20;12638;According to the result the value is out of range please review.
+21;12686;According to the result the value is out of range please review.
+22;13050;According to the result the value is out of range please review.
+23;13425;According to the result the value is out of range please review.
+24;13465;According to the result the value is out of range please review.
+25;201;According to the result the value is out of range please review.
+26;209;According to the result the value is not out of range please review.
+27;11051;According to the result the value is out of range please review.
+28;11063;According to the result the value is out of range please review.
+29;11516;According to the result the value is out of range please review.
+30;11528;According to the result the value is out of range please review.
+31;13534;According to the result the value is out of range please review.
+32;13586;According to the result the value is not out of range please review.
+33;318;If Urine Sample Collected is checked as Yes not all laboratory tests can be not done
+34;9788;If Urine Sample Collected is checked as Yes not all laboratory tests can be not done
+35;11156;If Urine Sample Collected is checked as Yes not all laboratory tests can be not done
+36;11637;If Urine Sample Collected is checked as Yes not all laboratory tests can be not done
+37;12259;If Urine Sample Collected is checked as Yes not all laboratory tests can be not done
+38;13627;If Urine Sample Collected is checked as Yes not all laboratory tests can be not done
+39;997;Only at Screening
+40;994;Only at Screening
+41;12057;The Respiratory rate is not within expected range (12 to 18) therefore the Interpretation can not be Normal.
+42;11946;The Systolic Blood Pressure is not within expected range (100 to 140) therefore the Interpretation can not be Normal.
+43;11963;The Systolic Blood Pressure is not within expected range (100 to 140) therefore the Interpretation can not be Normal.
+44;19621;The Oral Temperature is not within expected range (35 to 37.5)  therefore the Interpretation can not be Normal.
+45;545;The RR is not within expected range (654.6 to 1141.4) therefore the Interpretation can not be Normal.
+46;546;The PR is not within expected range (120 to 200) therefore the Interpretation can not be Normal.
+47;9617;Pre dose triplicate 2 Time should be within 2 minutes after Pre dose triplicate 1 Time
+48;12083;The QTcF is not within expected range (350 to 450) therefore the Interpretation can not be Normal.
+49;832;The Clinical chemistry  D-1 form should not  be completed if the Clinical chemistry form was completed

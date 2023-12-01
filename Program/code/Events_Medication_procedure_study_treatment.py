@@ -17,8 +17,8 @@ def ev_med_proce_treatment(df_root, path_excel_writer):
     df = df_root[df_root['name']== 'Ev, Med, Proc And Study Treatment Summary'] 
     lista_sujetos = df['Participante'].unique()
 
-    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
-    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)
+    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id', 'displayName']]
+    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)  + '|' + df['displayName'].astype(str)
     
     df_adverse = df_root[df_root['name']=='Adverse Events']
     df_adverse = df_adverse[['Visit','Participante', 'Campo', 'Valor']]
@@ -93,42 +93,52 @@ def ev_med_proce_treatment(df_root, path_excel_writer):
                         were_AE_experienced_since_informed_consent = row['Were any adverse events experienced since Informed Consent?']
                         were_AE_experienced_since_informed_consent_pure = were_AE_experienced_since_informed_consent.split('|')[0]
                         were_AE_experienced_since_informed_consent_form_field_instance = were_AE_experienced_since_informed_consent.split('|')[1]
+                        were_AE_experienced_since_informed_consent_disname = were_AE_experienced_since_informed_consent.split('|')[2]
                     except:
                         were_AE_experienced_since_informed_consent_pure = ''
                         were_AE_experienced_since_informed_consent_form_field_instance = 'This field does not have any data'
-                    
+                        were_AE_experienced_since_informed_consent_disname = 'Empty'
+
                     try:
                         were_any_concomitant_medication_8_weeks_before = row['Were any concomitant medications taken within 8 weeks before start of screening or during the study?']
                         were_any_concomitant_medication_8_weeks_before_pure = were_any_concomitant_medication_8_weeks_before.split('|')[0]
                         were_any_concomitant_medication_8_weeks_before_form_field_instance = were_any_concomitant_medication_8_weeks_before.split('|')[1]
+                        were_any_concomitant_medication_8_weeks_before_disname = were_any_concomitant_medication_8_weeks_before.split('|')[2]
                     except:
                         were_any_concomitant_medication_8_weeks_before_pure = ''
                         were_any_concomitant_medication_8_weeks_before_form_field_instance = 'This field does not have any data'
+                        were_any_concomitant_medication_8_weeks_before_disname = 'Empty'
                     
                     try:
                         were_concomitant_procedure_performed_during_study = row['Were any concomitant procedures/surgeries performed during the study?']
                         were_concomitant_procedure_performed_during_study_pure = were_concomitant_procedure_performed_during_study.split('|')[0]
                         were_concomitant_procedure_performed_during_study_form_field_instance = were_concomitant_procedure_performed_during_study.split('|')[1]
+                        were_concomitant_procedure_performed_during_study_disname = were_concomitant_procedure_performed_during_study.split('|')[2]
                     except:
                         were_concomitant_procedure_performed_during_study_pure = ''
                         were_concomitant_procedure_performed_during_study_form_field_instance = 'This field does not have any data'
-                    
+                        were_concomitant_procedure_performed_during_study_disname = 'Empty'
+
                     try:
                         has_subject_taken_cpg_ODN = row['Has the subject taken at least one dose of CpG ODN D35 study treatment?']
                         has_subject_taken_cpg_ODN_pure = has_subject_taken_cpg_ODN.split('|')[0]
                         has_subject_taken_cpg_ODN_form_field_instance = has_subject_taken_cpg_ODN.split('|')[1]
+                        has_subject_taken_cpg_ODN_disname = has_subject_taken_cpg_ODN.split('|')[2]
                     except:
                         has_subject_taken_cpg_ODN_pure = ''
                         has_subject_taken_cpg_ODN_form_field_instance = 'This field does not have any data'
+                        has_subject_taken_cpg_ODN_disname = 'Empty'
                     
                     try:
                         has_subject_taken_miltefosine = row['Has the subject taken at least one dose of Miltefosine study treatment?']
                         has_subject_taken_miltefosine_pure = has_subject_taken_miltefosine.split('|')[0]
                         has_subject_taken_miltefosine_form_field_instance = has_subject_taken_miltefosine.split('|')[1]
+                        has_subject_taken_miltefosine_disname = has_subject_taken_miltefosine.split('|')[2]
                     except:
                         has_subject_taken_miltefosine_pure = ''
                         has_subject_taken_miltefosine_form_field_instance = 'This field does not have any data'
-                    
+                        has_subject_taken_miltefosine_disname = 'Empty'
+
                     # -----------------------------------------------------------------------------------------------------------------------------------
                     # Revision SM0010 
                     try:
@@ -137,7 +147,7 @@ def ev_med_proce_treatment(df_root, path_excel_writer):
 
                                 error =  [subject, visit, 'Were any adverse events experienced since Informed Consent?', were_AE_experienced_since_informed_consent_form_field_instance, \
                                             'If Yes, at least one adverse event form must be completed', \
-                                                were_AE_experienced_since_informed_consent_pure, 'SM0010']
+                                                were_AE_experienced_since_informed_consent_disname, 'SM0010']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision SM0010 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -150,7 +160,7 @@ def ev_med_proce_treatment(df_root, path_excel_writer):
                             else:
                                 error =  [subject, visit, 'Were any adverse events experienced since Informed Consent?', were_AE_experienced_since_informed_consent_form_field_instance, \
                                             'If No, no adverse event forms should be completed', \
-                                                were_AE_experienced_since_informed_consent_pure, 'SM0020']
+                                                were_AE_experienced_since_informed_consent_disname, 'SM0020']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision SM0020 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -161,7 +171,7 @@ def ev_med_proce_treatment(df_root, path_excel_writer):
                             if float(prior_medication_id) == np.nan or str(prior_medication_id) == 'nan' or str(prior_medication_id) == '' or str(prior_medication_id) == '-':
                                 error =  [subject, visit, 'Were any concomitant medications taken within 8 weeks before start of screening or during the study?', \
                                           were_any_concomitant_medication_8_weeks_before_form_field_instance, 'If Yes, at least one adverse event form must be completed', \
-                                                were_any_concomitant_medication_8_weeks_before_pure, 'SM0030']
+                                                were_any_concomitant_medication_8_weeks_before_disname, 'SM0030']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision SM0030 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -174,7 +184,7 @@ def ev_med_proce_treatment(df_root, path_excel_writer):
                             else:
                                 error =  [subject, visit, 'Were any concomitant medications taken within 8 weeks before start of screening or during the study?', \
                                           were_any_concomitant_medication_8_weeks_before_form_field_instance, 'If No, no concomitant medication forms should be completed', \
-                                                were_any_concomitant_medication_8_weeks_before_pure, 'SM0040']
+                                                were_any_concomitant_medication_8_weeks_before_disname, 'SM0040']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision SM0040 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -185,7 +195,7 @@ def ev_med_proce_treatment(df_root, path_excel_writer):
                             if float(prior_procedure_id) == np.nan or str(prior_procedure_id) == 'nan' or str(prior_procedure_id) == '' or str(prior_procedure_id) == '-':
                                 error =  [subject, visit, 'Were any concomitant procedures/surgeries performed during the study?', \
                                           were_concomitant_procedure_performed_during_study_form_field_instance, 'If Yes, at least one adverse event form must be completed', \
-                                                were_concomitant_procedure_performed_during_study_pure, 'SM0050']
+                                                were_concomitant_procedure_performed_during_study_disname, 'SM0050']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision SM0050 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -198,7 +208,7 @@ def ev_med_proce_treatment(df_root, path_excel_writer):
                             else:
                                 error =  [subject, visit, 'Were any concomitant procedures/surgeries performed during the study?', \
                                           were_concomitant_procedure_performed_during_study_form_field_instance, 'If No, no concomitant medication forms should be completed', \
-                                                were_concomitant_procedure_performed_during_study_pure, 'SM0060']
+                                                were_concomitant_procedure_performed_during_study_disname, 'SM0060']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision SM0060 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -209,7 +219,7 @@ def ev_med_proce_treatment(df_root, path_excel_writer):
                             if str(date_cpg_administration) == 'nan' or str(date_cpg_administration) == '' or str(date_cpg_administration) == '-':
                                 error =  [subject, visit, 'Has the subject taken at least one dose of CpG ODN D35 study treatment?', \
                                           has_subject_taken_cpg_ODN_form_field_instance, 'If Yes, at least one adverse event form must be completed', \
-                                                has_subject_taken_cpg_ODN_pure, 'SM0070']
+                                                has_subject_taken_cpg_ODN_disname, 'SM0070']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision SM0070 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -222,7 +232,7 @@ def ev_med_proce_treatment(df_root, path_excel_writer):
                             else:
                                 error =  [subject, visit, 'Has the subject taken at least one dose of CpG ODN D35 study treatment?', \
                                           has_subject_taken_cpg_ODN_form_field_instance, 'If No, no CpG ODN D35 administration forms should be completed', \
-                                                has_subject_taken_cpg_ODN_pure, 'SM0080']
+                                                has_subject_taken_cpg_ODN_disname, 'SM0080']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision SM0080 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -231,9 +241,9 @@ def ev_med_proce_treatment(df_root, path_excel_writer):
                     try:
                         if float(has_subject_taken_miltefosine_pure) == 1.0:
                             if str(date_miltefosine_administration) == 'nan' or str(date_miltefosine_administration) == '' or str(date_miltefosine_administration) == '-':
-                                error =  [subject, visit, 'Has has_subject_taken_miltefosine_pure subject taken at least one dose of Miltefosine study treatment?', \
+                                error =  [subject, visit, 'Has  subject taken at least one dose of Miltefosine study treatment?', \
                                           has_subject_taken_miltefosine_form_field_instance, 'If Yes, at least one adverse event form must be completed', \
-                                                has_subject_taken_miltefosine_pure, 'SM0110']
+                                                has_subject_taken_miltefosine_disname, 'SM0110']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision SM0110 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -244,9 +254,9 @@ def ev_med_proce_treatment(df_root, path_excel_writer):
                             pass
                         else:
                             if str(date_miltefosine_administration) == 'nan' or str(date_miltefosine_administration) == '' or str(date_miltefosine_administration) == '-':
-                                error =  [subject, visit, 'Has has_subject_taken_miltefosine_pure subject taken at least one dose of Miltefosine study treatment?', \
+                                error =  [subject, visit, 'Has  subject taken at least one dose of Miltefosine study treatment?', \
                                           has_subject_taken_miltefosine_form_field_instance, 'If No, no Miltefosine administration forms should be completed', \
-                                                has_subject_taken_miltefosine_pure, 'SM0120']
+                                                has_subject_taken_miltefosine_disname, 'SM0120']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision SM0120 --> {e} - Subject: {subject},  Visit: {visit} ')

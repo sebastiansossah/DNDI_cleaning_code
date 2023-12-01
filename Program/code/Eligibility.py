@@ -21,8 +21,8 @@ def eligibility(df_root, path_excel_writer):
 
     df= df_root[df_root['name']=='Eligibility']
     lista_sujetos = df['Participante'].unique()
-    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
-    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)
+    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id', 'displayName']]
+    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)  + '|' + df['displayName'].astype(str)
 
 
     df_demographic_age = df_root[df_root['name']=='Demographics']
@@ -204,90 +204,112 @@ def eligibility(df_root, path_excel_writer):
                         subject_eligible_for_study = row['Is the subject eligible for the study?']
                         subject_eligible_for_study_pure = subject_eligible_for_study.split('|')[0]
                         subject_eligible_for_study_form_field_instance = subject_eligible_for_study.split('|')[1]
+                        subject_eligible_for_study_disname = subject_eligible_for_study.split('|')[2]
                     except Exception as e:
                         subject_eligible_for_study_pure = math.nan
                         subject_eligible_for_study_form_field_instance = 'This field doesnt have any data'
+                        subject_eligible_for_study_disname = 'Empty'
 
                     try:
                         participant_randomization = row['Is the participant eligible to randomization?']
                         participant_randomization_pure = participant_randomization.split('|')[0]
                         participant_randomization_form_field_instance = participant_randomization.split('|')[1]
+                        participant_randomization_disname = participant_randomization.split('|')[2]
                     except Exception as e:
                         participant_randomization_pure = math.nan
                         participant_randomization_form_field_instance = 'This field doesnt have any data'
+                        participant_randomization_disname = 'Empty'
 
                     try:
                         will_randomized = row['Will the participant be randomized?']
                         will_randomized_pure = will_randomized.split('|')[0]
                         will_randomized_form_field_instance = will_randomized.split('|')[1]
+                        will_randomized_disname = will_randomized.split('|')[2]
                     except Exception as e:
                         will_randomized_pure = math.nan
                         will_randomized_form_field_instance = 'This field doesnt have any data'
+                        will_randomized_disname = 'Empty'
 
                     try:
                         subject_enrolled_study = row['Is the subject enrolled in the study?']
                         subject_enrolled_study_pure = subject_enrolled_study.split('|')[0]
                         subject_enrolled_study_form_field_instance = subject_enrolled_study.split('|')[1]
+                        subject_enrolled_study_disname = subject_enrolled_study.split('|')[2]
                     except Exception as e:
                         subject_enrolled_study_pure = math.nan
                         subject_enrolled_study_form_field_instance = 'This field doesnt have any data'
+                        subject_enrolled_study_disname = 'Empty'
 
                     
                     try:
                         date_of_decision = row['Date of decision to not go beyond screening']
                         date_of_decision_pure = date_of_decision.split('|')[0]
                         date_of_decision_form_field_instance = date_of_decision.split('|')[1]
+                        date_of_decision_disname = date_of_decision.split('|')[2]
                     except Exception as e:
                         date_of_decision_pure = ''
                         date_of_decision_form_field_instance = 'This field doesnt have any data'
+                        date_of_decision_disname = 'Empty'
 
                     try:
                         date_decision_not_randomize = row['Date of decision to not randomize the participant']
                         date_decision_not_randomize_pure = date_decision_not_randomize.split('|')[0]
                         date_decision_not_randomize_form_field_instance = date_decision_not_randomize.split('|')[1]
+                        date_decision_not_randomize_disname = date_decision_not_randomize.split('|')[2]
                     except Exception as e:
                         date_decision_not_randomize_pure = ''
                         date_decision_not_randomize_form_field_instance = 'This field doesnt have any data'
+                        date_decision_not_randomize_disname = 'Empty'
 
                     try:
                         randomization_number = row['Randomization number allocated to the replacement subject']
                         randomization_number_pure = randomization_number.split('|')[0]
                         randomization_number_form_field_isntance = randomization_number.split('|')[1]
+                        randomization_number_disname = randomization_number.split('|')[2]
                     except Exception as e:
                         randomization_number_pure = ''
                         randomization_number_form_field_isntance = 'This field doesnt have any data'
+                        randomization_number_disname = 'Empty'
 
                     try:
                         subject_replacing = row['Is the subject replacing a subject previously been randomized in the current study?']
                         subject_replacing_pure = subject_replacing.split('|')[0]
                         subject_replacing_form_field_instance = subject_replacing.split('|')[1]
+                        subject_replacing_disname = subject_replacing.split('|')[2]
                     except Exception as e:
                         subject_replacing_pure = ''
                         subject_replacing_form_field_instance = 'This field doesnt have any data'
+                        subject_replacing_disname = 'Empty'
 
                     try:
                         eligibility_criteria_number = row['Eligibility criteria number']
                         eligibility_criteria_number_pure = eligibility_criteria_number.split('|')[0]
                         eligibility_criteria_number_form_field_instance = eligibility_criteria_number.split('|')[1]
+                        eligibility_criteria_number_disname = eligibility_criteria_number.split('|')[2]
                     except:
                         eligibility_criteria_number_pure = math.nan
                         eligibility_criteria_number_form_field_instance = 'This field doesnt have any data'
-                    
+                        eligibility_criteria_number_disname = 'Empty'
+
                     try:
                         eligibility_criteria_type = row['Eligibility criteria type']
                         eligibility_criteria_type_pure = eligibility_criteria_type.split('|')[0]
                         eligibility_criteria_type_form_field_instance = eligibility_criteria_type.split('|')[1]
+                        eligibility_criteria_type_disname = eligibility_criteria_type.split('|')[2]
                     except:
                         eligibility_criteria_type_pure = math.nan
                         eligibility_criteria_type_form_field_instance = 'This field doesnt have any data'
+                        eligibility_criteria_type_disname = 'Empty'
 
                     try:
                         eligibility_specify = row['Specify']
                         eligibility_specify_pure = eligibility_specify.split('|')[0]
                         eligibility_specify_form_field_instance = eligibility_specify.split('|')[1]
+                        eligibility_specify_disname = eligibility_specify.split('|')[2]
                     except:
                         eligibility_specify_pure = math.nan
                         eligibility_specify_form_field_instance = 'This field doesnt have any data'
+                        eligibility_specify_disname = 'Empty'
 
                     #---------------------------------------------------------------------------
                     # Revision GE0070
@@ -302,7 +324,7 @@ def eligibility(df_root, path_excel_writer):
                             if f == None:
                                 pass
                             else:
-                                error = [subject, visit, 'Date of decision to not go beyond screening', date_of_decision_form_field_instance ,f , date_of_decision_pure, 'GE0020']
+                                error = [subject, visit, 'Date of decision to not go beyond screening', date_of_decision_form_field_instance ,f , date_of_decision_disname, 'GE0020']
                                 lista_revision.append(error)     
 
                         except Exception as e:
@@ -320,7 +342,7 @@ def eligibility(df_root, path_excel_writer):
                                     pass
                                 else: 
                                     error = [subject, visit, 'Date of decision to not go beyond screening', date_of_decision_form_field_instance, \
-                                            'The date must not be before the informed consent date', date_of_decision_pure, 'IE0060']
+                                            'The date must not be before the informed consent date', date_of_decision_disname, 'IE0060']
                                     lista_revision.append(error)
                             except Exception as e:
                                 lista_logs.append(f'Revision IE0100 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -331,7 +353,7 @@ def eligibility(df_root, path_excel_writer):
                                 if float(subject_enrolled_study_pure) == 1.0:
                                     error = [subject, visit, 'Is the subject eligible for the study?', subject_eligible_for_study_form_field_instance, \
                                             'How come the participant is not eligible for the study, but the question "Is the "Is the participant enrolled" is "Yes", Please check', \
-                                                subject_eligible_for_study_pure, 'IE0130']
+                                                subject_eligible_for_study_disname, 'IE0130']
                                     lista_revision.append(error)
                                 else:
                                     pass
@@ -346,7 +368,7 @@ def eligibility(df_root, path_excel_writer):
                                 else:
                                     error = [subject, visit, 'Will the participant be randomized?', will_randomized_form_field_instance, \
                                             'If "Is the participant eligible to randomization?" ="No" at least one section of "Provide unfulfilled eligibility criteria" should be added', \
-                                                will_randomized_pure, 'IE0180']
+                                                will_randomized_disname, 'IE0180']
                                     lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision IE0180 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -358,7 +380,7 @@ def eligibility(df_root, path_excel_writer):
                                 if math.isnan(float(eligibility_criteria_number_pure)) == False or math.isnan(float(eligibility_criteria_type_pure)) == False or math.isnan(float(eligibility_specify_pure)) == False :
                                     error = [subject, visit, 'Will the participant be randomized?', will_randomized_form_field_instance, \
                                             'If "Is the participant eligible to randomization?" ="Yes", no sections of "Provide unfulfilled eligibility criteria" should be added',\
-                                                will_randomized_pure, 'IE0190']
+                                                will_randomized_disname, 'IE0190']
                                     lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision IE0190 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -404,7 +426,7 @@ def eligibility(df_root, path_excel_writer):
                             if float(subject_eligible_for_study_pure) == 1.0:
                                 if float(hiv1_result) == 1.0 or float(hiv2_result) == 1.0 or float(hbsag_result) == 1.0  or float(hcv_result) == 1.0:
                                     error = [subject, visit, 'Is the subject eligible for the study?', subject_eligible_for_study_form_field_instance, \
-                                            'The participant can not be eligible because he/she has positive virology results', subject_eligible_for_study_pure, 'IE0441']
+                                            'The participant can not be eligible because he/she has positive virology results', subject_eligible_for_study_disname, 'IE0441']
                                     lista_revision.append(error)
                                 else:
                                     pass
@@ -477,7 +499,7 @@ def eligibility(df_root, path_excel_writer):
                                     pass
                                 else: 
                                     error = [subject, visit, 'Date of decision to not randomize the participant' , date_decision_not_randomize_form_field_instance, \
-                                            'The date must not be before the informed consent date', date_decision_not_randomize_pure, 'IE0100']
+                                            'The date must not be before the informed consent date', date_decision_not_randomize_disname, 'IE0100']
                                     lista_revision.append(error)
                             except Exception as e:
                                 lista_logs.append(f'Revision IE0100 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -488,7 +510,7 @@ def eligibility(df_root, path_excel_writer):
                                 if float(will_randomized_pure) == 1.0:
                                     error = [subject, visit, 'Is the participant eligible to randomization?', participant_randomization_form_field_instance, \
                                             'How come the participant is not eligible for randomization, but the question "Is the participant randomized" is "Yes", Please check',\
-                                                participant_randomization_pure, 'IE0120']
+                                                participant_randomization_disname, 'IE0120']
                                     lista_revision.append(error)
                                 else:
                                     pass
@@ -548,7 +570,7 @@ def eligibility(df_root, path_excel_writer):
                             if float(participant_randomization_pure) == 1.0:
                                 if float(hiv1_result) == 1.0 or float(hiv2_result) == 1.0 or float(hbsag_result) == 1.0  or float(hcv_result) == 1.0:
                                     error = [subject, visit, 'Is the participant eligible to randomization?', participant_randomization_form_field_instance, \
-                                            'The participant can not be eligible because he/she has positive virology results', participant_randomization_pure, 'IE0440']
+                                            'The participant can not be eligible because he/she has positive virology results', participant_randomization_disname, 'IE0440']
                                     lista_revision.append(error)
                                 else:
                                     pass
@@ -572,7 +594,7 @@ def eligibility(df_root, path_excel_writer):
                         try:
                             if float(participant_randomization_pure) == 1.0:
                                 if float(diastolic_preasure) > 90.0:
-                                    error = [subject, visit, 'Is the participant eligible to randomization?', participant_randomization_pure, \
+                                    error = [subject, visit, 'Is the participant eligible to randomization?', participant_randomization_disname, \
                                             'The participant has a Diastolic Blood Pressure over 90 mmHg ,he/she should not be eligible for randomization', diastolic_preasure, 'IE0450']
                                     lista_revision.append(error)
                         except Exception as e:
@@ -616,7 +638,7 @@ def eligibility(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, 'Eligibility criteria number', eligibility_criteria_number_form_field_instance, \
-                                         'if Eligibility criteria type is Inclusion, the number has to be from 1 to 14', eligibility_criteria_number_pure, 'IE0020']
+                                         'if Eligibility criteria type is Inclusion, the number has to be from 1 to 14', eligibility_criteria_number_disname, 'IE0020']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision IE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -628,7 +650,7 @@ def eligibility(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, 'Eligibility criteria number', eligibility_criteria_number_form_field_instance, \
-                                         'if Eligibility criteria type is Exclusion, the number has to be from 1 to 25', eligibility_criteria_number_pure, 'IE0030']
+                                         'if Eligibility criteria type is Exclusion, the number has to be from 1 to 25', eligibility_criteria_number_disname, 'IE0030']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision IE0030 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -642,7 +664,7 @@ def eligibility(df_root, path_excel_writer):
                         else:
                             if tuple_review_inclusion_exclusion in lista_revision_I_E:
                                 error = [subject, visit, 'Eligibility criteria number', eligibility_criteria_number_form_field_instance, \
-                                        'The same criteria (Inclusion, Exclusion) and number, must not be duplicated', eligibility_criteria_number_pure, 'IE0040']
+                                        'The same criteria (Inclusion, Exclusion) and number, must not be duplicated', eligibility_criteria_number_disname, 'IE0040']
                                 lista_revision.append(error)
                             else:
                                 if '' in tuple_review_inclusion_exclusion:

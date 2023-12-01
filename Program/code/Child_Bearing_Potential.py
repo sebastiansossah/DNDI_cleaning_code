@@ -18,8 +18,8 @@ def child_bearing_potential(df_root, path_excel_writer):
 
     df= df_root[df_root['name']=='Child Bearing Potential']
     lista_sujetos = df['Participante'].unique()
-    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
-    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)
+    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id', 'displayName']]
+    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)  + '|' + df['displayName'].astype(str)
 
     df_visit_date = df_root[df_root['name']=='Date of visit']
     df_visit_date = df_visit_date[['Visit','Participante', 'Campo', 'Valor']]
@@ -137,74 +137,91 @@ def child_bearing_potential(df_root, path_excel_writer):
                         date_of_start_condom = row['Date of start of systematic use of condom']
                         date_of_start_condom_pure = date_of_start_condom.split('|')[0]
                         date_of_start_condom_form_field_instance = date_of_start_condom.split('|')[1]
+                        date_of_start_condom_disname = date_of_start_condom.split('|')[2]
                     except:
                         date_of_start_condom_pure = ''
                         date_of_start_condom_form_field_instance = 'This field does not have any data'
-                
+                        date_of_start_condom_disname = 'Empty'
+
                     try:
                         date_start_contraceptive = row['Date of start of contraceptive method']
                         date_start_contraceptive_pure = date_start_contraceptive.split('|')[0]
                         date_start_contraceptive_form_field_instance = date_start_contraceptive.split('|')[1]
+                        date_start_contraceptive_disname = date_start_contraceptive.split('|')[2]
                     except:
                         date_start_contraceptive_pure = ''
                         date_start_contraceptive_form_field_instance = 'This field does not have any data'
+                        date_start_contraceptive_disname = 'Empty'
 
                     try:
                         last_mestruation_year = row['Year of Last Menstruation']
                         last_mestruation_year_pure = last_mestruation_year.split('|')[0]
                         last_mestruation_year_form_field_instance = last_mestruation_year.split('|')[1]
+                        last_mestruation_year_disname = last_mestruation_year.split('|')[2]
                     except:
                         last_mestruation_year_pure = math.nan
                         last_mestruation_year_form_field_instance = 'This field does not have any data'
+                        last_mestruation_year_disname = 'Empty'
 
                     try:
                         participant_postmenopausical = row['Is the participant postmenopausal?']
                         participant_postmenopausical_pure = participant_postmenopausical.split('|')[0]
                         participant_postmenopausical_form_field_instance = participant_postmenopausical.split('|')[1]
+                        participant_postmenopausical_disname = participant_postmenopausical.split('|')[2]
                     except:
                         participant_postmenopausical_pure = math.nan
                         participant_postmenopausical_form_field_instance = 'This field does not have any data'
+                        participant_postmenopausical_disname = 'Empty'
 
                     try:
                         last_mestruation_month = row['Month of Last Menstruation']
                         last_mestruation_month_pure = last_mestruation_month.split('|')[0]
                         last_mestruation_month_form_field_instance = last_mestruation_month.split('|')[1]
+                        last_mestruation_month_disname = last_mestruation_month.split('|')[2]
                     except:
                         last_mestruation_month_pure = math.nan
                         last_mestruation_month_form_field_instance = 'This field does not have any data'
+                        last_mestruation_month_disname = 'Empty'
 
                     try:
                         fsh_available = row['Is the FSH test result available and ≥ 40 IU/L?']
                         fsh_available_pure = fsh_available.split('|')[0]
                         fsh_available_form_field_instance = fsh_available.split('|')[1]
+                        fsh_available_form_disname = fsh_available.split('|')[2]
                     except:
                         fsh_available_pure = math.nan
                         fsh_available_form_field_instance = 'This field does not have any data'
-                    
+                        fsh_available_form_disname = 'Empty'
+
                     try:
                         contraception = row['Contraception of non post-menopausal woman']
                         contraception_pure = contraception.split('|')[0]
                         contraception_form_field_instance = contraception.split('|')[1]
+                        contraception_disname = contraception.split('|')[2]
                     except:
                         contraception_pure = math.nan
                         contraception_form_field_instance = 'This field does not have any data'
+                        contraception_disname = 'Empty'
 
                     try:
                         use_combined_hormonal = row['Use of combined (estrogen and progestogen-containing) hormonal contraception. associated with inhibition of ovulation']
                         use_combined_hormonal_pure = use_combined_hormonal.split('|')[0]
                         use_combined_hormonal_form_field_instance = use_combined_hormonal.split('|')[1]
+                        use_combined_hormonal_disname = use_combined_hormonal.split('|')[2]
                     except:
                         use_combined_hormonal_pure = math.nan
                         use_combined_hormonal_form_field_instance = 'This field does not have any data'
+                        use_combined_hormonal_disname = 'Empty'
                     
                     try:
                         progeston_hormonal = row['Use of progestogen-only hormonal contraception']
                         progeston_hormonal_pure = progeston_hormonal.split('|')[0]
                         progeston_hormonal_form_field_instance = progeston_hormonal.split('|')[1]
+                        progeston_hormonal_disname = progeston_hormonal.split('|')[2]
                     except:
                         progeston_hormonal_pure = math.nan
                         progeston_hormonal_form_field_instance = 'This field does not have any data'
-
+                        progeston_hormonal_disname = 'Empty'
                     # ----------------------------------------------
 
                     # Revision GE0070
@@ -217,7 +234,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                         try:
                             if math.isnan(float(participant_postmenopausical_pure)) == False or str(participant_postmenopausical_pure) != ''  or str(participant_postmenopausical_pure) != 'N/A':
                                 error = [subject, visit, 'Form Child Bearing Potential', participant_postmenopausical_form_field_instance ,'If Subjects Gender is "Male" in DEMOGRAPHIC, form should be left empty' , \
-                                         participant_postmenopausical_pure, 'CB0010']
+                                         participant_postmenopausical_disname, 'CB0010']
                                 lista_revision.append(error)
                         except Exception as e:
                             pass
@@ -225,7 +242,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                         try:
                             if math.isnan(float(last_mestruation_month_pure)) == False or str(last_mestruation_month_pure) != '' or str(last_mestruation_month_pure) != 'N/A':
                                 error = [subject, visit, 'Form Child Bearing Potential', last_mestruation_month_form_field_instance,  \
-                                         'If Subjects Gender is "Male" in DEMOGRAPHIC, form should be left empty' , last_mestruation_month_pure, 'CB0010']
+                                         'If Subjects Gender is "Male" in DEMOGRAPHIC, form should be left empty' , last_mestruation_month_disname, 'CB0010']
                                 lista_revision.append(error)
                         except Exception as e:
                             pass
@@ -233,7 +250,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                         try:
                             if math.isnan(float(last_mestruation_year_pure)) == False or str(last_mestruation_year_pure) != ''  or str(last_mestruation_year_pure) != 'N/A':
                                 error = [subject, visit,'Form Child Bearing Potential', last_mestruation_year_form_field_instance, \
-                                         'If Subjects Gender is "Male" in DEMOGRAPHIC, form should be left empty' , last_mestruation_year_pure, 'CB0010']
+                                         'If Subjects Gender is "Male" in DEMOGRAPHIC, form should be left empty' , last_mestruation_year_disname, 'CB0010']
                                 lista_revision.append(error)
                         except Exception as e:
                             pass
@@ -241,7 +258,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                         try:
                             if math.isnan(float(fsh_available_pure)) == False or str(fsh_available_pure) != ''  or str(fsh_available_pure) != 'N/A':
                                 error = [subject, visit,'Form Child Bearing Potential', fsh_available_form_field_instance, \
-                                         'If Subjects Gender is "Male" in DEMOGRAPHIC, form should be left empty' , fsh_available_pure, 'CB0010']
+                                         'If Subjects Gender is "Male" in DEMOGRAPHIC, form should be left empty' , fsh_available_form_disname, 'CB0010']
                                 lista_revision.append(error)
                         except Exception as e:
                             pass
@@ -249,7 +266,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                         try:
                             if math.isnan(float(contraception_pure)) == False or str(contraception_pure) != '' or   str(contraception_pure) != 'N/A':
                                 error = [subject, visit, 'Form Child Bearing Potential', contraception_form_field_instance, \
-                                         'If Subjects Gender is "Male" in DEMOGRAPHIC, form should be left empty', contraception_pure, 'CB0010']
+                                         'If Subjects Gender is "Male" in DEMOGRAPHIC, form should be left empty', contraception_disname, 'CB0010']
                                 lista_revision.append(error)
                         except Exception as e: 
                             pass
@@ -257,7 +274,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                         try:
                             if math.isnan(float(use_combined_hormonal_pure)) == False or  str(use_combined_hormonal_pure) != ''  or str(use_combined_hormonal_pure) != 'N/A':
                                 error = [subject, visit, 'Form Child Bearing Potential', use_combined_hormonal_form_field_instance, \
-                                         'If Subjects Gender is "Male" in DEMOGRAPHIC, form should be left empty' , use_combined_hormonal_pure, 'CB0010']
+                                         'If Subjects Gender is "Male" in DEMOGRAPHIC, form should be left empty' , use_combined_hormonal_disname, 'CB0010']
                                 lista_revision.append(error)
                         except Exception as e:
                             pass
@@ -265,7 +282,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                         try:
                             if math.isnan(float(progeston_hormonal_pure)) == False or str(progeston_hormonal_pure) != ''  or str(progeston_hormonal_pure) != 'N/A':
                                 error = [subject, visit,'Form Child Bearing Potential', progeston_hormonal_form_field_instance ,\
-                                         'If Subjects Gender is "Male" in DEMOGRAPHIC, form should be left empty' , progeston_hormonal_pure, 'CB0010']
+                                         'If Subjects Gender is "Male" in DEMOGRAPHIC, form should be left empty' , progeston_hormonal_disname, 'CB0010']
                                 lista_revision.append(error)
                         except Exception as e:
                             pass
@@ -273,7 +290,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                         try:
                             if math.isnan(float(date_start_contraceptive_pure)) == False or str(date_start_contraceptive_pure) != '' or str(date_start_contraceptive_pure) != 'N/A':
                                 error = [subject, visit,'Form Child Bearing Potential', date_start_contraceptive_form_field_instance ,\
-                                         'If Subjects Gender is "Male" in DEMOGRAPHIC, form should be left empty' , date_start_contraceptive_pure, 'CB0010']
+                                         'If Subjects Gender is "Male" in DEMOGRAPHIC, form should be left empty' , date_start_contraceptive_disname, 'CB0010']
                                 lista_revision.append(error)
                         except Exception as e:
                             pass
@@ -281,7 +298,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                         try:
                             if math.isnan(float(date_of_start_condom_pure)) == False or str(date_of_start_condom_pure) != ''  or str(date_of_start_condom_pure) != 'N/A':
                                 error = [subject, visit, 'Form Child Bearing Potential', date_of_start_condom_form_field_instance, \
-                                         'If Subjects Gender is "Male" in DEMOGRAPHIC, form should be left empty' , date_of_start_condom_pure, 'CB0010']
+                                         'If Subjects Gender is "Male" in DEMOGRAPHIC, form should be left empty' , date_of_start_condom_disname, 'CB0010']
                                 lista_revision.append(error)
                         except Exception as e:
                             pass    
@@ -297,7 +314,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                                 if f == None:
                                     pass
                                 else:
-                                    error = [subject, visit, 'Date of start of systematic use of condom', date_of_start_condom_form_field_instance ,f , date_of_start_condom_pure, 'GE0020']
+                                    error = [subject, visit, 'Date of start of systematic use of condom', date_of_start_condom_form_field_instance ,f , date_of_start_condom_disname, 'GE0020']
                                     lista_revision.append(error) 
                             except Exception as e:
                                 lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -311,7 +328,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                                 if f == None:
                                     pass
                                 else:
-                                    error = [subject, visit, 'Date of start of contraceptive method', date_start_contraceptive_form_field_instance ,f , date_start_contraceptive_pure, 'GE0020']
+                                    error = [subject, visit, 'Date of start of contraceptive method', date_start_contraceptive_form_field_instance ,f , date_start_contraceptive_disname, 'GE0020']
                                     lista_revision.append(error) 
                             except Exception as e:
                                 lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -328,7 +345,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                                     pass
                                 else:
                                     error = [subject, visit, 'Year of Last Menstruation', last_mestruation_year_form_field_instance,\
-                                            'There should be more than a year difference between the visit date and the year of last menstruation' , last_mestruation_year_pure, 'CB0020']
+                                            'There should be more than a year difference between the visit date and the year of last menstruation' , last_mestruation_year_disname, 'CB0020']
                                     lista_revision.append(error)
                             except Exception as e:
                                 lista_logs.append(f'Revision CB0020 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -342,7 +359,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                                     pass
                                 else:
                                     error = [subject, visit, 'Year of Last Menstruation' , last_mestruation_year_form_field_instance ,'The year should be after 1968 and before 2024',\
-                                            last_mestruation_year_pure, 'CB0030']
+                                            last_mestruation_year_disname, 'CB0030']
                                     lista_revision.append(error)
                             except Exception as e:
                                 lista_logs.append(f'Revision CB0030 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -356,7 +373,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                                     pass
                                 else:
                                     error = [subject, visit, 'Date of start of contraceptive method', date_start_contraceptive_form_field_instance, \
-                                            'The contraceptive method date can not be before the birth date' , date_start_contraceptive_pure, 'CB0140']
+                                            'The contraceptive method date can not be before the birth date' , date_start_contraceptive_disname, 'CB0140']
                                     lista_revision.append(error)
                             except Exception as e:
                                 lista_logs.append(f'Revision CB0140 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -366,7 +383,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                             if str(date_start_contraceptive_pure) != str(start_date_combined_hormonal):
                                     error = [subject, visit, 'Contraception method used by Female of child-bearing potential', date_start_contraceptive_form_field_instance, \
                                             'The concomitant medication form related to this contraception method is not accurate (date) or the medication has not been added, please review', \
-                                                date_start_contraceptive_pure, 'CB0070']
+                                                date_start_contraceptive_disname, 'CB0070']
                                     lista_revision.append(error)
 
                         # Revision CB0080
@@ -374,7 +391,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                             if str(date_start_contraceptive_pure) != str(start_date_combined_hormonal):
                                     error = [subject, visit, 'Contraception method used by Female of child-bearing potential', date_start_contraceptive_form_field_instance, \
                                             'The concomitant medication form related to this contraception method is not accurate (date) or the medication has not been added, please review', \
-                                                date_start_contraceptive_pure, 'CB0080']
+                                                date_start_contraceptive_disname, 'CB0080']
                                     lista_revision.append(error)
                        
                         # Revision CB0090
@@ -382,7 +399,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                             if str(date_start_contraceptive_pure) != str(start_date_combined_hormonal):
                                     error = [subject, visit, 'Contraception method used by Female of child-bearing potential', date_start_contraceptive_form_field_instance, \
                                             'The concomitant medication form related to this contraception method is not accurate (date) or the medication has not been added, please review', \
-                                                date_start_contraceptive_pure, 'CB0090']
+                                                date_start_contraceptive_disname, 'CB0090']
                                     lista_revision.append(error)
 
                         # Revision CB0100
@@ -390,7 +407,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                             if math.isnan(onset_date_medical_contraceptive):
                                     error = [subject, visit, 'Contraception method used by Female of child-bearing potential', date_start_contraceptive_form_field_instance, \
                                             'The concomitant medication form related to this contraception method is not accurate (date) or the medication has not been added, please review', \
-                                                date_start_contraceptive_pure, 'CB0090']
+                                                date_start_contraceptive_disname, 'CB0090']
                                     lista_revision.append(error)
 
                         # Revision CB0120
@@ -398,7 +415,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                             if math.isnan(onset_date_medical_contraceptive):
                                     error = [subject, visit, 'Contraception method used by Female of child-bearing potential', date_start_contraceptive_form_field_instance, \
                                             'The concomitant medication form related to this contraception method is not accurate (date) or the medication has not been added, please review', \
-                                                date_start_contraceptive_pure, 'CB0120']
+                                                date_start_contraceptive_disname, 'CB0120']
                                     lista_revision.append(error)
 
     excel_writer = load_workbook(path_excel_writer)

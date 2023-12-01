@@ -17,8 +17,8 @@ def injection_site_examination(df_root, path_excel_writer):
 
     df= df_root[df_root['name']== 'Injection Site Examination']
     lista_sujetos = df['Participante'].unique()
-    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
-    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)
+    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id', 'displayName']]
+    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)  + '|' + df['displayName'].astype(str)
 
     df_visit_date = df_root[df_root['name']=='Date of visit']
     df_visit_date = df_visit_date[['Visit','Participante', 'Campo', 'Valor']]
@@ -91,57 +91,71 @@ def injection_site_examination(df_root, path_excel_writer):
                         was_injection_performed = row['Was the Injection site examination performed?']
                         was_injection_performed_pure = was_injection_performed.split('|')[0]
                         was_injection_performed_form_field_instance = was_injection_performed.split('|')[1]
+                        was_injection_performed_disname = was_injection_performed.split('|')[2]
                     except Exception as e:
                         was_injection_performed_pure = math.nan
                         was_injection_performed_form_field_instance = 'This field does not have any data'
+                        was_injection_performed_disname = 'Empty'
 
                     try:
                         provide_the_reason = row['Provide the reason']
                         provide_the_reason_pure = provide_the_reason.split('|')[0]
                         provide_the_reason_form_field_instance = provide_the_reason.split('|')[1]
+                        provide_the_reason_disname = provide_the_reason.split('|')[2]
                     except Exception as e:
                         provide_the_reason_pure = ''
                         provide_the_reason_form_field_instance = 'This field does not have any data'
+                        provide_the_reason_disname = 'Empty'
 
                     try:
                         date_injection = row['Date of the Injection site examination']
                         date_injection_pure = date_injection.split('|')[0]
                         date_injection_form_field_instace = date_injection.split('|')[1]
+                        date_injection_disname = date_injection.split('|')[2]
                     except Exception as e:
                         date_injection_pure = ''
                         date_injection_form_field_instace = 'This field does not have any data'
+                        date_injection_disname = 'Empty'
 
                     try:
                         predose_injection_site = row['Predose, Injection site']
                         predose_injection_site_pure = predose_injection_site.split('|')[0]
                         predose_injection_site_form_field_instance = predose_injection_site.split('|')[1]
+                        predose_injection_site_disname = predose_injection_site.split('|')[2]
                     except Exception as e:
                         predose_injection_site_pure = math.nan
                         predose_injection_site_form_field_instance = 'This field does not have any data'
+                        predose_injection_site_disname = 'Empty'
 
                     try:
                         post_dose_2_hours = row['2-hours post dose, Injection site']
                         post_dose_2_hours_pure = post_dose_2_hours.split('|')[0]
                         post_dose_2_hours_form_field_instance = post_dose_2_hours.split('|')[1]
+                        post_dose_2_hours_disname = post_dose_2_hours.split('|')[2]
                     except Exception as e:
                         post_dose_2_hours_pure = math.nan
                         post_dose_2_hours_form_field_instance = 'This field does not have any data'
+                        post_dose_2_hours_disname = 'Empty'
                         
                     try:
                         post_dose_4_hours = row['4-hours post dose, Injection site']
                         post_dose_4_hours_pure = post_dose_4_hours.split('|')[0]
                         post_dose_4_hours_form_field_instance = post_dose_4_hours.split('|')[1]
+                        post_dose_4_hours_disname = post_dose_4_hours.split('|')[2]
                     except Exception as e:
                         post_dose_4_hours_pure = math.nan
                         post_dose_4_hours_form_field_instance = 'This field does not have any data'
+                        post_dose_4_hours_disname = 'Empty'
 
                     try:
                         post_dose_8_hours = row['8-hours post dose, Injection site']
                         post_dose_8_hours_pure = post_dose_8_hours.split('|')[0]
                         post_dose_8_hours_form_field_instance = post_dose_8_hours.split('|')[1]
+                        post_dose_8_hours_disname = post_dose_8_hours.split('|')[2]
                     except Exception as e:
                         post_dose_8_hours_pure = math.nan
                         post_dose_8_hours_form_field_instance = 'This field does not have any data'
+                        post_dose_8_hours_disname = 'Empty'
 
                     # ---------------------------------------------------------------------------------------------
                     # Revision GE0070
@@ -159,7 +173,7 @@ def injection_site_examination(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, 'Date of the Injection site examination', date_injection_form_field_instace,\
-                                        f , date_injection_pure, 'GE0020']
+                                        f , date_injection_disname, 'GE0020']
                                 lista_revision.append(error)     
 
                         except Exception as e:
@@ -174,7 +188,7 @@ def injection_site_examination(df_root, path_excel_writer):
 
                             if date_of_test_f != date_of_visit_f:
                                 error = [subject, visit, 'Date of the Injection site examination', date_injection_form_field_instace ,\
-                                        'the date should be the same as the visit date' , f'{date_injection_pure} - {date_of_visit}', 'IS0020']
+                                        'the date should be the same as the visit date' , f'{date_injection_disname} - {date_of_visit}', 'IS0020']
                                 lista_revision.append(error)
                             else:
                                 pass
@@ -191,7 +205,7 @@ def injection_site_examination(df_root, path_excel_writer):
 
                             if date_of_test_f < date_inform_consent_f:
                                 error = [subject, visit, 'Date of the Injection site examination', date_injection_form_field_instace ,\
-                                        'The date/time of the Injection site cant be before the informed consent date/time', f'{date_injection_pure} - {date_inform_consent}', 'IS0030']
+                                        'The date/time of the Injection site cant be before the informed consent date/time', f'{date_injection_disname} - {date_inform_consent}', 'IS0030']
                                 lista_revision.append(error)
                             else:
                                 pass
@@ -205,7 +219,7 @@ def injection_site_examination(df_root, path_excel_writer):
                                 pass
                             else: 
                                 error = [subject, visit, 'Date of the Injection site examination', date_injection_form_field_instace ,\
-                                        'Date of the Injection site examination must be before the End of study/Early withdrawal date. ', date_injection_pure, 'IS0040']
+                                        'Date of the Injection site examination must be before the End of study/Early withdrawal date. ', date_injection_disname, 'IS0040']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision IS0040 --> {e} - Subject: {subject},  Visit: {visit}  ')
@@ -285,7 +299,7 @@ def injection_site_examination(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, 'Was the Injection site examination performed?', was_injection_performed_form_field_instance ,\
-                                         'If, Was the Injection site examination performed?="Yes" at least one section per time point must be added' , was_injection_performed_pure, 'IS0050']
+                                         'If, Was the Injection site examination performed?="Yes" at least one section per time point must be added' , was_injection_performed_disname, 'IS0050']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision IS0050--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -297,7 +311,7 @@ def injection_site_examination(df_root, path_excel_writer):
 
                             if validador_predose in lista_validacion_predose:
                                     error = [subject, visit, 'Predose, Injection site', predose_injection_site_form_field_instance ,\
-                                            'The injection site should no be reported more than once' , predose_injection_site_pure, 'IS0100']
+                                            'The injection site should no be reported more than once' , predose_injection_site_disname, 'IS0100']
                                     lista_revision.append(error)
                             else:
                                 lista_validacion_predose.append(validador_predose)
@@ -311,7 +325,7 @@ def injection_site_examination(df_root, path_excel_writer):
 
                             if validador_2_post_dose in lista_validacion_2_hours:
                                     error = [subject, visit, '2-hours post dose, Injection site', post_dose_2_hours_form_field_instance ,\
-                                            'The injection site should no be reported more than once' , post_dose_2_hours_pure, 'IS0110']
+                                            'The injection site should no be reported more than once' , post_dose_2_hours_disname, 'IS0110']
                                     lista_revision.append(error)
                             else:
                                 lista_validacion_2_hours.append(validador_2_post_dose)
@@ -325,7 +339,7 @@ def injection_site_examination(df_root, path_excel_writer):
 
                             if validador_4_post_dose in lista_validacion_4_hours:
                                     error = [subject, visit, '4-hours post dose, Injection site', post_dose_4_hours_form_field_instance ,\
-                                            'The injection site should no be reported more than once' , post_dose_4_hours_pure, 'IS0120']
+                                            'The injection site should no be reported more than once' , post_dose_4_hours_disname, 'IS0120']
                                     lista_revision.append(error)
                             else:
                                 lista_validacion_4_hours.append(validador_4_post_dose)
@@ -339,7 +353,7 @@ def injection_site_examination(df_root, path_excel_writer):
 
                             if validador_8_post_dose in lista_validacion_8_hours:
                                     error = [subject, visit, '8-hours post dose, Injection site', post_dose_8_hours_form_field_instance ,\
-                                            'The injection site should no be reported more than once', post_dose_8_hours_pure, 'IS0130']
+                                            'The injection site should no be reported more than once', post_dose_8_hours_disname, 'IS0130']
                                     lista_revision.append(error)
                             else:
                                 lista_validacion_8_hours.append(validador_8_post_dose)

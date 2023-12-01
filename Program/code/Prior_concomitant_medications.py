@@ -19,8 +19,8 @@ def prior_concomitant_medication(df_root, path_excel_writer):
     df = df_root[df_root['name']== 'Prior And Concomitant Medications'] 
     lista_sujetos = df['Participante'].unique()
 
-    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
-    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)
+    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id', 'displayName']]
+    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)  + '|' + df['displayName'].astype(str)
 
     df_informed = df_root[df_root['name']=='Informed Consent']
     df_informed = df_informed[['Visit','Participante', 'Campo', 'Valor']]
@@ -135,113 +135,141 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                         concomitant_medication_id = row['Concomitant Medication ID']
                         concomitant_medication_id_pure  = concomitant_medication_id.split('|')[0]
                         concomitant_medication_id_form_field_instance = concomitant_medication_id.split('|')[1]
+                        concomitant_medication_id_disname = concomitant_medication_id.split('|')[2]
                     except:
                         concomitant_medication_id_pure = ''
                         concomitant_medication_id_form_field_instance = 'This field does not have any data'
+                        concomitant_medication_id_disname = 'Empty'
                     
                     try:
                         drug_name = row['Drug Name']
                         drug_name_pure = drug_name.split('|')[0]
                         drug_name_form_field_instance = drug_name.split('|')[1]
+                        drug_name_disname = drug_name.split('|')[2]
                     except:
                         drug_name_pure = ''
                         drug_name_form_field_instance = 'This field does not have any data'
+                        drug_name_disname = 'Empty'
                     
                     try:
                         adverse_event_id = row['Adverse Event ID']
                         adverse_event_id_pure = adverse_event_id.split('|')[0]
                         adverse_event_id_form_field_instance = adverse_event_id.split('|')[1]
+                        adverse_event_id_disname = adverse_event_id.split('|')[2]
                     except:
                         adverse_event_id_pure = ''
                         adverse_event_id_form_field_instance = 'This field does not have any data'
+                        adverse_event_id_disname = 'Empty'
                         
                     try:
                         indication = row['Indication']
                         indication_pure = indication.split('|')[0]
                         indication_form_field_instance = indication.split('|')[1]
+                        indication_disname = indication.split('|')[2]
                     except:
                         indication_pure = ''
                         indication_form_field_instance = 'This field does not have any data'
+                        indication_disname = 'Empty'
                     
                     try:
                         indication_category = row['Indication Category']
                         indication_category_pure = indication_category.split('|')[0]
                         indication_category_form_field_instance = indication_category.split('|')[1]
+                        indication_category_disname = indication_category.split('|')[2]
                     except:
                         indication_category_pure = ''
                         indication_category_form_field_instance = 'This field does not have any data'
+                        indication_category_disname = 'Empty'
                     
                     try:
                         dose_per_administration = row['Dose per Administration']
                         dose_per_administration_pure = dose_per_administration.split('|')[0]
                         dose_per_administration_form_field_instance = dose_per_administration.split('|')[1]
+                        dose_per_administration_disname = dose_per_administration.split('|')[2]
                     except:
                         dose_per_administration_pure = ''
                         dose_per_administration_form_field_instance = 'This field does not have any data'
+                        dose_per_administration_disname = 'Empty'
                     
                     try:
                         unit = row['Unit']
                         unit_pure = unit.split('|')[0]
                         unit_form_field_instance = unit.split('|')[1]
+                        unit_disname = unit.split('|')[2]
                     except:
                         unit_pure = ''
                         unit_form_field_instance = 'This field does not have any data'
+                        unit_disname = 'Empty'
                     
                     try:
                         frequency = row['Frequency']
                         frequency_pure = frequency.split('|')[0]
                         frequency_form_field_instance = frequency.split('|')[1]
+                        frequency_disname = frequency.split('|')[2]
                     except:
                         frequency_pure = ''
                         frequency_form_field_instance = 'This field does not have any data'
+                        frequency_disname = 'Empty'
                     
                     try:
                         route = row['Route']
                         route_pure = route.split('|')[0]
                         route_form_field_instance = route.split('|')[1]
+                        route_disname = route.split('|')[2]
                     except:
                         route_pure = ''
                         route_form_field_instance = 'This field does not have any data'
+                        route_disname = 'Empty'
                     
                     try:
                         start_date = row['Start date']
                         start_date_pure = start_date.split('|')[0]
                         start_date_form_field_instance = start_date.split('|')[1]
+                        start_date_disname = start_date.split('|')[2]
                     except:
                         start_date_pure = ''
                         start_date_form_field_instance = 'This field does not have any data'
+                        start_date_disname = 'Empty'
 
                     try:
                         end_date = row['End date']
                         end_date_pure = end_date.split('|')[0]
                         end_date_form_field_instance = end_date.split('|')[1]
+                        end_date_disname = end_date.split('|')[2]
                     except:
                         end_date_pure = ''
                         end_date_form_field_instance = 'This field does not have any data'
+                        end_date_disname = 'Empty'
 
                     try:
                         ongoing = row['Ongoing']
                         ongoing_pure = ongoing.split('|')[0]
                         ongoing_form_field_instance = ongoing.split('|')[1]
+                        ongoing_disname = ongoing.split('|')[2]
                     except:
                         ongoing_pure = ''
                         ongoing_form_field_instance = 'This field does not have any data'
+                        ongoing_disname = 'Empty'
                     
                     try:
                         rescue_medication = row['Rescue Medication']
                         rescue_medication_pure = rescue_medication.split('|')[0]
                         rescue_medication_form_field_instance = rescue_medication.split('|')[1]
+                        rescue_medication_disname = rescue_medication.split('|')[2]
                     except:
                         rescue_medication_pure = ''
                         rescue_medication_form_field_instance = 'This field does not have any data'
+                        rescue_medication_disname = 'Empty'
                     
                     try:
                         aditional_adverse_event = row['Aditional Adverse Event ID']
                         aditional_adverse_event_pure = aditional_adverse_event.split('|')[0]
                         aditional_adverse_event_form_field_instance = aditional_adverse_event.split('|')[1]
+                        aditional_adverse_event_disname = aditional_adverse_event.split('|')[2]
                     except:
                         aditional_adverse_event_pure = ''
                         aditional_adverse_event_form_field_instance = 'This field does not have any data'
+                        aditional_adverse_event_disname = 'Empty'
                     
                     # -------------------------------------------------------------------------------------------
 
@@ -255,7 +283,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, 'Start date', start_date_form_field_instance,\
-                                        f , start_date_pure, 'GE0020']
+                                        f , start_date_disname, 'GE0020']
                                 lista_revision.append(error)     
 
                         except Exception as e:
@@ -271,7 +299,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, 'End date', end_date_form_field_instance,\
-                                        f , end_date_pure, 'GE0020']
+                                        f , end_date_disname, 'GE0020']
                                 lista_revision.append(error)     
                         except Exception as e:
                             lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ') 
@@ -281,7 +309,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                         if concomitant_medication_id_pure in concomitant_medication_id_review:
                             error =  [subject, visit, 'Concomitant Medication ID', concomitant_medication_id_form_field_instance, \
                                         'This value should be unique, it can not be repeated', \
-                                            concomitant_medication_id_pure, 'CM0010']
+                                            concomitant_medication_id_disname, 'CM0010']
                             lista_revision.append(error)
                         else:
                             concomitant_medication_id_review.append(concomitant_medication_id_pure)
@@ -296,7 +324,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                         if tuple_to_compare in list_of_tuples_name_medication_dates:
                             error =  [subject, visit, 'Drug Name', drug_name_form_field_instance, \
                                         'This value should be unique, it can not be repeated', \
-                                            drug_name_pure, 'CM0020']
+                                            drug_name_disname, 'CM0020']
                             lista_revision.append(error)
                         else:
                             list_of_tuples_name_medication_dates.append(tuple_to_compare)
@@ -312,7 +340,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                             else:
                                 error = [subject, visit, 'Adverse Event ID', adverse_event_id_form_field_instance, \
                                             'The value should be an existing AE ID', \
-                                                adverse_event_id_pure, 'CM0040']
+                                                adverse_event_id_disname, 'CM0040']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision CM0040 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -339,7 +367,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, 'Adverse Event ID', adverse_event_id_form_field_instance, 'The start and end dates of medication do not correspond to the Indication AE ID start and end date.', \
-                                            adverse_event_id_pure, 'CM0050']
+                                            adverse_event_id_disname, 'CM0050']
                                 lista_revision.append(error)
 
                         elif contador_para_validar == 2:
@@ -352,7 +380,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                                 else:
                                     error = [subject, visit, 'Adverse Event ID', adverse_event_id_form_field_instance, \
                                              'The start and end dates of medication do not correspond to the Indication AE ID start and end date.', \
-                                               adverse_event_id_pure, 'CM0050']
+                                               adverse_event_id_disname, 'CM0050']
                                     lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision CM0050 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -366,7 +394,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                             else:
                                 error = [subject, visit, 'Aditional Adverse Event ID', aditional_adverse_event_form_field_instance, \
                                             'The value should be an existing AE ID', \
-                                                aditional_adverse_event_pure, 'CM0080']
+                                                aditional_adverse_event_disname, 'CM0080']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision CM0080 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -390,7 +418,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                             pass
                         else: 
                             error = [subject, visit, 'End date', end_date_form_field_instance, \
-                                        'The date should be equal or greater than the start date', end_date_pure, 'CM0140']
+                                        'The date should be equal or greater than the start date', end_date_disname, 'CM0140']
                             lista_revision.append(error)
                     except Exception as e:
                             lista_logs.append(f'Revision CM0140 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -401,7 +429,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                             pass
                         else: 
                             error = [subject, visit, 'End Date', end_date_form_field_instance,\
-                                     'End Date must be before the End of study/Early withdrawal date. ', end_date_pure, 'CM0150']
+                                     'End Date must be before the End of study/Early withdrawal date. ', end_date_disname, 'CM0150']
                             lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision CM0150 --> {e}  - Subject: {subject},  Visit: {visit} ')
@@ -411,7 +439,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                         days_to_validate = datetime.strptime(str(end_date_pure), '%d-%b-%Y') - datetime.strptime(str(inform_consent_date), '%d-%b-%Y')
                         if days_to_validate > 56 or days_to_validate < -56:
                             error = [subject, visit, 'End date', end_date_form_field_instance, \
-                                        'The end date can not be more than 8 weeks before the inform consent date', end_date_pure, 'CM0160']
+                                        'The end date can not be more than 8 weeks before the inform consent date', end_date_disname, 'CM0160']
                             lista_revision.append(error)
                     except Exception as e:
                             lista_logs.append(f'Revision CM0160 --> {e} - Subject: {subject},  Visit: {visit} ')

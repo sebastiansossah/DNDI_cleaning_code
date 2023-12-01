@@ -19,8 +19,8 @@ def immunoassay(df_root, path_excel_writer):
 
     df= df_root[df_root['name']== 'Immunoassay (Thyroid Stimulating Hormone)']
     lista_sujetos = df['Participante'].unique()
-    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
-    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)
+    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id', 'displayName']]
+    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)  + '|' + df['displayName'].astype(str)
 
     df_visit_date = df_root[df_root['name']=='Date of visit']
     df_visit_date = df_visit_date[['Visit','Participante', 'Campo', 'Valor']]
@@ -87,57 +87,71 @@ def immunoassay(df_root, path_excel_writer):
                         blood_sample_collected = row['Blood Sample Collected']
                         blood_sample_collected_pure = blood_sample_collected.split('|')[0]
                         blood_sample_collected_form_field_instance = blood_sample_collected.split('|')[1]
+                        blood_sample_collected_disname = blood_sample_collected.split('|')[2]
                     except Exception as e:
                         blood_sample_collected_pure = math.nan  
                         blood_sample_collected_form_field_instance  = 'This field does not have any data'
+                        blood_sample_collected_disname = 'Empty'
 
                     try:
                         date_collected = row['Date Sample Collected']
                         date_collected_pure = date_collected.split('|')[0]
                         date_collected_form_field_instance = date_collected.split('|')[1]
+                        date_collected_disname = date_collected.split('|')[2]
                     except Exception as e:
                         date_collected_pure = ''
                         date_collected_form_field_instance = 'This field does not have any data'
+                        date_collected_disname = 'Empty'
 
                     try:
                         provide_reason = row['Provide the reason']
                         provide_reason_pure = provide_reason.split('|')[0]
                         provide_reason_form_field_instance = provide_reason.split('|')[1]
+                        provide_reason_disname = provide_reason.split('|')[2]
                     except Exception as e:
                         provide_reason_pure = math.nan  
                         provide_reason_form_field_instance = 'This field does not have any data'
+                        provide_reason_disname = 'Empty'
 
                     try:
                         TSH = row['TSH']
                         TSH_pure = TSH.split('|')[0]
                         TSH_form_field_instance = TSH.split('|')[1]
+                        TSH_disname = TSH.split('|')[2] 
                     except Exception as e:
                         TSH_pure = math.nan  
                         TSH_form_field_instance = 'This field does not have any data'
+                        TSH_disname = 'Empty'
 
                     try:
                         TSH_specify = row['TSH, If abnormal, Specify']
                         TSH_specify_pure = TSH_specify.split('|')[0]
                         TSH_specify_form_field_instnace = TSH_specify.split('|')[1]
+                        TSH_specify_disname = TSH_specify.split('|')[2]
                     except Exception as e:
                         TSH_specify_pure = math.nan  
                         TSH_specify_form_field_instnace = 'This field does not have any data'
+                        TSH_specify_disname = 'Empty'
 
                     try:
                         TSH_out_normal = row['TSH, Out of normal range?']
                         TSH_out_normal_pure = TSH_out_normal.split('|')[0]
                         TSH_out_normal_form_field_instance = TSH_out_normal.split('|')[1]
+                        TSH_out_normal_disname = TSH_out_normal.split('|')[2]
                     except Exception as e:
                         TSH_out_normal_pure = math.nan  
                         TSH_out_normal_form_field_instance = 'This field does not have any data'
+                        TSH_out_normal_disname = 'Empty'
 
                     try:
                         TSH_result = row['TSH, Result (uIU/mL)']
                         TSH_result_pure = TSH_result.split('|')[0]
                         TSH_result_form_field_instance = TSH_result.split('|')[1]
+                        TSH_result_disname = TSH_result.split('|')[2]
                     except Exception as e:
                         TSH_result_pure = math.nan  
                         TSH_result_form_field_instance = 'This field does not have any data'
+                        TSH_result_disname = 'Empty'
 
                     # -----------------------------------------------------------------------------------------------------------------
 
@@ -155,7 +169,7 @@ def immunoassay(df_root, path_excel_writer):
                             if f == None:
                                 pass
                             else:
-                                error = [subject, visit, 'Date Sample Collected', date_collected_form_field_instance ,f , date_collected_pure, 'GE0020']
+                                error = [subject, visit, 'Date Sample Collected', date_collected_form_field_instance ,f , date_collected_disname, 'GE0020']
                                 lista_revision.append(error)     
 
                         except Exception as e:
@@ -171,7 +185,7 @@ def immunoassay(df_root, path_excel_writer):
                             if date_collected_f != date_of_visit_f:
                                 error = [subject, visit, 'Date Sample Collected', date_collected_form_field_instance,\
                                         'The date should be the same as the visit date in the "Date of Visit" Form',\
-                                            f'{date_collected_pure} - {date_of_visit}', 'IM0010']
+                                            f'{date_collected_disname} - {date_of_visit}', 'IM0010']
                                 lista_revision.append(error)
                             else:
                                 pass
@@ -188,7 +202,7 @@ def immunoassay(df_root, path_excel_writer):
                             if date_collected_f < date_inform_consent_f:
                                 error = [subject, visit, 'Date Sample Collected', date_collected_form_field_instance, \
                                         'The date/time of test performed can not be before the informed consent date/time',\
-                                            f'{date_collected_pure} - {date_inform_consent}', 'IM0020']
+                                            f'{date_collected_disname} - {date_inform_consent}', 'IM0020']
                                 lista_revision.append(error)
                             else:
                                 pass
@@ -201,7 +215,7 @@ def immunoassay(df_root, path_excel_writer):
                             if datetime.strptime(str(date_collected_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
                                 pass
                             else: 
-                                error = [subject, visit, 'Date Sample Collected', date_collected_form_field_instance ,'Date Sample Collected must be before the End of study/Early withdrawal date. ', date_collected_pure, 'IM0030']
+                                error = [subject, visit, 'Date Sample Collected', date_collected_form_field_instance ,'Date Sample Collected must be before the End of study/Early withdrawal date. ', date_collected_disname, 'IM0030']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision IM0030 --> {e} - Subject: {subject},  Visit: {visit}  ')
@@ -211,7 +225,7 @@ def immunoassay(df_root, path_excel_writer):
                         if float(blood_sample_collected_pure) == 1.0 and float(TSH_pure) == 0.0:
                             error = [subject, visit, 'TSH', TSH_form_field_instance, \
                                      'It does not seem right that the TSH was not done but the sample was collected, please review', \
-                                        f'{blood_sample_collected_pure} - {TSH_pure}', 'IM0050']
+                                        f'{blood_sample_collected_disname} - {TSH_disname}', 'IM0050']
                             lista_revision.append(error)
                         else:
                             pass
@@ -223,15 +237,15 @@ def immunoassay(df_root, path_excel_writer):
                         if float(TSH_out_normal_pure) == 1.0:
                             if float(TSH_result_pure) > 0.35 and float(TSH_result_pure) < 4.94 :
                                 error = [subject, visit, 'TSH, Out of normal range?', TSH_out_normal_form_field_instance,\
-                                         'According to the result, the value is not out of range, please review.', TSH_result_pure, 'IM0060']
+                                         'According to the result, the value is not out of range, please review.', TSH_result_disname, 'IM0060']
                                 lista_revision.append(error)
 
                         # Revision IM0070
                         elif float(TSH_out_normal_pure) == 0.0:
                             if float(TSH_result_pure) <  0.35  or float(TSH_result_pure) > 4.94 :
-                                error = [subject, visit, 'TSH, Out of normal range?', TSH_out_normal_pure,\
+                                error = [subject, visit, 'TSH, Out of normal range?', TSH_out_normal_disname,\
                                          'According to the result, the value is out of range, please review.', \
-                                            TSH_result_pure, 'IM0070']
+                                            TSH_result_disname, 'IM0070']
                                 lista_revision.append(error)   
                     except Exception as e:
                         lista_logs.append(f'Revision IM0060--> {e} - Subject: {subject},  Visit: {visit} ')

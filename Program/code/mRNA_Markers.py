@@ -17,8 +17,8 @@ def mRNA_markers(df_root, path_excel_writer):
 
     df= df_root[df_root['name']== 'mRNA Markers']
     lista_sujetos = df['Participante'].unique()
-    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
-    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)
+    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id', 'displayName']]
+    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)  + '|' + df['displayName'].astype(str)
 
     df_visit_date = df_root[df_root['name']=='Date of visit']
     df_visit_date = df_visit_date[['Visit','Participante', 'Campo', 'Valor']]
@@ -82,73 +82,91 @@ def mRNA_markers(df_root, path_excel_writer):
                         Was_blood_sample_collected = row["Was blood sample collected?"]
                         Was_blood_sample_collected_pure = Was_blood_sample_collected.split('|')[0]
                         Was_blood_sample_collected_form_field_instance = Was_blood_sample_collected.split('|')[1]
+                        Was_blood_sample_collected_disname = Was_blood_sample_collected.split('|')[2]
                     except Exception as e:
                         Was_blood_sample_collected_pure = math.nan
                         Was_blood_sample_collected_form_field_instance = 'This field does not have any data'
+                        Was_blood_sample_collected_disname = 'Empty'
 
                     try:
                         Provide_the_reason = row["Provide the reason"]
                         Provide_the_reason_pure = Provide_the_reason.split('|')[0]
                         Provide_the_reason_form_field_instance = Provide_the_reason.split('|')[1]
+                        Provide_the_reason_disname = Provide_the_reason.split('|')[2]
                     except Exception as e:
                         Provide_the_reason_pure = ''
                         Provide_the_reason_form_field_instance = 'This field does not have any data'
+                        Provide_the_reason_disname = 'Empty'
                     
                     try:
                         Date_of_blood_sample_collected = row["Date of blood sample collected"]
                         Date_of_blood_sample_collected_pure = Date_of_blood_sample_collected.split('|')[0]
                         Date_of_blood_sample_collected_form_field_instance = Date_of_blood_sample_collected.split('|')[1]
+                        Date_of_blood_sample_collected_disname = Date_of_blood_sample_collected.split('|')[2]
                     except Exception as e:
                         Date_of_blood_sample_collected_pure = ''
                         Date_of_blood_sample_collected_form_field_instance = 'This field does not have any data'
+                        Date_of_blood_sample_collected_disname = 'Empty'
                     
                     try:
                         Pre_dose = row["Pre-dose"]
                         Pre_dose_pure = Pre_dose.split('|')[0]
                         Pre_dose_form_field_instance = Pre_dose.split('|')[1]
+                        Pre_dose_disname = Pre_dose.split('|')[2]
                     except Exception as e:
                         Pre_dose_pure = ''
                         Pre_dose_form_field_instance = 'This field does not have any data'
+                        Pre_dose_disname = 'Empty'
                     
                     try:
                         Pre_dose_Reason_not_done = row["Pre-dose, Reason not done"]
                         Pre_dose_Reason_not_done_pure = Pre_dose_Reason_not_done.split('|')[0]
                         Pre_dose_Reason_not_done_form_field_instance = Pre_dose_Reason_not_done.split('|')[1]
+                        Pre_dose_Reason_not_done_disname = Pre_dose_Reason_not_done.split('|')[2]
                     except Exception as e:
                         Pre_dose_Reason_not_done_pure = ''
                         Pre_dose_Reason_not_done_form_field_instance = 'This field does not have any data'
-                    
+                        Pre_dose_Reason_not_done_disname = 'Empty'
+
                     try:
                         hours_04_post_dose = row["04-hours post dose"]
                         hours_04_post_dose_pure = hours_04_post_dose.split('|')[0]
                         hours_04_post_dose_form_field_instance = hours_04_post_dose.split('|')[1]
+                        hours_04_post_dose_disname = hours_04_post_dose.split('|')[2]
                     except Exception as e:
                         hours_04_post_dose_pure = ''
                         hours_04_post_dose_form_field_instance = 'This field does not have any data'
+                        hours_04_post_dose_disname = 'Empty'
                     
                     try:
                         hours_04_post_dose_Reason_not_done = row["04-hours post dose, Reason not done"]
                         hours_04_post_dose_Reason_not_done_pure = hours_04_post_dose_Reason_not_done.split('|')[0]
                         hours_04_post_dose_Reason_not_done_form_field_instance = hours_04_post_dose_Reason_not_done.split('|')[1]
+                        hours_04_post_dose_Reason_not_done_disname = hours_04_post_dose_Reason_not_done.split('|')[2]
                     except Exception as e:
                         hours_04_post_dose_Reason_not_done_pure = ''
                         hours_04_post_dose_Reason_not_done_form_field_instance = 'This field does not have any data'
+                        hours_04_post_dose_Reason_not_done_disname = 'Empty'
                     
                     try:
                         hours_12_post_dose = row["12-hours post dose"]
                         hours_12_post_dose_pure = hours_12_post_dose.split('|')[0]
                         hours_12_post_dose_form_field_instance = hours_12_post_dose.split('|')[1]
+                        hours_12_post_dose_disname = hours_12_post_dose.split('|')[2]
                     except Exception as e:
                         hours_12_post_dose_pure = ''
                         hours_12_post_dose_form_field_instance = 'This field does not have any data'
+                        hours_12_post_dose_disname = 'Empty'
                     
                     try:
                         hours_12_post_dose_Reason_not_done = row["12-hours post dose, Reason not done"]
                         hours_12_post_dose_Reason_not_done_pure = hours_12_post_dose_Reason_not_done.split('|')[0]
                         hours_12_post_dose_Reason_not_done_form_field_instance = hours_12_post_dose_Reason_not_done.split('|')[1]
+                        hours_12_post_dose_Reason_not_done_disname = hours_12_post_dose_Reason_not_done.split('|')[2]
                     except Exception as e:
                         hours_12_post_dose_Reason_not_done_pure = ''
                         hours_12_post_dose_Reason_not_done_form_field_instance = 'This field does not have any data'
+                        hours_12_post_dose_Reason_not_done_disname = 'Empty'
                     
                     # --------------------------------------------------------------
                     # Revision GE0070
@@ -166,7 +184,7 @@ def mRNA_markers(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, 'Date of blood sample collected', Date_of_blood_sample_collected_form_field_instance,\
-                                        f , Date_of_blood_sample_collected_pure, 'GE0020']
+                                        f , Date_of_blood_sample_collected_disname, 'GE0020']
                                 lista_revision.append(error)     
 
                         except Exception as e:
@@ -181,7 +199,7 @@ def mRNA_markers(df_root, path_excel_writer):
 
                             if date_of_test_f != date_of_visit_f:
                                 error = [subject, visit, 'Date of blood sample collected', Date_of_blood_sample_collected_form_field_instance ,\
-                                        'The date should be the same as the visit date in the "Date of Visit" form' , f'{Date_of_blood_sample_collected_pure} - {date_of_visit}', 'MR0010']
+                                        'The date should be the same as the visit date in the "Date of Visit" form' , f'{Date_of_blood_sample_collected_disname} - {date_of_visit}', 'MR0010']
                                 lista_revision.append(error)
                             else:
                                 pass
@@ -198,7 +216,7 @@ def mRNA_markers(df_root, path_excel_writer):
 
                             if date_of_test_f < date_inform_consent_f:
                                 error = [subject, visit, 'Date of blood sample collected', Date_of_blood_sample_collected_form_field_instance ,\
-                                        'The date of sample collected can not  be before the informed consent date', f'{Date_of_blood_sample_collected_pure} - {date_inform_consent}', 'MR0020']
+                                        'The date of sample collected can not  be before the informed consent date', f'{Date_of_blood_sample_collected_disname} - {date_inform_consent}', 'MR0020']
                                 lista_revision.append(error)
                             else:
                                 pass
@@ -212,7 +230,7 @@ def mRNA_markers(df_root, path_excel_writer):
                                 pass
                             else: 
                                 error = [subject, visit, 'Date of blood sample collected', Date_of_blood_sample_collected_form_field_instance,\
-                                        'Date of blood sample collected must be before the End of study/Early withdrawal date. ', Date_of_blood_sample_collected_pure, 'MR0030']
+                                        'Date of blood sample collected must be before the End of study/Early withdrawal date. ', Date_of_blood_sample_collected_disname, 'MR0030']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision MR0030 --> {e} - Subject: {subject},  Visit: {visit}  ')
@@ -243,7 +261,7 @@ def mRNA_markers(df_root, path_excel_writer):
                                     pass
                                 else:
                                     error = [subject, visit, 'Was blood sample collected?', Was_blood_sample_collected_form_field_instance ,\
-                                            'If the sample was collected, not all sections can be "not done"', Was_blood_sample_collected_pure, 'MR0050']
+                                            'If the sample was collected, not all sections can be "not done"', Was_blood_sample_collected_disname, 'MR0050']
                                     lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision MR0050--> {e} - Subject: {subject},  Visit: {visit} ')

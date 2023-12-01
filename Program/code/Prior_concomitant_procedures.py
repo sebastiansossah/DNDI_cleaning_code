@@ -16,8 +16,8 @@ def prior_concomitant_procedures(df_root, path_excel_writer):
 
     df= df_root[df_root['name']== 'Prior And Concomitant Procedures']
     lista_sujetos = df['Participante'].unique()
-    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
-    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)
+    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id', 'displayName']]
+    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)  + '|' + df['displayName'].astype(str)
 
     df_informed = df_root[df_root['name']=='Informed Consent']
     df_informed = df_informed[['Visit','Participante', 'Campo', 'Valor']]
@@ -135,73 +135,91 @@ def prior_concomitant_procedures(df_root, path_excel_writer):
                         procedure_id = row['Procedure ID']
                         procedure_id_pure = procedure_id.split('|')[0]
                         procedure_id_form_field_instance = procedure_id.split('|')[1]
+                        procedure_id_disname = procedure_id.split('|')[2]
                     except:
                         procedure_id_pure = ''
                         procedure_id_form_field_instance = 'This field does not have any data'
+                        procedure_id_disname = 'Empty'
                     
                     try:
                         procedure_name = row['Procedure Name']
                         procedure_name_pure = procedure_name.split('|')[0]
                         procedure_name_form_field_instance = procedure_name.split('|')[1]
+                        procedure_name_disname = procedure_name.split('|')[2]
                     except:
                         procedure_name_pure = ''
                         procedure_name_form_field_instance = 'This field does not have any data'
+                        procedure_name_disname = 'Empty'
                     
                     try:
                         indication = row['Indication']
                         indication_pure = indication.split('|')[0]
                         indication_form_field_instance = indication.split('|')[1]
+                        indication_disname = indication.split('|')[2]
                     except:
                         indication_pure = ''
                         indication_form_field_instance = 'This field does not have any data'
+                        indication_disname = 'Empty'
                     
                     try:
                         indication_category = row['Indication Category']
                         indication_category_pure = indication_category.split('|')[0]
                         indication_category_form_field_instance = indication_category.split('|')[1]
+                        indication_category_disname = indication_category.split('|')[2]
                     except:
                         indication_category_pure = ''
                         indication_category_form_field_instance = 'This field does not have any data'
+                        indication_category_disname = 'Empty'
                     
                     try:
                         adverse_event_id = row['Adverse Event ID']
                         adverse_event_id_pure = adverse_event_id.split('|')[0]
                         adverse_event_id_form_field_instance = adverse_event_id.split('|')[1]
+                        adverse_event_id_disname = adverse_event_id.split('|')[2]
                     except:
                         adverse_event_id_pure = ''
                         adverse_event_id_form_field_instance = 'This field does not have any data'
+                        adverse_event_id_disname = 'Empty'
                     
                     try:
                         start_date = row['Start date']
                         start_date_pure = start_date.split('|')[0]
                         start_date_form_field_instance = start_date.split('|')[1]
+                        start_date_disname = start_date.split('|')[2]
                     except:
                         start_date_pure = ''
                         start_date_form_field_instance = 'This field does not have any data'
+                        start_date_disname = 'Empty'
                     
                     try:
                         ongoing = row['Ongoing']
                         ongoing_pure = ongoing.split('|')[0]
                         ongoing_form_field_instance = ongoing.split('|')[1]
+                        ongoing_disname = ongoing.split('|')[2]
                     except:
                         ongoing_pure = ''
                         ongoing_form_field_instance = 'This field does not have any data'
+                        ongoing_disname = 'Empty'
                     
                     try:
                         end_date = row['End date']
                         end_date_pure = end_date.split('|')[0]
                         end_date_form_field_instance = end_date.split('|')[1]
+                        end_date_disname = end_date.split('|')[2]
                     except:
                         end_date_pure = ''
                         end_date_form_field_instance = 'This field does not have any data'
+                        end_date_disname = 'Empty'
 
                     try:
                         aditional_adverse_event = row['Aditional Adverse Event ID']
                         aditional_adverse_event_pure = aditional_adverse_event.split('|')[0]
                         aditional_adverse_event_form_field_instance = aditional_adverse_event.split('|')[1]
+                        aditional_adverse_event_disname = aditional_adverse_event.split('|')[2]
                     except:
                         aditional_adverse_event_pure = ''
                         aditional_adverse_event_form_field_instance = 'This field does not have any data'
+                        aditional_adverse_event_disname = 'Empty'
                     
 
                     # ------------------------------------------------------------------------------------------------------------------
@@ -215,7 +233,7 @@ def prior_concomitant_procedures(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, 'Start date', start_date_form_field_instance,\
-                                        f , start_date_pure, 'GE0020']
+                                        f , start_date_disname, 'GE0020']
                                 lista_revision.append(error)     
 
                         except Exception as e:
@@ -231,7 +249,7 @@ def prior_concomitant_procedures(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, 'End date', end_date_form_field_instance,\
-                                        f , end_date_pure, 'GE0020']
+                                        f , end_date_disname, 'GE0020']
                                 lista_revision.append(error)     
                         except Exception as e:
                             lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ') 
@@ -241,7 +259,7 @@ def prior_concomitant_procedures(df_root, path_excel_writer):
                         if procedure_id_pure in list_procesure_id_review:
                             error =  [subject, visit, 'Procedure ID', procedure_id_form_field_instance, \
                                         'This value should be unique, it can not be repeated', \
-                                            procedure_id_pure, 'PR0010']
+                                            procedure_id_disname, 'PR0010']
                             lista_revision.append(error)
                         else:
                             list_procesure_id_review.append(procedure_id_pure)
@@ -256,7 +274,7 @@ def prior_concomitant_procedures(df_root, path_excel_writer):
                         if tuple_to_compare in list_of_tuples_name_procedures_dates:
                             error =  [subject, visit, 'Procedure Name', procedure_name_form_field_instance, \
                                         'There are two procedures that have the same name, and the dates overlap', \
-                                            procedure_name_pure, 'PR0020']
+                                            procedure_name_disname, 'PR0020']
                             lista_revision.append(error)
                         else:
                             list_of_tuples_name_procedures_dates.append(tuple_to_compare)
@@ -273,7 +291,7 @@ def prior_concomitant_procedures(df_root, path_excel_writer):
                             else:
                                 error = [subject, visit, 'Adverse Event ID', adverse_event_id_form_field_instance, \
                                             'If Adverse Event is selected, the value should be an existing AE ID', \
-                                                adverse_event_id_pure, 'PR0040']
+                                                adverse_event_id_disname, 'PR0040']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision PR0040 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -300,7 +318,7 @@ def prior_concomitant_procedures(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, 'Adverse Event ID', adverse_event_id_form_field_instance, \
-                                         'The start and end dates of procedure do not correspond to the Indication AE ID start and end date.', adverse_event_id_pure, 'PR0050']
+                                         'The start and end dates of procedure do not correspond to the Indication AE ID start and end date.', adverse_event_id_disname, 'PR0050']
                                 lista_revision.append(error)
 
                         elif contador_para_validar == 2:
@@ -313,7 +331,7 @@ def prior_concomitant_procedures(df_root, path_excel_writer):
                                 else:
                                     error = [subject, visit, 'Adverse Event ID', adverse_event_id_form_field_instance, \
                                              'The start and end dates of medication do not correspond to the Indication AE ID start and end date.', \
-                                               adverse_event_id_pure, 'PR0050']
+                                               adverse_event_id_disname, 'PR0050']
                                     lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision PR0050 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -327,7 +345,7 @@ def prior_concomitant_procedures(df_root, path_excel_writer):
                             else:
                                 error = [subject, visit, 'Aditional Adverse Event ID', aditional_adverse_event_form_field_instance, \
                                             'The value should be an existing AE ID', \
-                                                aditional_adverse_event_pure, 'PR0080']
+                                                aditional_adverse_event_disname, 'PR0080']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision PR0080 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -340,7 +358,7 @@ def prior_concomitant_procedures(df_root, path_excel_writer):
                             pass
                         else: 
                             error = [subject, visit, 'Start Date', start_date_form_field_instance,\
-                                     'Start Date must be before the End of study/Early withdrawal date. ', start_date_pure, 'PR0140']
+                                     'Start Date must be before the End of study/Early withdrawal date. ', start_date_disname, 'PR0140']
                             lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision PR0140 --> {e} - Subject: {subject},  Visit: {visit}  ')
@@ -351,7 +369,7 @@ def prior_concomitant_procedures(df_root, path_excel_writer):
                             pass
                         else: 
                             error = [subject, visit, 'End date', end_date_form_field_instance, \
-                                        'The date should be equal or greater than the start date', end_date_pure, 'PR0150']
+                                        'The date should be equal or greater than the start date', end_date_disname, 'PR0150']
                             lista_revision.append(error)
                     except Exception as e:
                             lista_logs.append(f'Revision PR0150 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -362,7 +380,7 @@ def prior_concomitant_procedures(df_root, path_excel_writer):
                             pass
                         else: 
                             error = [subject, visit, 'End Date', end_date_form_field_instance,\
-                                     'End Date must be before the End of study/Early withdrawal date. ', end_date_pure, 'PR0160']
+                                     'End Date must be before the End of study/Early withdrawal date. ', end_date_disname, 'PR0160']
                             lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision PR0160 --> {e} - Subject: {subject},  Visit: {visit}  ')

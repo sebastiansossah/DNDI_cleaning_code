@@ -18,8 +18,8 @@ def vein_assesment(df_root, path_excel_writer):
 
     df= df_root[df_root['name']== 'Vein assessment']
     lista_sujetos = df['Participante'].unique()
-    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
-    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)
+    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id', 'displayName']]
+    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)  + '|' + df['displayName'].astype(str)
 
     df_informed = df_root[df_root['name']=='Informed Consent']
     df_informed = df_informed[['Participante', 'Campo', 'Valor']]
@@ -89,9 +89,11 @@ def vein_assesment(df_root, path_excel_writer):
                         vein_assessment_performed = row['Was the vein assessment performed?']
                         vein_assessment_performed_pure = vein_assessment_performed.split('|')[0]
                         vein_assessment_performed_form_field_instance =  vein_assessment_performed.split('|')[1]
+                        vein_assessment_performed_disname =  vein_assessment_performed.split('|')[2]
                     except Exception as e:
                         vein_assessment_performed_pure = math.nan
                         vein_assessment_performed_form_field_instance = 'This field does not have any data'
+                        vein_assessment_performed_disname = 'Empty'
 
                     # try:
                     #     provide_reason = row['Provide the reason']
@@ -158,7 +160,7 @@ def vein_assesment(df_root, path_excel_writer):
                             else:
                                 error = [subject, visit, 'Was the vein assessment performed?', vein_assessment_performed_form_field_instance, \
                                          'The "Not Required" option can only be selected if visit is D-1 and Screening visit date = D-1 date (screening done on D-1)',\
-                                              vein_assessment_performed_pure, 'VA0020']
+                                              vein_assessment_performed_disname, 'VA0020']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision VA0020--> {e} - Subject: {subject},  Visit: {visit} ')

@@ -21,8 +21,8 @@ def adverse_events(df_root, path_excel_writer):
 
     df= df_root[df_root['name']=='Adverse Events']
     lista_sujetos = df['Participante'].unique()
-    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
-    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)
+    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id', 'displayName']]
+    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)  + '|' + df['displayName'].astype(str)
 
     df_informed = df_root[df_root['name']=='Informed Consent']
     df_informed = df_informed[['Visit','Participante', 'Campo', 'Valor']]
@@ -241,137 +241,170 @@ def adverse_events(df_root, path_excel_writer):
                         adverse_event_id = row['Adverse Event ID']
                         adverse_event_id_pure = adverse_event_id.split('|')[0]
                         adverse_event_id_form_field_instance = adverse_event_id.split('|')[1]
+                        adverse_event_id_disname = adverse_event_id.split('|')[2]
                     except:
                         adverse_event_id_pure = ''
                         adverse_event_id_form_field_instance = 'This field does not have any data'
+                        adverse_event_id_disname = 'Empty'
 
                     try:
                         adverse_events_reported_term = row['Adverse Event Reported Term']
                         adverse_events_reported_term_pure = adverse_events_reported_term.split('|')[0]
                         adverse_events_reported_term_form_field_instance = adverse_events_reported_term.split('|')[1]
+                        adverse_events_reported_term_disname = adverse_events_reported_term.split('|')[2]
                     except:
                         adverse_events_reported_term_pure = ''
                         adverse_events_reported_term_form_field_instance = 'This field does not have any data'
+                        adverse_events_reported_term_disname = 'Empty'
                     
                     try:
                         start_date = row['Start Date']
                         start_date_pure = str(start_date.split('|')[0]).split(' ')[0]
                         start_date_form_field_instnace = start_date.split('|')[1]
+                        start_date_disname = start_date.split('|')[2]
                     except:
                         start_date_pure = ''
                         start_date_form_field_instnace = 'This field does not have any data'
+                        start_date_disname = 'Empty'
                     
                     try:
                         outcome = row['Outcome']
                         outcome_pure = outcome.split('|')[0]
                         outcome_form_field_intance = outcome.split('|')[1]
+                        outcome_form_disname = outcome.split('|')[2]
                     except:
                         outcome_pure = ''
                         outcome_form_field_intance = 'This field does not have any data'
+                        outcome_form_disname = 'Empty'
                     
                     try:
                         severity = row['Severity']
                         severity_pure = severity.split('|')[0]
                         severity_form_field_instance = severity.split('|')[1]
+                        severity_disname = severity.split('|')[2]
                     except:
                         severity_pure = math.nan
                         severity_form_field_instance = 'This field does not have any data'
+                        severity_disname = 'Empty'
                     
                     try:
                         frequency = row['Frequency']
                         frequency_pure = frequency.split('|')[0]
                         frequency_form_field_instance = frequency.split('|')[1]
+                        frequency_form_disname = frequency.split('|')[2]
                     except:
                         frequency_pure = ''
                         frequency_form_field_instance = 'This field does not have any data'
+                        frequency_form_disname = 'Empty'
                     
                     try:
                         serious = row['Serious']
                         serious_pure = serious.split('|')[0]
                         serious_form_field_instance = serious.split('|')[1]
+                        serious_form_disname = serious.split('|')[2]
                     except:
                         serious_pure = math.nan
                         serious_form_field_instance = 'This field does not have any data'
-                    
+                        serious_form_disname = 'Empty'
+
                     try:
                         seriousness_criteria = row["Seriousness Criteria"]
                         seriousness_criteria_pure = seriousness_criteria.split('|')[0]
                         seriousness_criteria_form_field_instance = seriousness_criteria.split('|')[1]
+                        seriousness_criteria_disname = seriousness_criteria.split('|')[2]
                     except:
                         seriousness_criteria_pure = ''
                         seriousness_criteria_form_field_instance = 'This field does not have any data'
+                        seriousness_criteria_disname = 'Empty'
 
                     try:
                         causal_relation_cpg = row['Causal relationship with study treatment (CPG ODN D35)']
                         causal_relation_cpg_pure = causal_relation_cpg.split('|')[0]
                         causal_relation_cpg_form_field_instance = causal_relation_cpg.split('|')[1]
+                        causal_relation_cpg_disname = causal_relation_cpg.split('|')[2]
                     except:
                         causal_relation_cpg_pure = ''
                         causal_relation_cpg_form_field_instance = 'This field does not have any data'
-                    
+                        causal_relation_cpg_disname = 'Empty'
+
                     try:
                         causal_realation_miltefosine = row['Causal relationship with study treatment (Miltefosine)']
                         causal_realation_miltefosine_pure = causal_realation_miltefosine.split('|')[0]
                         causal_realation_miltefosine_form_field_instance = causal_realation_miltefosine.split('|')[1]
+                        causal_realation_miltefosine_disname = causal_realation_miltefosine.split('|')[2]
                     except:
                         causal_realation_miltefosine_pure = ''
                         causal_realation_miltefosine_form_field_instance = 'This field does not have any data'
-                    
+                        causal_realation_miltefosine_disname = 'Empty'
                     try:
                         actions_taken_cpg = row['Action taken with study treatment (CPG ODN D35)']
                         actions_taken_cpg_pure = actions_taken_cpg.split('|')[0]
                         actions_taken_cpg_form_field_instance = actions_taken_cpg.split('|')[1]
+                        actions_taken_cpg_disname = actions_taken_cpg.split('|')[2]
                     except:
                         actions_taken_cpg_pure = ''
                         actions_taken_cpg_form_field_instance = 'This field does not have any data'
-                    
+                        actions_taken_cpg_disname = 'Empty'
+
                     try:
                         actions_taken_miltefosine = row['Action taken with study treatment (Miltefosine)']
                         actions_taken_miltefosine_pure = actions_taken_miltefosine.split('|')[0]
                         actions_taken_miltefosine_form_field_instance = actions_taken_miltefosine.split('|')[1]
+                        actions_taken_miltefosine_disname = actions_taken_miltefosine.split('|')[2]
                     except:
                         actions_taken_miltefosine_pure = ''
                         actions_taken_miltefosine_form_field_instance = 'This field does not have any data'
-                    
+                        actions_taken_miltefosine_disname = 'Empty'
+
                     try:
                         other_action_taken = row['Other action taken']
                         other_action_taken_pure = other_action_taken.split('|')[0]
                         other_action_taken_form_field_instance = other_action_taken.split('|')[1]
+                        other_action_taken_disname = other_action_taken.split('|')[2]
                     except:
                         other_action_taken_pure = ''
                         other_action_taken_form_field_instance = 'This field does not have any data'
+                        other_action_taken_disname = 'Empty'
                     
                     try:
                         study_discontinued = row['Study discontinued']
                         study_discontinued_pure = study_discontinued.split('|')[0]
                         study_discontinued_form_field_instance = study_discontinued.split('|')[1]
+                        study_discontinued_disname = study_discontinued.split('|')[2]
                     except:
                         study_discontinued_pure = ''
                         study_discontinued_form_field_instance = 'This field does not have any data'
+                        study_discontinued_disname = 'Empty'
                     
                     try:
                         start_time = row['Start time']
                         start_time_pure = start_time.split('|')[0]
                         start_time_form_field_instance = start_time.split('|')[1]
+                        start_time_disname = start_time.split('|')[2]
                     except:
                         start_time_pure = ''
                         start_time_form_field_instance = 'This field does not have any data'
+                        start_time_disname = 'Empty'
                     
                     try:
                         end_date = row['End date']
                         end_date_pure = str(end_date.split('|')[0]).split(' ')[0]
                         end_date_form_field_instance = end_date.split('|')[1]
+                        end_date_disname = end_date.split('|')[2]
                     except:
                         end_date_pure = ''
                         end_date_form_field_instance = 'This field does not have any data'
+                        end_date_disname = 'Empty'
                     
                     try:
                         sae_start_date_AE_became_serious = row['SAE Start date (AE became serious)']
                         sae_start_date_AE_became_serious_pure = sae_start_date_AE_became_serious.split('|')[0]
                         sae_start_date_AE_became_serious_form_field_instance = sae_start_date_AE_became_serious.split('|')[1]
+                        sae_start_date_AE_became_serious_disname = sae_start_date_AE_became_serious.split('|')[2]
                     except:
                         sae_start_date_AE_became_serious_pure = ''
                         sae_start_date_AE_became_serious_form_field_instance = 'This field does not have any data'
+                        sae_start_date_AE_became_serious_disname = 'Empty'
 
                     # ---------------------------------------------------------------------------------------
                     if start_date_pure == '':
@@ -384,7 +417,7 @@ def adverse_events(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, 'Start date', start_date_form_field_instnace,\
-                                        f , start_date_pure, 'GE0020']
+                                        f , start_date_disname, 'GE0020']
                                 lista_revision.append(error)     
 
                         except Exception as e:
@@ -400,7 +433,7 @@ def adverse_events(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, 'End date', end_date_form_field_instance,\
-                                        f , end_date_pure, 'GE0020']
+                                        f , end_date_disname, 'GE0020']
                                 lista_revision.append(error)     
                         except Exception as e:
                             lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ') 
@@ -410,7 +443,7 @@ def adverse_events(df_root, path_excel_writer):
                         if float(adverse_event_id_pure) in adverse_events_id_review:
                             error = [subject, visit, 'Adverse Event ID', adverse_event_id_form_field_instance, \
                                                 'This value should be unique, it can not be repeated', \
-                                                    adverse_event_id_pure, 'AE0010']
+                                                    adverse_event_id_disname, 'AE0010']
                             lista_revision.append(error)
                         else:
                             adverse_events_id_review.append(adverse_event_id_pure)
@@ -424,7 +457,7 @@ def adverse_events(df_root, path_excel_writer):
                         if tuple_to_compare in list_of_tuples_adverse_id:
                             error =  [subject, visit, 'Adverse Event Reported Term', adverse_events_reported_term_form_field_instance, \
                                         'There are two adverse events that have the same term, and the dates overlap', \
-                                            adverse_events_reported_term_pure, 'AE0020']
+                                            adverse_events_reported_term_disname, 'AE0020']
                             lista_revision.append(error)
                         else:
                             list_of_tuples_adverse_id.append(tuple_to_compare)
@@ -439,7 +472,7 @@ def adverse_events(df_root, path_excel_writer):
                             else:
                                 error = [subject, visit, 'Start Date', start_date_form_field_instnace, \
                                         'The start date is before the informed consent date. Please check and report in medical history if applicable.', \
-                                            start_date_pure, 'AE0040']
+                                            start_date_disname, 'AE0040']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision AE0040 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -450,7 +483,7 @@ def adverse_events(df_root, path_excel_writer):
                             if datetime.strptime(str(start_date_pure), '%d-%b-%Y') >= datetime.strptime(str(date_decision_no_randomize), '%d-%b-%Y'):
                                 error = [subject, visit, 'Start Date', start_date_form_field_instnace, \
                                         'The subject was not randomized, therefore the AE date can not be after the date of decision to not randomize the participant', \
-                                            start_date_pure, 'AE0050']
+                                            start_date_disname, 'AE0050']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision AE0050 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -462,7 +495,7 @@ def adverse_events(df_root, path_excel_writer):
                         else:
                             error = [subject, visit, 'End Date', end_date_form_field_instance, \
                                     'The date should be equal or grater than the start date', \
-                                        end_date_pure, 'AE0060']
+                                        end_date_disname, 'AE0060']
                             lista_revision.append(error) 
                     except Exception as e:
                         lista_logs.append(f'Revision AE0050 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -473,7 +506,7 @@ def adverse_events(df_root, path_excel_writer):
                             pass
                         else: 
                             error = [subject, visit, 'End Date', end_date_form_field_instance,\
-                                     'End Date must be before the End of study/Early withdrawal date. ', end_date_pure, 'AE0070']
+                                     'End Date must be before the End of study/Early withdrawal date. ', end_date_disname, 'AE0070']
                             lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision AE0070 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -485,7 +518,7 @@ def adverse_events(df_root, path_excel_writer):
                         else:
                             error = [subject, visit, 'SAE Start date (AE became serious)', sae_start_date_AE_became_serious_form_field_instance, \
                                     'The date must be the equal or later than the adverse event start date. ', \
-                                        sae_start_date_AE_became_serious_pure, 'AE0100']
+                                        sae_start_date_AE_became_serious_disname, 'AE0100']
                             lista_revision.append(error) 
                     except Exception as e:
                         lista_logs.append(f'Revision AE0100 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -496,7 +529,7 @@ def adverse_events(df_root, path_excel_writer):
                             if float(causal_relation_cpg_pure) != 1.0:
                                 error = [subject, visit, 'Causal relationship with study treatment (CPG ODN D35)', causal_relation_cpg_form_field_instance, \
                                     'The AE started before the first administration of CpG ODN D35, therefore the causal relationship can not be different from "Not Related"', \
-                                        causal_relation_cpg_pure, 'AE0120']
+                                        causal_relation_cpg_disname, 'AE0120']
                                 lista_revision.append(error) 
                             else:
                                 pass
@@ -509,7 +542,7 @@ def adverse_events(df_root, path_excel_writer):
                             if float(causal_realation_miltefosine_pure) != 1.0:
                                 error = [subject, visit, 'Causal relationship with study treatment (Miltefosine)', causal_realation_miltefosine_form_field_instance, \
                                     'The AE started before the first administration of CpG ODN D35, therefore the causal relationship can not be different from "Not Related"', \
-                                        causal_realation_miltefosine_pure, 'AE0130']
+                                        causal_realation_miltefosine_disname, 'AE0130']
                                 lista_revision.append(error) 
                             else:
                                 pass
@@ -522,7 +555,7 @@ def adverse_events(df_root, path_excel_writer):
                             if float(actions_taken_cpg_pure) != 5.0:
                                 error = [subject, visit, 'Action taken with study treatment (CPG ODN D35)', actions_taken_cpg_form_field_instance, \
                                     'The AE started before the first administration of CpG ODN D35, therefore the action taken can not be different from "not applicable"', \
-                                        actions_taken_cpg_pure, 'AE0140']
+                                        actions_taken_cpg_disname, 'AE0140']
                                 lista_revision.append(error) 
                             else:
                                 pass
@@ -535,7 +568,7 @@ def adverse_events(df_root, path_excel_writer):
                             if float(actions_taken_miltefosine_pure) != 5.0:
                                 error = [subject, visit, 'Action taken with study treatment (Miltefosine)', actions_taken_miltefosine_form_field_instance, \
                                     'The AE started before the first administration of Miltefosine, therefore the action taken can not be different from "not applicable"', \
-                                        actions_taken_miltefosine_pure, 'AE0150']
+                                        actions_taken_miltefosine_disname, 'AE0150']
                                 lista_revision.append(error) 
                             else:
                                 pass
@@ -548,7 +581,7 @@ def adverse_events(df_root, path_excel_writer):
                             if float(actions_taken_cpg_pure) != 5.0:
                                 error = [subject, visit, 'Action taken with study treatment (CPG ODN D35)', actions_taken_cpg_form_field_instance, \
                                     'The AE ended before the first administration of CpG ODN D35, therefore the action taken can not be different from "not applicable"', \
-                                        actions_taken_cpg_pure, 'AE0160']
+                                        actions_taken_cpg_disname, 'AE0160']
                                 lista_revision.append(error) 
                             else:
                                 pass
@@ -561,7 +594,7 @@ def adverse_events(df_root, path_excel_writer):
                             if float(actions_taken_miltefosine_pure) != 5.0:
                                 error = [subject, visit, 'Action taken with study treatment (Miltefosine)', actions_taken_miltefosine_form_field_instance, \
                                     'The AE ended before the first administration of Miltefosine, therefore the action taken can not be different from "not applicable"', \
-                                        actions_taken_miltefosine_pure, 'AE0170']
+                                        actions_taken_miltefosine_disname, 'AE0170']
                                 lista_revision.append(error) 
                             else:
                                 pass
@@ -575,7 +608,7 @@ def adverse_events(df_root, path_excel_writer):
                                 if float(actions_taken_cpg_pure) == 5.0:
                                     error = [subject, visit, 'Action taken with study treatment (CPG ODN D35)', actions_taken_cpg_form_field_instance, \
                                         'The AE started before the first administration of CpG ODN D35, but its ongoing therefore the action taken can not be "not applicable"', \
-                                            actions_taken_cpg_pure, 'AE0180']
+                                            actions_taken_cpg_disname, 'AE0180']
                                     lista_revision.append(error) 
                                 else:
                                     pass
@@ -589,7 +622,7 @@ def adverse_events(df_root, path_excel_writer):
                                 if float(actions_taken_miltefosine_pure) == 5.0:
                                     error = [subject, visit, 'Action taken with study treatment (Miltefosine)', actions_taken_miltefosine_form_field_instance, \
                                         'The AE started before the first administration of Miltefosine but its ongoing, therefore the action taken can not be "not applicable"', \
-                                            actions_taken_miltefosine_pure, 'AE0190']
+                                            actions_taken_miltefosine_disname, 'AE0190']
                                     lista_revision.append(error) 
                                 else:
                                     pass
@@ -603,7 +636,7 @@ def adverse_events(df_root, path_excel_writer):
                                 if float(actions_taken_cpg_pure) == 5.0:
                                     error = [subject, visit, 'Action taken with study treatment (CPG ODN D35)', actions_taken_cpg_form_field_instance, \
                                         'The first administration of CpG ODN D35 was done during the AE, therefore the action taken can not be "not applicable"', \
-                                            actions_taken_cpg_pure, 'AE0200']
+                                            actions_taken_cpg_disname, 'AE0200']
                                     lista_revision.append(error) 
                                 else:
                                     pass
@@ -617,7 +650,7 @@ def adverse_events(df_root, path_excel_writer):
                                 if float(actions_taken_miltefosine_pure) == 5.0:
                                     error = [subject, visit, 'Action taken with study treatment (Miltefosine)', actions_taken_miltefosine_form_field_instance, \
                                         'The AE started before the first administration of Miltefosine but its ongoing, therefore the action taken can not be "not applicable"', \
-                                            actions_taken_miltefosine_pure, 'AE0210']
+                                            actions_taken_miltefosine_disname, 'AE0210']
                                     lista_revision.append(error) 
                                 else:
                                     pass
@@ -630,7 +663,7 @@ def adverse_events(df_root, path_excel_writer):
                             if float(actions_taken_cpg_pure) == 2.0 or float(actions_taken_cpg_pure) == 3.0 or float(actions_taken_cpg_pure) == 4.0:
                                 error = [subject, visit, 'Action taken with study treatment (CPG ODN D35)', actions_taken_cpg_form_field_instance, \
                                         'Action taken with study treatment (CPG ODN D35) is Dose Reduced or CT drug interrupted (temporarily) or CT drug stopped (permanently),  causal relationship with the study treatment (CPG ODN D35) can not be  related or probably not related.', \
-                                            actions_taken_cpg_pure, 'AE0220']
+                                            actions_taken_cpg_disname, 'AE0220']
                                 lista_revision.append(error) 
                     except Exception as e:
                         lista_logs.append(f'Revision AE0220 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -641,7 +674,7 @@ def adverse_events(df_root, path_excel_writer):
                             if float(actions_taken_miltefosine_pure) == 2.0 or float(actions_taken_miltefosine_pure) == 3.0 or float(actions_taken_miltefosine_pure) == 4.0:
                                 error = [subject, visit, 'Action taken with study treatment (Miltefosine)', actions_taken_miltefosine_form_field_instance, \
                                         'Action taken with study treatment (CPG ODN D35) is Dose Reduced or CT drug interrupted (temporarily) or CT drug stopped (permanently),  causal relationship with the study treatment (CPG ODN D35) can not be  related or probably not related.', \
-                                            actions_taken_miltefosine_pure, 'AE0230']
+                                            actions_taken_miltefosine_disname, 'AE0230']
                                 lista_revision.append(error) 
                     except Exception as e:
                         lista_logs.append(f'Revision AE0230 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -652,7 +685,7 @@ def adverse_events(df_root, path_excel_writer):
                             if float(was_completed_CPG_y_n) == 1.0:
                                 error = [subject, visit, 'Action taken with study treatment (CPG ODN D35)', actions_taken_cpg_form_field_instance, \
                                         'If the action taken was to stop permanently the CT drug, the subject could not have completed the study per protocol in the end of study form', \
-                                            actions_taken_cpg_pure, 'AE0240']
+                                            actions_taken_cpg_disname, 'AE0240']
                                 lista_revision.append(error) 
 
                     except Exception as e:
@@ -664,7 +697,7 @@ def adverse_events(df_root, path_excel_writer):
                             if float(was_completed_cpg_reason) != 2.0:
                                 error = [subject, visit, 'Action taken with study treatment (CPG ODN D35)', actions_taken_cpg_form_field_instance, \
                                         'If the action taken was to stop permanently the CT drug, on the end of study form, the "Primary reason for not completing the CPG ODN D35 study treatment" should be "SAE or intolerable AE." ', \
-                                            actions_taken_cpg_pure, 'AE0250']
+                                            actions_taken_cpg_disname, 'AE0250']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -676,7 +709,7 @@ def adverse_events(df_root, path_excel_writer):
                             if float(cpg_dosing_event_permanentely) != 3.0:
                                 error = [subject, visit, 'Action taken with study treatment (CPG ODN D35)', actions_taken_cpg_form_field_instance, \
                                         'If Action taken with study treatment (CPG ODN D35) is CT drug stopped (permanently) , on the CPG ODN D35 study treatment administration form there should be at least one Dosing Event as permanently discontinued and with reason for dose adjustment as Adverse event', \
-                                            actions_taken_cpg_pure, 'AE0260']
+                                            actions_taken_cpg_disname, 'AE0260']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision AE0260 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -687,7 +720,7 @@ def adverse_events(df_root, path_excel_writer):
                             if float(cpg_dosing_event_temporarily) != 2.0:
                                 error = [subject, visit, 'Action taken with study treatment (CPG ODN D35)', actions_taken_cpg_form_field_instance, \
                                         'If Action taken with study treatment (CPG ODN D35) is CT drug stopped (temporarily) , on the CPG ODN D35 study treatment administration form there should be at least one Dosing Event as temporarily discontinued and with reason for dose adjustment as Adverse event', \
-                                            actions_taken_cpg_pure, 'AE0270']
+                                            actions_taken_cpg_disname, 'AE0270']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision AE0270 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -698,7 +731,7 @@ def adverse_events(df_root, path_excel_writer):
                             if math.isnan(float(cpg_dose_mg)):
                                 error = [subject, visit, 'Action taken with study treatment (CPG ODN D35)', actions_taken_cpg_form_field_instance, \
                                         'If Action taken with study treatment (CPG ODN D35) is Dose Reduced, on the CPG ODN D35 study treatment administration form at least one Dose  should be different from 0 and with Reason for dose adjustment reported as Adverse event.', \
-                                            actions_taken_cpg_pure, 'AE0280']
+                                            actions_taken_cpg_disname, 'AE0280']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision AE0280 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -709,7 +742,7 @@ def adverse_events(df_root, path_excel_writer):
                             if float(was_completed_miltefosine) ==1.0:
                                 error = [subject, visit, 'Action taken with study treatment (Miltefosine)', actions_taken_miltefosine_form_field_instance, \
                                         'If Action taken with study treatment (CPG ODN D35) is Dose Reduced, on the CPG ODN D35 study treatment administration form at least one Dose  should be different from 0 and with Reason for dose adjustment reported as Adverse event.', \
-                                            actions_taken_miltefosine_pure, 'AE0290']
+                                            actions_taken_miltefosine_disname, 'AE0290']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision AE0290 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -720,7 +753,7 @@ def adverse_events(df_root, path_excel_writer):
                             if float(was_completed_miltefosine_reason) != 2.0:
                                 error = [subject, visit, 'Action taken with study treatment (Miltefosine)', actions_taken_miltefosine_form_field_instance, \
                                         'If Action taken with study treatment (Miltefosine) is CT drug stopped (permanently) , on the end of study form, the "Primary reason for not completing the Miltefosine study treatment" should be "SAE or intolerable AE." ', \
-                                            actions_taken_miltefosine_pure, 'AE0300']
+                                            actions_taken_miltefosine_disname, 'AE0300']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision AE0300 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -731,7 +764,7 @@ def adverse_events(df_root, path_excel_writer):
                             if float(miltefosine_dosing_event_permanentely) != 3.0:
                                 error = [subject, visit, 'Action taken with study treatment (Miltefosine)', actions_taken_miltefosine_form_field_instance, \
                                         'If Action taken with study treatment (Miltefosine) is CT drug stopped (permanently) , on the Miltefosine study treatment administration form there should be at least one Dosing Event as permanently discontinued and with reason for dose adjustment as Adverse event', \
-                                            actions_taken_miltefosine_pure, 'AE0310']
+                                            actions_taken_miltefosine_disname, 'AE0310']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision AE0310 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -742,7 +775,7 @@ def adverse_events(df_root, path_excel_writer):
                             if float(miltefosine_dosing_event_temporarily) != 2.0:
                                 error =  [subject, visit, 'Action taken with study treatment (Miltefosine)', actions_taken_miltefosine_form_field_instance, \
                                         'Action taken with study treatment (Miltefosine) is CT drug stopped (temporarily) and there is no Miltefosine study treatment administration records with Dosing Event equals to Temporarily discontinued with Reason for dose adjustment reported Adverse event.', \
-                                            actions_taken_miltefosine_pure, 'AE0320']
+                                            actions_taken_miltefosine_disname, 'AE0320']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision AE0320 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -753,7 +786,7 @@ def adverse_events(df_root, path_excel_writer):
                             if math.isnan(float(miltefosine_dose_mg)):
                                 error = [subject, visit, 'Action taken with study treatment (Miltefosine)', actions_taken_miltefosine_form_field_instance, \
                                         'Action taken with study treatment (Miltefosine) is Dose Reduced and there is no Miltefosine study treatment administration records with Dose different from 0 with Reason for dose adjustment reported Adverse event.', \
-                                            actions_taken_miltefosine_pure, 'AE0330']
+                                            actions_taken_miltefosine_disname, 'AE0330']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision AE0330 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -764,7 +797,7 @@ def adverse_events(df_root, path_excel_writer):
                             if math.isnan(float(concomitant_medication_name)):
                                 error = [subject, visit, 'Other action taken', other_action_taken_form_field_instance, \
                                         'If Other action taken="Concomitant medication" at least one concomitant medication form must be completed', \
-                                            other_action_taken_pure, 'AE0340']
+                                            other_action_taken_disname, 'AE0340']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision AE0340 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -775,7 +808,7 @@ def adverse_events(df_root, path_excel_writer):
                             if math.isnan(float(concomitant_procedure_name)):
                                 error = [subject, visit, 'Other action taken', other_action_taken_form_field_instance, \
                                         'If Other action taken="Concomitant procedure" at least one concomitant procedure form must be completed', \
-                                            other_action_taken_pure, 'AE0350']
+                                            other_action_taken_disname, 'AE0350']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision AE0350 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -786,7 +819,7 @@ def adverse_events(df_root, path_excel_writer):
                             if float(serious_pure) != 1.0:
                                 error = [subject, visit, 'Outcome ', outcome_form_field_intance, \
                                         'If the outcome is fatal, the AE must be serious', \
-                                            outcome_pure, 'AE0360']
+                                            outcome_form_disname, 'AE0360']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision AE0360 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -797,7 +830,7 @@ def adverse_events(df_root, path_excel_writer):
                             if float(seriousness_criteria_pure) != 1:
                                 error = [subject, visit, 'Outcome ', outcome_form_field_intance, \
                                         'If value is "Fatal", The "Seriousness criteria" should be "results in death" ', \
-                                            outcome_pure, 'AE0370']
+                                            outcome_form_disname, 'AE0370']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision AE0370 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -808,7 +841,7 @@ def adverse_events(df_root, path_excel_writer):
                             if float(severity_pure) != 5.0:
                                 error = [subject, visit, 'Outcome ', outcome_form_field_intance, \
                                         'If value is "Fatal", The "Severity" should be "Death" ', \
-                                            outcome_pure, 'AE0380']  
+                                            outcome_form_disname, 'AE0380']  
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision AE0380 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -819,7 +852,7 @@ def adverse_events(df_root, path_excel_writer):
                             if float(end_study_general) != 1.0:
                                 error = [subject, visit, 'Outcome ', outcome_form_field_intance, \
                                         'Taking into account that the subject has finished the study please verify if the outcome is truly "Unknown" or not', \
-                                            outcome_pure, 'AE0390']  
+                                            outcome_form_disname, 'AE0390']  
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision AE0390 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -830,7 +863,7 @@ def adverse_events(df_root, path_excel_writer):
                             if float(outcome_pure) != 5.0:
                                 error = [subject, visit, 'Seriousness Criteria ', seriousness_criteria_form_field_instance, \
                                         'If value is "results in death", the "Outcome" should be "Fatal"', \
-                                            seriousness_criteria_pure, 'AE0400']  
+                                            seriousness_criteria_disname, 'AE0400']  
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision AE0400 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -841,7 +874,7 @@ def adverse_events(df_root, path_excel_writer):
                             if float(outcome_pure) != 5.0:
                                 error = [subject, visit, 'Severity', severity_form_field_instance, \
                                         'If value is "Death", the "outcome" should be "Fatal"', \
-                                            severity_pure, 'AE0410']  
+                                            severity_disname, 'AE0410']  
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision AE0410 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -852,7 +885,7 @@ def adverse_events(df_root, path_excel_writer):
                             if float(end_study_general) == 1.0:
                                 error = [subject, visit, 'Study discontinued', study_discontinued_form_field_instance, \
                                         'The Study was discontinued therefore ,the study must not have been completed per protocol in the end of study form', \
-                                            study_discontinued_pure, 'AE0420']  
+                                            study_discontinued_disname, 'AE0420']  
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision AE0420 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -863,7 +896,7 @@ def adverse_events(df_root, path_excel_writer):
                             if float(end_study_general_primary_reason) != 2.0:
                                 error = [subject, visit, 'Study discontinued', study_discontinued_form_field_instance, \
                                         'The Study was discontinued therefore ,the primary reason for not completing the study should be "SAE or intolerable AE"', \
-                                            study_discontinued_pure, 'AE0430']  
+                                            study_discontinued_disname, 'AE0430']  
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision AE0430 --> {e} - Subject: {subject},  Visit: {visit} ')

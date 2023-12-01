@@ -19,8 +19,8 @@ def urinalysis(df_root, path_excel_writer):
 
     df= df_root[df_root['name']== 'Urinalysis']
     lista_sujetos = df['Participante'].unique()
-    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
-    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)
+    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id', 'displayName']]
+    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)  + '|' + df['displayName'].astype(str)
 
     df_visit_date = df_root[df_root['name']=='Date of visit']
     df_visit_date = df_visit_date[['Visit','Participante', 'Campo', 'Valor']]
@@ -96,9 +96,11 @@ def urinalysis(df_root, path_excel_writer):
                         urine_sample_collected = row['Urine Sample collected']
                         urine_sample_collected_pure = urine_sample_collected.split('|')[0]
                         urine_sample_collected_form_field_instance = urine_sample_collected.split('|')[1]
+                        urine_sample_collected_disname = urine_sample_collected.split('|')[2]
                     except Exception as e:
                         urine_sample_collected_pure = math.nan
-                        urine_sample_collected_form_field_instance = 'This field does not have any data' 
+                        urine_sample_collected_form_field_instance = 'This field does not have any data'
+                        urine_sample_collected_disname = 'Empty' 
 
                     # --------------------------------------------------
 
@@ -130,7 +132,7 @@ def urinalysis(df_root, path_excel_writer):
                             else:
                                 error = [subject, visit, 'Urine Sample collected', urine_sample_collected_form_field_instance,\
                                          'The "Not Required" option can only be selected if visit is D-1 and the D-1 visit date =Screening visit date or normal and done in the previous 10 days', \
-                                            urine_sample_collected_pure, 'UR0010']
+                                            urine_sample_collected_disname, 'UR0010']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision UR0010--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -214,7 +216,7 @@ def urinalysis(df_root, path_excel_writer):
                             else:
                                 error = [subject, visit, 'Urine Sample collected', urine_sample_collected_form_field_instance,\
                                          'If Urine Sample Collected is checked as "Yes", validate that at least one of the Laboratory Tests has been completed.', \
-                                            urine_sample_collected_pure, 'UR0060']
+                                            urine_sample_collected_disname, 'UR0060']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision UR0060--> {e} - Subject: {subject},  Visit: {visit} ')

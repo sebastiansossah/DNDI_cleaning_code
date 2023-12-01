@@ -19,8 +19,8 @@ def informed_consent_revision(df_root, path_excel_writer):
 
     df= df_root[df_root['name']=='Informed Consent']
     lista_sujetos = df['Participante'].unique()
-    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
-    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)
+    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id', 'displayName']]
+    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)  + '|' + df['displayName'].astype(str)
 
     df_visit_date = df_root[df_root['name']=='Date of visit']
     df_visit_date = df_visit_date[['Visit','Participante', 'Campo', 'Valor']]
@@ -75,17 +75,21 @@ def informed_consent_revision(df_root, path_excel_writer):
                     signature_date =  row['Informed consent signature date']
                     signature_date_pure = signature_date.split('|')[0]
                     signature_date_form_field_instance = signature_date.split('|')[1]
+                    signature_date_disname = signature_date.split('|')[2]
                 except:
                     signature_date_pure = ''
                     signature_date_form_field_instance = 'This field does not have any data'
+                    signature_date_disname = 'Empty'
 
                 try:
                     prior_screening_number = row['Prior screening number']
                     prior_screening_number_pure = prior_screening_number.split('|')[0]
                     prior_screening_number_form_field_instance = prior_screening_number.split('|')[1]
+                    prior_screening_number_disname = prior_screening_number.split('|')[2]
                 except:
                     prior_screening_number_pure = math.nan
                     prior_screening_number_form_field_instance = 'This field does not have any data'
+                    prior_screening_number_disname = 'Empty'
 
 
                 date_format = '%d-%b-%Y'
@@ -94,7 +98,8 @@ def informed_consent_revision(df_root, path_excel_writer):
 
                     # Revision GE0070
                     if float(was_DV_performed_pure) !=  1.0:
-                        error = [subject, visit, 'Visit Pages', was_DV_performed_form_field_instance , 'This Form will be disabled because the visit was not done', was_DV_performed_pure, 'GE0070']
+                        error = [subject, visit, 'Visit Pages', was_DV_performed_form_field_instance , \
+                                 'This Form will be disabled because the visit was not done', was_DV_performed_pure, 'GE0070']
                         lista_revision.append(error)
 
                     if signature_date_pure == '':
@@ -107,7 +112,8 @@ def informed_consent_revision(df_root, path_excel_writer):
                             if f == None:
                                 pass
                             else:
-                                error = [subject, visit, 'Informed consent signature date' ,signature_date_form_field_instance , f , signature_date_pure, 'GE0020']
+                                error = [subject, visit, 'Informed consent signature date',\
+                                         signature_date_form_field_instance , f , signature_date_disname, 'GE0020']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -118,8 +124,9 @@ def informed_consent_revision(df_root, path_excel_writer):
                     else:
                         try:
                             if  prior_screening_number_pure in lista_validacion_prior_screening:
-                                error = [subject, visit, 'Prior screening number', prior_screening_number_form_field_instance  ,'The entered number should be a non existing subject number' , \
-                                        prior_screening_number_pure, 'IC0020']
+                                error = [subject, visit, 'Prior screening number', prior_screening_number_form_field_instance,\
+                                         'The entered number should be a non existing subject number' , \
+                                        prior_screening_number_disname, 'IC0020']
                                 lista_revision.append(error)
                             else:
                                 pass

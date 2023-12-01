@@ -16,8 +16,8 @@ def urinary_drug_screen(df_root, path_excel_writer):
 
     df= df_root[df_root['name']== 'Urinary Drug Screen']
     lista_sujetos = df['Participante'].unique()
-    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
-    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)
+    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id', 'displayName']]
+    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)  + '|' + df['displayName'].astype(str)
 
     df_visit_date = df_root[df_root['name']=='Date of visit']
     df_visit_date = df_visit_date[['Visit','Participante', 'Campo', 'Valor']]
@@ -88,9 +88,11 @@ def urinary_drug_screen(df_root, path_excel_writer):
                         was_urine_test_performed = row['Was the urine test performed for drug screening?']
                         was_urine_test_performed_pure = was_urine_test_performed.split('|')[0]
                         was_urine_test_performed_form_field_isntance = was_urine_test_performed.split('|')[1]
+                        was_urine_test_performed_disname = was_urine_test_performed.split('|')[2]
                     except Exception as e:
                         was_urine_test_performed_pure = math.nan
                         was_urine_test_performed_form_field_isntance = 'This field does not have any data'
+                        was_urine_test_performed_disname = 'Empty'
 
                     try:
                         provide_reason = row['Please provide the reason']
@@ -112,9 +114,11 @@ def urinary_drug_screen(df_root, path_excel_writer):
                         check_below_trace = row['Check below trace/positive results']
                         check_below_trace_pure = check_below_trace.split('|')[0]
                         check_below_trace_form_field_isntance = check_below_trace.split('|')[1]
+                        check_below_trace_disname = check_below_trace.split('|')[2]
                     except Exception as e:
                         check_below_trace_pure = ''
                         check_below_trace_form_field_isntance = 'This field does not have any data'
+                        check_below_trace_disname = 'Empty'
                     
                     #----------------------------------------------------------------------------------------------
 
@@ -147,7 +151,7 @@ def urinary_drug_screen(df_root, path_excel_writer):
                                 error = [subject, visit, 'Was the urine test performed for drug screening?', \
                                          was_urine_test_performed_form_field_isntance, \
                                             'The "Not Required" option can only be selected if visit is D-1 and Screening visit date = D-1 date (screening done on D-1)', \
-                                                was_urine_test_performed_pure, 'UD0020']
+                                                was_urine_test_performed_disname, 'UD0020']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision UD0020--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -161,7 +165,7 @@ def urinary_drug_screen(df_root, path_excel_writer):
                                     if float(i) == 0.0:
                                         error = [subject, visit, 'Check below trace/positive results ', check_below_trace_form_field_isntance, \
                                                 'When the "None" option is selected, no other option can be selected, please review', \
-                                                    check_below_trace_pure, 'UD0030']
+                                                    check_below_trace_disname, 'UD0030']
                                         lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision UD0030--> {e} - Subject: {subject},  Visit: {visit} ')

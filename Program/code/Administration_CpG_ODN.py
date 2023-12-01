@@ -19,8 +19,8 @@ def adminsitration_CpG_ODN(df_root, path_excel_writer):
     df = df_root[df_root['name']=='CpG ODN D35 Administration'] 
     lista_sujetos = df['Participante'].unique()
 
-    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
-    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)
+    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id', 'displayName']]
+    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)  + '|' + df['displayName'].astype(str)
 
     df_date_visit = df_root[df_root['name']== 'Date of visit']
     df_date_visit = df_date_visit[['Visit','Participante', 'Campo', 'Valor']]
@@ -95,26 +95,31 @@ def adminsitration_CpG_ODN(df_root, path_excel_writer):
                         date_dosing = row['Date of dosing']
                         date_dosing_pure = date_dosing.split('|')[0]
                         date_dosing_form_field_instance = date_dosing.split('|')[1]
+                        date_dosing_disname =  date_dosing.split('|')[2]
                     except:
                         date_dosing_pure = ''
                         date_dosing_form_field_instance = 'This field doesnt have any data'
+                        date_dosing_disname = 'Empty'
 
                     try:
                         reason_dose_adjustment = row['Reason for dose adjustment']
                         reason_dose_adjustment_pure = reason_dose_adjustment.split('|')[0]
                         reason_dose_adjustment_form_field_instance = reason_dose_adjustment.split('|')[1]
+                        reason_dose_adjustment_disname = reason_dose_adjustment.split('|')[2]
                     except:
                         reason_dose_adjustment_pure = math.nan
                         reason_dose_adjustment_form_field_instance = 'This field doesnt have any data'
+                        reason_dose_adjustment_disname = 'Empty'
                     
                     try:
                         dosing_event = row['Dosing Event']
                         dosing_event_pure = dosing_event.split('|')[0]
                         dosing_event_form_field_instance = dosing_event.split('|')[1]
+                        dosing_event_disname = dosing_event.split('|')[2]
                     except:
                         dosing_event_pure =  math.nan
                         dosing_event_form_field_instance = 'This field doesnt have any data'
-
+                        dosing_event_disname = 'Empty'
                     # ---------------------------------------------------------------------------------------
                     if date_dosing_pure == '':
                          pass
@@ -126,7 +131,7 @@ def adminsitration_CpG_ODN(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, 'Date of dosing', date_dosing_form_field_instance,\
-                                        f , date_dosing_pure, 'GE0020']
+                                        f , date_dosing_disname, 'GE0020']
                                 lista_revision.append(error)     
 
                         except Exception as e:
@@ -148,7 +153,7 @@ def adminsitration_CpG_ODN(df_root, path_excel_writer):
                             pass
                         else: 
                             error = [subject, visit, 'Date of dosing', date_dosing_form_field_instance, \
-                                        'The date/time of dosing can not  be before the informed consent date/time', date_dosing_pure, 'IMP0040']
+                                        'The date/time of dosing can not  be before the informed consent date/time', date_dosing_disname, 'IMP0040']
                             lista_revision.append(error)
                     except Exception as e:
                             lista_logs.append(f'Revision IMP0040 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -161,7 +166,7 @@ def adminsitration_CpG_ODN(df_root, path_excel_writer):
                             error = [subject, visit, 'Date of dosing', \
                                      date_dosing_form_field_instance, \
                                         'The date/time of dosing can not  be before the randomization date/time', \
-                                            f'{date_dosing_pure} - {visita_randomization}', 'IMP0050']
+                                            f'{date_dosing_disname} - {visita_randomization}', 'IMP0050']
                             lista_revision.append(error)
                     except Exception as e:
                             lista_logs.append(f'Revision IMP0050 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -174,7 +179,7 @@ def adminsitration_CpG_ODN(df_root, path_excel_writer):
                             if date_dosing_pure in date_dosing_list_review:
                                 error = [subject, visit, 'Date of dosing', \
                                         date_dosing_form_field_instance, \
-                                        'The dosing date can not  be repeated', date_dosing_pure, 'IMP0060']
+                                        'The dosing date can not  be repeated', date_dosing_disname, 'IMP0060']
                                 lista_revision.append(error)
                             else: 
                                 date_dosing_list_review.append(date_dosing_pure)
@@ -190,7 +195,7 @@ def adminsitration_CpG_ODN(df_root, path_excel_writer):
                                  else:
                                       error = [subject, visit, 'Reason for dose adjustment', dosing_event_form_field_instance, \
                                                     'If dosing event is Temporarily discontinued and the reason for adjustment is "Adverse event" there should be an adverse event created where the action taken (CPG ODN 035) should be CT  drug stopped (temporarily)', \
-                                                        dosing_event_pure, 'IMP0080']
+                                                        dosing_event_disname, 'IMP0080']
                                       lista_revision.append(error)
                     except Exception as e:
                          lista_logs.append(f'Revision IMP0080 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -204,7 +209,7 @@ def adminsitration_CpG_ODN(df_root, path_excel_writer):
                                 else:
                                       error = [subject, visit, 'Reason for dose adjustment', dosing_event_form_field_instance, \
                                                     'If dosing event is Permanently discontinued and the reason for adjustment is "Adverse event" there should be an adverse event created where the action taken (CPG ODN 035) should be CT  drug stopped (permanently)', \
-                                                        dosing_event_pure, 'IMP0090']
+                                                        dosing_event_disname, 'IMP0090']
                                       lista_revision.append(error)
                     except Exception as e:
                          lista_logs.append(f'Revision IMP0090 --> {e} - Subject: {subject},  Visit: {visit} ')

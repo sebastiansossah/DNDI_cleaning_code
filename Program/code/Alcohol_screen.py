@@ -16,8 +16,8 @@ def alcohol_screen(df_root, path_excel_writer):
 
     df= df_root[df_root['name']== 'Alcohol Screen']
     lista_sujetos = df['Participante'].unique()
-    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
-    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)
+    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id', 'displayName']]
+    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)  + '|' + df['displayName'].astype(str)
 
     warnings.filterwarnings('ignore')
 
@@ -89,49 +89,61 @@ def alcohol_screen(df_root, path_excel_writer):
                         was_serum_test_performed = row['Was the serum test performed for alcohol screening?']
                         was_serum_test_performed_pure = was_serum_test_performed.split('|')[0]
                         was_serum_test_performed_form_field_instance = was_serum_test_performed.split('|')[1]
+                        was_serum_test_performed_disname = was_serum_test_performed.split('|')[2]
                     except Exception as e:
                         was_serum_test_performed_pure = math.nan
                         was_serum_test_performed_form_field_instance = 'This field does not have any data'
+                        was_serum_test_performed_disname = 'Empty'
 
                     try:
                         please_provide_reason = row['Please provide the reason']
                         please_provide_reason_pure = please_provide_reason.split('|')[0]
                         please_provide_reason_form_field_instance = please_provide_reason.split('|')[1]
+                        please_provide_reason_disname = please_provide_reason.split('|')[2]
                     except Exception as e:
                         please_provide_reason_pure = ''
                         please_provide_reason_form_field_instance = 'This field does not have any data'
+                        please_provide_reason_disname = 'Empty'
 
                     try:
                         date_test_performed = row['Date of test performed']
                         date_test_performed_pure = date_test_performed.split('|')[0]
                         date_test_performed_form_field_instance = date_test_performed.split('|')[1]
+                        date_test_performed_disname = date_test_performed.split('|')[2]
                     except Exception as e:
                         date_test_performed_pure = ''
                         date_test_performed_form_field_instance = 'This field does not have any data'
+                        date_test_performed_disname = 'Empty'
 
                     try:
                         test_result = row['Test result']
                         test_result_pure = test_result.split('|')[0]
                         test_result_form_field_instance = test_result.split('|')[1]
+                        test_result_disname = test_result.split('|')[2]
                     except Exception as e:
                         test_result_pure = math.nan
                         test_result_form_field_instance = 'This field does not have any data'
+                        test_result_disname = 'Empty'
                     
                     try:
                         levels_alcohol_percentaje = row['Levels of alcohol in the serum (BAC) (%)']
                         levels_alcohol_percentaje_pure = levels_alcohol_percentaje.split('|')[0]
                         levels_alcohol_percentaje_form_field_instance = levels_alcohol_percentaje.split('|')[1]
+                        levels_alcohol_percentaje_disname = levels_alcohol_percentaje.split('|')[2]
                     except Exception as e:
                         levels_alcohol_percentaje_pure = math.nan
                         levels_alcohol_percentaje_form_field_instance = 'This field does not have any data'
-                    
+                        levels_alcohol_percentaje_disname = 'Empty'
+
                     try:
                         levels_alcohol_mg_dl = row['Levels of alcohol in the serum (BAC) (mg/dL)']
                         levels_alcohol_mg_dl_pure = levels_alcohol_mg_dl.split('|')[0]
                         levels_alcohol_mg_dl_form_field_instance = levels_alcohol_mg_dl.split('|')[1]
+                        levels_alcohol_mg_dl_disname = levels_alcohol_mg_dl.split('|')[2]
                     except Exception as e:
                         levels_alcohol_mg_dl_pure = math.nan
                         levels_alcohol_mg_dl_form_field_instance = 'This field does not have any data'
+                        levels_alcohol_mg_dl_disname = 'Empty'
 
                     # -----------------------------------------------------------------------
                     # Revision GE0070
@@ -148,7 +160,7 @@ def alcohol_screen(df_root, path_excel_writer):
                             if f == None:
                                 pass
                             else:
-                                error = [subject, visit, 'Date of test performed', date_test_performed_form_field_instance ,f , date_test_performed_pure, 'GE0020']
+                                error = [subject, visit, 'Date of test performed', date_test_performed_form_field_instance ,f , date_test_performed_disname, 'GE0020']
                                 lista_revision.append(error)     
 
                         except Exception as e:
@@ -162,7 +174,7 @@ def alcohol_screen(df_root, path_excel_writer):
                             else:
                                 error = [subject, visit, 'Was the serum test performed for alcohol screening?', was_serum_test_performed_form_field_instance ,\
                                          'The "Not Required" option can only be selected if visit is D-1 and Screening visit date = D-1 date (screening done on D-1)' ,\
-                                              was_serum_test_performed_pure, 'AS0020']
+                                              was_serum_test_performed_disname, 'AS0020']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision AS0020--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -177,7 +189,7 @@ def alcohol_screen(df_root, path_excel_writer):
                             if date_of_test_f != date_of_visit_f:
                                 error = [subject, visit, 'Date of test performed', date_test_performed_form_field_instance ,\
                                         'The date should be the same as the visit date in the "Date of Visit" Form' ,\
-                                            f'{date_test_performed_pure} - {date_of_visit}', 'AS0030']
+                                            f'{date_test_performed_disname} - {date_of_visit}', 'AS0030']
                                 lista_revision.append(error)
                             else:
                                 pass
@@ -189,7 +201,7 @@ def alcohol_screen(df_root, path_excel_writer):
                         if float(levels_alcohol_percentaje_pure) > 0.4:
                             error = [subject, visit, 'Levels of alcohol in the serum (BAC) (%)', levels_alcohol_percentaje_form_field_instance ,\
                                         'The value should be below 0.4%' ,\
-                                         levels_alcohol_percentaje_pure, 'AS0040']
+                                         levels_alcohol_percentaje_disname, 'AS0040']
                             lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision AS0040--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -199,7 +211,7 @@ def alcohol_screen(df_root, path_excel_writer):
                         if float(levels_alcohol_mg_dl_pure) > 400.0:
                             error = [subject, visit, 'Levels of alcohol in the serum (BAC) (mg/dL)', levels_alcohol_mg_dl_form_field_instance ,\
                                         'The value should be below 400' ,\
-                                         levels_alcohol_mg_dl_pure, 'AS0050']
+                                         levels_alcohol_mg_dl_disname, 'AS0050']
                             lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision AS0050--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -211,7 +223,7 @@ def alcohol_screen(df_root, path_excel_writer):
                             if testing_percentage != float(levels_alcohol_mg_dl_pure):
                                 error = [subject, visit, 'Levels of alcohol in the serum (BAC) (mg/dL)', levels_alcohol_mg_dl_form_field_instance ,\
                                             'The BAC in % x 1000 should be the same as in mg/dL' ,\
-                                            f'{levels_alcohol_mg_dl_pure} {testing_percentage}', 'LBCOV0060']
+                                            f'{levels_alcohol_mg_dl_disname} {testing_percentage}', 'LBCOV0060']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision LBCOV0060--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -227,7 +239,7 @@ def alcohol_screen(df_root, path_excel_writer):
                             if date_of_test_f < date_inform_consent_f:
                                 error = [subject, visit, 'Date of test performed', date_test_performed_form_field_instance ,\
                                         'The date of test performed can not be before the informed consent date', \
-                                            f'{date_test_performed_pure} - {date_inform_consent}', 'AS0070']
+                                            f'{date_test_performed_disname} - {date_inform_consent}', 'AS0070']
                                 
                                 lista_revision.append(error)
                             else:
@@ -242,7 +254,7 @@ def alcohol_screen(df_root, path_excel_writer):
                                 pass
                             else: 
                                 error = [subject, visit, 'Date of test performed', date_test_performed_form_field_instance ,\
-                                        'Date of test performed must be before the End of study/Early withdrawal date. ', date_test_performed_pure, 'AS0080']
+                                        'Date of test performed must be before the End of study/Early withdrawal date. ', date_test_performed_disname, 'AS0080']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision AS0080 --> {e} - Subject: {subject},  Visit: {visit}  ')

@@ -16,8 +16,8 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
     '''
     df= df_root[df_root['name']== 'Clinical Laboratory Test - Clinical Chemistry D-1']
     lista_sujetos = df['Participante'].unique()
-    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
-    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)
+    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id', 'displayName']]
+    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)  + '|' + df['displayName'].astype(str)
 
     df_visit_date = df_root[df_root['name']=='Date of visit']
     df_visit_date = df_visit_date[['Visit','Participante', 'Campo', 'Valor']]
@@ -102,81 +102,101 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                         alanine_aminotransferase_out_normal = row['Alanine Aminotransferase (ALT), Out of normal range?']
                         alanine_aminotransferase_out_normal_pure = alanine_aminotransferase_out_normal.split('|')[0]
                         alanine_aminotransferase_out_normal_form_field_instance = alanine_aminotransferase_out_normal.split('|')[1]
+                        alanine_aminotransferase_out_normal_disname = alanine_aminotransferase_out_normal.split('|')[2]
                     except Exception as e:
                         alanine_aminotransferase_out_normal_pure = math.nan
                         alanine_aminotransferase_out_normal_form_field_instance = 'This field does not have any data'
+                        alanine_aminotransferase_out_normal_disname = 'Empty'
 
                     try:
                         alanine_aminotransferase_result = row['Alanine Aminotransferase (ALT), Result (U/L)']
                         alanine_aminotransferase_result_pure = alanine_aminotransferase_result.split('|')[0]
                         alanine_aminotransferase_result_form_field_instance = alanine_aminotransferase_result.splti('|')[1]
+                        alanine_aminotransferase_result_disname = alanine_aminotransferase_result.splti('|')[2]
                     except Exception as e:
                         alanine_aminotransferase_result_pure = math.nan
                         alanine_aminotransferase_result_form_field_instance = 'This field does not have any data'
+                        alanine_aminotransferase_result_disname = 'Empty'
 
                     try:
                         aspartate_aminotransferase_out_normal = row['Aspartate Aminotransferase (AST), Out of normal range?']
                         aspartate_aminotransferase_out_normal_pure = aspartate_aminotransferase_out_normal.split('|')[0]
                         aspartate_aminotransferase_out_normal_form_field_instance = aspartate_aminotransferase_out_normal.split('|')[1]
+                        aspartate_aminotransferase_out_normal_disname = aspartate_aminotransferase_out_normal.split('|')[2]
                     except Exception as e:
                         aspartate_aminotransferase_out_normal_pure = math.nan
                         aspartate_aminotransferase_out_normal_form_field_instance = 'This field does not have any data'
+                        aspartate_aminotransferase_out_normal_disname = 'Empty'
 
                     try:
                         aspartate_aminotransferase_result = row['Aspartate Aminotransferase (AST), Result (U/L)']
                         aspartate_aminotransferase_result_pure = aspartate_aminotransferase_result.split('|')[0]
                         aspartate_aminotransferase_result_form_field_instance = aspartate_aminotransferase_result.split('|')[1]
+                        aspartate_aminotransferase_result_disname = aspartate_aminotransferase_result.split('|')[2]
                     except Exception as e:
                         aspartate_aminotransferase_result_pure = math.nan
                         aspartate_aminotransferase_result_form_field_instance = 'This field does not have any data'
+                        aspartate_aminotransferase_result_disname = 'Empty'
 
                     try:
                         blood_sample_collected = row['Blood Sample Collected']
                         blood_sample_collected_pure = blood_sample_collected.split('|')[0]
                         blood_sample_collected_form_field_instance = blood_sample_collected.split('|')[1]
+                        blood_sample_collected_disname = blood_sample_collected.split('|')[2]
                     except Exception as e:
                         blood_sample_collected_pure = math.nan
                         blood_sample_collected_form_field_instance = 'This field does not have any data'
+                        blood_sample_collected_disname = 'Empty'
 
                     try:
                         creatine_kinase_out_normal = row['Creatine Kinase (CK), Out of normal range?']
                         creatine_kinase_out_normal_pure = creatine_kinase_out_normal.split('|')[0]
                         creatine_kinase_out_normal_form_field_instance = creatine_kinase_out_normal.split('|')[1]
+                        creatine_kinase_out_normal_disname = creatine_kinase_out_normal.split('|')[2]
                     except Exception as e:
                         creatine_kinase_out_normal_pure = math.nan
                         creatine_kinase_out_normal_form_field_instance = 'This field does not have any data'
+                        creatine_kinase_out_normal_disname = 'Empty'
 
                     try:
                         creatine_kinase_result = row['Creatine Kinase (CK), Result (U/L)']
                         creatine_kinase_result_pure = creatine_kinase_result.split('|')[0]
                         creatine_kinase_result_form_field_instance = creatine_kinase_result.split('|')[1]
+                        creatine_kinase_result_disname = creatine_kinase_result.split('|')[2]
                     except Exception as e:
                         creatine_kinase_result_pure = math.nan
                         creatine_kinase_result_form_field_instance = 'This field does not have any data'
+                        creatine_kinase_result_disname = 'Empty'
 
                     try:
                         date_collected = row['Date Collected']
                         date_collected_pure = date_collected.split('|')[0]
                         date_collected_form_field_instance = date_collected.split('|')[1]
+                        date_collected_disname = date_collected.split('|')[2]
                     except Exception as e:
                         date_collected_pure = ''
                         date_collected_form_field_instance = 'This field does not have any data'
+                        date_collected_disname = 'Empty'
 
                     try:
                         serum_creatine_out_normal = row['Serum Creatinine, Out of normal range?']
                         serum_creatine_out_normal_pure = serum_creatine_out_normal.split('|')[0]
                         serum_creatine_out_normal_form_field_instance =serum_creatine_out_normal.split('|')[1]
+                        serum_creatine_out_normal_disname =serum_creatine_out_normal.split('|')[2]
                     except Exception as e:
                         serum_creatine_out_normal_pure = math.nan 
                         serum_creatine_out_normal_form_field_instance = 'This field does not have any data'
+                        serum_creatine_out_normal_disname = 'Empty'
 
                     try:
                         serum_creatine_result = row['Serum Creatinine, Result (mg/dL)']
                         serum_creatine_result_pure = serum_creatine_result.split('|')[0]
                         serum_creatine_result_form_field_instance = serum_creatine_result.split('|')[1]
+                        serum_creatine_result_disname = serum_creatine_result.split('|')[2]
                     except Exception as e:
                         serum_creatine_result_pure = math.nan
                         serum_creatine_result_form_field_instance = 'This field does not have any data'
+                        serum_creatine_result_disname = 'Empty'
                     
                     # -----------------------------------------------------------------------------------------------------------------------------
                     # Revision GE0070
@@ -194,7 +214,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, 'Date Collected', date_collected_form_field_instance ,\
-                                        f , date_collected_pure, 'GE0020']
+                                        f , date_collected_disname, 'GE0020']
                                 lista_revision.append(error)     
 
                         except Exception as e:
@@ -210,7 +230,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                             if date_of_test_f != date_of_visit_f:
                                 error = [subject, visit, 'Date Collected', date_collected_form_field_instance ,\
                                         'The date should be the same as the visit date in the "Date of Visit" Form' , \
-                                            f'{date_collected_pure} - {date_of_visit}', 'LBD0010']
+                                            f'{date_collected_disname} - {date_of_visit}', 'LBD0010']
                                 lista_revision.append(error)
                             else:
                                 pass
@@ -227,7 +247,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                             if date_of_test_f < date_inform_consent_f:
                                 error = [subject, visit, 'Date Collected', date_collected_form_field_instance ,\
                                         'The date/time of test performed can not be before the informed consent date/time' ,\
-                                            f'{date_collected_pure} - {date_inform_consent}', 'LBD0020']
+                                            f'{date_collected_disname} - {date_inform_consent}', 'LBD0020']
                                 lista_revision.append(error)
                             else:
                                 pass
@@ -241,7 +261,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                                 pass
                             else: 
                                 error = [subject, visit, 'Date Collected', date_collected_form_field_instance ,\
-                                        'Date Collected must be before the End of study/Early withdrawal date. ', date_collected_pure, 'LBD0030']
+                                        'Date Collected must be before the End of study/Early withdrawal date. ', date_collected_disname, 'LBD0030']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision LBD0030 --> {e} - Subject: {subject},  Visit: {visit}  ')
@@ -254,7 +274,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                                 
                                 error = [subject, visit, 'Aspartate Aminotransferase (AST), Out of normal range? ', aspartate_aminotransferase_result_form_field_instance,\
                                         'According to the result, the value is not out of range, please review' , \
-                                            aspartate_aminotransferase_result_pure, 'LBD0050']
+                                            aspartate_aminotransferase_result_disname, 'LBD0050']
                                 lista_revision.append(error)
                     
                         # Revision LBD0090
@@ -264,7 +284,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                                 
                                 error = [subject, visit, 'Aspartate Aminotransferase (AST), Out of normal range? ', aspartate_aminotransferase_result_form_field_instance,\
                                         'According to the result, the value is out of range, please review' , \
-                                            aspartate_aminotransferase_result_pure, 'LBD0090']
+                                            aspartate_aminotransferase_result_disname, 'LBD0090']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -278,7 +298,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                                 
                                 error = [subject, visit, 'Alanine Aminotransferase (ALT), Out of normal range?', alanine_aminotransferase_result_form_field_instance ,\
                                         'According to the result, the value is not out of range, please review' , \
-                                            alanine_aminotransferase_result_pure, 'LBD0060']
+                                            alanine_aminotransferase_result_disname, 'LBD0060']
                                 lista_revision.append(error)
                         
                         # Revision LBD0100
@@ -288,7 +308,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                                 
                                 error = [subject, visit, 'Alanine Aminotransferase (ALT), Out of normal range?', alanine_aminotransferase_result_form_field_instance ,\
                                         'According to the result, the value is out of range, please review' , \
-                                            alanine_aminotransferase_result_pure, 'LBD0100']
+                                            alanine_aminotransferase_result_disname, 'LBD0100']
                                 lista_revision.append(error)                                
                     except Exception as e:
                         lista_logs.append(f'Revision LBD0060--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -300,13 +320,13 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                             if float(genero) == 1.0:
                                 if float(serum_creatine_result_pure) > 0.73 and float(serum_creatine_result_pure) <  1.18  :
                                     error = [subject, visit, 'Serum Creatinine, Out of normal range?', serum_creatine_result_form_field_instance ,\
-                                             'According to the result, the value is not out of range, please review.' , serum_creatine_result_pure, 'LBD0070']
+                                             'According to the result, the value is not out of range, please review.' , serum_creatine_result_disname, 'LBD0070']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
                                 if float(serum_creatine_result_pure) >  0.55  and float(serum_creatine_result_pure) < 1.02 :
                                     error = [subject, visit, 'Serum Creatinine, Out of normal range?', serum_creatine_result_form_field_instance ,\
-                                             'According to the result, the value is not out of range, please review.' , serum_creatine_result_pure, 'LBD0070']
+                                             'According to the result, the value is not out of range, please review.' , serum_creatine_result_disname, 'LBD0070']
                                     lista_revision.append(error)
 
                         # Revision LBD0110
@@ -314,13 +334,13 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                             if float(genero) == 1.0:
                                 if float(serum_creatine_result_pure) < 0.73 or float(serum_creatine_result_pure) > 1.18 :
                                     error = [subject, visit, 'Serum Creatinine, Out of normal range?', serum_creatine_result_form_field_instance ,\
-                                             'According to the result, the value is out of range, please review.', serum_creatine_result_pure, 'LBD0110']
+                                             'According to the result, the value is out of range, please review.', serum_creatine_result_disname, 'LBD0110']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
                                 if float(serum_creatine_result_pure) < 0.55 or float(serum_creatine_result_pure) > 1.02:
                                     error = [subject, visit, 'Serum Creatinine, Out of normal range?', serum_creatine_result_form_field_instance ,\
-                                             'According to the result, the value is out of range, please review.' , serum_creatine_result_pure, 'LBD0110']
+                                             'According to the result, the value is out of range, please review.' , serum_creatine_result_disname, 'LBD0110']
                                     lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision LBD0070 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -331,13 +351,13 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                             if float(genero) == 1.0:
                                 if float(creatine_kinase_result_pure) > 30.0 and float(creatine_kinase_result_pure) <  200.0 :
                                     error = [subject, visit, 'Creatine Kinase (CK), Out of normal range?', creatine_kinase_result_form_field_instance ,\
-                                             'According to the result, the value is not out of range, please review.' , creatine_kinase_result_pure, 'LBD0080']
+                                             'According to the result, the value is not out of range, please review.' , creatine_kinase_result_disname, 'LBD0080']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
                                 if float(creatine_kinase_result_pure) >  29.0  and float(creatine_kinase_result_pure) < 168.0 :
                                     error = [subject, visit, 'Creatine Kinase (CK), Out of normal range?', creatine_kinase_result_form_field_instance ,\
-                                             'According to the result, the value is not out of range, please review.' , creatine_kinase_result_pure, 'LBD0080']
+                                             'According to the result, the value is not out of range, please review.' , creatine_kinase_result_disname, 'LBD0080']
                                     lista_revision.append(error)
 
                         # Revision LBD0120
@@ -345,13 +365,13 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                             if float(genero) == 1.0:
                                 if float(creatine_kinase_result_pure) < 30.0 or float(creatine_kinase_result_pure) > 200.0 :
                                     error = [subject, visit, 'Creatine Kinase (CK), Out of normal range?', creatine_kinase_result_form_field_instance ,\
-                                             'According to the result, the value is out of range, please review.' , creatine_kinase_result_pure, 'LBD0120']
+                                             'According to the result, the value is out of range, please review.' , creatine_kinase_result_disname, 'LBD0120']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
                                 if float(creatine_kinase_result_pure) < 29.0 or float(creatine_kinase_result_pure) > 168.0 :
                                     error = [subject, visit, 'Creatine Kinase (CK), Out of normal range?', creatine_kinase_result_form_field_instance ,\
-                                             'According to the result, the value is out of range, please review.' , creatine_kinase_result_pure, 'LBD0120']
+                                             'According to the result, the value is out of range, please review.' , creatine_kinase_result_disname, 'LBD0120']
                                     lista_revision.append(error)
 
                     except Exception as e:
@@ -390,7 +410,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, 'Blood Sample Collected', blood_sample_collected_form_field_instance ,\
-                                         'If Blood Sample Collected is checked as "Yes", not all laboratory tests can be "not done"' , blood_sample_collected_pure, 'LBD0130']
+                                         'If Blood Sample Collected is checked as "Yes", not all laboratory tests can be "not done"' , blood_sample_collected_disname, 'LBD0130']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision LBD0130--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -400,7 +420,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                         if float(clinical_chemestry_principal) == 0.0:
                             if float(blood_sample_collected_pure) == 0.0:
                                 error = [subject, visit, 'Blood Sample Collected', blood_sample_collected_form_field_instance ,\
-                                         'The Clinical chemistry  D-1 form should be completed if the Clinical chemistry form was not completed' , blood_sample_collected_pure, 'LBD0140']
+                                         'The Clinical chemistry  D-1 form should be completed if the Clinical chemistry form was not completed' , blood_sample_collected_disname, 'LBD0140']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision LBD0140--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -410,7 +430,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                         if float(clinical_chemestry_principal) == 1.0:
                             if float(blood_sample_collected_pure) == 1.0:
                                 error = [subject, visit, 'Blood Sample Collected', blood_sample_collected_form_field_instance ,\
-                                         'The Clinical chemistry  D-1 form should not  be completed if the Clinical chemistry form was completed' , blood_sample_collected_pure, 'LBD0150']
+                                         'The Clinical chemistry  D-1 form should not  be completed if the Clinical chemistry form was completed' , blood_sample_collected_disname, 'LBD0150']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision LBD0150--> {e} - Subject: {subject},  Visit: {visit} ')

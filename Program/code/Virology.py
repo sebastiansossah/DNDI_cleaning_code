@@ -17,8 +17,8 @@ def virology(df_root, path_excel_writer):
 
     df= df_root[df_root['name']== 'Virology']
     lista_sujetos = df['Participante'].unique()
-    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
-    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)
+    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id', 'displayName']]
+    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)  + '|' + df['displayName'].astype(str)
 
     df_visit_date = df_root[df_root['name']=='Date of visit']
     df_visit_date = df_visit_date[['Visit','Participante', 'Campo', 'Valor']]
@@ -86,9 +86,11 @@ def virology(df_root, path_excel_writer):
                         blood_sample_collected = row["Blood Sample Collected"]
                         blood_sample_collected_pure = blood_sample_collected.split('|')[0]
                         blood_sample_collected_form_field_isntance = blood_sample_collected.split('|')[1]
+                        blood_sample_collected_disname = blood_sample_collected.split('|')[2]
                     except Exception as e:
                         blood_sample_collected_pure = math.nan
                         blood_sample_collected_form_field_isntance = 'This field does not have any data'
+                        blood_sample_collected_disname = 'Empty'
                     
                     try:
                         date_collected = row["Date Sample Collected"]
@@ -225,7 +227,7 @@ def virology(df_root, path_excel_writer):
                             else:
                                 error = [subject, visit, 'Blood Sample Collected', blood_sample_collected_form_field_isntance,\
                                          'If blood Sample Collected is checked as "Yes", validate that at least one of the Laboratory Tests has been completed. ', \
-                                            blood_sample_collected_pure, 'VR0050']
+                                            blood_sample_collected_disname, 'VR0050']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision VR0050--> {e} - Subject: {subject},  Visit: {visit} ')

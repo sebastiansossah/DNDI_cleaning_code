@@ -17,8 +17,8 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
 
     df= df_root[df_root['name']== 'Clinical Laboratory Test - Clinical Chemistry']
     lista_sujetos = df['Participante'].unique()
-    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
-    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)
+    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id', 'displayName']]
+    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)  + '|' + df['displayName'].astype(str)
 
     df_visit_date = df_root[df_root['name']=='Date of visit']
     df_visit_date = df_visit_date[['Visit','Participante', 'Campo', 'Valor']]
@@ -101,337 +101,422 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         Alanine_out_normal = row['Alanine Aminotransferase (ALT), Out of normal range?']
                         Alanine_out_normal_pure = Alanine_out_normal.split('|')[0]
                         Alanine_out_normal_form_field_instance = Alanine_out_normal.split('|')[1]
+                        Alanine_out_normal_disname = Alanine_out_normal.split('|')[2]
                     except Exception as e:
                         Alanine_out_normal_pure = math.nan
                         Alanine_out_normal_form_field_instance = 'This field does not have any data'
-           
+                        Alanine_out_normal_disname = 'Empty'
+
                     try:
                         Alanine_result = row['Alanine Aminotransferase (ALT), Result (U/L)']
                         Alanine_result_pure = Alanine_result.split('|')[0]
                         Alanine_result_form_field_isntance = Alanine_result.split('|')[1]
+                        Alanine_result_disname = Alanine_result.split('|')[2]
                     except Exception as e:
                         Alanine_result_pure = math.nan
                         Alanine_result_form_field_isntance = 'This field does not have any data'
+                        Alanine_result_disname = 'Empty'
 
                     try:
                         Albumin_out_normal = row['Albumin, Out of normal range?']
                         Albumin_out_normal_pure = Albumin_out_normal.split('|')[0]
                         Albumin_out_normal_form_field_isntance = Albumin_out_normal.split('|')[1]
+                        Albumin_out_normal_disname = Albumin_out_normal.split('|')[2]
                     except Exception as e:
                         Albumin_out_normal_pure = math.nan
                         Albumin_out_normal_form_field_isntance = 'This field does not have any data'
+                        Albumin_out_normal_disname = 'Empty'
 
                     try:
                         Albumin_result = row['Albumin, Result (g/dL)']
                         Albumin_result_pure = Albumin_result.split('|')[0]
                         Albumin_result_form_field_instance = Albumin_result.split('|')[1]
+                        Albumin_result_disname = Albumin_result.split('|')[2]
                     except Exception as e:
                         Albumin_result_pure = math.nan
                         Albumin_result_form_field_instance = 'This field does not have any data'
+                        Albumin_result_disname = 'Empty'
 
                     try:
                         Alkaline_out_normal = row['Alkaline Phosphatase, Out of normal range?']
                         Alkaline_out_normal_pure = Alkaline_out_normal.split('|')[0]
-                        Alkaline_out_normal_form_field_instance = Alkaline_out_normal.split('|')[1] 
+                        Alkaline_out_normal_form_field_instance = Alkaline_out_normal.split('|')[1]
+                        Alkaline_out_normal_disname = Alkaline_out_normal.split('|')[2] 
                     except Exception as e:
                         Alkaline_out_normal_pure = math.nan
                         Alkaline_out_normal_form_field_instance = 'This field does not have any data'
+                        Alkaline_out_normal_disname = 'Empty'
 
                     try:
                         Alkaline_result = row['Alkaline Phosphatase, Result (U/L)']
                         Alkaline_result_pure = Alkaline_result.split('|')[0]
                         Alkaline_result_form_field_instance = Alkaline_result.split('|')[1]
+                        Alkaline_result_disname = Alkaline_result.split('|')[2]
+
                     except Exception as e:
                         Alkaline_result_pure = math.nan
                         Alkaline_result_form_field_instance = 'This field does not have any data'
+                        Alkaline_result_disname = 'Empty'
 
                     try:
                         Aspartate_out_normal =  row['Aspartate Aminotransferase (AST), Out of normal range?']
                         Aspartate_out_normal_pure = Aspartate_out_normal.split('|')[0]
                         Aspartate_out_normal_form_field_instance = Aspartate_out_normal.split('|')[1]
+                        Aspartate_out_normal_disname = Aspartate_out_normal.split('|')[2]
                     except Exception as e:
                         Aspartate_out_normal_pure = math.nan
                         Aspartate_out_normal_form_field_instance = 'This field does not have any data'
+                        Aspartate_out_normal_disname = 'Empty'
 
                     try:
                         Aspartate_result =  row['Aspartate Aminotransferase (AST), Result (U/L)']
                         Aspartate_result_pure = Aspartate_result.split('|')[0]
                         Aspartate_result_form_field_instance = Aspartate_result.split('|')[1]
+                        Aspartate_result_disname = Aspartate_result.split('|')[2]
                     except Exception as e:
                         Aspartate_result_pure = math.nan
                         Aspartate_result_form_field_instance = 'This field does not have any data'
+                        Aspartate_result_disname = 'Empty'
 
                     try:
                         Bicarbonate_out_normal =  row['Bicarbonate, Out of normal range?']
                         Bicarbonate_out_normal_pure = Bicarbonate_out_normal.split('|')[0]
                         Bicarbonate_out_normal_form_field_instance = Bicarbonate_out_normal.split('|')[1]
+                        Bicarbonate_out_normal_disname = Bicarbonate_out_normal.split('|')[2]
                     except Exception as e:
                         Bicarbonate_out_normal_pure = math.nan
                         Bicarbonate_out_normal_form_field_instance = 'This field does not have any data'
+                        Bicarbonate_out_normal_disname = 'Empty'
 
                     try:
                         Bicarbonate_result =  row['Bicarbonate, Result (mEq/L)']
                         Bicarbonate_result_pure = Bicarbonate_result.split('|')[0]
                         Bicarbonate_result_form_field_instance = Bicarbonate_result.split('|')[1]
+                        Bicarbonate_result_disname = Bicarbonate_result.split('|')[2]
                     except Exception as e:
                         Bicarbonate_result_pure = math.nan
                         Bicarbonate_result_form_field_instance = 'This field does not have any data'
+                        Bicarbonate_result_disname = 'Empty'
 
                     try:
                         Bilirubin_direct_out_normal = row['Bilirubin (Direct) (only if Total is elevated), Out of normal range?']
                         Bilirubin_direct_out_normal_pure = Bilirubin_direct_out_normal.split('|')[0]
                         Bilirubin_direct_out_normal_form_field_instance = Bilirubin_direct_out_normal.split('|')[1]
+                        Bilirubin_direct_out_normal_disname = Bilirubin_direct_out_normal.split('|')[2]
                     except Exception as e:
                         Bilirubin_direct_out_normal_pure = math.nan
                         Bilirubin_direct_out_normal_form_field_instance = 'This field does not have any data'
-                    
+                        Bilirubin_direct_out_normal_disname = 'Empty'
+
                     try:
                         Bilirubin_direct_result = row['Bilirubin (Direct) (only if Total is elevated), Result (mg/dL)']
                         Bilirubin_direct_result_pure = Bilirubin_direct_result.split('|')[0]
-                        Bilirubin_direct_result_form_field_instance = Bilirubin_direct_result.split('|')[1]                   
+                        Bilirubin_direct_result_form_field_instance = Bilirubin_direct_result.split('|')[1]
+                        Bilirubin_direct_result_disname = Bilirubin_direct_result.split('|')[2]                   
                     except Exception as e:
                         Bilirubin_direct_result_pure = math.nan
                         Bilirubin_direct_result_form_field_instance = 'This field does not have any data'
+                        Bilirubin_direct_result_disname = 'Empty'
 
                     try:
                         Bilirubin_out_normal = row['Bilirubin (Total), Out of normal range?']
                         Bilirubin_out_normal_pure = Bilirubin_out_normal.split('|')[0]
                         Bilirubin_out_normal_form_field_instance = Bilirubin_out_normal.split('|')[1]
+                        Bilirubin_out_normal_disname = Bilirubin_out_normal.split('|')[2]
                     except Exception as e:
                         Bilirubin_out_normal_pure = math.nan
                         Bilirubin_out_normal_form_field_instance = 'This field does not have any data'
+                        Bilirubin_out_normal_disname = 'Empty'
 
                     try:
                         Bilirubin_result = row['Bilirubin (Total), Result (mg/dL)']
                         Bilirubin_result_pure = Bilirubin_result.split('|')[0]
-                        Bilirubin_result_form_field_instance = Bilirubin_result.split('|')[1]   
+                        Bilirubin_result_form_field_instance = Bilirubin_result.split('|')[1]
+                        Bilirubin_result_disname = Bilirubin_result.split('|')[2]   
                     except Exception as e:
                         Bilirubin_result_pure = math.nan
                         Bilirubin_result_form_field_instance = 'This field does not have any data'
+                        Bilirubin_result_disname = 'Empty'
 
                     try:
                         blood_sample_collected = row['Blood Sample Collected']
                         blood_sample_collected_pure = blood_sample_collected.split('|')[0]
                         blood_sample_collected_form_field_instance = blood_sample_collected.split('|')[1]
+                        blood_sample_collected_disname = blood_sample_collected.split('|')[2]
                     except Exception as e:
                         blood_sample_collected_pure = math.nan
                         blood_sample_collected_form_field_instance = 'This field does not have any data'
+                        blood_sample_collected_disname = 'Empty'
 
                     try:
                         C_Reactive_out_normal = row['C-Reactive Protein, Out of normal range?']
                         C_Reactive_out_normal_pure = C_Reactive_out_normal.split('|')[0]
                         C_Reactive_out_normal_form_field_instance = C_Reactive_out_normal.split('|')[1]
+                        C_Reactive_out_normal_disname = C_Reactive_out_normal.split('|')[2]
                     except Exception as e:
                         C_Reactive_out_normal_pure = math.nan
                         C_Reactive_out_normal_form_field_instance = 'This field does not have any data'
+                        C_Reactive_out_normal_disname = 'Empty'
 
                     try:
                         C_Reactive_result = row['C-Reactive Protein, Result (mg/L)']
                         C_Reactive_result_pure = C_Reactive_result.split('|')[0]
                         C_Reactive_result_form_field_instance = C_Reactive_result.split('|')[1]
+                        C_Reactive_result_disname = C_Reactive_result.split('|')[2]
                     except Exception as e:
                         C_Reactive_result_pure = math.nan
                         C_Reactive_result_form_field_instance = 'This field does not have any data'
+                        C_Reactive_result_disname = 'Empty'
 
                     try:
                         Calcium_out_normal = row['Calcium, Out of normal range?']
                         Calcium_out_normal_pure = Calcium_out_normal.split('|')[0]
                         Calcium_out_normal_form_field_instance = Calcium_out_normal.split('|')[1]
+                        Calcium_out_normal_disname = Calcium_out_normal.split('|')[2]
                     except Exception as e:
                         Calcium_out_normal_pure = math.nan
                         Calcium_out_normal_form_field_instance = 'This field does not have any data'
+                        Calcium_out_normal_disname = 'Empty'
 
                     try:
                         Calcium_result = row['Calcium, Result (mEq/L)']
                         Calcium_result_pure = Calcium_result.split('|')[0]
                         Calcium_result_form_field_instance = Calcium_result.split('|')[1]
+                        Calcium_result_disname = Calcium_result.split('|')[2]
                     except Exception as e:
                         Calcium_result_pure = math.nan
                         Calcium_result_form_field_instance = 'This field does not have any data'
+                        Calcium_result_disname = 'Empty'
 
                     try:
                         Chloride_out_normal = row['Chloride, Out of normal range?']
                         Chloride_out_normal_pure = Chloride_out_normal.split('|')[0]
                         Chloride_out_normal_form_field_instance = Chloride_out_normal.split('|')[1]
+                        Chloride_out_normal_disname = Chloride_out_normal.split('|')[2]
                     except Exception as e:
                         Chloride_out_normal_pure = math.nan
                         Chloride_out_normal_form_field_instance = 'This field does not have any data'
+                        Chloride_out_normal_disname = 'Empty'
 
                     try:
                         Chloride_result = row['Chloride, Result (mmol/L)']
                         Chloride_result_pure = Chloride_result.split('|')[0]
                         Chloride_result_form_field_instacnce = Chloride_result.split('|')[1]
+                        Chloride_result_disname = Chloride_result.split('|')[2]
                     except Exception as e:
                         Chloride_result_pure = math.nan
                         Chloride_result_form_field_instacnce = 'This field does not have any data'
+                        Chloride_result_disname = 'Empty'
 
                     try:
                         Cholesterol_out_normal = row['Cholesterol (Total), Out of normal range?']
                         Cholesterol_out_normal_pure = Cholesterol_out_normal.split('|')[0]
                         Cholesterol_out_normal_form_field_instance = Cholesterol_out_normal.split('|')[1]
+                        Cholesterol_out_normal_disname = Cholesterol_out_normal.split('|')[2]
                     except Exception as e:
                         Cholesterol_out_normal_pure = math.nan
                         Cholesterol_out_normal_form_field_instance = 'This field does not have any data'
+                        Cholesterol_out_normal_disname = 'Empty'
 
                     try:
                         Cholesterol_result = row['Cholesterol (Total), Result (mg/dL)']
                         Cholesterol_result_pure = Cholesterol_result.split('|')[0]
                         Cholesterol_result_form_field_instance = Cholesterol_result.split('|')[1]
+                        Cholesterol_result_disname = Cholesterol_result.split('|')[2]
                     except Exception as e:
                         Cholesterol_result_pure = math.nan
                         Cholesterol_result_form_field_instance = 'This field does not have any data'
+                        Cholesterol_result_disname = 'Empty'
 
                     try:
                         Creatine_out_normal = row['Creatine Kinase (CK), Out of normal range?']
                         Creatine_out_normal_pure = Creatine_out_normal.split('|')[0]
                         Creatine_out_normal_form_field_instance = Creatine_out_normal.split('|')[1]
+                        Creatine_out_normal_disname = Creatine_out_normal.split('|')[2]
                     except Exception as e:
                         Creatine_out_normal_pure = math.nan
                         Creatine_out_normal_form_field_instance = 'This field does not have any data'
-                     
+                        Creatine_out_normal_disname = 'Empty'
+
                     try:
                         Creatine_result = row['Creatine Kinase (CK), Result (U/L)']
                         Creatine_result_pure = Creatine_result.split('|')[0]
                         Creatine_result_form_field_instance = Creatine_result.split('|')[1]
+                        Creatine_result_disname = Creatine_result.split('|')[2]
                     except Exception as e:
                         Creatine_result_pure = math.nan
                         Creatine_result_form_field_instance = 'This field does not have any data'
+                        Creatine_result_disname = 'Empty'
 
                     try:
                         date_collected = row['Date Collected']
                         date_collected_pure = date_collected.split('|')[0]
                         date_collected_form_field_instance = date_collected.split('|')[1]
+                        date_collected_disname = date_collected.split('|')[2]
                     except Exception as e:
                         date_collected_pure = ''
                         date_collected_form_field_instance = 'This field does not have any data'
-                    
+                        date_collected_disname = 'Empty'
+
                     try:
                         GGT_out_normal = row['Gamma Glutamyl Transferase (GGT), Out of normal range?']
                         GGT_out_normal_pure = GGT_out_normal.split('|')[0]
                         GGT_out_normal_form_field_instance = GGT_out_normal.split('|')[1]
+                        GGT_out_normal_disname = GGT_out_normal.split('|')[2]
                     except Exception as e:
                         GGT_out_normal_pure = math.nan
                         GGT_out_normal_form_field_instance = 'This field does not have any data'
+                        GGT_out_normal_disname = 'Empty'
 
                     try:
                         GGT_result = row['Gamma Glutamyl Transferase (GGT), Result (U/L)']
                         GGT_result_pure = GGT_result.split('|')[0]
                         GGT_result_form_instance = GGT_result.split('|')[1]
+                        GGT_result_disname = GGT_result.split('|')[2]
                     except Exception as e:
                         GGT_result_pure = math.nan
                         GGT_result_form_instance = 'This field does not have any data'
-                    
+                        GGT_result_disname = 'Empty'
+
                     try:
                         Potassium_out_normal = row['Potassium, Out of normal range?']
                         Potassium_out_normal_pure = Potassium_out_normal.split('|')[0]
                         Potassium_out_normal_form_field_instance = Potassium_out_normal.split('|')[1]
+                        Potassium_out_normal_disname = Potassium_out_normal.split('|')[2]
                     except Exception as e:
                         Potassium_out_normal_pure = math.nan
                         Potassium_out_normal_form_field_instance = 'This field does not have any data'
-                    
+                        Potassium_out_normal_disname = 'Empty'
+
                     try:
                         Potassium_result = row['Potassium, Result (mmol/L)']
                         Potassium_result_pure = Potassium_result.split('|')[0]
                         Potassium_result_form_field_instance = Potassium_result.split('|')[1]
+                        Potassium_result_disname = Potassium_result.split('|')[2]
                     except Exception as e:
                         Potassium_result_pure = math.nan
                         Potassium_result_form_field_instance = 'This field does not have any data'
+                        Potassium_result_disname = 'Empty'
 
                     try:
                         Protein_out_normal = row['Protein (Total), Out of normal range?']
                         Protein_out_normal_pure = Protein_out_normal.split('|')[0]
                         Protein_out_normal_form_field_instance = Protein_out_normal.split('|')[1]
+                        Protein_out_normal_disname = Protein_out_normal.split('|')[2]
                     except Exception as e:
                         Protein_out_normal_pure = math.nan
                         Protein_out_normal_form_field_instance = 'This field does not have any data'
+                        Protein_out_normal_disname = 'Empty'
 
                     try:
                         Protein_total_result = row['Protein (Total), Result (mg/dL)']
                         Protein_total_result_pure = Protein_total_result.split('|')[0]
                         Protein_total_result_form_field_instance = Protein_total_result.split('|')[1]
+                        Protein_total_result_disname = Protein_total_result.split('|')[2]
                     except Exception as e:
                         Protein_total_result_pure = math.nan
                         Protein_total_result_form_field_instance = 'This field does not have any data'
+                        Protein_total_result_disname = 'Empty'
 
                     try:
                         Serum_out_normal = row['Serum Creatinine, Out of normal range?']
                         Serum_out_normal_pure = Serum_out_normal.split('|')[0]
                         Serum_out_normal_form_field_instance = Serum_out_normal.split('|')[1]
+                        Serum_out_normal_disname = Serum_out_normal.split('|')[2]
                     except Exception as e:
                         Serum_out_normal_pure = math.nan
                         Serum_out_normal_form_field_instance = 'This field does not have any data'
+                        Serum_out_normal_disname = 'Empty'
 
                     try:
                         Serum_result = row['Serum Creatinine, Result  (mg/dL)']
                         Serum_result_pure = Serum_result.split('|')[0]
                         Serum_result_form_field_instance = Serum_result.split('|')[1]
+                        Serum_result_disname = Serum_result.split('|')[2]
                     except Exception as e:
                         Serum_result_pure = math.nan
                         Serum_result_form_field_instance = 'This field does not have any data'
+                        Serum_result_disname = 'Empty'
 
                     try:
                         Sodium_out_normal = row['Sodium, Out of normal range?']
                         Sodium_out_normal_pure = Sodium_out_normal.split('|')[0]
                         Sodium_out_normal_form_field_instance = Sodium_out_normal.split('|')[1]
+                        Sodium_out_normal_disname = Sodium_out_normal.split('|')[2]
                     except Exception as e:
                         Sodium_out_normal_pure = math.nan
                         Sodium_out_normal_form_field_instance = 'This field does not have any data'
-                    
+                        Sodium_out_normal_disname = 'Empty'
+
                     try:
                         Sodium_result = row['Sodium, Result (mmol/L)']
                         Sodium_result_pure = Sodium_result.split('|')[0]
                         Sodium_result_form_field_instance = Sodium_result.split('|')[1]
+                        Sodium_result_disname = Sodium_result.split('|')[2]
                     except Exception as e:
                         Sodium_result_pure = math.nan
                         Sodium_result_form_field_instance = 'This field does not have any data'
+                        Sodium_result_disname = 'Empty'
 
                     try:
                         Triglycerides_out_normal = row['Triglycerides, Out of normal range?']
                         Triglycerides_out_normal_pure = Triglycerides_out_normal.split('|')[0]
                         Triglycerides_out_normal_form_field_instance = Triglycerides_out_normal.split('|')[1]
+                        Triglycerides_out_normal_disname = Triglycerides_out_normal.split('|')[2]
                     except Exception as e:
                         Triglycerides_out_normal_pure = math.nan
                         Triglycerides_out_normal_form_field_instance = 'This field does not have any data'
+                        Triglycerides_out_normal_disname = 'Empty'
 
                     try:
                         Triglycerides_result = row['Triglycerides, Result (mg/dL)']
                         Triglycerides_result_pure = Triglycerides_result.split('|')[0]
                         Triglycerides_result_form_field_instance = Triglycerides_result.split('|')[1]
+                        Triglycerides_result_disname = Triglycerides_result.split('|')[2]
                     except Exception as e:
                         Triglycerides_result_pure = math.nan
                         Triglycerides_result_form_field_instance = 'This field does not have any data'
+                        Triglycerides_result_disname = 'Empty'
 
                     try:
                         Urea_BUN_out_normal = row['Urea (BUN), Out of normal range?']
                         Urea_BUN_out_normal_pure = Urea_BUN_out_normal.split('|')[0]
                         Urea_BUN_out_normal_form_field_instance = Urea_BUN_out_normal.split('|')[1]
+                        Urea_BUN_out_normal_disname = Urea_BUN_out_normal.split('|')[2]
                     except Exception as e:
                         Urea_BUN_out_normal_pure = math.nan
                         Urea_BUN_out_normal_form_field_instance = 'This field does not have any data'
+                        Urea_BUN_out_normal_disname = 'Empty'
 
                     try:
                         Urea_BUN_result = row['Urea (BUN), Result (mg/dL)']
                         Urea_BUN_result_pure = Urea_BUN_result.split('|')[0]
-                        Urea_BUN_result_form_field_instance = Urea_BUN_result.splti('|')[1]
+                        Urea_BUN_result_form_field_instance = Urea_BUN_result.split('|')[1]
+                        Urea_BUN_result_disname = Urea_BUN_result.split('|')[2]
                     except Exception as e:
                         Urea_BUN_result_pure = math.nan
                         Urea_BUN_result_form_field_instance = 'This field does not have any data'
+                        Urea_BUN_result_disname = 'Empty'
 
                     try:
                         Uric_Acid_out_normal = row['Uric Acid, Out of normal range?']
                         Uric_Acid_out_normal_pure = Uric_Acid_out_normal.split('|')[0]
                         Uric_Acid_out_normal_form_field_instance = Uric_Acid_out_normal.split('|')[1]
+                        Uric_Acid_out_normal_disname = Uric_Acid_out_normal.split('|')[2]
                     except Exception as e:
                         Uric_Acid_out_normal_pure = math.nan
                         Uric_Acid_out_normal_form_field_instance = 'This field does not have any data'
+                        Uric_Acid_out_normal_disname = 'Empty'
 
                     try:
                         Uric_Acid_result = row['Uric Acid, Result (mmol/L)']
                         Uric_Acid_result_pure = Uric_Acid_result.split('|')[0]
                         Uric_Acid_result_form_field_instance = Uric_Acid_result.split('|')[1]
+                        Uric_Acid_result_disname = Uric_Acid_result.split('|')[2]
                     except Exception as e:
                         Uric_Acid_result_pure = math.nan
                         Uric_Acid_result_form_field_instance = 'This field does not have any data'
+                        Uric_Acid_result_disname = 'Empty'
 
                     #-------------------------------------------------------------------------------------------------
 
@@ -449,7 +534,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                             if f == None:
                                 pass
                             else:
-                                error = [subject, visit, 'Date of examination performed', date_collected_form_field_instance ,f , date_collected_pure, 'GE0020']
+                                error = [subject, visit, 'Date of examination performed', date_collected_form_field_instance ,f , date_collected_disname, 'GE0020']
                                 lista_revision.append(error)     
 
                         except Exception as e:
@@ -464,7 +549,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
 
                             if date_collected_f != date_of_visit_f:
                                 error = [subject, visit, 'Date Collected', date_collected_form_field_instance,\
-                                        'The date should be the same as the visit date in the "Date of Visit" Form' , f'{date_collected_pure} - {date_of_visit}', 'LBT0010']
+                                        'The date should be the same as the visit date in the "Date of Visit" Form' , f'{date_collected_disname} - {date_of_visit}', 'LBT0010']
                                 lista_revision.append(error)
                             else:
                                 pass
@@ -480,7 +565,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
 
                             if date_collected_f < date_inform_consent_f:
                                 error = [subject, visit, 'Date Collected', date_collected_form_field_instance,\
-                                        'The date/time of test performed can not be before the informed consent date/time' ,f'{date_collected_pure} - {date_inform_consent}', 'LBC0030']
+                                        'The date/time of test performed can not be before the informed consent date/time' ,f'{date_collected_disname} - {date_inform_consent}', 'LBC0030']
                                 lista_revision.append(error)
                             else:
                                 pass
@@ -493,7 +578,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                             if datetime.strptime(str(date_collected_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
                                 pass
                             else: 
-                                error = [subject, visit, 'Date Collected', date_collected_form_field_instance ,'Date Collected must be before the End of study/Early withdrawal date. ', date_collected_pure, 'LBC0040']
+                                error = [subject, visit, 'Date Collected', date_collected_form_field_instance ,'Date Collected must be before the End of study/Early withdrawal date. ', date_collected_disname, 'LBC0040']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision LBC0040 --> {e} - Subject: {subject},  Visit: {visit}  ')
@@ -506,7 +591,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                             else:
                                 error = [subject, visit, 'Blood Sample Collected', blood_sample_collected_form_field_instance,\
                                          'The "Not Required" option can only be selected if visit is D-1 and the D-1 visit date =Screening visit date or normal and done in the previous 10 days', \
-                                            blood_sample_collected_pure, 'LBC0050']
+                                            blood_sample_collected_disname, 'LBC0050']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision LBC0050--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -516,14 +601,14 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         if float(Alkaline_out_normal_pure) == 1.0:
                             if float(Alkaline_result_pure) > 40.0 and float(Alkaline_result_pure) < 150.0:
                                 error = [subject, visit, 'Alkaline Phosphatase, Out of normal range?', Alkaline_result_form_field_instance,\
-                                         'According to the result, the value is not out of range, please review.', Alkaline_result_pure, 'LBC0260']
+                                         'According to the result, the value is not out of range, please review.', Alkaline_result_disname, 'LBC0260']
                                 lista_revision.append(error)
 
                         # Revision LBC0060
                         elif float(Alkaline_out_normal_pure) == 0.0:
                             if float(Alkaline_result_pure) < 40.0 or float(Alkaline_result_pure) > 150.0:
                                 error = [subject, visit, 'Alkaline Phosphatase, Out of normal range?', Alkaline_result_form_field_instance,\
-                                         'According to the result, the value is out of range, please review.', Alkaline_result_pure, 'LBC0060']
+                                         'According to the result, the value is out of range, please review.', Alkaline_result_disname, 'LBC0060']
                                 lista_revision.append(error)
                                             
                     except Exception as e:
@@ -535,13 +620,13 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                             if float(genero) == 1.0:
                                 if float(GGT_result_pure) > 12.0 and float(GGT_result_pure) < 64.0 :
                                     error = [subject, visit, 'Gamma Glutamyl Transferase (GGT), Out of normal range? ', GGT_result_form_instance  ,\
-                                             'According to the result, the value is not out of range, please review.' , GGT_result_pure, 'LBC0270']
+                                             'According to the result, the value is not out of range, please review.' , GGT_result_disname, 'LBC0270']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
                                 if float(GGT_result_pure) > 9.0 and float(GGT_result_pure) < 36.0:
                                     error = [subject, visit, 'Gamma Glutamyl Transferase (GGT), Out of normal range? ',GGT_result_form_instance,\
-                                             'According to the result, the value is not out of range, please review.' , GGT_result_pure, 'LBC0270']
+                                             'According to the result, the value is not out of range, please review.' , GGT_result_disname, 'LBC0270']
                                     lista_revision.append(error)
 
                         # Revision LBC0070
@@ -549,13 +634,13 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                             if float(genero) == 1.0:
                                 if float(GGT_result_pure) < 12.0 or float(GGT_result_pure) > 64.0 :
                                     error = [subject, visit, 'Gamma Glutamyl Transferase (GGT), Out of normal range? ', GGT_result_form_instance ,\
-                                             'According to the result, the value is out of range, please review.' , GGT_result_pure, 'LBC0070']
+                                             'According to the result, the value is out of range, please review.' , GGT_result_disname, 'LBC0070']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
                                 if float(GGT_result_pure) < 9.0 or float(GGT_result_pure) > 36.0:
                                     error = [subject, visit, 'Gamma Glutamyl Transferase (GGT), Out of normal range? ', GGT_result_form_instance ,\
-                                             'According to the result, the value is out of range, please review.' , GGT_result_pure, 'LBC0070']
+                                             'According to the result, the value is out of range, please review.' , GGT_result_disname, 'LBC0070']
                                     lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision LBC0070--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -565,14 +650,14 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         if float(Bilirubin_out_normal_pure) == 1.0:
                             if float(Bilirubin_result_pure) > 0.3 and float(Bilirubin_result_pure) < 1.2:
                                 error = [subject, visit, 'Bilirubin (Total), Out of normal range?', Bilirubin_result_form_field_instance ,\
-                                         'According to the result, the value is not out of range, please review.' , Bilirubin_result_pure, 'LBC0280']
+                                         'According to the result, the value is not out of range, please review.' , Bilirubin_result_disname, 'LBC0280']
                                 lista_revision.append(error)
 
                         # Revision LBC0080
                         elif float(Bilirubin_out_normal_pure) == 0.0:
                             if float(Bilirubin_result_pure) < 0.3 or float(Bilirubin_result_pure) > 1.2:
                                 error = [subject, visit, 'Bilirubin (Total), Out of normal range?', Bilirubin_result_form_field_instance ,\
-                                         'According to the result, the value is out of range, please review.' , Bilirubin_result_pure, 'LBC0080']
+                                         'According to the result, the value is out of range, please review.' , Bilirubin_result_disname, 'LBC0080']
                                 lista_revision.append(error)
                                             
                     except Exception as e:
@@ -586,7 +671,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                                          'Bilirubin (Direct) (only if Total is elevated), Out of normal range?'\
                                             , Bilirubin_direct_result_form_field_instance,\
                                                 'According to the result, the value is not out of range, please review.', \
-                                                    Bilirubin_direct_result_pure, 'LBC0290']
+                                                    Bilirubin_direct_result_disname, 'LBC0290']
                                 lista_revision.append(error)
 
                         # Revision LBC0090
@@ -595,7 +680,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                                 error = [subject, visit, 'Bilirubin (Direct) (only if Total is elevated), Out of normal range?e?',\
                                            Bilirubin_direct_result_form_field_instance,\
                                             'According to the result, the value is out of range, please review.', \
-                                                Bilirubin_direct_result_pure, 'LBC0090']
+                                                Bilirubin_direct_result_disname, 'LBC0090']
                                 lista_revision.append(error)
                                           
                     except Exception as e:
@@ -607,14 +692,14 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                             if float(Albumin_result_pure) > 3.5 and float(Albumin_result_pure) < 4.5:
                                 error = [subject, visit, 'Albumin, Out of normal range?', Albumin_result_form_field_instance ,\
                                          'According to the result, the value is not out of range, please review.', \
-                                            Albumin_result_pure, 'LBC0300']
+                                            Albumin_result_disname, 'LBC0300']
                                 lista_revision.append(error)
 
                         # Revision LBC0100
                         elif float(Albumin_out_normal_pure) == 0.0:
                             if float(Albumin_result_pure) < 3.5 or float(Albumin_result_pure) > 4.5:
                                 error = [subject, visit, 'Albumin, Out of normal range?', Albumin_result_form_field_instance ,\
-                                         'According to the result, the value is out of range, please review.', Albumin_result_pure, 'LBC0100']
+                                         'According to the result, the value is out of range, please review.', Albumin_result_disname, 'LBC0100']
                                 lista_revision.append(error)
                                             
                     except Exception as e:
@@ -625,14 +710,14 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         if float(Aspartate_out_normal_pure) == 1.0:
                             if float(Aspartate_result_pure) > 5.0 and float(Aspartate_result_pure) < 34.0:
                                 error = [subject, visit, 'Aspartate Aminotransferase (AST), Out of normal range?', Aspartate_result_form_field_instance ,\
-                                         'According to the result, the value is not out of range, please review.' , Aspartate_result_pure, 'LBC0310']
+                                         'According to the result, the value is not out of range, please review.' , Aspartate_result_disname, 'LBC0310']
                                 lista_revision.append(error)
 
                         # Revision LBC0110
                         elif float(Aspartate_out_normal_pure) == 0.0:
                             if float(Aspartate_result_pure) < 5.0 or float(Aspartate_result_pure) > 34.0:
                                 error = [subject, visit, 'Aspartate Aminotransferase (AST), Out of normal range?', Aspartate_result_form_field_instance ,\
-                                         'According to the result, the value is out of range, please review.', Aspartate_result_pure, 'LBC0110']
+                                         'According to the result, the value is out of range, please review.', Aspartate_result_disname, 'LBC0110']
                                 lista_revision.append(error)
                                             
                     except Exception as e:
@@ -643,14 +728,14 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         if float(Alanine_out_normal_pure) == 1.0:
                             if float(Alanine_result_pure) > 0.0 and float(Alanine_result_pure) < 55.0:
                                 error = [subject, visit, 'Alanine Aminotransferase (ALT), Out of normal range?', Alanine_result_form_field_isntance ,\
-                                         'According to the result, the value is not out of range, please review.' , Alanine_result_pure, 'LBC0320']
+                                         'According to the result, the value is not out of range, please review.' , Alanine_result_disname, 'LBC0320']
                                 lista_revision.append(error)
 
                         # Revision LBC0120
                         elif float(Alanine_out_normal_pure) == 0.0:
                             if float(Alanine_result_pure) < 0.0 or float(Alanine_result_pure) > 55.0:
                                 error = [subject, visit, 'Alanine Aminotransferase (ALT), Out of normal range?', Alanine_result_form_field_isntance ,\
-                                         'According to the result, the value is out of range, please review.' , Alanine_result_pure, 'LBC0120']
+                                         'According to the result, the value is out of range, please review.' , Alanine_result_disname, 'LBC0120']
                                 lista_revision.append(error)
                                             
                     except Exception as e:
@@ -662,7 +747,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                             if float(Protein_total_result_pure) > 64.0 and float(Protein_total_result_pure) < 83.0:
                                 error = [subject, visit, 'Protein (Total), Out of normal range?', Protein_total_result_form_field_instance ,\
                                          'According to the result, the value is not out of range, please review.', \
-                                            Protein_total_result_pure, 'LBC0330']
+                                            Protein_total_result_disname, 'LBC0330']
                                 lista_revision.append(error)
 
                         # Revision LBC0130
@@ -670,7 +755,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                             if float(Protein_total_result_pure) < 64.0 or float(Protein_total_result_pure) > 83.0:
                                 error = [subject, visit, 'Protein (Total), Out of normal range?', Protein_total_result_form_field_instance,\
                                          'According to the result, the value is out of range, please review.', \
-                                            Protein_total_result_pure, 'LBC0130']
+                                            Protein_total_result_disname, 'LBC0130']
                                 lista_revision.append(error)
                                             
                     except Exception as e:
@@ -683,14 +768,14 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                                 if float(Creatine_result_pure) > 30.0 and float(Creatine_result_pure) < 200.0 :
                                     error = [subject, visit, 'Creatine Kinase (CK), Out of normal range?', Creatine_result_form_field_instance,\
                                              'According to the result, the value is not out of range, please review.', \
-                                                Creatine_result_pure, 'LBC0340']
+                                                Creatine_result_disname, 'LBC0340']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
                                 if float(Creatine_result_pure) > 29.0 and float(Creatine_result_pure) < 168.0:
                                     error = [subject, visit, 'Creatine Kinase (CK), Out of normal range?', Creatine_result_form_field_instance ,\
                                              'According to the result, the value is not out of range, please review.', \
-                                                Creatine_result_pure, 'LBC0340']
+                                                Creatine_result_disname, 'LBC0340']
                                     lista_revision.append(error)
 
                         # Revision LBC0140
@@ -698,13 +783,13 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                             if float(genero) == 1.0:
                                 if float(Creatine_result_pure) < 30.0 or float(Creatine_result_pure) > 200.0 :
                                     error = [subject, visit, 'Creatine Kinase (CK), Out of normal range?', Creatine_result_form_field_instance ,\
-                                             'According to the result, the value is out of range, please review.', Creatine_result_pure, 'LBC0140']
+                                             'According to the result, the value is out of range, please review.', Creatine_result_disname, 'LBC0140']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
                                 if float(Creatine_result_pure) < 29.0 or float(Creatine_result_pure) > 168.0:
                                     error = [subject, visit, 'Creatine Kinase (CK), Out of normal range?', Creatine_result_form_field_instance ,\
-                                             'According to the result, the value is out of range, please review.', Creatine_result_pure, 'LBC0140']
+                                             'According to the result, the value is out of range, please review.', Creatine_result_disname, 'LBC0140']
                                     lista_revision.append(error)
 
                     except Exception as e:
@@ -715,14 +800,14 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         if float(Sodium_out_normal_pure) == 1.0:
                             if float(Sodium_result_pure) > 132.0 and float(Sodium_result_pure) < 146.0:
                                 error = [subject, visit, 'Sodium, Out of normal range?', Sodium_result_form_field_instance ,\
-                                         'According to the result, the value is not out of range, please review.', Sodium_result_pure, 'LBC0350']
+                                         'According to the result, the value is not out of range, please review.', Sodium_result_disname, 'LBC0350']
                                 lista_revision.append(error)
 
                         # Revision LBC0150
                         elif float(Sodium_out_normal_pure) == 0.0:
                             if float(Sodium_result_pure) < 132.0 or float(Sodium_result_pure) > 146.0:
                                 error = [subject, visit, 'Sodium, Out of normal range?', Sodium_result_form_field_instance ,\
-                                         'According to the result, the value is out of range, please review.', Sodium_result_pure, 'LBC0150']
+                                         'According to the result, the value is out of range, please review.', Sodium_result_disname, 'LBC0150']
                                 lista_revision.append(error)
                                             
                     except Exception as e:
@@ -733,14 +818,14 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         if float(Potassium_out_normal_pure) == 1.0:
                             if float(Potassium_result_pure) > 3.5 and float(Potassium_result_pure) < 4.5 :
                                 error = [subject, visit, 'Potassium, Out of normal range?', Potassium_result_form_field_instance ,\
-                                         'According to the result, the value is not out of range, please review.', Potassium_result_pure, 'LBC0360']
+                                         'According to the result, the value is not out of range, please review.', Potassium_result_disname, 'LBC0360']
                                 lista_revision.append(error)
 
                         # Revision LBC0160
                         elif float(Potassium_out_normal_pure) == 0.0:
                             if float(Potassium_result_pure) <  3.5  or float(Potassium_result_pure) > 4.5 :
                                 error = [subject, visit, 'Potassium, Out of normal range?', Potassium_result_form_field_instance ,\
-                                         'According to the result, the value is out of range, please review.', Potassium_result_pure, 'LBC0160']
+                                         'According to the result, the value is out of range, please review.', Potassium_result_disname, 'LBC0160']
                                 lista_revision.append(error)
                                             
                     except Exception as e:
@@ -752,14 +837,14 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                             if float(subject_age) < 20.0:
                                 if float(Calcium_result_pure) > 8.8 and float(Calcium_result_pure) < 10.4 :
                                     error = [subject, visit, 'Calcium, Out of normal range?', Calcium_result_form_field_instance ,\
-                                             'According to the result, the value is not out of range, please review.', Calcium_result_pure, 'LBC0370']
+                                             'According to the result, the value is not out of range, please review.', Calcium_result_disname, 'LBC0370']
                                     lista_revision.append(error)
                                 
                             elif float(subject_age) > 19.0:
                                 if float(Calcium_result_pure) > 8.4 and float(Calcium_result_pure) < 10.2:
                                     error = [subject, visit, 'Calcium, Out of normal range?', Calcium_result_form_field_instance ,\
                                              'According to the result, the value is not out of range, please review.', \
-                                                Calcium_result_pure, 'LBC0370']
+                                                Calcium_result_disname, 'LBC0370']
                                     lista_revision.append(error)
 
                         # Revision LBC0170
@@ -767,13 +852,13 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                             if float(subject_age) < 20.0:
                                 if float(Calcium_result_pure) < 8.8 or float(Calcium_result_pure) > 10.4 :
                                     error = [subject, visit, 'Calcium, Out of normal range?', Calcium_result_form_field_instance,\
-                                             'According to the result, the value is out of range, please review.', Calcium_result_pure, 'LBC0170']
+                                             'According to the result, the value is out of range, please review.', Calcium_result_disname, 'LBC0170']
                                     lista_revision.append(error)
                                 
                             elif float(subject_age) > 19.0:
                                 if float(Calcium_result_pure) < 8.4 or float(Calcium_result_pure) > 10.2:
                                     error = [subject, visit, 'Calcium, Out of normal range?', Calcium_result_form_field_instance,\
-                                             'According to the result, the value is out of range, please review.', Calcium_result_pure, 'LBC0170']
+                                             'According to the result, the value is out of range, please review.', Calcium_result_disname, 'LBC0170']
                                     lista_revision.append(error)
 
                     except Exception as e:
@@ -785,14 +870,14 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                             if float(Bicarbonate_result_pure) > 0.0 and float(Bicarbonate_result_pure) < 29.0 :
                                 error = [subject, visit, 'Bicarbonate, Out of normal range?', Bicarbonate_result_form_field_instance,\
                                          'According to the result, the value is not out of range, please review.', \
-                                            Bicarbonate_result_pure, 'LBC0380']
+                                            Bicarbonate_result_disname, 'LBC0380']
                                 lista_revision.append(error)
 
                         # Revision LBC0180
                         elif float(Bicarbonate_out_normal_pure) == 0.0:
                             if float(Bicarbonate_result_pure) <  0.0  or float(Bicarbonate_result_pure) > 29.0 :
                                 error = [subject, visit, 'Bicarbonate, Out of normal range?', Bicarbonate_result_form_field_instance ,\
-                                         'According to the result, the value is out of range, please review.', Bicarbonate_result_pure, 'LBC0180']
+                                         'According to the result, the value is out of range, please review.', Bicarbonate_result_disname, 'LBC0180']
                                 lista_revision.append(error)
                                             
                     except Exception as e:
@@ -803,14 +888,14 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         if float(Chloride_out_normal_pure) == 1.0:
                             if float(Chloride_result_pure) > 98.0 and float(Chloride_result_pure) < 107.0 :
                                 error = [subject, visit, 'Chloride, Out of normal range?', Chloride_result_form_field_instacnce ,\
-                                         'According to the result, the value is not out of range, please review.', Chloride_result_pure, 'LBC0390']
+                                         'According to the result, the value is not out of range, please review.', Chloride_result_disname, 'LBC0390']
                                 lista_revision.append(error)
 
                         # Revision LBC0190
                         elif float(Chloride_out_normal_pure) == 0.0:
                             if float(Chloride_result_pure) <  98.0  or float(Chloride_result_pure) > 107.0 :
                                 error = [subject, visit, 'Chloride, Out of normal range?', Chloride_result_form_field_instacnce ,\
-                                         'According to the result, the value is out of range, please review.', Chloride_result_pure, 'LBC0190']
+                                         'According to the result, the value is out of range, please review.', Chloride_result_disname, 'LBC0190']
                                 lista_revision.append(error)
                                             
                     except Exception as e:
@@ -822,13 +907,13 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                             if float(genero) == 1.0:
                                 if float(Serum_result_pure) >  0.73 and float(Serum_result_pure) < 1.18 :
                                     error = [subject, visit, 'Serum Creatinine, Out of normal range?', Serum_result_form_field_instance ,\
-                                             'According to the result, the value is not out of range, please review.', Serum_result_pure, 'LBC0400']
+                                             'According to the result, the value is not out of range, please review.', Serum_result_disname, 'LBC0400']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
                                 if float(Serum_result_pure) > 0.55 and float(Serum_result_pure) <  1.02:
                                     error = [subject, visit, 'Serum Creatinine, Out of normal range?', Serum_result_form_field_instance ,\
-                                             'According to the result, the value is not out of range, please review.', Serum_result_pure, 'LBC0400']
+                                             'According to the result, the value is not out of range, please review.', Serum_result_disname, 'LBC0400']
                                     lista_revision.append(error)
 
                         # Revision LBC0200
@@ -836,13 +921,13 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                             if float(genero) == 1.0:
                                 if float(Serum_result_pure) < 0.73 or float(Serum_result_pure) > 1.18 :
                                     error = [subject, visit, 'Serum Creatinine, Out of normal range?', Serum_result_form_field_instance,\
-                                             'According to the result, the value is out of range, please review.', Serum_result_pure, 'LBC0200']
+                                             'According to the result, the value is out of range, please review.', Serum_result_disname, 'LBC0200']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
                                 if float(Serum_result_pure) < 0.55 or float(Serum_result_pure) > 1.02:
                                     error = [subject, visit, 'Serum Creatinine, Out of normal range?', Serum_result_form_field_instance ,\
-                                             'According to the result, the value is out of range, please review.', Serum_result_pure, 'LBC0200']
+                                             'According to the result, the value is out of range, please review.', Serum_result_disname, 'LBC0200']
                                     lista_revision.append(error)
 
                     except Exception as e:
@@ -854,13 +939,13 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                             if float(genero) == 1.0:
                                 if float(Urea_BUN_result_pure) >  18.0 and float(Urea_BUN_result_pure) < 45.0 :
                                     error = [subject, visit, 'Urea (BUN), Out of normal range?', Urea_BUN_result_form_field_instance ,\
-                                             'According to the result, the value is not out of range, please review.', Urea_BUN_result_pure, 'LBC0410']
+                                             'According to the result, the value is not out of range, please review.', Urea_BUN_result_disname, 'LBC0410']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
                                 if float(Urea_BUN_result_pure) > 15.0 and float(Urea_BUN_result_pure) <  45.0:
                                     error = [subject, visit, 'Urea (BUN), Out of normal range?', Urea_BUN_result_form_field_instance ,\
-                                             'According to the result, the value is not out of range, please review.', Urea_BUN_result_pure, 'LBC0410']
+                                             'According to the result, the value is not out of range, please review.', Urea_BUN_result_disname, 'LBC0410']
                                     lista_revision.append(error)
 
                         # Revision LBC0210
@@ -868,13 +953,13 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                             if float(genero) == 1.0:
                                 if float(Urea_BUN_result_pure) < 18.0 or float(Urea_BUN_result_pure) > 45.0 :
                                     error = [subject, visit, 'Urea (BUN), Out of normal range?', Urea_BUN_result_form_field_instance ,\
-                                             'According to the result, the value is out of range, please review.', Urea_BUN_result_pure, 'LBC0210']
+                                             'According to the result, the value is out of range, please review.', Urea_BUN_result_disname, 'LBC0210']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
                                 if float(Urea_BUN_result_pure) < 15.0 or float(Urea_BUN_result_pure) > 45.0:
                                     error = [subject, visit, 'Urea (BUN), Out of normal range?', Urea_BUN_result_form_field_instance ,\
-                                             'According to the result, the value is out of range, please review.', Urea_BUN_result_pure, 'LBC0210']
+                                             'According to the result, the value is out of range, please review.', Urea_BUN_result_disname, 'LBC0210']
                                     lista_revision.append(error)
 
                     except Exception as e:
@@ -886,13 +971,13 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                             if float(genero) == 1.0:
                                 if float(Uric_Acid_result_pure) >  3.7 and float(Uric_Acid_result_pure) < 7.7 :
                                     error = [subject, visit, 'Uric Acid, Out of normal range?', Uric_Acid_result_form_field_instance ,\
-                                             'According to the result, the value is not out of range, please review.', Uric_Acid_result_pure, 'LBC0420']
+                                             'According to the result, the value is not out of range, please review.', Uric_Acid_result_disname, 'LBC0420']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
                                 if float(Uric_Acid_result_pure) > 2.5 and float(Uric_Acid_result_pure) <  6.2:
                                     error = [subject, visit, 'Uric Acid, Out of normal range?', Uric_Acid_result_form_field_instance ,\
-                                             'According to the result, the value is not out of range, please review.', Uric_Acid_result_pure, 'LBC0420']
+                                             'According to the result, the value is not out of range, please review.', Uric_Acid_result_disname, 'LBC0420']
                                     lista_revision.append(error)
 
                         # Revision LBC0220
@@ -900,13 +985,13 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                             if float(genero) == 1.0:
                                 if float(Uric_Acid_result_pure) < 3.7 or float(Uric_Acid_result_pure) > 7.7 :
                                     error = [subject, visit, 'Uric Acid, Out of normal range?', Uric_Acid_result_form_field_instance,\
-                                             'According to the result, the value is out of range, please review.', Uric_Acid_result_pure, 'LBC0220']
+                                             'According to the result, the value is out of range, please review.', Uric_Acid_result_disname, 'LBC0220']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
                                 if float(Uric_Acid_result_pure) < 2.5 or float(Uric_Acid_result_pure) > 6.5:
                                     error = [subject, visit, 'Uric Acid, Out of normal range?', Uric_Acid_result_form_field_instance ,\
-                                             'According to the result, the value is out of range, please review.' , Uric_Acid_result_pure, 'LBC0220']
+                                             'According to the result, the value is out of range, please review.' , Uric_Acid_result_disname, 'LBC0220']
                                     lista_revision.append(error)
 
                     except Exception as e:
@@ -917,14 +1002,14 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         if float(Cholesterol_out_normal_pure) == 1.0:
                             if float(Cholesterol_result_pure) > 120.0 and float(Cholesterol_result_pure) < 200.0 :
                                 error = [subject, visit, 'Cholesterol (Total), Out of normal range?', Cholesterol_result_form_field_instance ,\
-                                         'According to the result, the value is not out of range, please review.', Cholesterol_result_pure, 'LBC0430']
+                                         'According to the result, the value is not out of range, please review.', Cholesterol_result_disname, 'LBC0430']
                                 lista_revision.append(error)
 
                         # Revision LBC0230
                         elif float(Cholesterol_out_normal_pure) == 0.0:
                             if float(Cholesterol_result_pure) <  120.0  or float(Cholesterol_result_pure) > 200.0 :
                                 error = [subject, visit, 'Cholesterol (Total), Out of normal range?', Cholesterol_result_form_field_instance ,\
-                                         'According to the result, the value is out of range, please review.', Cholesterol_result_pure, 'LBC0230']
+                                         'According to the result, the value is out of range, please review.', Cholesterol_result_disname, 'LBC0230']
                                 lista_revision.append(error)
                                             
                     except Exception as e:
@@ -935,14 +1020,14 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         if float(Triglycerides_out_normal_pure) == 1.0:
                             if float(Triglycerides_result_pure) > 50.0 and float(Triglycerides_result_pure) < 150.0 :
                                 error = [subject, visit, 'Triglycerides, Out of normal range?', Triglycerides_result_form_field_instance ,\
-                                         'According to the result, the value is not out of range, please review.', Triglycerides_result_pure, 'LBC0440']
+                                         'According to the result, the value is not out of range, please review.', Triglycerides_result_disname, 'LBC0440']
                                 lista_revision.append(error)
 
                         # Revision LBC0240
                         elif float(Triglycerides_out_normal_pure) == 0.0:
                             if float(Triglycerides_result_pure) <  50.0  or float(Triglycerides_result_pure) > 150.0 :
                                 error = [subject, visit, 'Triglycerides, Out of normal range? ', Triglycerides_result_form_field_instance ,\
-                                         'According to the result, the value is out of range, please review.', Triglycerides_result_pure, 'LBC0240']
+                                         'According to the result, the value is out of range, please review.', Triglycerides_result_disname, 'LBC0240']
                                 lista_revision.append(error)
                                             
                     except Exception as e:
@@ -953,14 +1038,14 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         if float(C_Reactive_out_normal_pure) == 1.0:
                             if float(C_Reactive_result_pure) > 0.0 and float(C_Reactive_result_pure) < 5.0 :
                                 error = [subject, visit, 'C-Reactive Protein, Out of normal range?', C_Reactive_result_form_field_instance ,\
-                                         'According to the result, the value is not out of range, please review.', C_Reactive_result_pure, 'LBC0450']
+                                         'According to the result, the value is not out of range, please review.', C_Reactive_result_disname, 'LBC0450']
                                 lista_revision.append(error)
 
                         # Revision LBC0250
                         elif float(C_Reactive_out_normal_pure) == 0.0:
                             if float(C_Reactive_result_pure) <  0.0  or float(C_Reactive_result_pure) > 5.0 :
                                 error = [subject, visit, 'C-Reactive Protein, Out of normal range?', C_Reactive_result_form_field_instance ,\
-                                         'According to the result, the value is out of range, please review.', C_Reactive_result_pure, 'LBC0250']
+                                         'According to the result, the value is out of range, please review.', C_Reactive_result_disname, 'LBC0250']
                                 lista_revision.append(error)
                                             
                     except Exception as e:
@@ -1074,7 +1159,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                             else:
                                 error = [subject, visit, 'Blood Sample Collected', blood_sample_collected_form_field_instance ,\
                                          'If Blood Sample Collected is checked as "Yes", not all laboratory tests can be "not done"', \
-                                            blood_sample_collected_pure, 'LBC0460']
+                                            blood_sample_collected_disname, 'LBC0460']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision LBC0460--> {e} - Subject: {subject},  Visit: {visit} ')

@@ -18,8 +18,8 @@ def demographic(df_root, path_excel_writer):
 
     df= df_root[df_root['name']=='Demographics'] 
     lista_sujetos = df['Participante'].unique()
-    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
-    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)
+    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id', 'displayName']]
+    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)  + '|' + df['displayName'].astype(str)
 
 
     df_visit_date = df_root[df_root['name']=='Date of visit']
@@ -75,18 +75,22 @@ def demographic(df_root, path_excel_writer):
                         birth_year = row['Birth Year']
                         birth_year_pure = birth_year.split('|')[0]
                         birth_year_form_field_instance = birth_year.split('|')[1]
+                        birth_year_disname = birth_year.split('|')[2]
                     except:
                         birth_year = ''
                         birth_year_form_field_instance = 'This field does not have any data'
-                    
+                        birth_year_disname = 'Empty'
+
                     try:
                         age_at_consent =  row['Age at consent']
                         age_at_consent_pure = int(age_at_consent.split('|')[0])
-                        age_at_consent_form_field_instance = age_at_consent.split('|')[1]   
+                        age_at_consent_form_field_instance = age_at_consent.split('|')[1]
+                        age_at_consent_disname = age_at_consent.split('|')[2]   
                     except:
                         age_at_consent_pure = ''
                         age_at_consent_form_field_instance = 'This field does not have any data'
-                    
+                        age_at_consent_disname = 'Empty'
+
                     try:
                         año_visita = row['Valor'].split('-')[2]
                     except:
@@ -100,7 +104,7 @@ def demographic(df_root, path_excel_writer):
                             pass
                         else:
                             error = [subject, visit, 'Age at consent', age_at_consent_form_field_instance ,'The subject AGE at consent does not match the AGE according to the month and year of birth' ,\
-                                      f'{age_at_consent_pure} - {año_calculado}', 'DM0030']
+                                      f'{age_at_consent_disname} - {año_calculado}', 'DM0030']
                             lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision DM0030 --> {e} - Subject: {subject},  Visit: {visit} ')

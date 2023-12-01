@@ -18,8 +18,8 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
 
     df= df_root[df_root['name']== 'Medical Or Surgical History (other than Leishmaniasis)']
     lista_sujetos = df['Participante'].unique()
-    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
-    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)
+    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id', 'displayName']]
+    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)  + '|' + df['displayName'].astype(str)
 
     df_demographic_age = df_root[df_root['name']=='Demographics']
     df_demographic_age = df_demographic_age[['Visit','Participante', 'Campo', 'Valor']]
@@ -75,33 +75,41 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
                         any_relevant_medical = row['Are there any relevant medical history or surgical history ?']
                         any_relevant_medical_pure = any_relevant_medical.split('|')[0]
                         any_relevant_medical_form_field_instance = any_relevant_medical.split('|')[1]
+                        any_relevant_medical_disname = any_relevant_medical.split('|')[2]
                     except:
                         any_relevant_medical_pure = math.nan
                         any_relevant_medical_form_field_instance = 'This field does not have any data'
+                        any_relevant_medical_disname = 'Empty'
                     
                     try:
                         medical_surgical = row['Medical/Surgical History/Current Condition']
                         medical_surgical_pure = medical_surgical.split('|')[0]
                         medical_surgical_form_field_instance = medical_surgical.split('|')[1]
+                        medical_surgical_disname = medical_surgical.split('|')[2]
                     except Exception as e:
                         medical_surgical_pure = ''
                         medical_surgical_form_field_instance = 'This field does not have any data'
+                        medical_surgical_disname = 'Empty'
 
                     try:
                         onset_date = row['Onset Date/First Diagnosis/Surgery']
                         onset_date_pure = onset_date.split('|')[0]
                         onset_date_form_field_instance = onset_date.split('|')[1]
+                        onset_date_disname = onset_date.split('|')[2]
                     except Exception as e:
                         onset_date_pure = ''
                         onset_date_form_field_instance = 'This field does not have any data'
+                        onset_date_disname = 'Empty'
 
                     try:
                         end_date = row['End Date']
                         end_date_pure = end_date.split('|')[0]
                         end_date_form_field_instance = end_date.split('|')[1]
+                        end_date_disname = end_date.split('|')[2]
                     except Exception as e:
                         end_date_pure = ''
                         end_date_form_field_instance = 'This field does not have any data'
+                        end_date_disname = 'Empty'
 
                     # condition_ongoing = ''
                     # severity = ''
@@ -124,7 +132,7 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
                             if f == None:
                                 pass
                             else:
-                                error = [subject, visit, 'Onset Date/First Diagnosis/Surgery', onset_date_form_field_instance ,f , onset_date_pure, 'GE0020']
+                                error = [subject, visit, 'Onset Date/First Diagnosis/Surgery', onset_date_form_field_instance ,f , onset_date_disname, 'GE0020']
                                 lista_revision.append(error)     
 
                         except Exception as e:
@@ -139,7 +147,7 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
                             if f == None:
                                 pass
                             else:
-                                error = [subject, visit, 'End Date', end_date_form_field_instance ,f , end_date_pure, 'GE0020']
+                                error = [subject, visit, 'End Date', end_date_form_field_instance ,f , end_date_disname, 'GE0020']
                                 lista_revision.append(error)     
 
                         except Exception as e:
@@ -155,7 +163,7 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, 'Are there any relevant medical history or surgical history?', any_relevant_medical_form_field_instance,\
-                                         'If the answer is Yes, at least one section of Medical or Surgical History Detail should be added' , any_relevant_medical_pure, 'MS0010']
+                                         'If the answer is Yes, at least one section of Medical or Surgical History Detail should be added' , any_relevant_medical_disname, 'MS0010']
                                 lista_revision.append(error) 
                     except Exception as e:
                         lista_logs.append(f'Revision MS0020 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -185,7 +193,7 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
 
                             if onset_date_f > end_date_f:
                                 error = [subject, visit, 'End Date', end_date_form_field_instance ,\
-                                    'End date must be after Onset Date/First Diagnosis/Surgery.' , end_date_pure, 'MS0040']
+                                    'End date must be after Onset Date/First Diagnosis/Surgery.' , end_date_disname, 'MS0040']
                                 lista_revision.append(error)
                             else:
                                 pass
@@ -219,7 +227,7 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
 
                                 if medical_date_history in lista_comprobacion_overlap:
                                         error = [subject, visit, 'Medical/Surgical History/ Current Condition', medical_surgical_form_field_instance , \
-                                                    'The Medica/Surgical History/ Current Condition shuold not be enter twice if the dates overlap2' , medical_surgical_pure, 'MS0060']
+                                                    'The Medica/Surgical History/ Current Condition shuold not be enter twice if the dates overlap2' , medical_surgical_disname, 'MS0060']
                                         lista_revision.append(error)
                                 else:
                                     lista_comprobacion_overlap.append(medical_date_history)

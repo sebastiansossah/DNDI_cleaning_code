@@ -18,8 +18,8 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer):
 
     df= df_root[df_root['name']== 'Pharmacodynamic Blood Sampling (PD) -Cytokines/Chemokines']
     lista_sujetos = df['Participante'].unique()
-    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
-    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)
+    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id', 'displayName']]
+    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)  + '|' + df['displayName'].astype(str)
 
     df_visit_date = df_root[df_root['name']=='Date of visit']
     df_visit_date = df_visit_date[['Visit','Participante', 'Campo', 'Valor']]
@@ -87,57 +87,71 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer):
                         Was_blood_sample_collected = row["Was blood sample collected?"]
                         Was_blood_sample_collected_pure = Was_blood_sample_collected.split('|')[0]
                         Was_blood_sample_collected_form_field_instance = Was_blood_sample_collected.split('|')[1]
+                        Was_blood_sample_collected_disname = Was_blood_sample_collected.split('|')[2]
                     except Exception as e:
                         Was_blood_sample_collected_pure = math.nan
                         Was_blood_sample_collected_form_field_instance = 'This field does not have any data'
+                        Was_blood_sample_collected_disname = 'Empty'
 
                     try:
                         Provide_the_reason = row["Provide the reason"]
                         Provide_the_reason_pure = Provide_the_reason.split('|')[0]
                         Provide_the_reason_form_field_instance = Provide_the_reason.split('|')[1]
+                        Provide_the_reason_disname = Provide_the_reason.split('|')[2]
                     except Exception as e:
                         Provide_the_reason_pure = ''
                         Provide_the_reason_form_field_instance = 'This field does not have any data'
+                        Provide_the_reason_disname = 'Empty'
 
                     try:
                         Date_of_blood_sample_collected = row['Date of blood sample collected']
                         Date_of_blood_sample_collected_pure = Date_of_blood_sample_collected.split('|')[0]
                         Date_of_blood_sample_collected_form_field_instance = Date_of_blood_sample_collected.split('|')[1]
+                        Date_of_blood_sample_collected_disname = Date_of_blood_sample_collected.split('|')[2]
                     except Exception as e:
                         Date_of_blood_sample_collected_pure = ''
                         Date_of_blood_sample_collected_form_field_instance = 'This field does not have any data'
+                        Date_of_blood_sample_collected_disname = 'Empty'
 
                     try:
                         Pre_dose = row["Pre-dose"]
                         Pre_dose_pure = Pre_dose.split('|')[0]
                         Pre_dose_form_field_instance = Pre_dose.split('|')[1]
+                        Pre_dose_disname = Pre_dose.split('|')[2]
                     except Exception as e:
                         Pre_dose_pure = ''
                         Pre_dose_form_field_instance = 'This field does not have any data'
+                        Pre_dose_disname = 'Empty'
 
                     try:
                         Pre_dose_Reason_Not_Done = row["Pre-dose, Reason Not Done"]
                         Pre_dose_Reason_Not_Done_pure = Pre_dose_Reason_Not_Done.split('|')[0]
                         Pre_dose_Reason_Not_Done_form_field_instance = Pre_dose_Reason_Not_Done.split('|')[1]
+                        Pre_dose_Reason_Not_Done_disname = Pre_dose_Reason_Not_Done.split('|')[2]
                     except Exception as e:
                         Pre_dose_Reason_Not_Done_pure = ''
                         Pre_dose_Reason_Not_Done_form_field_instance = 'This field does not have any data'
+                        Pre_dose_Reason_Not_Done_disname = 'Empty'
 
                     try:
                         H8 = row["8h"]
                         H8_pure = H8.split('|')[0]
                         H8_form_field_instance = H8.split('|')[1]
+                        H8_disname = H8.split('|')[2] 
                     except Exception as e:
                         H8_pure = ''
                         H8_form_field_instance = 'This field does not have any data'
+                        H8_disname = 'Empty'
 
                     try:
                         H8_Reason_Not_Done = row["8h, Reason Not Done"]
                         H8_Reason_Not_Done_pure = H8_Reason_Not_Done.split('|')[0]
                         H8_Reason_Not_Done_form_field_instance = H8_Reason_Not_Done.split('|')[1]
+                        H8_Reason_Not_Done_disname = H8_Reason_Not_Done.split('|')[2]
                     except Exception as e:
                         H8_Reason_Not_Done_pure = ''
                         H8_Reason_Not_Done_form_field_instance = 'This field does not have any data'
+                        H8_Reason_Not_Done_disname = 'Empty'
                     
                     # ----------------------------------------------------------------------------------------------------------------
                     # Revision GE0070
@@ -156,7 +170,7 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, 'Date of examination performed', Date_of_blood_sample_collected_form_field_instance,\
-                                        f , Date_of_blood_sample_collected_pure, 'GE0020']
+                                        f , Date_of_blood_sample_collected_disname, 'GE0020']
                                 lista_revision.append(error)     
 
                         except Exception as e:
@@ -171,7 +185,7 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer):
 
                             if date_of_test_f != date_of_visit_f:
                                 error = [subject, visit, 'Date of blood sample collected', Date_of_blood_sample_collected_form_field_instance ,\
-                                        'The date should be the same as the visit date in the "Date of Visit" form' , f'{Date_of_blood_sample_collected_pure} - {date_of_visit}', 'PD0010']
+                                        'The date should be the same as the visit date in the "Date of Visit" form' , f'{Date_of_blood_sample_collected_disname} - {date_of_visit}', 'PD0010']
                                 lista_revision.append(error)
                             else:
                                 pass
@@ -188,7 +202,7 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer):
 
                             if date_of_test_f < date_inform_consent_f:
                                 error = [subject, visit, 'Date of blood sample collected' , Date_of_blood_sample_collected_form_field_instance ,\
-                                        'The date of sample collected can not be before the informed consent date', f'{Date_of_blood_sample_collected_pure} - {date_inform_consent}', 'PD0020']
+                                        'The date of sample collected can not be before the informed consent date', f'{Date_of_blood_sample_collected_disname} - {date_inform_consent}', 'PD0020']
                                 lista_revision.append(error)
                             else:
                                 pass
@@ -202,7 +216,7 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer):
                                 pass
                             else: 
                                 error = [subject, visit, 'Date of blood sample collected', Date_of_blood_sample_collected,\
-                                        'Date of blood sample collected must be before the End of study/Early withdrawal date. ', Date_of_blood_sample_collected_pure, 'PD0040']
+                                        'Date of blood sample collected must be before the End of study/Early withdrawal date. ', Date_of_blood_sample_collected_disname, 'PD0040']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision PD0040 --> {e} - Subject: {subject},  Visit: {visit}  ')
@@ -235,7 +249,7 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer):
                                     pass
                                 else:
                                     error = [subject, visit, 'Was blood sample collected?', Was_blood_sample_collected_form_field_instance ,\
-                                            'If the sample was collected, not all sections can be "not done"', Was_blood_sample_collected_pure, 'PD0050']
+                                            'If the sample was collected, not all sections can be "not done"', Was_blood_sample_collected_disname, 'PD0050']
                                     lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision PD0050--> {e} - Subject: {subject},  Visit: {visit} ')

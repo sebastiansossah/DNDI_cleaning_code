@@ -16,8 +16,8 @@ def PBMC_isolate(df_root, path_excel_writer):
 
     df= df_root[df_root['name']== 'PBMC Isolate']
     lista_sujetos = df['Participante'].unique()
-    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
-    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)
+    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id', 'displayName']]
+    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)  + '|' + df['displayName'].astype(str)
 
     df_visit_date = df_root[df_root['name']=='Date of visit']
     df_visit_date = df_visit_date[['Visit','Participante', 'Campo', 'Valor']]
@@ -101,9 +101,11 @@ def PBMC_isolate(df_root, path_excel_writer):
                         date_sample_collected = row['Date of the sample collected']
                         date_sample_collected_pure = date_sample_collected.split('|')[0]
                         date_sample_collected_form_field_instance = date_sample_collected.split('|')[1]
+                        date_sample_collected_disname = date_sample_collected.split('|')[2]
                     except Exception as e:
                         date_sample_collected_pure = ''
                         date_sample_collected_form_field_instance = 'This field does not have any data'
+                        date_sample_collected_disname = 'Empty'
 
                     # --------------------------------------------------------------------------
                     # Revision GE0070
@@ -121,7 +123,7 @@ def PBMC_isolate(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, 'Date of the sample collected', date_sample_collected_form_field_instance,\
-                                        f , date_sample_collected_pure, 'GE0020']
+                                        f , date_sample_collected_disname, 'GE0020']
                                 lista_revision.append(error)     
 
                         except Exception as e:
@@ -136,7 +138,7 @@ def PBMC_isolate(df_root, path_excel_writer):
 
                             if date_of_test_f != date_of_visit_f:
                                 error = [subject, visit, 'Date of the sample collected', date_sample_collected_form_field_instance ,\
-                                        'The date should be the same as the visit date in the "Date of Visit" Form' , f'{date_sample_collected_pure} - {date_of_visit}', 'PB0010']
+                                        'The date should be the same as the visit date in the "Date of Visit" Form' , f'{date_sample_collected_disname} - {date_of_visit}', 'PB0010']
                                 lista_revision.append(error)
                             else:
                                 pass
@@ -152,7 +154,7 @@ def PBMC_isolate(df_root, path_excel_writer):
 
                             if date_of_test_f < date_inform_consent_f:
                                 error = [subject, visit, 'Date of the sample collected', date_sample_collected_form_field_instance ,\
-                                        'The date/time of sample collected can not  be before the informed consent date/time', f'{date_sample_collected_pure} - {date_inform_consent}', 'PB0030']
+                                        'The date/time of sample collected can not  be before the informed consent date/time', f'{date_sample_collected_disname} - {date_inform_consent}', 'PB0030']
                                 lista_revision.append(error)
                             else:
                                 pass
@@ -166,7 +168,7 @@ def PBMC_isolate(df_root, path_excel_writer):
                                 pass
                             else: 
                                 error = [subject, visit, 'Date of the sample collected', date_sample_collected_form_field_instance ,\
-                                        'Date of the sample collected must be before the End of study/Early withdrawal date. ', date_sample_collected_pure, 'PB0040']
+                                        'Date of the sample collected must be before the End of study/Early withdrawal date. ', date_sample_collected_disname, 'PB0040']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision PB0040 --> {e} - Subject: {subject},  Visit: {visit}  ')

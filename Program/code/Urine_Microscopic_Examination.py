@@ -18,8 +18,8 @@ def urine_microscopic_examination(df_root, path_excel_writer):
 
     df= df_root[df_root['name']== 'Urine Microscopic Examination']
     lista_sujetos = df['Participante'].unique()
-    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
-    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)
+    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id', 'displayName']]
+    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)  + '|' + df['displayName'].astype(str)
 
     lista_revision = []
     lista_logs = ['Urine Microscopic Examination']
@@ -49,9 +49,11 @@ def urine_microscopic_examination(df_root, path_excel_writer):
                         was_performed = row['Was the urine microscopic examination performed?']
                         was_performed_pure = was_performed.split('|')[0]
                         was_performed_form_field_instance = was_performed.split('|')[1]
+                        was_performed_disname = was_performed.split('|')[2]
                     except Exception as e:
                         was_performed_pure = math.nan
                         was_performed_form_field_instance  = 'This field does not have any data'
+                        was_performed_disname = 'Empty'
 
 
                     # ------------------------------------------------------- 
@@ -84,7 +86,7 @@ def urine_microscopic_examination(df_root, path_excel_writer):
                             else:
                                 error = [subject, visit, 'Was the urine microscopic examination performed?', was_performed_form_field_instance,\
                                          'If Urine Sample Collected is checked as "Yes", not all laboratory tests can be "not done"', \
-                                            was_performed_pure, 'URM0010']
+                                            was_performed_disname, 'URM0010']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision URM0010--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -117,7 +119,7 @@ def urine_microscopic_examination(df_root, path_excel_writer):
                             else:
                                 error = [subject, visit, 'Was the urine microscopic examination performed?', was_performed_form_field_instance,\
                                          'None of the result of the urinalysis form is >=+, therefore this examination is not required', \
-                                            was_performed_pure, 'URM0020']
+                                            was_performed_disname, 'URM0020']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision URM0020--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -130,7 +132,7 @@ def urine_microscopic_examination(df_root, path_excel_writer):
                             else:
                                 error = [subject, visit, 'Was the urine microscopic examination performed?', was_performed_form_field_instance,\
                                          'if Was the urine microscopic examination performed? ="No" and any of the results from the urinalysis at the same visit is >= +', \
-                                            was_performed_pure, 'URM0030']
+                                            was_performed_disname, 'URM0030']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision URM0030--> {e} - Subject: {subject},  Visit: {visit} ')

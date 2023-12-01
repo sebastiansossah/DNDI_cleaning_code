@@ -17,8 +17,8 @@ def physical_examination(df_root, path_excel_writer):
 
     df= df_root[df_root['name']== 'Physical Examination']
     lista_sujetos = df['Participante'].unique()
-    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
-    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)
+    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id', 'displayName']]
+    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)  + '|' + df['displayName'].astype(str)
 
     df_visit_date = df_root[df_root['name']=='Date of visit']
     df_visit_date = df_visit_date[['Visit','Participante', 'Campo', 'Valor']]
@@ -86,9 +86,11 @@ def physical_examination(df_root, path_excel_writer):
                         was_physical_performed = row['Was the physical examination performed?']
                         was_physical_performed_pure = was_physical_performed.split('|')[0]
                         was_physical_performed_form_field_instance = was_physical_performed.split('|')[1]
+                        was_physical_performed_disname = was_physical_performed.split('|')[2]
                     except Exception as e:
                         was_physical_performed_pure = math.nan
                         was_physical_performed_form_field_instance = 'This field does not have any data'
+                        was_physical_performed_disname = 'Empty'
 
                     # try:
                     #     provide_the_reason = row['Provide the reason']
@@ -98,58 +100,72 @@ def physical_examination(df_root, path_excel_writer):
                     try:
                         date_examination_performed = row['Date of examination performed']
                         date_examination_performed_pure = date_examination_performed.split('|')[0]
-                        date_examination_performed_form_field_instance = date_examination_performed.split('|')[1] 
+                        date_examination_performed_form_field_instance = date_examination_performed.split('|')[1]
+                        date_examination_performed_disname = date_examination_performed.split('|')[2] 
                     except Exception as e:
                         date_examination_performed_pure = ''
                         date_examination_performed_form_field_instance = 'This field does not have any data'
+                        date_examination_performed_disname = 'Empty'
 
                     try:
                         undefined_clinical = row['Undefined, Clinical interpretation?']
                         undefined_clinical_pure = undefined_clinical.split('|')[0]
                         undefined_clinical_form_field_instance = undefined_clinical.split('|')[1]
+                        undefined_clinical_disname = undefined_clinical.split('|')[2]
                     except Exception as e:
                         undefined_clinical_pure = math.nan
                         undefined_clinical_form_field_instance = 'This field does not have any data'
+                        undefined_clinical_disname = 'Empty'
 
                     try:
                         undefined_body_system = row['Undefined, Body System']
                         undefined_body_system_pure = undefined_body_system.split('|')[0]
                         undefined_body_system_form_field_instance = undefined_body_system.split('|')[1]
+                        undefined_body_system_disname = undefined_body_system.split('|')[2]
                     except Exception as e:
                         undefined_body_system_pure = math.nan
                         undefined_body_system_form_field_instance = 'This field does not have any data'
+                        undefined_body_system_disname = 'Empty'
 
                     try:
                         predose_clinical = row['Pre dose, Clinical interpretation?']
                         predose_clinical_pure = predose_clinical.split('|')[0]
-                        predose_clinical_form_field_instance = predose_clinical.split('|')[1] 
+                        predose_clinical_form_field_instance = predose_clinical.split('|')[1]
+                        predose_clinical_disname = predose_clinical.split('|')[2] 
                     except Exception as e:
                         predose_clinical_pure = math.nan
                         predose_clinical_form_field_instance = 'This field does not have any data'
+                        predose_clinical_disname = 'Empty'
 
                     try:
                         two_hours = row['2-hours post dose, Clinical interpretation?']
                         two_hours_pure = two_hours.split('|')[0]
                         two_hours_form_field_instance = two_hours.split('|')[1]
+                        two_hours_form_disname = two_hours.split('|')[2]
                     except Exception as e:
                         two_hours_pure = math.nan
                         two_hours_form_field_instance = 'This field does not have any data'
+                        two_hours_form_disname = 'Empty'
 
                     try:
                         four_hours = row['4-hours post dose, Clinical interpretation?']
                         four_hours_pure = four_hours.split('|')[0]
                         four_hours_form_field_instance = four_hours.split('|')[1]
+                        four_hours_disname = four_hours.split('|')[2]
                     except Exception as e:
                         four_hours_pure = math.nan
                         four_hours_form_field_instance = 'This field does not have any data'
+                        four_hours_disname = 'Empty'
 
                     try:
                         eight_hours = row['8-hours post dose, Clinical interpretation?']
                         eight_hours_pure = eight_hours.split('|')[0]
                         eight_hours_form_field_instance = eight_hours.split('|')[1]
+                        eight_hours_disname = eight_hours.split('|')[2]
                     except Exception as e:
                         eight_hours_pure = math.nan
                         eight_hours_form_field_instance = 'This field does not have any data'
+                        eight_hours_disname = 'Empty'
                                         
                     # ----------------------------------------------------------------------------------------
 
@@ -167,7 +183,7 @@ def physical_examination(df_root, path_excel_writer):
                             if f == None:
                                 pass
                             else:
-                                error = [subject, visit, 'Date of examination performed', date_examination_performed_form_field_instance ,f , date_examination_performed_pure, 'GE0020']
+                                error = [subject, visit, 'Date of examination performed', date_examination_performed_form_field_instance ,f , date_examination_performed_disname, 'GE0020']
                                 lista_revision.append(error)     
 
                         except Exception as e:
@@ -183,7 +199,7 @@ def physical_examination(df_root, path_excel_writer):
 
                             if date_of_test_f != date_of_visit_f:
                                 error = [subject, visit, 'Date of examination performed', date_examination_performed_form_field_instance,\
-                                        'The date should be the same as the visit date in the "Date of Visit" Form' , f'{date_examination_performed_pure} - {date_of_visit}', 'PE0020']
+                                        'The date should be the same as the visit date in the "Date of Visit" Form' , f'{date_examination_performed_disname} - {date_of_visit}', 'PE0020']
                                 lista_revision.append(error)
                             else:
                                 pass
@@ -199,7 +215,7 @@ def physical_examination(df_root, path_excel_writer):
 
                             if date_of_test_f < date_inform_consent_f:
                                 error = [subject, visit, 'Date of examination performed', date_examination_performed_form_field_instance,\
-                                        'The date/time of test performed can not be before the informed consent date/time' ,f'{date_examination_performed_pure} - {date_inform_consent}', 'PE0030']
+                                        'The date/time of test performed can not be before the informed consent date/time' ,f'{date_examination_performed_disname} - {date_inform_consent}', 'PE0030']
                                 lista_revision.append(error)
                             else:
                                 pass
@@ -212,7 +228,7 @@ def physical_examination(df_root, path_excel_writer):
                             if datetime.strptime(str(date_examination_performed_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
                                 pass
                             else: 
-                                error = [subject, visit, 'Date of examination performed', date_examination_performed_form_field_instance ,'Date of examination performed must be before the End of study/Early withdrawal date. ', date_examination_performed_pure, 'PE0040']
+                                error = [subject, visit, 'Date of examination performed', date_examination_performed_form_field_instance ,'Date of examination performed must be before the End of study/Early withdrawal date. ', date_examination_performed_disname, 'PE0040']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision PE0040 --> {e} - Subject: {subject},  Visit: {visit}  ')
@@ -247,7 +263,7 @@ def physical_examination(df_root, path_excel_writer):
                                     pass
                                 else:
                                     error = [subject, visit, 'Undefined, Clinical interpretation?', undefined_clinical_form_field_instance,\
-                                             'If abnormal, the abnormality section must be added at least once', undefined_clinical_pure, 'PE0090']
+                                             'If abnormal, the abnormality section must be added at least once', undefined_clinical_disname, 'PE0090']
                                     lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision PE0090 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -259,7 +275,7 @@ def physical_examination(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, 'Was the physical examination performed?', was_physical_performed_form_field_instance,\
-                                         'The "Not Required" option can only be selected if visit is D-1 and D-1 date=Screening visit date', was_physical_performed_pure, 'PE0100']
+                                         'The "Not Required" option can only be selected if visit is D-1 and D-1 date=Screening visit date', was_physical_performed_disname, 'PE0100']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision PE0100--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -273,7 +289,7 @@ def physical_examination(df_root, path_excel_writer):
                         if float(undefined_body_system_pure) in lista_body_system:
                             if visit == 'Screening Visit':
                                 error = [subject, visit, 'Undefined, Body System ', undefined_body_system_form_field_instance,\
-                                         'General appearance, Neurological, Musculo-skeletal, Lymphatic should only be selected at the screening visit', undefined_body_system_pure, 'PE0110']
+                                         'General appearance, Neurological, Musculo-skeletal, Lymphatic should only be selected at the screening visit', undefined_body_system_disname, 'PE0110']
                                 lista_revision.append(error)        
                     except Exception as e:
                         lista_logs.append(f'Revision PE0110 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -310,7 +326,7 @@ def physical_examination(df_root, path_excel_writer):
                                     pass
                                 else:
                                     error = [subject, visit, 'Pre dose, Clinical interpretation?', predose_clinical_form_field_instance,\
-                                             'If abnormal, the abnormality section must be added at least once', predose_clinical_pure, 'PE0050']
+                                             'If abnormal, the abnormality section must be added at least once', predose_clinical_disname, 'PE0050']
                                     lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision PE0050 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -342,7 +358,7 @@ def physical_examination(df_root, path_excel_writer):
                                     pass
                                 else:
                                     error = [subject, visit, '2-hours post dose, Clinical interpretation?', two_hours_form_field_instance,\
-                                             'If abnormal, the abnormality section must be added at least once' , two_hours_pure, 'PE0060']
+                                             'If abnormal, the abnormality section must be added at least once' , two_hours_form_disname, 'PE0060']
                                     lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision PE0060 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -373,7 +389,7 @@ def physical_examination(df_root, path_excel_writer):
                                     pass
                                 else:
                                     error = [subject, visit, '4-hours post dose, Clinical interpretation?', four_hours_form_field_instance,\
-                                             'If abnormal, the abnormality section must be added at least once' , four_hours_pure, 'PE0070']
+                                             'If abnormal, the abnormality section must be added at least once' , four_hours_disname, 'PE0070']
                                     lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision PE0070 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -405,7 +421,7 @@ def physical_examination(df_root, path_excel_writer):
                                     pass
                                 else:
                                     error = [subject, visit, '8-hours post dose, Clinical interpretation?', eight_hours_form_field_instance,\
-                                             'If abnormal, the abnormality section must be added at least once', eight_hours_pure, 'PE0080']
+                                             'If abnormal, the abnormality section must be added at least once', eight_hours_disname, 'PE0080']
                                     lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision PE0080 --> {e} - Subject: {subject},  Visit: {visit} ')

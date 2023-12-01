@@ -18,8 +18,8 @@ def lesion_measurement(df_root, path_excel_writer):
 
     df= df_root[df_root['name']== 'Lesion Measurement']
     lista_sujetos = df['Participante'].unique()
-    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
-    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)
+    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id', 'displayName']]
+    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)  + '|' + df['displayName'].astype(str)
 
     df_visit_date = df_root[df_root['name']=='Date of visit']
     df_visit_date = df_visit_date[['Visit','Participante', 'Campo', 'Valor']]
@@ -86,17 +86,21 @@ def lesion_measurement(df_root, path_excel_writer):
                         Was_the_lesion_measurement_performed = row["Was the lesion measurement performed?"]
                         Was_the_lesion_measurement_performed_pure = Was_the_lesion_measurement_performed.split('|')[0]
                         Was_the_lesion_measurement_performed_form_field_instance = Was_the_lesion_measurement_performed.split('|')[1] 
+                        Was_the_lesion_measurement_performed_disname = Was_the_lesion_measurement_performed.split('|')[2] 
                     except Exception as e:
                         Was_the_lesion_measurement_performed_pure = math.nan
                         Was_the_lesion_measurement_performed_form_field_instance = 'This field does not have any data'
+                        Was_the_lesion_measurement_performed_disname = 'Empty'
     
                     try:
                         Date_of_assessment_performed = row["Date of assessment performed"]
                         Date_of_assessment_performed_pure = Date_of_assessment_performed.split('|')[0]
                         Date_of_assessment_performed_form_field_instance = Date_of_assessment_performed.split('|')[1]
+                        Date_of_assessment_performed_disname = Date_of_assessment_performed.split('|')[2]
                     except Exception as e:
                         Date_of_assessment_performed_pure = ''
                         Date_of_assessment_performed_form_field_instance = 'This field does not have any data'
+                        Date_of_assessment_performed_disname = 'Empty'
 
                     # try:
                     #     Provide_the_reason = row["Provide the reason"]
@@ -184,7 +188,7 @@ def lesion_measurement(df_root, path_excel_writer):
                             if f == None:
                                 pass
                             else:
-                                error = [subject, visit, 'Date of assessment performed', Date_of_assessment_performed_form_field_instance ,f , Date_of_assessment_performed_pure, 'GE0020']
+                                error = [subject, visit, 'Date of assessment performed', Date_of_assessment_performed_form_field_instance ,f , Date_of_assessment_performed_disname, 'GE0020']
                                 lista_revision.append(error)     
 
                         except Exception as e:
@@ -198,7 +202,7 @@ def lesion_measurement(df_root, path_excel_writer):
                             else:
                                 error = [subject, visit, 'Was the lesion measurement performed?', Was_the_lesion_measurement_performed_form_field_instance,\
                                          'The "Not Required" option can only be selected if visit is D-1 and Screening visit date = D-1 date (screening done on D-1)', \
-                                            Was_the_lesion_measurement_performed_pure, 'LM0010']
+                                            Was_the_lesion_measurement_performed_disname, 'LM0010']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision LM0010--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -214,7 +218,7 @@ def lesion_measurement(df_root, path_excel_writer):
                             if date_of_test_f != date_of_visit_f:
                                 error = [subject, visit, 'Date of assessment performed', Date_of_assessment_performed_form_field_instance,\
                                         'The date of assessment can not be before the informed consent date' , \
-                                            f'{Date_of_assessment_performed_pure} - {date_of_visit}', 'LM0030']
+                                            f'{Date_of_assessment_performed_disname} - {date_of_visit}', 'LM0030']
                                 lista_revision.append(error)
                             else:
                                 pass
@@ -230,7 +234,7 @@ def lesion_measurement(df_root, path_excel_writer):
 
                             if date_of_test_f < date_inform_consent_f:
                                 error = [subject, visit, 'Date of assessment performed', Date_of_assessment_performed_form_field_instance, \
-                                        'The date of assessment can not be before the informed consent date',f'{Date_of_assessment_performed_pure} - {date_inform_consent}', 'LM0040']
+                                        'The date of assessment can not be before the informed consent date',f'{Date_of_assessment_performed_disname} - {date_inform_consent}', 'LM0040']
                                 lista_revision.append(error)
                             else:
                                 pass
@@ -243,7 +247,7 @@ def lesion_measurement(df_root, path_excel_writer):
                             if datetime.strptime(str(Date_of_assessment_performed_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
                                 pass
                             else: 
-                                error = [subject, visit, 'Date of assessment performed', Date_of_assessment_performed_form_field_instance ,'Date of assessment performed must be before the End of study/Early withdrawal date. ', Date_of_assessment_performed_pure, 'LM0050']
+                                error = [subject, visit, 'Date of assessment performed', Date_of_assessment_performed_form_field_instance ,'Date of assessment performed must be before the End of study/Early withdrawal date. ', Date_of_assessment_performed_disname, 'LM0050']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision LM0050 --> {e} - Subject: {subject},  Visit: {visit}  ')
@@ -282,7 +286,7 @@ def lesion_measurement(df_root, path_excel_writer):
                             else:
                                 error = [subject, visit, 'Was the lesion measurement performed?', Was_the_lesion_measurement_performed_form_field_instance,\
                                          'If answer is Yes at least one "Lesion" section must be added', \
-                                            Was_the_lesion_measurement_performed_pure, 'LM0060']
+                                            Was_the_lesion_measurement_performed_disname, 'LM0060']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision LM0060--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -295,7 +299,7 @@ def lesion_measurement(df_root, path_excel_writer):
                                 pass
                             else:
                                 error = [subject, visit, 'Was the lesion measurement performed?', Was_the_lesion_measurement_performed_form_field_instance,\
-                                         'If answer is "No", no "Lesion" section must be added', Was_the_lesion_measurement_performed_pure, 'LM0070']
+                                         'If answer is "No", no "Lesion" section must be added', Was_the_lesion_measurement_performed_disname, 'LM0070']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision LM0070--> {e} - Subject: {subject},  Visit: {visit} ')

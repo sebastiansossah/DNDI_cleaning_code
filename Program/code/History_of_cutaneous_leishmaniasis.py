@@ -17,8 +17,8 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
 
     df= df_root[df_root['name']=='History of cutaneous leishmaniasis']
     lista_sujetos = df['Participante'].unique()
-    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
-    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)
+    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id', 'displayName']]
+    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)  + '|' + df['displayName'].astype(str)
 
 
     df_visit_date = df_root[df_root['name']=='Date of visit']
@@ -100,49 +100,61 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                         date_confirmed_diagnosis = row['Date of confirmed diagnosis of CL']
                         date_confirmed_diagnosis_pure = date_confirmed_diagnosis.split('|')[0]
                         date_confirmed_diagnosis_form_field_instance = date_confirmed_diagnosis.split('|')[1]
+                        date_confirmed_diagnosis_disname = date_confirmed_diagnosis.split('|')[2]
                     except Exception as e:
                         date_confirmed_diagnosis_pure = ''
                         date_confirmed_diagnosis_form_field_instance = 'This field does not have any data'
+                        date_confirmed_diagnosis_disname = 'Empty'
 
                     try:
                         date_new_sample = row['Date of new sample taken']
                         date_new_sample_pure = date_new_sample.split('|')[0]
                         date_new_sample_form_field_instance = date_new_sample.split('|')[1]
+                        date_new_sample_disname = date_new_sample.split('|')[2]
                     except Exception as e:
                         date_new_sample_pure = ''
                         date_new_sample_form_field_instance = 'This field does not have any data'
+                        date_new_sample_disname = 'Empty'
 
                     try:
                         species_identification = row['Species identification']
                         species_identification_pure = species_identification.split('|')[0]
                         species_identification_form_field_instance = species_identification.split('|')[1]
+                        species_identification_disname = species_identification.split('|')[2]
                     except Exception as e:
                         species_identification_pure = math.nan
                         species_identification_form_field_instance = 'This field does not have any data'
+                        species_identification_disname = 'Empty'
 
                     try:
                         species_name = row['Species name']
                         species_name_pure = species_name.split('|')[0]
                         species_name_form_field_instance = species_name.split('|')[1]
+                        species_name_disname = species_name.split('|')[2]
                     except Exception as e:
                         species_name_pure = math.nan
                         species_name_form_field_instance = 'This field does not have any data'
+                        species_name_disname = 'Empty'
 
                     try:
                         previous_history_leishmaniasis = row['Are there any previous history of leishmaniasis (with a diagnosis in the past)?']
                         previous_history_leishmaniasis_pure = previous_history_leishmaniasis.split('|')[0]
                         previous_history_leishmaniasis_form_field_instance = previous_history_leishmaniasis.split('|')[1]
+                        previous_history_leishmaniasis_disname = previous_history_leishmaniasis.split('|')[2]
                     except Exception as e:
                         previous_history_leishmaniasis_pure = math.nan
                         previous_history_leishmaniasis_form_field_instance = 'This field does not have any data'
+                        previous_history_leishmaniasis_disname = 'Empty'
 
                     try:
                         date_diagnosis = row['Date of Diagnosis']
                         date_diagnosis_pure = date_diagnosis.split('|')[0]
                         date_diagnosis_form_field_instance = date_diagnosis.split('|')[1]
+                        date_diagnosis_disname = date_diagnosis.split('|')[2]
                     except Exception as e:
                         date_diagnosis_pure = ''
                         date_diagnosis_form_field_instance = 'This field does not have any data'
+                        date_diagnosis_disname = 'Empty'
 
                     #----------------------------------------------------------------------------
 
@@ -160,7 +172,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                             if f == None:
                                 pass
                             else:
-                                error = [subject, visit, 'Date of confirmed diagnosis of CL', date_confirmed_diagnosis_form_field_instance ,f , date_confirmed_diagnosis_pure, 'GE0020']
+                                error = [subject, visit, 'Date of confirmed diagnosis of CL', date_confirmed_diagnosis_form_field_instance ,f , date_confirmed_diagnosis_disname, 'GE0020']
                                 lista_revision.append(error) 
                         except Exception as e:
                             lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -174,7 +186,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                             if f == None:
                                 pass
                             else:
-                                error = [subject, visit,'Date of new sample taken', date_new_sample_form_field_instance ,f , date_new_sample_pure, 'GE0020']
+                                error = [subject, visit,'Date of new sample taken', date_new_sample_form_field_instance ,f , date_new_sample_disname, 'GE0020']
                                 lista_revision.append(error) 
                         except Exception as e:
                             lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -191,7 +203,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
 
                             if date__confirmed_diagnosis_f <  date_birth_format:
                                 error = [subject, visit, 'Date of confirmed diagnosis of CL', date_confirmed_diagnosis_form_field_instance,\
-                                        'The year of diagnosis of CL must be equal or after the year of birth in DEMOGRAPHIC' , date_confirmed_diagnosis_pure, 'CL0010']
+                                        'The year of diagnosis of CL must be equal or after the year of birth in DEMOGRAPHIC' , date_confirmed_diagnosis_disname, 'CL0010']
                                 lista_revision.append(error)
                             else:
                                 pass
@@ -209,7 +221,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
 
                             if date_confirmed_diagnosis_f < date_new_sample_f:
                                 error = [subject, visit, 'Date of Sample used for Diagnosis taken', date_new_sample_form_field_instance ,\
-                                        'The date of sample must be before the diagnosis of CL date.' , f'{date_confirmed_diagnosis_pure} - {date_new_sample_pure}', 'CL0020']
+                                        'The date of sample must be before the diagnosis of CL date.' , f'{date_confirmed_diagnosis_disname} - {date_new_sample_disname}', 'CL0020']
                                 lista_revision.append(error)
                             else:
                                 pass
@@ -228,7 +240,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
 
                             if  date_new_sample_f <  date_birth_format:
                                 error = [subject, visit, 'Date of Sample used for Diagnosis taken', date_new_sample_form_field_instance,  \
-                                        'The year and month of Sample used for Diagnosis taken must be equal or after the year and month of birth in DEMOGRAPHIC' , date_new_sample_pure, 'CL0030']
+                                        'The year and month of Sample used for Diagnosis taken must be equal or after the year and month of birth in DEMOGRAPHIC' , date_new_sample_disname, 'CL0030']
                                 lista_revision.append(error)
                             else:
                                 pass
@@ -243,7 +255,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                             if 99.0 in [float(i) for i in species_identification_pure.split(',')]:
                                 if math.isnan(float(species_name_pure)) or str(species_name_pure) == '' or float(species_name_pure) == np.nan or  str(species_name_pure) == '-':
                                     error = [subject, visit, 'Species identification', species_identification_form_field_instance ,\
-                                                'If "other" is selected, there must be at least one "other species" section added' , species_name_pure, 'CL0040']
+                                                'If "other" is selected, there must be at least one "other species" section added' , species_name_disname, 'CL0040']
                                     lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision CL0040--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -259,7 +271,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                                 try:
                                     if math.isnan(float(species_name_pure)) or str(species_name_pure) != '' or float(species_name_pure) != np.nan or  str(species_name_pure) != '-':
                                         error = [subject, visit, 'Species identification', species_identification_form_field_instance, \
-                                                'If at least one "other species" section is added, the "other" option must be selected' , f'{species_identification_pure} - {species_name_pure}', 'CL0050']
+                                                'If at least one "other species" section is added, the "other" option must be selected' , f'{species_identification_disname} - {species_name_disname}', 'CL0050']
                                         lista_revision.append(error)
                                 except Exception as e:
                                         lista_logs.append(f'Revision CL0050--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -273,7 +285,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                         try:
                             to_save =  species_name_pure.lower()
                             if to_save in lista_other_names:
-                                error = [subject, visit, 'Other Species', species_name_form_field_instance ,'The error message should describe the inconsistency found', species_name_pure, 'CL0070']
+                                error = [subject, visit, 'Other Species', species_name_form_field_instance ,'The error message should describe the inconsistency found', species_name_disname, 'CL0070']
                                 lista_revision.append(error)
                             else:
                                 lista_other_names.append(to_save)
@@ -311,7 +323,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                                 else:
                                     error = [subject, visit, 'Are there any previous history of leishmaniasis (with a diagnosis in the past)?', previous_history_leishmaniasis_form_field_instance ,\
                                             'If "Are there any previous history of leishmaniasis (with a diagnosis in the past)?" = Yes at least one "History of Leishmaniasis Details" section must be added', \
-                                                previous_history_leishmaniasis_pure, 'CL0080']
+                                                previous_history_leishmaniasis_disname, 'CL0080']
                                     lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision CL0080--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -327,7 +339,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                                 else:
                                     error = [subject, visit, 'Are there any previous history of leishmaniasis (with a diagnosis in the past)?', previous_history_leishmaniasis_form_field_instance ,\
                                             'If "Are there any previous history of leishmaniasis (with a diagnosis in the past)?" = NO, there should be no "History of Leishmaniasis Details" section must be added', \
-                                                previous_history_leishmaniasis_pure, 'CL0090']
+                                                previous_history_leishmaniasis_disname, 'CL0090']
                                     lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision CL0090--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -344,7 +356,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
 
                             if date_diagnosis_f <  date_birth_format:
                                 error = [subject, visit, 'History of Leishmaniasis Details - Date of Diagnosis', date_diagnosis_form_field_instance,\
-                                        'The year and month of  Date of Diagnosis taken must be equal or after the month and year of birth in DEMOGRAPHIC' , date_diagnosis_pure, 'CL0100']
+                                        'The year and month of  Date of Diagnosis taken must be equal or after the month and year of birth in DEMOGRAPHIC' , date_diagnosis_disname, 'CL0100']
                                 lista_revision.append(error)
                             else:
                                 pass
@@ -363,7 +375,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
 
                             if date_diagnosis_f < date_inform_consent_f:
                                 error = [subject, visit, 'Date of Diagnosis', date_diagnosis_form_field_instance ,'The Date of Diagnosis should be before the informed consent date', \
-                                        f'{date_diagnosis_pure} - {date_inform_consent}', 'CL0110']
+                                        f'{date_diagnosis_disname} - {date_inform_consent}', 'CL0110']
                                 lista_revision.append(error)
                             else:
                                 pass
@@ -374,7 +386,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                     if date_diagnosis_pure != '':
                         try:
                             if date_diagnosis_pure in lista_date_diagnosis:
-                                error = [subject, visit, 'Date of Diagnosis', date_diagnosis_form_field_instance, 'The Date of Diagnosis should not be repeated', date_diagnosis_pure, 'CL0120']
+                                error = [subject, visit, 'Date of Diagnosis', date_diagnosis_form_field_instance, 'The Date of Diagnosis should not be repeated', date_diagnosis_disname, 'CL0120']
                                 lista_revision.append(error)
                             else:
                                 lista_date_diagnosis.append(date_diagnosis_pure)

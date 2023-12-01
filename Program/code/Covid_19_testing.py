@@ -16,8 +16,8 @@ def covid_19_testing(df_root, path_excel_writer):
 
     df= df_root[df_root['name']=='Covid 19 testing']
     lista_sujetos = df['Participante'].unique()
-    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
-    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)
+    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id', 'displayName']]
+    df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)  + '|' + df['displayName'].astype(str)
 
     df_visit_date = df_root[df_root['name']=='Date of visit']
     df_visit_date = df_visit_date[['Visit','Participante', 'Campo', 'Valor']]
@@ -86,34 +86,42 @@ def covid_19_testing(df_root, path_excel_writer):
                         was_antigen_performed = row['Was the SARS-CoV-2 antigen test performed?']
                         was_antigen_performed_pure = was_antigen_performed.split('|')[0]
                         was_antigen_performed_form_field_instance = was_antigen_performed.split('|')[1]
+                        was_antigen_performed_disname = was_antigen_performed.split('|')[2]
                     except Exception as e:
                         was_antigen_performed_pure = math.nan
                         was_antigen_performed_form_field_instance = 'This field does not have any data'
-                    
+                        was_antigen_performed_disname = 'Empty'
+
                     try:
                         provide_reason = row['Provide the reason']
                         provide_reason_pure = provide_reason.split('|')[0]
                         provide_reason_form_field_instance = provide_reason.split('|')[1]
+                        provide_reason_disname = provide_reason.split('|')[2]
                     except Exception as e:
                         provide_reason_pure = math.nan
                         provide_reason_form_field_instance = 'This field does not have any data'
-                    
+                        provide_reason_disname = 'Empty'
+
                     try:
                         date_test_performed = row['Date of test performed']
                         date_test_performed_pure = date_test_performed.split('|')[0]
-                        date_test_performed_form_field_instance = date_test_performed.split('|')[1] 
+                        date_test_performed_form_field_instance = date_test_performed.split('|')[1]
+                        date_test_performed_disname = date_test_performed.split('|')[2] 
                     except Exception as e:
                         date_test_performed_pure = ''
                         date_test_performed_form_field_instance = 'This field does not have any data'
+                        date_test_performed_disname = 'Empty'
 
                     try:
                         result = row['Result']
                         result_pure = result.split('|')[0]
                         result_form_field_instance = result.split('|')[1]
+                        result_disname = result.split('|')[2]
                     except Exception as e:
                         result_pure = math.nan
                         result_form_field_instance = 'This field does not have any data'
-                    
+                        result_disname = 'Empty'
+
                     # ------------------------------------------------------------------------------
                     # Revision GE0070
                     if float(was_DV_performed_pure) !=  1.0:
@@ -129,7 +137,7 @@ def covid_19_testing(df_root, path_excel_writer):
                             if f == None:
                                 pass
                             else:
-                                error = [subject, visit, 'Date of test performed', date_test_performed_form_field_instance ,f , date_test_performed_pure, 'GE0020']
+                                error = [subject, visit, 'Date of test performed', date_test_performed_form_field_instance ,f , date_test_performed_disname, 'GE0020']
                                 lista_revision.append(error)     
 
                         except Exception as e:
@@ -143,7 +151,7 @@ def covid_19_testing(df_root, path_excel_writer):
                             else:
                                 error = [subject, visit, 'Was the SARS-CoV-2 antigen test performed?', was_antigen_performed_form_field_instance,\
                                          'The "Not Required" option can only be selected if visit is D-1 and Screening visit date = D-1 date (screening done on D-1)' ,\
-                                              was_antigen_performed_pure, 'LBCOV0010']
+                                              was_antigen_performed_disname, 'LBCOV0010']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision LBCOV0010--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -158,7 +166,7 @@ def covid_19_testing(df_root, path_excel_writer):
                             if date_of_test_f != date_of_visit_f:
                                 error = [subject, visit, 'Date of test performed', date_test_performed_form_field_instance, \
                                         'The date should be the same as the visit date in the "Date of Visit" Form' ,\
-                                            f'{date_test_performed_pure} - {date_of_visit}', 'LBCOV0030']
+                                            f'{date_test_performed_disname} - {date_of_visit}', 'LBCOV0030']
                                 lista_revision.append(error)
                             else:
                                 pass
@@ -175,7 +183,7 @@ def covid_19_testing(df_root, path_excel_writer):
                             if date_of_test_f < date_inform_consent_f:
                                 error = [subject, visit, 'Date of test performed', date_test_performed_form_field_instance,\
                                         'Date of test performed should be after the date of informed consent.', \
-                                            f'{date_test_performed_pure} - {date_inform_consent}', 'LBCOV0040']
+                                            f'{date_test_performed_disname} - {date_inform_consent}', 'LBCOV0040']
                                 lista_revision.append(error)
                             else:
                                 pass
@@ -188,7 +196,7 @@ def covid_19_testing(df_root, path_excel_writer):
                             if datetime.strptime(str(date_test_performed_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
                                 pass
                             else: 
-                                error = [subject, visit, 'Date of test performed', date_test_performed_form_field_instance ,'Date of test performed must be before the End of study/Early withdrawal date. ', date_test_performed_pure, 'LBCOV0050']
+                                error = [subject, visit, 'Date of test performed', date_test_performed_form_field_instance ,'Date of test performed must be before the End of study/Early withdrawal date. ', date_test_performed_disname, 'LBCOV0050']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision LBCOV0050 --> {e} - Subject: {subject},  Visit: {visit}  ')
