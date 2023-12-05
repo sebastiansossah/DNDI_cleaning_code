@@ -193,7 +193,7 @@ def covid_19_testing(df_root, path_excel_writer):
                     # Revision -> LBCOV0050
                     if date_test_performed_pure != '':
                         try:
-                            if datetime.strptime(str(date_test_performed_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
+                            if datetime.strptime(str(date_test_performed_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
                                 pass
                             else: 
                                 error = [subject, visit, 'Date of test performed', date_test_performed_form_field_instance ,'Date of test performed must be before the End of study/Early withdrawal date. ', date_test_performed_disname, 'LBCOV0050']

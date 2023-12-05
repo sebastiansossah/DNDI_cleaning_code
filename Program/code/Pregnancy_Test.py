@@ -243,7 +243,7 @@ def pregnancy_test(df_root, path_excel_writer):
                     # Revision -> RP0070
                     if date_test_performed_pure != '':
                         try:
-                            if datetime.strptime(str(date_test_performed_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
+                            if datetime.strptime(str(date_test_performed_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
                                 pass
                             else: 
                                 error = [subject, visit, 'date of test performed', date_test_performed_form_field_instance ,'The date of test performed can not be after the study/Early withdrawal date.', date_test_performed_disname, 'RP0070']

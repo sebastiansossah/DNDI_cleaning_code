@@ -164,7 +164,7 @@ def PBMC_isolate(df_root, path_excel_writer):
                     # Revision -> PB0040
                     if date_sample_collected_pure != '':
                         try:
-                            if datetime.strptime(str(date_sample_collected_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
+                            if datetime.strptime(str(date_sample_collected_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
                                 pass
                             else: 
                                 error = [subject, visit, 'Date of the sample collected', date_sample_collected_form_field_instance ,\

@@ -144,10 +144,10 @@ def vein_assesment(df_root, path_excel_writer):
                         pass
                     else:
                         try:
-                            if datetime.strptime(str(date_of_assesment_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
+                            if datetime.strptime(str(date_of_assesment_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
                                 pass
                             else: 
-                                error = [subject, visit, 'Date of assessment performed', date_of_assesment_form_field_instance ,'Date of assessment performed must be before the End of study/Early withdrawal date. ', date_of_assesment_pure, 'VA0050']
+                                error = [subject, visit, 'Date of assessment performed', date_of_assesment_form_field_instance ,'Date of assessment performed must be before the End of study/Early withdrawal date. ', f'{date_of_assesment_pure} - {end_study_date}', 'VA0050']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision VA0050 --> {e} - Subject: {subject},  Visit: {visit}  ')

@@ -112,7 +112,7 @@ def date_of_visit(df_root, path_excel_writer):
                         pass
                     else:
                         try:
-                            if datetime.strptime(str(visit_date_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
+                            if datetime.strptime(str(visit_date_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
                                 pass
                             else: 
                                 error = [subject, visit, 'Visit Date', visit_date_form_field_instance ,'Visit Date must be before the End of study/Early withdrawal date. ', visit_date_pure, 'VS0030']

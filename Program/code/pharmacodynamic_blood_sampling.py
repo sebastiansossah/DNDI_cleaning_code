@@ -212,7 +212,7 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer):
                     # Revision -> PD0040
                     if Date_of_blood_sample_collected_pure != '':
                         try:
-                            if datetime.strptime(str(Date_of_blood_sample_collected_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
+                            if datetime.strptime(str(Date_of_blood_sample_collected_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
                                 pass
                             else: 
                                 error = [subject, visit, 'Date of blood sample collected', Date_of_blood_sample_collected,\

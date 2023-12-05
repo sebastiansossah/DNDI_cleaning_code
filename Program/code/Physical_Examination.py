@@ -225,7 +225,7 @@ def physical_examination(df_root, path_excel_writer):
                     # Revision -> PE0040
                     if date_examination_performed_pure != '':
                         try:
-                            if datetime.strptime(str(date_examination_performed_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
+                            if datetime.strptime(str(date_examination_performed_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
                                 pass
                             else: 
                                 error = [subject, visit, 'Date of examination performed', date_examination_performed_form_field_instance ,'Date of examination performed must be before the End of study/Early withdrawal date. ', date_examination_performed_disname, 'PE0040']

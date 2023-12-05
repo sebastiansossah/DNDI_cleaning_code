@@ -354,7 +354,7 @@ def prior_concomitant_procedures(df_root, path_excel_writer):
 
                     # Revision -> PR0140
                     try:
-                        if datetime.strptime(str(start_date_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
+                        if datetime.strptime(str(start_date_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
                             pass
                         else: 
                             error = [subject, visit, 'Start Date', start_date_form_field_instance,\
@@ -376,7 +376,7 @@ def prior_concomitant_procedures(df_root, path_excel_writer):
 
                     # Revision -> PR0160
                     try:
-                        if datetime.strptime(str(end_date_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
+                        if datetime.strptime(str(end_date_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
                             pass
                         else: 
                             error = [subject, visit, 'End Date', end_date_form_field_instance,\

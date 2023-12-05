@@ -244,7 +244,7 @@ def lesion_measurement(df_root, path_excel_writer):
                     # Revision -> LM0050
                     if Date_of_assessment_performed_pure != '':
                         try:
-                            if datetime.strptime(str(Date_of_assessment_performed_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
+                            if datetime.strptime(str(Date_of_assessment_performed_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
                                 pass
                             else: 
                                 error = [subject, visit, 'Date of assessment performed', Date_of_assessment_performed_form_field_instance ,'Date of assessment performed must be before the End of study/Early withdrawal date. ', Date_of_assessment_performed_disname, 'LM0050']

@@ -157,7 +157,7 @@ def titration_of_auto_antibodies(df_root, path_excel_writer):
                     # Revision -> TI0040
                     if date_collected_pure != '':
                         try:
-                            if datetime.strptime(str(date_collected_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
+                            if datetime.strptime(str(date_collected_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
                                 pass
                             else: 
                                 error = [subject, visit, 'Date Sample Collected', date_collected_form_field_instance,\

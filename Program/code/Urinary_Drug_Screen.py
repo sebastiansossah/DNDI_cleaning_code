@@ -207,7 +207,7 @@ def urinary_drug_screen(df_root, path_excel_writer):
                     # Revision -> UD0060
                     if date_of_test_pure != '':
                         try:
-                            if datetime.strptime(str(date_of_test_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
+                            if datetime.strptime(str(date_of_test_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
                                 pass
                             else: 
                                 error = [subject, visit, 'Date of test performed', date_of_test_form_field_isntance ,'Date of test performed must be before the End of study/Early withdrawal date. ', date_of_test_pure, 'UD0060']

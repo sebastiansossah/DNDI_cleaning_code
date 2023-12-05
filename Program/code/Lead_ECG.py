@@ -798,7 +798,7 @@ def lead_ECG(df_root, path_excel_writer):
                     # Revision -> LE0060
                     if date_of_egc_pure != '':
                         try:
-                            if datetime.strptime(str(date_of_egc_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
+                            if datetime.strptime(str(date_of_egc_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
                                 pass
                             else: 
                                 error = [subject, visit, 'Date of ECG Performed', date_of_egc_form_field_instance ,'Date of ECG Performed must be before the End of study/Early withdrawal date. ', date_of_egc_disname, 'LE0060']
@@ -865,7 +865,7 @@ def lead_ECG(df_root, path_excel_writer):
                     # Revision LE0420
                     if math.isnan(float(Undefined_QTcF_msec_pure)) == False: 
                         try: 
-                            if float(Undefined_QTcF_msec_pure) > 350.0 and float(Undefined_QTcF_msec_pure) < 450.0 :
+                            if float(Undefined_QTcF_msec_pure) >= 350.0 and float(Undefined_QTcF_msec_pure)  <= 450.0 :
                                 pass
                             else:
                                 error = [subject, visit, 'Undefined, QTcF (msec)', Undefined_QTcF_msec_form_field_instance ,\
@@ -1002,7 +1002,7 @@ def lead_ECG(df_root, path_excel_writer):
                     # Revision LE0440
                     if math.isnan(float(Pre_dose_triplicate_1_QTcF_msec_pure)) == False:
                         try: 
-                            if float(Pre_dose_triplicate_1_QTcF_msec_pure) > 350.0 and float(Pre_dose_triplicate_1_QTcF_msec_pure) < 450.0 :
+                            if float(Pre_dose_triplicate_1_QTcF_msec_pure) >= 350.0 and float(Pre_dose_triplicate_1_QTcF_msec_pure)  <= 450.0 :
                                 pass
                             else:
                                 error = [subject, visit, 'Pre dose triplicate 1, QTcF (msec)', Pre_dose_triplicate_1_QTcF_msec_form_field_instance ,\
@@ -1126,7 +1126,7 @@ def lead_ECG(df_root, path_excel_writer):
                     # Revision LE0460
                     if math.isnan(float(Pre_dose_triplicate_2_QTcF_msec_pure)) == False:
                         try: 
-                            if float(Pre_dose_triplicate_2_QTcF_msec_pure) > 350.0 and float(Pre_dose_triplicate_2_QTcF_msec_pure) < 450.0 :
+                            if float(Pre_dose_triplicate_2_QTcF_msec_pure) >= 350.0 and float(Pre_dose_triplicate_2_QTcF_msec_pure) <= 450.0 :
                                 pass
                             else:
                                 error = [subject, visit, 'Pre dose triplicate 2, QTcF (msec)', Pre_dose_triplicate_2_QTcF_msec_form_field_instance ,\
@@ -1250,7 +1250,7 @@ def lead_ECG(df_root, path_excel_writer):
                     # Revision LE0480
                     if math.isnan(float(Pre_dose_triplicate_3_QTcF_msec_pure)) == False:
                         try: 
-                            if float(Pre_dose_triplicate_3_QTcF_msec_pure) > 350.0 and float(Pre_dose_triplicate_3_QTcF_msec_pure) < 450.0 :
+                            if float(Pre_dose_triplicate_3_QTcF_msec_pure) >= 350.0 and float(Pre_dose_triplicate_3_QTcF_msec_pure) <= 450.0 :
                                 pass
                             else:
                                 error = [subject, visit, 'Pre dose triplicate 3, QTcF (msec)', Pre_dose_triplicate_3_QTcF_msec_form_field_instance ,\
@@ -1374,7 +1374,7 @@ def lead_ECG(df_root, path_excel_writer):
                     # Revision LE0500
                     if math.isnan(float(min_15_post_dose_QTcF_msec_pure)) == False: 
                         try: 
-                            if float(min_15_post_dose_QTcF_msec_pure) > 350.0 and float(min_15_post_dose_QTcF_msec_pure) < 450.0 :
+                            if float(min_15_post_dose_QTcF_msec_pure) >= 350.0 and float(min_15_post_dose_QTcF_msec_pure)  <= 450.0 :
                                 pass
                             else:
                                 error = [subject, visit, '15-min post dose, QTcF (msec)', min_15_post_dose_QTcF_msec_form_field_instance ,\
@@ -1496,7 +1496,7 @@ def lead_ECG(df_root, path_excel_writer):
                     # Revision LE0520
                     if math.isnan(float(min_30_post_dose_QTcF_msec_pure)) == False:
                         try: 
-                            if float(min_30_post_dose_QTcF_msec_pure) > 350.0 and float(min_30_post_dose_QTcF_msec_pure) < 450.0 :
+                            if float(min_30_post_dose_QTcF_msec_pure) >= 350.0 and float(min_30_post_dose_QTcF_msec_pure) <= 450.0 :
                                 pass
                             else:
                                 error = [subject, visit, '30-min post dose, QTcF (msec)', min_30_post_dose_QTcF_msec_form_field_instance ,\
@@ -1621,7 +1621,7 @@ def lead_ECG(df_root, path_excel_writer):
                     # Revision LE0540
                     if math.isnan(float(min_60_post_dose_QTcF_msec_pure)) == False:
                         try: 
-                            if float(min_60_post_dose_QTcF_msec_pure) > 350.0 and float(min_60_post_dose_QTcF_msec_pure) < 450.0 :
+                            if float(min_60_post_dose_QTcF_msec_pure) >= 350.0 and float(min_60_post_dose_QTcF_msec_pure)  <= 450.0 :
                                 pass
                             else:
                                 error = [subject, visit, '60-min post dose, QTcF (msec)', min_60_post_dose_QTcF_msec_form_field_instance ,\

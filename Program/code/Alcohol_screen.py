@@ -250,7 +250,7 @@ def alcohol_screen(df_root, path_excel_writer):
                     # Revision -> AS0080
                     if date_test_performed_pure != '':
                         try:
-                            if datetime.strptime(str(date_test_performed_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
+                            if datetime.strptime(str(date_test_performed_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
                                 pass
                             else: 
                                 error = [subject, visit, 'Date of test performed', date_test_performed_form_field_instance ,\

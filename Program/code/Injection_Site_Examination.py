@@ -215,7 +215,7 @@ def injection_site_examination(df_root, path_excel_writer):
                     # Revision -> IS0040
                     if date_injection_pure != '':
                         try:
-                            if datetime.strptime(str(date_injection_pure), '%d-%b-%Y') >= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
+                            if datetime.strptime(str(date_injection_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
                                 pass
                             else: 
                                 error = [subject, visit, 'Date of the Injection site examination', date_injection_form_field_instace ,\
