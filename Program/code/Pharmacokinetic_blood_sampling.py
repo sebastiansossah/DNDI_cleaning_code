@@ -101,7 +101,7 @@ def Pharmacokinetic_blood_sampling(df_root, path_excel_writer):
                         Date_of_blood_sample_collected = row["Date of blood sample collected"]
                         Date_of_blood_sample_collected_pure = Date_of_blood_sample_collected.split('|')[0]
                         Date_of_blood_sample_collected_form_field_instance = Date_of_blood_sample_collected.split('|')[1]
-                        Date_of_blood_sample_collected_disname = Date_of_blood_sample_collected.split('|')[2]
+                        Date_of_blood_sample_collected_disname = Date_of_blood_sample_collected.split('|')[0]
                     except Exception as e:
                         Date_of_blood_sample_collected_pure = ''
                         Date_of_blood_sample_collected_form_field_instance = 'This field does not have any data'

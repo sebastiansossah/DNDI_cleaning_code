@@ -135,7 +135,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                         concomitant_medication_id = row['Concomitant Medication ID']
                         concomitant_medication_id_pure  = concomitant_medication_id.split('|')[0]
                         concomitant_medication_id_form_field_instance = concomitant_medication_id.split('|')[1]
-                        concomitant_medication_id_disname = concomitant_medication_id.split('|')[2]
+                        concomitant_medication_id_disname = concomitant_medication_id.split('|')[0]
                     except:
                         concomitant_medication_id_pure = ''
                         concomitant_medication_id_form_field_instance = 'This field does not have any data'
@@ -145,7 +145,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                         drug_name = row['Drug Name']
                         drug_name_pure = drug_name.split('|')[0]
                         drug_name_form_field_instance = drug_name.split('|')[1]
-                        drug_name_disname = drug_name.split('|')[2]
+                        drug_name_disname = drug_name.split('|')[0]
                     except:
                         drug_name_pure = ''
                         drug_name_form_field_instance = 'This field does not have any data'
@@ -155,7 +155,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                         adverse_event_id = row['Adverse Event ID']
                         adverse_event_id_pure = adverse_event_id.split('|')[0]
                         adverse_event_id_form_field_instance = adverse_event_id.split('|')[1]
-                        adverse_event_id_disname = adverse_event_id.split('|')[2]
+                        adverse_event_id_disname = adverse_event_id.split('|')[0]
                     except:
                         adverse_event_id_pure = ''
                         adverse_event_id_form_field_instance = 'This field does not have any data'
@@ -185,7 +185,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                         dose_per_administration = row['Dose per Administration']
                         dose_per_administration_pure = dose_per_administration.split('|')[0]
                         dose_per_administration_form_field_instance = dose_per_administration.split('|')[1]
-                        dose_per_administration_disname = dose_per_administration.split('|')[2]
+                        dose_per_administration_disname = dose_per_administration.split('|')[0]
                     except:
                         dose_per_administration_pure = ''
                         dose_per_administration_form_field_instance = 'This field does not have any data'
@@ -195,7 +195,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                         unit = row['Unit']
                         unit_pure = unit.split('|')[0]
                         unit_form_field_instance = unit.split('|')[1]
-                        unit_disname = unit.split('|')[2]
+                        unit_disname = unit.split('|')[0]
                     except:
                         unit_pure = ''
                         unit_form_field_instance = 'This field does not have any data'
@@ -205,7 +205,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                         frequency = row['Frequency']
                         frequency_pure = frequency.split('|')[0]
                         frequency_form_field_instance = frequency.split('|')[1]
-                        frequency_disname = frequency.split('|')[2]
+                        frequency_disname = frequency.split('|')[0]
                     except:
                         frequency_pure = ''
                         frequency_form_field_instance = 'This field does not have any data'
@@ -225,7 +225,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                         start_date = row['Start date']
                         start_date_pure = start_date.split('|')[0]
                         start_date_form_field_instance = start_date.split('|')[1]
-                        start_date_disname = start_date.split('|')[2]
+                        start_date_disname = start_date.split('|')[0]
                     except:
                         start_date_pure = ''
                         start_date_form_field_instance = 'This field does not have any data'
@@ -235,7 +235,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                         end_date = row['End date']
                         end_date_pure = end_date.split('|')[0]
                         end_date_form_field_instance = end_date.split('|')[1]
-                        end_date_disname = end_date.split('|')[2]
+                        end_date_disname = end_date.split('|')[0]
                     except:
                         end_date_pure = ''
                         end_date_form_field_instance = 'This field does not have any data'
@@ -255,7 +255,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                         rescue_medication = row['Rescue Medication']
                         rescue_medication_pure = rescue_medication.split('|')[0]
                         rescue_medication_form_field_instance = rescue_medication.split('|')[1]
-                        rescue_medication_disname = rescue_medication.split('|')[2]
+                        rescue_medication_disname = rescue_medication.split('|')[0]
                     except:
                         rescue_medication_pure = ''
                         rescue_medication_form_field_instance = 'This field does not have any data'
@@ -265,7 +265,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                         aditional_adverse_event = row['Aditional Adverse Event ID']
                         aditional_adverse_event_pure = aditional_adverse_event.split('|')[0]
                         aditional_adverse_event_form_field_instance = aditional_adverse_event.split('|')[1]
-                        aditional_adverse_event_disname = aditional_adverse_event.split('|')[2]
+                        aditional_adverse_event_disname = aditional_adverse_event.split('|')[0]
                     except:
                         aditional_adverse_event_pure = ''
                         aditional_adverse_event_form_field_instance = 'This field does not have any data'

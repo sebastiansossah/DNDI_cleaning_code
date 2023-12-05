@@ -115,7 +115,7 @@ def pregnancy_test(df_root, path_excel_writer):
                         provide_reason = row['Provide the reason']
                         provide_reason_pure = provide_reason.split('|')[0]
                         provide_reason_form_field_instance = provide_reason.split('|')[1]
-                        provide_reason_disname = provide_reason.split('|')[2]
+                        provide_reason_disname = provide_reason.split('|')[0]
                     except Exception as e:
                         provide_reason_pure = ''
                         provide_reason_form_field_instance = 'This field does not have any data'
@@ -135,7 +135,7 @@ def pregnancy_test(df_root, path_excel_writer):
                         date_test_performed = row['Date of test performed']
                         date_test_performed_pure = date_test_performed.split('|')[0]
                         date_test_performed_form_field_instance = date_test_performed.split('|')[1]
-                        date_test_performed_disname = date_test_performed.split('|')[2]
+                        date_test_performed_disname = date_test_performed.split('|')[0]
                     except Exception as e:
                         date_test_performed_pure = ''
                         date_test_performed_form_field_instance = 'This field does not have any data'
@@ -145,7 +145,7 @@ def pregnancy_test(df_root, path_excel_writer):
                         pregnancy_test_result = row['Pregnancy Test Results']
                         pregnancy_test_result_pure = pregnancy_test_result.split('|')[0]
                         pregnancy_test_result_form_field_instance = pregnancy_test_result.split('|')[1]
-                        pregnancy_test_result_disname = pregnancy_test_result.split('|')[2]
+                        pregnancy_test_result_disname = pregnancy_test_result.split('|')[0]
                     except Exception as e:
                         pregnancy_test_result_pure = ''
                         pregnancy_test_result_form_field_instance = 'This field does not have any data'

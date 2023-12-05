@@ -97,7 +97,7 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer):
                         Provide_the_reason = row["Provide the reason"]
                         Provide_the_reason_pure = Provide_the_reason.split('|')[0]
                         Provide_the_reason_form_field_instance = Provide_the_reason.split('|')[1]
-                        Provide_the_reason_disname = Provide_the_reason.split('|')[2]
+                        Provide_the_reason_disname = Provide_the_reason.split('|')[0]
                     except Exception as e:
                         Provide_the_reason_pure = ''
                         Provide_the_reason_form_field_instance = 'This field does not have any data'
@@ -107,7 +107,7 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer):
                         Date_of_blood_sample_collected = row['Date of blood sample collected']
                         Date_of_blood_sample_collected_pure = Date_of_blood_sample_collected.split('|')[0]
                         Date_of_blood_sample_collected_form_field_instance = Date_of_blood_sample_collected.split('|')[1]
-                        Date_of_blood_sample_collected_disname = Date_of_blood_sample_collected.split('|')[2]
+                        Date_of_blood_sample_collected_disname = Date_of_blood_sample_collected.split('|')[0]
                     except Exception as e:
                         Date_of_blood_sample_collected_pure = ''
                         Date_of_blood_sample_collected_form_field_instance = 'This field does not have any data'
@@ -117,7 +117,7 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer):
                         Pre_dose = row["Pre-dose"]
                         Pre_dose_pure = Pre_dose.split('|')[0]
                         Pre_dose_form_field_instance = Pre_dose.split('|')[1]
-                        Pre_dose_disname = Pre_dose.split('|')[2]
+                        Pre_dose_disname = Pre_dose.split('|')[0]
                     except Exception as e:
                         Pre_dose_pure = ''
                         Pre_dose_form_field_instance = 'This field does not have any data'
@@ -127,7 +127,7 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer):
                         Pre_dose_Reason_Not_Done = row["Pre-dose, Reason Not Done"]
                         Pre_dose_Reason_Not_Done_pure = Pre_dose_Reason_Not_Done.split('|')[0]
                         Pre_dose_Reason_Not_Done_form_field_instance = Pre_dose_Reason_Not_Done.split('|')[1]
-                        Pre_dose_Reason_Not_Done_disname = Pre_dose_Reason_Not_Done.split('|')[2]
+                        Pre_dose_Reason_Not_Done_disname = Pre_dose_Reason_Not_Done.split('|')[0]
                     except Exception as e:
                         Pre_dose_Reason_Not_Done_pure = ''
                         Pre_dose_Reason_Not_Done_form_field_instance = 'This field does not have any data'
@@ -137,7 +137,7 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer):
                         H8 = row["8h"]
                         H8_pure = H8.split('|')[0]
                         H8_form_field_instance = H8.split('|')[1]
-                        H8_disname = H8.split('|')[2] 
+                        H8_disname = H8.split('|')[0] 
                     except Exception as e:
                         H8_pure = ''
                         H8_form_field_instance = 'This field does not have any data'
@@ -147,7 +147,7 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer):
                         H8_Reason_Not_Done = row["8h, Reason Not Done"]
                         H8_Reason_Not_Done_pure = H8_Reason_Not_Done.split('|')[0]
                         H8_Reason_Not_Done_form_field_instance = H8_Reason_Not_Done.split('|')[1]
-                        H8_Reason_Not_Done_disname = H8_Reason_Not_Done.split('|')[2]
+                        H8_Reason_Not_Done_disname = H8_Reason_Not_Done.split('|')[0]
                     except Exception as e:
                         H8_Reason_Not_Done_pure = ''
                         H8_Reason_Not_Done_form_field_instance = 'This field does not have any data'

@@ -106,7 +106,7 @@ def vital_signs(df_root, path_excel_writer):
                         BMI = row['Undefined, BMI']
                         BMI_pure = BMI.split('|')[0]
                         BMI_form_field_instance = BMI.split('|')[1]
-                        BMI_form_disname = BMI.split('|')[2]
+                        BMI_form_disname = BMI.split('|')[0]
                     except Exception as e:
                         BMI_pure = math.nan
                         BMI_form_field_instance = 'This field does not have any data'
@@ -116,7 +116,7 @@ def vital_signs(df_root, path_excel_writer):
                         height = row['Undefined, Height (cm)']
                         height_pure = height.split('|')[0]
                         height_form_field_instance = height.split('|')[1]
-                        height_disname = height.split('|')[2]
+                        height_disname = height.split('|')[0]
                     except Exception as e:
                         height_pure = math.nan
                         height_form_field_instance = 'This field does not have any data'
@@ -126,7 +126,7 @@ def vital_signs(df_root, path_excel_writer):
                         weight = row['Undefined, Weight (kg)']
                         weight_pure = weight.split('|')[0]
                         weight_form_field_instance = weight.split('|')[1]
-                        weight_disname = weight.split('|')[2]                    
+                        weight_disname = weight.split('|')[0]                    
                     except Exception as e: 
                         weight_pure = math.nan
                         weight_form_field_instance = 'This field does not have any data'
@@ -136,7 +136,7 @@ def vital_signs(df_root, path_excel_writer):
                         Pre_dose_Diastolic_Blood_Pressure = row["Pre dose, Diastolic Blood Pressure"]
                         Pre_dose_Diastolic_Blood_Pressure_pure = Pre_dose_Diastolic_Blood_Pressure.split('|')[0]
                         Pre_dose_Diastolic_Blood_Pressure_form_field_insntance = Pre_dose_Diastolic_Blood_Pressure.split('|')[1]
-                        Pre_dose_Diastolic_Blood_Pressure_disname = Pre_dose_Diastolic_Blood_Pressure.split('|')[2]
+                        Pre_dose_Diastolic_Blood_Pressure_disname = Pre_dose_Diastolic_Blood_Pressure.split('|')[0]
                     except Exception as e:
                         Pre_dose_Diastolic_Blood_Pressure_pure = math.nan
                         Pre_dose_Diastolic_Blood_Pressure_form_field_insntance = 'This field does not have any data'
@@ -146,7 +146,7 @@ def vital_signs(df_root, path_excel_writer):
                         Pre_dose_Diastolic_Blood_Pressure_value = row["Pre dose, Diastolic Blood Pressure (Sitting) (mmHg)"]
                         Pre_dose_Diastolic_Blood_Pressure_value_pure = Pre_dose_Diastolic_Blood_Pressure_value.split('|')[0]
                         Pre_dose_Diastolic_Blood_Pressure_value_form_field_instance = Pre_dose_Diastolic_Blood_Pressure_value.split('|')[1]
-                        Pre_dose_Diastolic_Blood_Pressure_value_disname = Pre_dose_Diastolic_Blood_Pressure_value.split('|')[2]
+                        Pre_dose_Diastolic_Blood_Pressure_value_disname = Pre_dose_Diastolic_Blood_Pressure_value.split('|')[0]
                     except Exception as e:
                         Pre_dose_Diastolic_Blood_Pressure_value_pure = math.nan
                         Pre_dose_Diastolic_Blood_Pressure_value_form_field_instance = 'This field does not have any data'
@@ -156,7 +156,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_60_post_dose_Respiratory_rate = row["60-mins post dose, Respiratory rate"]
                         mins_60_post_dose_Respiratory_rate_pure = mins_60_post_dose_Respiratory_rate.split('|')[0]
                         mins_60_post_dose_Respiratory_rate_form_field_instance = mins_60_post_dose_Respiratory_rate.split('|')[1]
-                        mins_60_post_dose_Respiratory_rate_disname = mins_60_post_dose_Respiratory_rate.split('|')[2]
+                        mins_60_post_dose_Respiratory_rate_disname = mins_60_post_dose_Respiratory_rate.split('|')[0]
                     except Exception as e:
                         mins_60_post_dose_Respiratory_rate_pure = math.nan
                         mins_60_post_dose_Respiratory_rate_form_field_instance = 'This field does not have any data'
@@ -166,7 +166,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_60_post_dose_Respiratory_rate_value = row["60-mins post dose, Respiratory rate (breaths/min)"]
                         mins_60_post_dose_Respiratory_rate_value_pure = mins_60_post_dose_Respiratory_rate_value.split('|')[0]
                         mins_60_post_dose_Respiratory_rate_value_form_field_instance = mins_60_post_dose_Respiratory_rate_value.split('|')[1]
-                        mins_60_post_dose_Respiratory_rate_value_disname = mins_60_post_dose_Respiratory_rate_value.split('|')[2]
+                        mins_60_post_dose_Respiratory_rate_value_disname = mins_60_post_dose_Respiratory_rate_value.split('|')[0]
                     except Exception as e:
                         mins_60_post_dose_Respiratory_rate_value_pure = math.nan
                         mins_60_post_dose_Respiratory_rate_value_form_field_instance = 'This field does not have any data'
@@ -176,7 +176,7 @@ def vital_signs(df_root, path_excel_writer):
                         Undefined_Respiratory_rate = row["Undefined, Respiratory rate"]
                         Undefined_Respiratory_rate_pure = Undefined_Respiratory_rate.split('|')[0]
                         Undefined_Respiratory_rate_form_field_isntance = Undefined_Respiratory_rate.split('|')[1]
-                        Undefined_Respiratory_rate_disname = Undefined_Respiratory_rate.split('|')[2]
+                        Undefined_Respiratory_rate_disname = Undefined_Respiratory_rate.split('|')[0]
                     except Exception as e:
                         Undefined_Respiratory_rate_pure = math.nan
                         Undefined_Respiratory_rate_form_field_isntance = 'This field does not have any data'
@@ -186,7 +186,7 @@ def vital_signs(df_root, path_excel_writer):
                         Undefined_Respiratory_rate_value = row["Undefined, Respiratory rate (breaths/min)"]
                         Undefined_Respiratory_rate_value_pure = Undefined_Respiratory_rate_value.split('|')[0]
                         Undefined_Respiratory_rate_value_form_field_instance = Undefined_Respiratory_rate_value.split('|')[1]
-                        Undefined_Respiratory_rate_value_disname = Undefined_Respiratory_rate_value.split('|')[2]
+                        Undefined_Respiratory_rate_value_disname = Undefined_Respiratory_rate_value.split('|')[0]
                     except Exception as e:
                         Undefined_Respiratory_rate_value_pure = math.nan
                         Undefined_Respiratory_rate_value_form_field_instance = 'This field does not have any data'
@@ -196,7 +196,7 @@ def vital_signs(df_root, path_excel_writer):
                         Pre_dose_Oral_Temperature = row["Pre dose, Body Temperature"]
                         Pre_dose_Oral_Temperature_pure = Pre_dose_Oral_Temperature.split('|')[0]
                         Pre_dose_Oral_Temperature_form_field_instance = Pre_dose_Oral_Temperature.split('|')[1]
-                        Pre_dose_Oral_Temperature_disname = Pre_dose_Oral_Temperature.split('|')[2]
+                        Pre_dose_Oral_Temperature_disname = Pre_dose_Oral_Temperature.split('|')[0]
                     except Exception as e:
                         Pre_dose_Oral_Temperature_pure = math.nan
                         Pre_dose_Oral_Temperature_form_field_instance = 'This field does not have any data'
@@ -206,7 +206,7 @@ def vital_signs(df_root, path_excel_writer):
                         Pre_dose_Oral_Temperature_value = row["Pre dose, Oral Temperature (°C)"]
                         Pre_dose_Oral_Temperature_value_pure = Pre_dose_Oral_Temperature_value.split('|')[0]
                         Pre_dose_Oral_Temperature_value_form_field_instance = Pre_dose_Oral_Temperature_value.split('|')[1]
-                        Pre_dose_Oral_Temperature_value_disname = Pre_dose_Oral_Temperature_value.split('|')[2]
+                        Pre_dose_Oral_Temperature_value_disname = Pre_dose_Oral_Temperature_value.split('|')[0]
                     except Exception as e:
                         Pre_dose_Oral_Temperature_value_pure = math.nan
                         Pre_dose_Oral_Temperature_value_form_field_instance = 'This field does not have any data'
@@ -216,7 +216,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_2_post_dose_Respiratory_rate = row["2-hours post dose, Respiratory rate"]
                         hours_2_post_dose_Respiratory_rate_pure = hours_2_post_dose_Respiratory_rate.split('|')[0]
                         hours_2_post_dose_Respiratory_rate_form_field_instance = hours_2_post_dose_Respiratory_rate.split('|')[1]
-                        hours_2_post_dose_Respiratory_rate_disname = hours_2_post_dose_Respiratory_rate.split('|')[2]
+                        hours_2_post_dose_Respiratory_rate_disname = hours_2_post_dose_Respiratory_rate.split('|')[0]
                     except Exception as e:
                         hours_2_post_dose_Respiratory_rate_pure = math.nan
                         hours_2_post_dose_Respiratory_rate_form_field_instance = 'This field does not have any data'
@@ -226,7 +226,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_2_post_dose_Respiratory_rate_value = row["2-hours post dose, Respiratory rate (breaths/min)"]
                         hours_2_post_dose_Respiratory_rate_value_pure = hours_2_post_dose_Respiratory_rate_value.split('|')[0]
                         hours_2_post_dose_Respiratory_rate_value_form_field_instance = hours_2_post_dose_Respiratory_rate_value.split('|')[1]
-                        hours_2_post_dose_Respiratory_rate_value_disname = hours_2_post_dose_Respiratory_rate_value.split('|')[2]
+                        hours_2_post_dose_Respiratory_rate_value_disname = hours_2_post_dose_Respiratory_rate_value.split('|')[0]
                     except Exception as e:
                         hours_2_post_dose_Respiratory_rate_value_pure = math.nan
                         hours_2_post_dose_Respiratory_rate_value_form_field_instance = 'This field does not have any data'
@@ -236,7 +236,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_8_post_dose_Diastolic_Blood_Pressure = row["8-hours post dose, Diastolic Blood Pressure"]
                         hours_8_post_dose_Diastolic_Blood_Pressure_pure = hours_8_post_dose_Diastolic_Blood_Pressure.split('|')[0]
                         hours_8_post_dose_Diastolic_Blood_Pressure_form_field_instance = hours_8_post_dose_Diastolic_Blood_Pressure.split('|')[1]
-                        hours_8_post_dose_Diastolic_Blood_Pressure_disname = hours_8_post_dose_Diastolic_Blood_Pressure.split('|')[2]
+                        hours_8_post_dose_Diastolic_Blood_Pressure_disname = hours_8_post_dose_Diastolic_Blood_Pressure.split('|')[0]
                     except Exception as e:
                         hours_8_post_dose_Diastolic_Blood_Pressure_pure = math.nan 
                         hours_8_post_dose_Diastolic_Blood_Pressure_form_field_instance = 'This field does not have any data'
@@ -246,7 +246,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_8_post_dose_Diastolic_Blood_Pressure_value = row["8-hours post dose, Diastolic Blood Pressure (Sitting) (mmHg)"]
                         hours_8_post_dose_Diastolic_Blood_Pressure_value_pure = hours_8_post_dose_Diastolic_Blood_Pressure_value.split('|')[0]
                         hours_8_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = hours_8_post_dose_Diastolic_Blood_Pressure_value.split('|')[1]
-                        hours_8_post_dose_Diastolic_Blood_Pressure_value_disname = hours_8_post_dose_Diastolic_Blood_Pressure_value.split('|')[2]
+                        hours_8_post_dose_Diastolic_Blood_Pressure_value_disname = hours_8_post_dose_Diastolic_Blood_Pressure_value.split('|')[0]
                     except Exception as e:
                         hours_8_post_dose_Diastolic_Blood_Pressure_value_pure = math.nan
                         hours_8_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = 'This field does not have any data'
@@ -256,7 +256,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_15_post_dose_Diastolic_Blood_Pressure = row["15-mins post dose, Diastolic Blood Pressure"]
                         mins_15_post_dose_Diastolic_Blood_Pressure_pure = mins_15_post_dose_Diastolic_Blood_Pressure.split('|')[0]
                         mins_15_post_dose_Diastolic_Blood_Pressure_form_field_instance = mins_15_post_dose_Diastolic_Blood_Pressure.split('|')[1]
-                        mins_15_post_dose_Diastolic_Blood_Pressure_disname = mins_15_post_dose_Diastolic_Blood_Pressure.split('|')[2]
+                        mins_15_post_dose_Diastolic_Blood_Pressure_disname = mins_15_post_dose_Diastolic_Blood_Pressure.split('|')[0]
                     except Exception as e:
                         mins_15_post_dose_Diastolic_Blood_Pressure_pure = math.nan
                         mins_15_post_dose_Diastolic_Blood_Pressure_form_field_instance = 'This field does not have any data'
@@ -266,7 +266,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_15_post_dose_Diastolic_Blood_Pressure_value = row["15-mins post dose, Diastolic Blood Pressure (Sitting) (mmHg)"]
                         mins_15_post_dose_Diastolic_Blood_Pressure_value_pure = mins_15_post_dose_Diastolic_Blood_Pressure_value.split('|')[0]
                         mins_15_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = mins_15_post_dose_Diastolic_Blood_Pressure_value.split('|')[1]
-                        mins_15_post_dose_Diastolic_Blood_Pressure_value_disname = mins_15_post_dose_Diastolic_Blood_Pressure_value.split('|')[2]
+                        mins_15_post_dose_Diastolic_Blood_Pressure_value_disname = mins_15_post_dose_Diastolic_Blood_Pressure_value.split('|')[0]
                     except Exception as e:
                         mins_15_post_dose_Diastolic_Blood_Pressure_value_pure = math.nan
                         mins_15_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = 'This field does not have any data'
@@ -276,7 +276,7 @@ def vital_signs(df_root, path_excel_writer):
                         Undefined_Diastolic_Blood_Pressure = row["Undefined, Diastolic Blood Pressure"]
                         Undefined_Diastolic_Blood_Pressure_pure = Undefined_Diastolic_Blood_Pressure.split('|')[0]
                         Undefined_Diastolic_Blood_Pressure_form_field_instance = Undefined_Diastolic_Blood_Pressure.split('|')[1]
-                        Undefined_Diastolic_Blood_Pressure_disname = Undefined_Diastolic_Blood_Pressure.split('|')[2]
+                        Undefined_Diastolic_Blood_Pressure_disname = Undefined_Diastolic_Blood_Pressure.split('|')[0]
                     except Exception as e:
                         Undefined_Diastolic_Blood_Pressure_pure = math.nan
                         Undefined_Diastolic_Blood_Pressure_form_field_instance = 'This field does not have any data'
@@ -286,7 +286,7 @@ def vital_signs(df_root, path_excel_writer):
                         Undefined_Diastolic_Blood_Pressure_value = row['Undefined, Diastolic Blood Pressure (mmHg)']
                         Undefined_Diastolic_Blood_Pressure_value_pure = Undefined_Diastolic_Blood_Pressure_value.split('|')[0]
                         Undefined_Diastolic_Blood_Pressure_value_form_field_instance = Undefined_Diastolic_Blood_Pressure_value.split('|')[1]
-                        Undefined_Diastolic_Blood_Pressure_value_disname = Undefined_Diastolic_Blood_Pressure_value.split('|')[2]
+                        Undefined_Diastolic_Blood_Pressure_value_disname = Undefined_Diastolic_Blood_Pressure_value.split('|')[0]
                     except Exception as e:
                         Undefined_Diastolic_Blood_Pressure_value_pure = math.nan
                         Undefined_Diastolic_Blood_Pressure_value_form_field_instance = 'This field does not have any data'
@@ -296,7 +296,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_60_post_dose_Diastolic_Blood_Pressure = row["60-mins post dose, Diastolic Blood Pressure"]
                         mins_60_post_dose_Diastolic_Blood_Pressure_pure = mins_60_post_dose_Diastolic_Blood_Pressure.split('|')[0]
                         mins_60_post_dose_Diastolic_Blood_Pressure_form_field_instance = mins_60_post_dose_Diastolic_Blood_Pressure.split('|')[1]
-                        mins_60_post_dose_Diastolic_Blood_Pressure_disname = mins_60_post_dose_Diastolic_Blood_Pressure.split('|')[2]
+                        mins_60_post_dose_Diastolic_Blood_Pressure_disname = mins_60_post_dose_Diastolic_Blood_Pressure.split('|')[0]
                     except Exception as e:
                         mins_60_post_dose_Diastolic_Blood_Pressure_pure = math.nan 
                         mins_60_post_dose_Diastolic_Blood_Pressure_form_field_instance = 'This field does not have any data'
@@ -306,7 +306,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_60_post_dose_Diastolic_Blood_Pressure_value = row["60-mins post dose, Diastolic Blood Pressure (Sitting) (mmHg)"]
                         mins_60_post_dose_Diastolic_Blood_Pressure_value_pure = mins_60_post_dose_Diastolic_Blood_Pressure_value.split('|')[0]
                         mins_60_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = mins_60_post_dose_Diastolic_Blood_Pressure_value.split('|')[1]
-                        mins_60_post_dose_Diastolic_Blood_Pressure_value_disname = mins_60_post_dose_Diastolic_Blood_Pressure_value.split('|')[2]
+                        mins_60_post_dose_Diastolic_Blood_Pressure_value_disname = mins_60_post_dose_Diastolic_Blood_Pressure_value.split('|')[0]
                     except Exception as e:
                         mins_60_post_dose_Diastolic_Blood_Pressure_value_pure = math.nan
                         mins_60_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = 'This field does not have any data'
@@ -316,7 +316,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_8_post_dose_Pulse_rate = row["8-hours post dose, Pulse rate"]
                         hours_8_post_dose_Pulse_rate_pure = hours_8_post_dose_Pulse_rate.split('|')[0]
                         hours_8_post_dose_Pulse_rate_form_field_instance = hours_8_post_dose_Pulse_rate.split('|')[1]
-                        hours_8_post_dose_Pulse_rate_disname = hours_8_post_dose_Pulse_rate.split('|')[2]
+                        hours_8_post_dose_Pulse_rate_disname = hours_8_post_dose_Pulse_rate.split('|')[0]
                     except Exception as e:
                         hours_8_post_dose_Pulse_rate_pure = math.nan
                         hours_8_post_dose_Pulse_rate_form_field_instance = 'This field does not have any data'
@@ -326,7 +326,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_8_post_dose_Pulse_rate_value = row["8-hours post dose, Pulse rate (beats/min)"]
                         hours_8_post_dose_Pulse_rate_value_pure = hours_8_post_dose_Pulse_rate_value.split('|')[0]
                         hours_8_post_dose_Pulse_rate_value_form_field_instance = hours_8_post_dose_Pulse_rate_value.split('|')[1]
-                        hours_8_post_dose_Pulse_rate_value_disname = hours_8_post_dose_Pulse_rate_value.split('|')[2]
+                        hours_8_post_dose_Pulse_rate_value_disname = hours_8_post_dose_Pulse_rate_value.split('|')[0]
                     except Exception as e:
                         hours_8_post_dose_Pulse_rate_value_pure = math.nan
                         hours_8_post_dose_Pulse_rate_value_form_field_instance = 'This field does not have any data'
@@ -336,7 +336,7 @@ def vital_signs(df_root, path_excel_writer):
                         Undefined_Systolic_Blood_Pressure = row["Undefined, Systolic Blood Pressure"]
                         Undefined_Systolic_Blood_Pressure_pure = Undefined_Systolic_Blood_Pressure.split('|')[0]
                         Undefined_Systolic_Blood_Pressure_form_field_instance = Undefined_Systolic_Blood_Pressure.split('|')[1]
-                        Undefined_Systolic_Blood_Pressure_disname = Undefined_Systolic_Blood_Pressure.split('|')[2]
+                        Undefined_Systolic_Blood_Pressure_disname = Undefined_Systolic_Blood_Pressure.split('|')[0]
                     except Exception as e:
                         Undefined_Systolic_Blood_Pressure_pure = math.nan
                         Undefined_Systolic_Blood_Pressure_form_field_instance = 'This field does not have any data'
@@ -346,7 +346,7 @@ def vital_signs(df_root, path_excel_writer):
                         Undefined_Systolic_Blood_Pressure_value = row["Undefined, Systolic Blood Pressure  (mmHg)"]
                         Undefined_Systolic_Blood_Pressure_value_pure = Undefined_Systolic_Blood_Pressure_value.split('|')[0]
                         Undefined_Systolic_Blood_Pressure_value_form_field_instance = Undefined_Systolic_Blood_Pressure_value.split('|')[1]
-                        Undefined_Systolic_Blood_Pressure_value_disname = Undefined_Systolic_Blood_Pressure_value.split('|')[2]
+                        Undefined_Systolic_Blood_Pressure_value_disname = Undefined_Systolic_Blood_Pressure_value.split('|')[0]
                     except Exception as e:
                         Undefined_Systolic_Blood_Pressure_value_pure = math.nan
                         Undefined_Systolic_Blood_Pressure_value_form_field_instance = 'This field does not have any data'
@@ -356,7 +356,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_2_post_dose_Diastolic_Blood_Pressure = row["2-hours post dose, Diastolic Blood Pressure"]
                         hours_2_post_dose_Diastolic_Blood_Pressure_pure = hours_2_post_dose_Diastolic_Blood_Pressure.split('|')[0]
                         hours_2_post_dose_Diastolic_Blood_Pressure_form_field_instance = hours_2_post_dose_Diastolic_Blood_Pressure.split('|')[1]
-                        hours_2_post_dose_Diastolic_Blood_Pressure_disname = hours_2_post_dose_Diastolic_Blood_Pressure.split('|')[2]
+                        hours_2_post_dose_Diastolic_Blood_Pressure_disname = hours_2_post_dose_Diastolic_Blood_Pressure.split('|')[0]
                     except Exception as e:
                         hours_2_post_dose_Diastolic_Blood_Pressure_pure = math.nan
                         hours_2_post_dose_Diastolic_Blood_Pressure_form_field_instance = 'This field does not have any data'
@@ -366,7 +366,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_2_post_dose_Diastolic_Blood_Pressure_value = row["2-hours post dose, Diastolic Blood Pressure (Sitting) (mmHg)"]
                         hours_2_post_dose_Diastolic_Blood_Pressure_value_pure = hours_2_post_dose_Diastolic_Blood_Pressure_value.split('|')[0]
                         hours_2_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = hours_2_post_dose_Diastolic_Blood_Pressure_value.split('|')[1]
-                        hours_2_post_dose_Diastolic_Blood_Pressure_value_disname = hours_2_post_dose_Diastolic_Blood_Pressure_value.split('|')[2]
+                        hours_2_post_dose_Diastolic_Blood_Pressure_value_disname = hours_2_post_dose_Diastolic_Blood_Pressure_value.split('|')[0]
                     except Exception as e:
                         hours_2_post_dose_Diastolic_Blood_Pressure_value_pure = math.nan
                         hours_2_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = 'This field does not have any data'
@@ -376,7 +376,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_2_post_dose_Pulse_rate = row["2-hours post dose, Pulse rate"]
                         hours_2_post_dose_Pulse_rate_pure = hours_2_post_dose_Pulse_rate.split('|')[0]
                         hours_2_post_dose_Pulse_rate_form_field_instance = hours_2_post_dose_Pulse_rate.split('|')[1]
-                        hours_2_post_dose_Pulse_rate_disname = hours_2_post_dose_Pulse_rate.split('|')[2]
+                        hours_2_post_dose_Pulse_rate_disname = hours_2_post_dose_Pulse_rate.split('|')[0]
                     except Exception as e:
                         hours_2_post_dose_Pulse_rate_pure = math.nan
                         hours_2_post_dose_Pulse_rate_form_field_instance = 'This field does not have any data'
@@ -386,7 +386,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_2_post_dose_Pulse_rate_value = row["2-hours post dose, Pulse rate (beats/min)"]
                         hours_2_post_dose_Pulse_rate_value_pure = hours_2_post_dose_Pulse_rate_value.split('|')[0]
                         hours_2_post_dose_Pulse_rate_value_form_field_instance = hours_2_post_dose_Pulse_rate_value.split('|')[1]
-                        hours_2_post_dose_Pulse_rate_value_disname = hours_2_post_dose_Pulse_rate_value.split('|')[2]
+                        hours_2_post_dose_Pulse_rate_value_disname = hours_2_post_dose_Pulse_rate_value.split('|')[0]
                     except Exception as e:
                         hours_2_post_dose_Pulse_rate_value_pure = math.nan
                         hours_2_post_dose_Pulse_rate_value_form_field_instance = 'This field does not have any data'
@@ -396,7 +396,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_60_post_dose_Pulse_rate = row["60-mins post dose, Pulse rate"]
                         mins_60_post_dose_Pulse_rate_pure = mins_60_post_dose_Pulse_rate.split('|')[0]
                         mins_60_post_dose_Pulse_rate_form_field_instance = mins_60_post_dose_Pulse_rate.split('|')[1]
-                        mins_60_post_dose_Pulse_rate_disname = mins_60_post_dose_Pulse_rate.split('|')[2]
+                        mins_60_post_dose_Pulse_rate_disname = mins_60_post_dose_Pulse_rate.split('|')[0]
                     except Exception as e:
                         mins_60_post_dose_Pulse_rate_pure = math.nan
                         mins_60_post_dose_Pulse_rate_form_field_instance = 'This field does not have any data'
@@ -406,7 +406,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_60_post_dose_Pulse_rate_value = row["60-mins post dose, Pulse rate (beats/min)"]
                         mins_60_post_dose_Pulse_rate_value_pure = mins_60_post_dose_Pulse_rate_value.split('|')[0]
                         mins_60_post_dose_Pulse_rate_value_form_field_instance = mins_60_post_dose_Pulse_rate_value.split('|')[1]
-                        mins_60_post_dose_Pulse_rate_value_disname = mins_60_post_dose_Pulse_rate_value.split('|')[2]
+                        mins_60_post_dose_Pulse_rate_value_disname = mins_60_post_dose_Pulse_rate_value.split('|')[0]
                     except Exception as e:
                         mins_60_post_dose_Pulse_rate_value_pure = math.nan
                         mins_60_post_dose_Pulse_rate_value_form_field_instance = 'This field does not have any data'
@@ -416,7 +416,7 @@ def vital_signs(df_root, path_excel_writer):
                         Undefined_Oral_Temperature = row["Undefined, Body Temperature"]
                         Undefined_Oral_Temperature_pure = Undefined_Oral_Temperature.split('|')[0]
                         Undefined_Oral_Temperature_form_field_instance = Undefined_Oral_Temperature.split('|')[1]
-                        Undefined_Oral_Temperature_disname = Undefined_Oral_Temperature.split('|')[2]
+                        Undefined_Oral_Temperature_disname = Undefined_Oral_Temperature.split('|')[0]
                     except Exception as e:
                         Undefined_Oral_Temperature_pure = math.nan
                         Undefined_Oral_Temperature_form_field_instance = 'This field does not have any data'
@@ -426,7 +426,7 @@ def vital_signs(df_root, path_excel_writer):
                         Undefined_Oral_Temperature_value = row["Undefined, Oral Temperature (°C)"]
                         Undefined_Oral_Temperature_value_pure = Undefined_Oral_Temperature_value.split('|')[0]
                         Undefined_Oral_Temperature_value_form_field_instance = Undefined_Oral_Temperature_value.split('|')[1]
-                        Undefined_Oral_Temperature_value_disname = Undefined_Oral_Temperature_value.split('|')[2]
+                        Undefined_Oral_Temperature_value_disname = Undefined_Oral_Temperature_value.split('|')[0]
                     except Exception as e:
                         Undefined_Oral_Temperature_value_pure = math.nan
                         Undefined_Oral_Temperature_value_form_field_instance = 'This field does not have any data'
@@ -436,7 +436,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_2_post_dose_Oral_Temperature = row["2-hours post dose, Body Temperature"]
                         hours_2_post_dose_Oral_Temperature_pure = hours_2_post_dose_Oral_Temperature.split('|')[0]
                         hours_2_post_dose_Oral_Temperature_form_field_instance = hours_2_post_dose_Oral_Temperature.split('|')[1]
-                        hours_2_post_dose_Oral_Temperature_disname = hours_2_post_dose_Oral_Temperature.split('|')[2]
+                        hours_2_post_dose_Oral_Temperature_disname = hours_2_post_dose_Oral_Temperature.split('|')[0]
                     except Exception as e:
                         hours_2_post_dose_Oral_Temperature_pure = math.nan
                         hours_2_post_dose_Oral_Temperature_form_field_instance = 'This field does not have any data'
@@ -446,7 +446,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_2_post_dose_Oral_Temperature_value = row["2-hours post dose, Oral Temperature (°C)"]
                         hours_2_post_dose_Oral_Temperature_value_pure = hours_2_post_dose_Oral_Temperature_value.split('|')[0]
                         hours_2_post_dose_Oral_Temperature_value_form_field_instance = hours_2_post_dose_Oral_Temperature_value.split('|')[1]
-                        hours_2_post_dose_Oral_Temperature_value_disname = hours_2_post_dose_Oral_Temperature_value.split('|')[2]
+                        hours_2_post_dose_Oral_Temperature_value_disname = hours_2_post_dose_Oral_Temperature_value.split('|')[0]
                     except Exception as e:
                         hours_2_post_dose_Oral_Temperature_value_pure = math.nan
                         hours_2_post_dose_Oral_Temperature_value_form_field_instance = 'This field does not have any data'
@@ -456,7 +456,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_60_post_dose_Oral_Temperature = row["60-mins post dose, Body Temperature"]
                         mins_60_post_dose_Oral_Temperature_pure = mins_60_post_dose_Oral_Temperature.split('|')[0]
                         mins_60_post_dose_Oral_Temperature_form_field_instance = mins_60_post_dose_Oral_Temperature.split('|')[1]
-                        mins_60_post_dose_Oral_Temperature_disname = mins_60_post_dose_Oral_Temperature.split('|')[2]
+                        mins_60_post_dose_Oral_Temperature_disname = mins_60_post_dose_Oral_Temperature.split('|')[0]
                     except Exception as e:
                         mins_60_post_dose_Oral_Temperature_pure = math.nan
                         mins_60_post_dose_Oral_Temperature_form_field_instance = 'This field does not have any data'
@@ -466,7 +466,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_60_post_dose_Oral_Temperature_value = row["60-mins post dose, Oral Temperature (°C)"]
                         mins_60_post_dose_Oral_Temperature_value_pure = mins_60_post_dose_Oral_Temperature_value.split('|')[0]
                         mins_60_post_dose_Oral_Temperature_value_form_field_instance = mins_60_post_dose_Oral_Temperature_value.split('|')[1]
-                        mins_60_post_dose_Oral_Temperature_value_disname = mins_60_post_dose_Oral_Temperature_value.split('|')[2]
+                        mins_60_post_dose_Oral_Temperature_value_disname = mins_60_post_dose_Oral_Temperature_value.split('|')[0]
                     except Exception as e:
                         mins_60_post_dose_Oral_Temperature_value_pure = math.nan
                         mins_60_post_dose_Oral_Temperature_value_form_field_instance = 'This field does not have any data'
@@ -476,7 +476,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_8_post_dose_Respiratory_rate = row["8-hours post dose, Respiratory rate"]
                         hours_8_post_dose_Respiratory_rate_pure = hours_8_post_dose_Respiratory_rate.split('|')[0]
                         hours_8_post_dose_Respiratory_rate_form_field_instance = hours_8_post_dose_Respiratory_rate.split('|')[1]
-                        hours_8_post_dose_Respiratory_rate_disname = hours_8_post_dose_Respiratory_rate.split('|')[2]
+                        hours_8_post_dose_Respiratory_rate_disname = hours_8_post_dose_Respiratory_rate.split('|')[0]
                     except Exception as e:
                         hours_8_post_dose_Respiratory_rate_pure = math.nan
                         hours_8_post_dose_Respiratory_rate_form_field_instance = 'This field does not have any data'
@@ -486,7 +486,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_8_post_dose_Respiratory_rate_value = row["8-hours post dose, Respiratory rate (breaths/min)"]
                         hours_8_post_dose_Respiratory_rate_value_pure = hours_8_post_dose_Respiratory_rate_value.split('|')[0]
                         hours_8_post_dose_Respiratory_rate_value_form_field_instance = hours_8_post_dose_Respiratory_rate_value.split('|')[1]
-                        hours_8_post_dose_Respiratory_rate_value_disname = hours_8_post_dose_Respiratory_rate_value.split('|')[2]
+                        hours_8_post_dose_Respiratory_rate_value_disname = hours_8_post_dose_Respiratory_rate_value.split('|')[0]
                     except Exception as e:
                         hours_8_post_dose_Respiratory_rate_value_pure = math.nan
                         hours_8_post_dose_Respiratory_rate_value_form_field_instance = 'This field does not have any data'
@@ -496,7 +496,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_12_post_dose_Oral_Temperature = row["12-hours post dose, Body Temperature"]
                         hours_12_post_dose_Oral_Temperature_pure = hours_12_post_dose_Oral_Temperature.split('|')[0]
                         hours_12_post_dose_Oral_Temperature_form_field_instance = hours_12_post_dose_Oral_Temperature.split('|')[1]
-                        hours_12_post_dose_Oral_Temperature_disname = hours_12_post_dose_Oral_Temperature.split('|')[2]
+                        hours_12_post_dose_Oral_Temperature_disname = hours_12_post_dose_Oral_Temperature.split('|')[0]
                     except Exception as e:
                         hours_12_post_dose_Oral_Temperature_pure = math.nan
                         hours_12_post_dose_Oral_Temperature_form_field_instance = 'This field does not have any data'
@@ -506,7 +506,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_12_post_dose_Oral_Temperature_value = row["12-hours post dose, Oral Temperature (°C)"]
                         hours_12_post_dose_Oral_Temperature_value_pure = hours_12_post_dose_Oral_Temperature_value.split('|')[0]
                         hours_12_post_dose_Oral_Temperature_value_form_field_instance = hours_12_post_dose_Oral_Temperature_value.split('|')[1]
-                        hours_12_post_dose_Oral_Temperature_value_disname = hours_12_post_dose_Oral_Temperature_value.split('|')[2]
+                        hours_12_post_dose_Oral_Temperature_value_disname = hours_12_post_dose_Oral_Temperature_value.split('|')[0]
                     except Exception as e:
                         hours_12_post_dose_Oral_Temperature_value_pure = math.nan
                         hours_12_post_dose_Oral_Temperature_value_form_field_instance = 'This field does not have any data'
@@ -517,7 +517,7 @@ def vital_signs(df_root, path_excel_writer):
                         Pre_dose_Pulse_rate = row["Pre dose, Pulse rate"]
                         Pre_dose_Pulse_rate_pure = Pre_dose_Pulse_rate.split('|')[0]
                         Pre_dose_Pulse_rate_form_field_instance = Pre_dose_Pulse_rate.split('|')[1]
-                        Pre_dose_Pulse_rate_disname = Pre_dose_Pulse_rate.split('|')[2]
+                        Pre_dose_Pulse_rate_disname = Pre_dose_Pulse_rate.split('|')[0]
                     except Exception as e:
                         Pre_dose_Pulse_rate_pure = math.nan
                         Pre_dose_Pulse_rate_form_field_instance = 'This field does not have any data'
@@ -527,7 +527,7 @@ def vital_signs(df_root, path_excel_writer):
                         Pre_dose_Pulse_rate_value = row["Pre dose, Pulse rate (beats/min)"]
                         Pre_dose_Pulse_rate_value_pure = Pre_dose_Pulse_rate_value.split('|')[0]
                         Pre_dose_Pulse_rate_value_form_field_instance = Pre_dose_Pulse_rate_value.split('|')[1]
-                        Pre_dose_Pulse_rate_value_disname = Pre_dose_Pulse_rate_value.split('|')[2]
+                        Pre_dose_Pulse_rate_value_disname = Pre_dose_Pulse_rate_value.split('|')[0]
                     except Exception as e:
                         Pre_dose_Pulse_rate_value_pure = math.nan
                         Pre_dose_Pulse_rate_value_form_field_instance = 'This field does not have any data'
@@ -537,7 +537,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_8_post_dose_Systolic_Blood_Pressure = row["8-hours post dose, Systolic Blood Pressure"]
                         hours_8_post_dose_Systolic_Blood_Pressure_pure = hours_8_post_dose_Systolic_Blood_Pressure.split('|')[0]
                         hours_8_post_dose_Systolic_Blood_Pressure_form_field_instance = hours_8_post_dose_Systolic_Blood_Pressure.split('|')[1]
-                        hours_8_post_dose_Systolic_Blood_Pressure_disname = hours_8_post_dose_Systolic_Blood_Pressure.split('|')[2]
+                        hours_8_post_dose_Systolic_Blood_Pressure_disname = hours_8_post_dose_Systolic_Blood_Pressure.split('|')[0]
                     except Exception as e:
                         hours_8_post_dose_Systolic_Blood_Pressure_pure = math.nan
                         hours_8_post_dose_Systolic_Blood_Pressure_form_field_instance = 'This field does not have any data'
@@ -547,7 +547,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_8_post_dose_Systolic_Blood_Pressure_value = row["8-hours post dose, Systolic Blood Pressure  (Sitting) (mmHg)"]
                         hours_8_post_dose_Systolic_Blood_Pressure_value_pure = hours_8_post_dose_Systolic_Blood_Pressure_value.split('|')[0]
                         hours_8_post_dose_Systolic_Blood_Pressure_value_form_field_instance = hours_8_post_dose_Systolic_Blood_Pressure_value.split('|')[1]
-                        hours_8_post_dose_Systolic_Blood_Pressure_value_disname = hours_8_post_dose_Systolic_Blood_Pressure_value.split('|')[2]
+                        hours_8_post_dose_Systolic_Blood_Pressure_value_disname = hours_8_post_dose_Systolic_Blood_Pressure_value.split('|')[0]
                     except Exception as e:
                         hours_8_post_dose_Systolic_Blood_Pressure_value_pure = math.nan
                         hours_8_post_dose_Systolic_Blood_Pressure_value_form_field_instance = 'This field does not have any data'
@@ -557,7 +557,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_30_post_dose_Systolic_Blood_Pressure = row["30-mins post dose, Systolic Blood Pressure"]
                         mins_30_post_dose_Systolic_Blood_Pressure_pure = mins_30_post_dose_Systolic_Blood_Pressure.split('|')[0]
                         mins_30_post_dose_Systolic_Blood_Pressure_form_field_instance = mins_30_post_dose_Systolic_Blood_Pressure.split('|')[1]
-                        mins_30_post_dose_Systolic_Blood_Pressure_disname = mins_30_post_dose_Systolic_Blood_Pressure.split('|')[2]
+                        mins_30_post_dose_Systolic_Blood_Pressure_disname = mins_30_post_dose_Systolic_Blood_Pressure.split('|')[0]
                     except Exception as e:
                         mins_30_post_dose_Systolic_Blood_Pressure_pure = math.nan
                         mins_30_post_dose_Systolic_Blood_Pressure_form_field_instance = 'This field does not have any data'
@@ -567,7 +567,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_30_post_dose_Systolic_Blood_Pressure_value = row["30-mins post dose, Systolic Blood Pressure  (Sitting) (mmHg)"]
                         mins_30_post_dose_Systolic_Blood_Pressure_value_pure = mins_30_post_dose_Systolic_Blood_Pressure_value.split('|')[0]
                         mins_30_post_dose_Systolic_Blood_Pressure_value_form_field_instance = mins_30_post_dose_Systolic_Blood_Pressure_value.split('|')[1]
-                        mins_30_post_dose_Systolic_Blood_Pressure_value_disname = mins_30_post_dose_Systolic_Blood_Pressure_value.split('|')[2]
+                        mins_30_post_dose_Systolic_Blood_Pressure_value_disname = mins_30_post_dose_Systolic_Blood_Pressure_value.split('|')[0]
                     except Exception as e:
                         mins_30_post_dose_Systolic_Blood_Pressure_value_pure = math.nan
                         mins_30_post_dose_Systolic_Blood_Pressure_value_form_field_instance = 'This field does not have any data'
@@ -577,7 +577,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_4_post_dose_Respiratory_rate = row["4-hours post dose, Respiratory rate"]
                         hours_4_post_dose_Respiratory_rate_pure = hours_4_post_dose_Respiratory_rate.split('|')[0]
                         hours_4_post_dose_Respiratory_rate_form_field_instance = hours_4_post_dose_Respiratory_rate.split('|')[1]
-                        hours_4_post_dose_Respiratory_rate_disname = hours_4_post_dose_Respiratory_rate.split('|')[2]
+                        hours_4_post_dose_Respiratory_rate_disname = hours_4_post_dose_Respiratory_rate.split('|')[0]
                     except Exception as e:
                         hours_4_post_dose_Respiratory_rate_pure = math.nan
                         hours_4_post_dose_Respiratory_rate_form_field_instance = 'This field does not have any data'
@@ -587,7 +587,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_4_post_dose_Respiratory_rate_value = row["4-hours post dose, Respiratory rate (breaths/min)"]
                         hours_4_post_dose_Respiratory_rate_value_pure = hours_4_post_dose_Respiratory_rate_value.split('|')[0]
                         hours_4_post_dose_Respiratory_rate_value_form_field_instance = hours_4_post_dose_Respiratory_rate_value.split('|')[1]
-                        hours_4_post_dose_Respiratory_rate_value_disname = hours_4_post_dose_Respiratory_rate_value.split('|')[2]
+                        hours_4_post_dose_Respiratory_rate_value_disname = hours_4_post_dose_Respiratory_rate_value.split('|')[0]
                     except Exception as e:
                         hours_4_post_dose_Respiratory_rate_value_pure = math.nan
                         hours_4_post_dose_Respiratory_rate_value_form_field_instance = 'This field does not have any data'
@@ -597,7 +597,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_30_post_dose_Diastolic_Blood_Pressure = row["30-mins post dose, Diastolic Blood Pressure"]
                         mins_30_post_dose_Diastolic_Blood_Pressure_pure = mins_30_post_dose_Diastolic_Blood_Pressure.split('|')[0]
                         mins_30_post_dose_Diastolic_Blood_Pressure_form_field_instance = mins_30_post_dose_Diastolic_Blood_Pressure.split('|')[1]
-                        mins_30_post_dose_Diastolic_Blood_Pressure_disname = mins_30_post_dose_Diastolic_Blood_Pressure.split('|')[2]
+                        mins_30_post_dose_Diastolic_Blood_Pressure_disname = mins_30_post_dose_Diastolic_Blood_Pressure.split('|')[0]
                     except Exception as e:
                         mins_30_post_dose_Diastolic_Blood_Pressure_pure = math.nan
                         mins_30_post_dose_Diastolic_Blood_Pressure_form_field_instance = 'This field does not have any data'
@@ -607,7 +607,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_30_post_dose_Diastolic_Blood_Pressure_value = row["30-mins post dose, Diastolic Blood Pressure (Sitting) (mmHg)"]
                         mins_30_post_dose_Diastolic_Blood_Pressure_value_pure = mins_30_post_dose_Diastolic_Blood_Pressure_value.split('|')[0]
                         mins_30_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = mins_30_post_dose_Diastolic_Blood_Pressure_value.split('|')[1]
-                        mins_30_post_dose_Diastolic_Blood_Pressure_value_disname = mins_30_post_dose_Diastolic_Blood_Pressure_value.split('|')[2]
+                        mins_30_post_dose_Diastolic_Blood_Pressure_value_disname = mins_30_post_dose_Diastolic_Blood_Pressure_value.split('|')[0]
                     except Exception as e:
                         mins_30_post_dose_Diastolic_Blood_Pressure_value_pure = math.nan
                         mins_30_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = 'This field does not have any data'
@@ -617,7 +617,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_30_post_dose_Pulse_rate = row["30-mins post dose, Pulse rate"]
                         mins_30_post_dose_Pulse_rate_pure = mins_30_post_dose_Pulse_rate.split('|')[0]
                         mins_30_post_dose_Pulse_rate_form_field_instance = mins_30_post_dose_Pulse_rate.split('|')[1]
-                        mins_30_post_dose_Pulse_rate_disname = mins_30_post_dose_Pulse_rate.split('|')[2]
+                        mins_30_post_dose_Pulse_rate_disname = mins_30_post_dose_Pulse_rate.split('|')[0]
                     except Exception as e:
                         mins_30_post_dose_Pulse_rate_pure = math.nan
                         mins_30_post_dose_Pulse_rate_form_field_instance = 'This field does not have any data'
@@ -627,7 +627,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_30_post_dose_Pulse_rate_value = row["30-mins post dose, Pulse rate (beats/min)"]
                         mins_30_post_dose_Pulse_rate_value_pure = mins_30_post_dose_Pulse_rate_value.split('|')[0]
                         mins_30_post_dose_Pulse_rate_value_form_field_instance = mins_30_post_dose_Pulse_rate_value.split('|')[1]
-                        mins_30_post_dose_Pulse_rate_value_disname = mins_30_post_dose_Pulse_rate_value.split('|')[2]
+                        mins_30_post_dose_Pulse_rate_value_disname = mins_30_post_dose_Pulse_rate_value.split('|')[0]
                     except Exception as e:
                         mins_30_post_dose_Pulse_rate_value_pure = math.nan
                         mins_30_post_dose_Pulse_rate_value_form_field_instance = 'This field does not have any data'
@@ -637,7 +637,7 @@ def vital_signs(df_root, path_excel_writer):
                         Pre_dose_Respiratory_rate = row["Pre dose, Respiratory rate"]
                         Pre_dose_Respiratory_rate_pure = Pre_dose_Respiratory_rate.split('|')[0]
                         Pre_dose_Respiratory_rate_form_field_instance = Pre_dose_Respiratory_rate.split('|')[1]
-                        Pre_dose_Respiratory_rate_disname = Pre_dose_Respiratory_rate.split('|')[2]
+                        Pre_dose_Respiratory_rate_disname = Pre_dose_Respiratory_rate.split('|')[0]
                     except Exception as e:
                         Pre_dose_Respiratory_rate_pure = math.nan
                         Pre_dose_Respiratory_rate_form_field_instance = 'This field does not have any data'
@@ -647,7 +647,7 @@ def vital_signs(df_root, path_excel_writer):
                         Pre_dose_Respiratory_rate_value = row["Pre dose, Respiratory rate (breaths/min)"]
                         Pre_dose_Respiratory_rate_value_pure = Pre_dose_Respiratory_rate_value.split('|')[0]
                         Pre_dose_Respiratory_rate_value_form_field_instance = Pre_dose_Respiratory_rate_value.split('|')[1]
-                        Pre_dose_Respiratory_rate_value_disname = Pre_dose_Respiratory_rate_value.split('|')[2]
+                        Pre_dose_Respiratory_rate_value_disname = Pre_dose_Respiratory_rate_value.split('|')[0]
                     except Exception as e:
                         Pre_dose_Respiratory_rate_value_pure = math.nan
                         Pre_dose_Respiratory_rate_value_form_field_instance = 'This field does not have any data'
@@ -657,7 +657,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_12_post_dose_Respiratory_rate = row["12-hours post dose, Respiratory rate"]
                         hours_12_post_dose_Respiratory_rate_pure = hours_12_post_dose_Respiratory_rate.split('|')[0]
                         hours_12_post_dose_Respiratory_rate_form_field_instance = hours_12_post_dose_Respiratory_rate.split('|')[1]
-                        hours_12_post_dose_Respiratory_rate_disname = hours_12_post_dose_Respiratory_rate.split('|')[2]
+                        hours_12_post_dose_Respiratory_rate_disname = hours_12_post_dose_Respiratory_rate.split('|')[0]
                     except Exception as e:
                         hours_12_post_dose_Respiratory_rate_pure = math.nan
                         hours_12_post_dose_Respiratory_rate_form_field_instance = 'This field does not have any data'
@@ -667,7 +667,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_12_post_dose_Respiratory_rate_value = row["12-hours post dose, Respiratory rate (breaths/min)"]
                         hours_12_post_dose_Respiratory_rate_value_pure = hours_12_post_dose_Respiratory_rate_value.split('|')[0]
                         hours_12_post_dose_Respiratory_rate_value_form_field_instance = hours_12_post_dose_Respiratory_rate_value.split('|')[1]
-                        hours_12_post_dose_Respiratory_rate_value_disname = hours_12_post_dose_Respiratory_rate_value.split('|')[2]
+                        hours_12_post_dose_Respiratory_rate_value_disname = hours_12_post_dose_Respiratory_rate_value.split('|')[0]
                     except Exception as e:
                         hours_12_post_dose_Respiratory_rate_value_pure = math.nan
                         hours_12_post_dose_Respiratory_rate_value_form_field_instance = 'This field does not have any data'
@@ -677,7 +677,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_12_post_dose_Pulse_rate = row["12-hours post dose, Pulse rate"]
                         hours_12_post_dose_Pulse_rate_pure = hours_12_post_dose_Pulse_rate.split('|')[0]
                         hours_12_post_dose_Pulse_rate_form_field_instance = hours_12_post_dose_Pulse_rate.split('|')[1]
-                        hours_12_post_dose_Pulse_rate_disname = hours_12_post_dose_Pulse_rate.split('|')[2]
+                        hours_12_post_dose_Pulse_rate_disname = hours_12_post_dose_Pulse_rate.split('|')[0]
                     except Exception as e:
                         hours_12_post_dose_Pulse_rate_pure = math.nan
                         hours_12_post_dose_Pulse_rate_form_field_instance = 'This field does not have any data'
@@ -687,7 +687,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_12_post_dose_Pulse_rate_value = row["12-hours post dose, Pulse rate (beats/min)"]
                         hours_12_post_dose_Pulse_rate_value_pure = hours_12_post_dose_Pulse_rate_value.split('|')[0]
                         hours_12_post_dose_Pulse_rate_value_form_field_instance = hours_12_post_dose_Pulse_rate_value.split('|')[1]
-                        hours_12_post_dose_Pulse_rate_value_disname = hours_12_post_dose_Pulse_rate_value.split('|')[2]
+                        hours_12_post_dose_Pulse_rate_value_disname = hours_12_post_dose_Pulse_rate_value.split('|')[0]
                     except Exception as e:
                         hours_12_post_dose_Pulse_rate_value_pure = math.nan
                         hours_12_post_dose_Pulse_rate_value_form_field_instance = 'This field does not have any data'
@@ -697,7 +697,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_2_post_dose_Systolic_Blood_Pressure = row["2-hours post dose, Systolic Blood Pressure"]
                         hours_2_post_dose_Systolic_Blood_Pressure_pure = hours_2_post_dose_Systolic_Blood_Pressure.split('|')[0]
                         hours_2_post_dose_Systolic_Blood_Pressure_form_field_instance = hours_2_post_dose_Systolic_Blood_Pressure.split('|')[1]
-                        hours_2_post_dose_Systolic_Blood_Pressure_disname = hours_2_post_dose_Systolic_Blood_Pressure.split('|')[2]
+                        hours_2_post_dose_Systolic_Blood_Pressure_disname = hours_2_post_dose_Systolic_Blood_Pressure.split('|')[0]
                     except Exception as e:
                         hours_2_post_dose_Systolic_Blood_Pressure_pure = math.nan
                         hours_2_post_dose_Systolic_Blood_Pressure_form_field_instance = 'This field does not have any data'
@@ -707,7 +707,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_2_post_dose_Systolic_Blood_Pressure_value = row["2-hours post dose, Systolic Blood Pressure  (Sitting) (mmHg)"]
                         hours_2_post_dose_Systolic_Blood_Pressure_value_pure = hours_2_post_dose_Systolic_Blood_Pressure_value.split('|')[0]
                         hours_2_post_dose_Systolic_Blood_Pressure_value_form_field_instance = hours_2_post_dose_Systolic_Blood_Pressure_value.split('|')[1]
-                        hours_2_post_dose_Systolic_Blood_Pressure_value_empty = hours_2_post_dose_Systolic_Blood_Pressure_value.split('|')[2]
+                        hours_2_post_dose_Systolic_Blood_Pressure_value_empty = hours_2_post_dose_Systolic_Blood_Pressure_value.split('|')[0]
                     except Exception as e:
                         hours_2_post_dose_Systolic_Blood_Pressure_value_pure = math.nan
                         hours_2_post_dose_Systolic_Blood_Pressure_value_form_field_instance = 'This field does not have any data'
@@ -717,7 +717,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_8_post_dose_Oral_Temperature = row["8-hours post dose, Body Temperature"]
                         hours_8_post_dose_Oral_Temperature_pure = hours_8_post_dose_Oral_Temperature.split('|')[0]
                         hours_8_post_dose_Oral_Temperature_form_field_instance = hours_8_post_dose_Oral_Temperature.split('|')[1]
-                        hours_8_post_dose_Oral_Temperature_disname = hours_8_post_dose_Oral_Temperature.split('|')[2]
+                        hours_8_post_dose_Oral_Temperature_disname = hours_8_post_dose_Oral_Temperature.split('|')[0]
                     except Exception as e:
                         hours_8_post_dose_Oral_Temperature_pure = math.nan 
                         hours_8_post_dose_Oral_Temperature_form_field_instance = 'This field does not have any data'
@@ -727,7 +727,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_8_post_dose_Oral_Temperature_value = row["8-hours post dose, Oral Temperature (°C)"]
                         hours_8_post_dose_Oral_Temperature_value_pure = hours_8_post_dose_Oral_Temperature_value.split('|')[0]
                         hours_8_post_dose_Oral_Temperature_value_form_field_instance = hours_8_post_dose_Oral_Temperature_value.split('|')[1]
-                        hours_8_post_dose_Oral_Temperature_value_disname = hours_8_post_dose_Oral_Temperature_value.split('|')[2]
+                        hours_8_post_dose_Oral_Temperature_value_disname = hours_8_post_dose_Oral_Temperature_value.split('|')[0]
                     except Exception as e:
                         hours_8_post_dose_Oral_Temperature_value_pure = math.nan
                         hours_8_post_dose_Oral_Temperature_value_form_field_instance = 'This field does not have any data'
@@ -737,7 +737,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_60_post_dose_Systolic_Blood_Pressure = row["60-mins post dose, Systolic Blood Pressure"]
                         mins_60_post_dose_Systolic_Blood_Pressure_pure = mins_60_post_dose_Systolic_Blood_Pressure.split('|')[0]
                         mins_60_post_dose_Systolic_Blood_Pressure_form_field_instance = mins_60_post_dose_Systolic_Blood_Pressure.split('|')[1]
-                        mins_60_post_dose_Systolic_Blood_Pressure_disname = mins_60_post_dose_Systolic_Blood_Pressure.split('|')[2]
+                        mins_60_post_dose_Systolic_Blood_Pressure_disname = mins_60_post_dose_Systolic_Blood_Pressure.split('|')[0]
                     except Exception as e:
                         mins_60_post_dose_Systolic_Blood_Pressure_pure = math.nan
                         mins_60_post_dose_Systolic_Blood_Pressure_form_field_instance = 'This field does not have any data'
@@ -747,7 +747,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_60_post_dose_Systolic_Blood_Pressure_value = row["60-mins post dose, Systolic Blood Pressure  (Sitting) (mmHg)"]
                         mins_60_post_dose_Systolic_Blood_Pressure_value_pure = mins_60_post_dose_Systolic_Blood_Pressure_value.split('|')[0]
                         mins_60_post_dose_Systolic_Blood_Pressure_value_form_field_instance = mins_60_post_dose_Systolic_Blood_Pressure_value.split('|')[1]
-                        mins_60_post_dose_Systolic_Blood_Pressure_value_disname = mins_60_post_dose_Systolic_Blood_Pressure_value.split('|')[2]
+                        mins_60_post_dose_Systolic_Blood_Pressure_value_disname = mins_60_post_dose_Systolic_Blood_Pressure_value.split('|')[0]
                     except Exception as e:
                         mins_60_post_dose_Systolic_Blood_Pressure_value_pure = math.nan
                         mins_60_post_dose_Systolic_Blood_Pressure_value_form_field_instance = 'This field does not have any data'
@@ -757,7 +757,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_15_post_dose_Oral_Temperature = row["15-mins post dose, Body Temperature"]
                         mins_15_post_dose_Oral_Temperature_pure = mins_15_post_dose_Oral_Temperature.split('|')[0]
                         mins_15_post_dose_Oral_Temperature_form_field_instance = mins_15_post_dose_Oral_Temperature.split('|')[1]
-                        mins_15_post_dose_Oral_Temperature_disname = mins_15_post_dose_Oral_Temperature.split('|')[2]
+                        mins_15_post_dose_Oral_Temperature_disname = mins_15_post_dose_Oral_Temperature.split('|')[0]
                     except Exception as e:
                         mins_15_post_dose_Oral_Temperature_pure = math.nan
                         mins_15_post_dose_Oral_Temperature_form_field_instance = 'This field does not have any data'
@@ -767,7 +767,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_15_post_dose_Oral_Temperature_value = row["15-mins post dose, Oral Temperature (°C)"]
                         mins_15_post_dose_Oral_Temperature_value_pure = mins_15_post_dose_Oral_Temperature_value.split('|')[0]
                         mins_15_post_dose_Oral_Temperature_value_form_field_instance = mins_15_post_dose_Oral_Temperature_value.split('|')[1]
-                        mins_15_post_dose_Oral_Temperature_value_disname = mins_15_post_dose_Oral_Temperature_value.split('|')[2]
+                        mins_15_post_dose_Oral_Temperature_value_disname = mins_15_post_dose_Oral_Temperature_value.split('|')[0]
                     except Exception as e:
                         mins_15_post_dose_Oral_Temperature_value_pure = math.nan
                         mins_15_post_dose_Oral_Temperature_value_form_field_instance = 'This field does not have any data'
@@ -777,7 +777,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_4_post_dose_Pulse_rate = row["4-hours post dose, Pulse rate"]
                         hours_4_post_dose_Pulse_rate_pure = hours_4_post_dose_Pulse_rate.split('|')[0]
                         hours_4_post_dose_Pulse_rate_form_field_instance = hours_4_post_dose_Pulse_rate.split('|')[1]
-                        hours_4_post_dose_Pulse_rate_disname = hours_4_post_dose_Pulse_rate.split('|')[2]
+                        hours_4_post_dose_Pulse_rate_disname = hours_4_post_dose_Pulse_rate.split('|')[0]
                     except Exception as e:
                         hours_4_post_dose_Pulse_rate_pure = math.nan
                         hours_4_post_dose_Pulse_rate_form_field_instance = 'This field does not have any data'
@@ -787,7 +787,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_4_post_dose_Pulse_rate_value = row["4-hours post dose, Pulse rate (beats/min)"]
                         hours_4_post_dose_Pulse_rate_value_pure = hours_4_post_dose_Pulse_rate_value.split('|')[0]
                         hours_4_post_dose_Pulse_rate_value_form_field_instance = hours_4_post_dose_Pulse_rate_value.split('|')[1]
-                        hours_4_post_dose_Pulse_rate_value_disname = hours_4_post_dose_Pulse_rate_value.split('|')[2]
+                        hours_4_post_dose_Pulse_rate_value_disname = hours_4_post_dose_Pulse_rate_value.split('|')[0]
                     except Exception as e:
                         hours_4_post_dose_Pulse_rate_value_pure = math.nan
                         hours_4_post_dose_Pulse_rate_value_form_field_instance = 'This field does not have any data'
@@ -797,7 +797,7 @@ def vital_signs(df_root, path_excel_writer):
                         Pre_dose_Systolic_Blood_Pressure = row["Pre dose, Systolic Blood Pressure"]
                         Pre_dose_Systolic_Blood_Pressure_pure = Pre_dose_Systolic_Blood_Pressure.split('|')[0]
                         Pre_dose_Systolic_Blood_Pressure_form_field_instance = Pre_dose_Systolic_Blood_Pressure.split('|')[1]
-                        Pre_dose_Systolic_Blood_Pressure_disname = Pre_dose_Systolic_Blood_Pressure.split('|')[2]
+                        Pre_dose_Systolic_Blood_Pressure_disname = Pre_dose_Systolic_Blood_Pressure.split('|')[0]
                     except Exception as e:
                         Pre_dose_Systolic_Blood_Pressure_pure = math.nan
                         Pre_dose_Systolic_Blood_Pressure_form_field_instance = 'This field does not have any data'
@@ -807,7 +807,7 @@ def vital_signs(df_root, path_excel_writer):
                         Pre_dose_Systolic_Blood_Pressure_value = row["Pre dose, Systolic Blood Pressure  (Sitting) (mmHg)"]
                         Pre_dose_Systolic_Blood_Pressure_value_pure = Pre_dose_Systolic_Blood_Pressure_value.split('|')[0]
                         Pre_dose_Systolic_Blood_Pressure_value_form_field_instance = Pre_dose_Systolic_Blood_Pressure_value.split('|')[1]
-                        Pre_dose_Systolic_Blood_Pressure_value_disname = Pre_dose_Systolic_Blood_Pressure_value.split('|')[2]
+                        Pre_dose_Systolic_Blood_Pressure_value_disname = Pre_dose_Systolic_Blood_Pressure_value.split('|')[0]
                     except Exception as e:
                         Pre_dose_Systolic_Blood_Pressure_value_pure = math.nan
                         Pre_dose_Systolic_Blood_Pressure_value_form_field_instance = 'This field does not have any data'
@@ -817,7 +817,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_12_post_dose_Systolic_Blood_Pressure = row["12-hours post dose, Systolic Blood Pressure"]
                         hours_12_post_dose_Systolic_Blood_Pressure_pure = hours_12_post_dose_Systolic_Blood_Pressure.split('|')[0]
                         hours_12_post_dose_Systolic_Blood_Pressure_form_field_instance = hours_12_post_dose_Systolic_Blood_Pressure.split('|')[1]
-                        hours_12_post_dose_Systolic_Blood_Pressure_disname = hours_12_post_dose_Systolic_Blood_Pressure.split('|')[2]
+                        hours_12_post_dose_Systolic_Blood_Pressure_disname = hours_12_post_dose_Systolic_Blood_Pressure.split('|')[0]
                     except Exception as e:
                         hours_12_post_dose_Systolic_Blood_Pressure_pure = math.nan
                         hours_12_post_dose_Systolic_Blood_Pressure_form_field_instance = 'This field does not have any data'
@@ -827,7 +827,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_12_post_dose_Systolic_Blood_Pressure_value = row["12-hours post dose, Systolic Blood Pressure  (Sitting) (mmHg)"]
                         hours_12_post_dose_Systolic_Blood_Pressure_value_pure = hours_12_post_dose_Systolic_Blood_Pressure_value.split('|')[0]
                         hours_12_post_dose_Systolic_Blood_Pressure_value_form_field_instance = hours_12_post_dose_Systolic_Blood_Pressure_value.split('|')[1]
-                        hours_12_post_dose_Systolic_Blood_Pressure_value_disname = hours_12_post_dose_Systolic_Blood_Pressure_value.split('|')[2]
+                        hours_12_post_dose_Systolic_Blood_Pressure_value_disname = hours_12_post_dose_Systolic_Blood_Pressure_value.split('|')[0]
                     except Exception as e:
                         hours_12_post_dose_Systolic_Blood_Pressure_value_pure = math.nan
                         hours_12_post_dose_Systolic_Blood_Pressure_value_form_field_instance = 'This field does not have any data'
@@ -837,7 +837,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_30_post_dose_Oral_Temperature = row["30-mins post dose, Body Temperature"]
                         mins_30_post_dose_Oral_Temperature_pure = mins_30_post_dose_Oral_Temperature.split('|')[0]
                         mins_30_post_dose_Oral_Temperature_form_field_instance = mins_30_post_dose_Oral_Temperature.split('|')[1]
-                        mins_30_post_dose_Oral_Temperature_disname = mins_30_post_dose_Oral_Temperature.split('|')[2]
+                        mins_30_post_dose_Oral_Temperature_disname = mins_30_post_dose_Oral_Temperature.split('|')[0]
                     except Exception as e:
                         mins_30_post_dose_Oral_Temperature_pure = math.nan 
                         mins_30_post_dose_Oral_Temperature_form_field_instance = 'This field does not have any data'
@@ -847,7 +847,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_30_post_dose_Oral_Temperature_value = row["30-mins post dose, Oral Temperature (°C)"]
                         mins_30_post_dose_Oral_Temperature_value_pure = mins_30_post_dose_Oral_Temperature_value.split('|')[0]
                         mins_30_post_dose_Oral_Temperature_value_form_field_instance = mins_30_post_dose_Oral_Temperature_value.split('|')[1]
-                        mins_30_post_dose_Oral_Temperature_value_disname = mins_30_post_dose_Oral_Temperature_value.split('|')[2]
+                        mins_30_post_dose_Oral_Temperature_value_disname = mins_30_post_dose_Oral_Temperature_value.split('|')[0]
                     except Exception as e:
                         mins_30_post_dose_Oral_Temperature_value_pure = math.nan
                         mins_30_post_dose_Oral_Temperature_value_form_field_instance = 'This field does not have any data'
@@ -857,7 +857,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_4_post_dose_Oral_Temperature = row["4-hours post dose, Body Temperature"]
                         hours_4_post_dose_Oral_Temperature_pure = hours_4_post_dose_Oral_Temperature.split('|')[0]
                         hours_4_post_dose_Oral_Temperature_form_field_instance = hours_4_post_dose_Oral_Temperature.split('|')[1]
-                        hours_4_post_dose_Oral_Temperature_disname = hours_4_post_dose_Oral_Temperature.split('|')[2]
+                        hours_4_post_dose_Oral_Temperature_disname = hours_4_post_dose_Oral_Temperature.split('|')[0]
                     except Exception as e:
                         hours_4_post_dose_Oral_Temperature_pure = math.nan
                         hours_4_post_dose_Oral_Temperature_form_field_instance = 'This field does not have any data'
@@ -867,7 +867,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_4_post_dose_Oral_Temperature_value = row["4-hours post dose, Oral Temperature (°C)"]
                         hours_4_post_dose_Oral_Temperature_value_pure = hours_4_post_dose_Oral_Temperature_value.split('|')[0]
                         hours_4_post_dose_Oral_Temperature_value_form_field_instance = hours_4_post_dose_Oral_Temperature_value.split('|')[1]
-                        hours_4_post_dose_Oral_Temperature_value_disname = hours_4_post_dose_Oral_Temperature_value.split('|')[2]
+                        hours_4_post_dose_Oral_Temperature_value_disname = hours_4_post_dose_Oral_Temperature_value.split('|')[0]
                     except Exception as e:
                         hours_4_post_dose_Oral_Temperature_value_pure = math.nan
                         hours_4_post_dose_Oral_Temperature_value_form_field_instance = 'This field does not have any data'
@@ -877,7 +877,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_12_post_dose_Diastolic_Blood_Pressure = row["12-hours post dose, Diastolic Blood Pressure"]
                         hours_12_post_dose_Diastolic_Blood_Pressure_pure = hours_12_post_dose_Diastolic_Blood_Pressure.split('|')[0]
                         hours_12_post_dose_Diastolic_Blood_Pressure_form_field_instance = hours_12_post_dose_Diastolic_Blood_Pressure.split('|')[1]
-                        hours_12_post_dose_Diastolic_Blood_Pressure_disname = hours_12_post_dose_Diastolic_Blood_Pressure.split('|')[2]
+                        hours_12_post_dose_Diastolic_Blood_Pressure_disname = hours_12_post_dose_Diastolic_Blood_Pressure.split('|')[0]
                     except Exception as e:
                         hours_12_post_dose_Diastolic_Blood_Pressure_pure = math.nan 
                         hours_12_post_dose_Diastolic_Blood_Pressure_form_field_instance = 'This field does not have any data'
@@ -887,7 +887,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_12_post_dose_Diastolic_Blood_Pressure_value = row["12-hours post dose, Diastolic Blood Pressure (Sitting) (mmHg)"]
                         hours_12_post_dose_Diastolic_Blood_Pressure_value_pure = hours_12_post_dose_Diastolic_Blood_Pressure_value.split('|')[0]
                         hours_12_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = hours_12_post_dose_Diastolic_Blood_Pressure_value.split('|')[1]
-                        hours_12_post_dose_Diastolic_Blood_Pressure_value_disname = hours_12_post_dose_Diastolic_Blood_Pressure_value.split('|')[2]
+                        hours_12_post_dose_Diastolic_Blood_Pressure_value_disname = hours_12_post_dose_Diastolic_Blood_Pressure_value.split('|')[0]
                     except Exception as e:
                         hours_12_post_dose_Diastolic_Blood_Pressure_value_pure = math.nan
                         hours_12_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = 'This field does not have any data'
@@ -897,7 +897,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_15_post_dose_Systolic_Blood_Pressure = row["15-mins post dose, Systolic Blood Pressure"]
                         mins_15_post_dose_Systolic_Blood_Pressure_pure = mins_15_post_dose_Systolic_Blood_Pressure.split('|')[0]
                         mins_15_post_dose_Systolic_Blood_Pressure_form_field_instance = mins_15_post_dose_Systolic_Blood_Pressure.split('|')[1]
-                        mins_15_post_dose_Systolic_Blood_Pressure_disname = mins_15_post_dose_Systolic_Blood_Pressure.split('|')[2]
+                        mins_15_post_dose_Systolic_Blood_Pressure_disname = mins_15_post_dose_Systolic_Blood_Pressure.split('|')[0]
                     except Exception as e:
                         mins_15_post_dose_Systolic_Blood_Pressure_pure = math.nan
                         mins_15_post_dose_Systolic_Blood_Pressure_form_field_instance = 'This field does not have any data'
@@ -907,7 +907,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_15_post_dose_Systolic_Blood_Pressure_value = row["15-mins post dose, Systolic Blood Pressure  (Sitting) (mmHg)"]
                         mins_15_post_dose_Systolic_Blood_Pressure_value_pure = mins_15_post_dose_Systolic_Blood_Pressure_value.split('|')[0]
                         mins_15_post_dose_Systolic_Blood_Pressure_value_form_field_instance = mins_15_post_dose_Systolic_Blood_Pressure_value.split('|')[1]
-                        mins_15_post_dose_Systolic_Blood_Pressure_value_disname = mins_15_post_dose_Systolic_Blood_Pressure_value.split('|')[2]
+                        mins_15_post_dose_Systolic_Blood_Pressure_value_disname = mins_15_post_dose_Systolic_Blood_Pressure_value.split('|')[0]
                     except Exception as e:
                         mins_15_post_dose_Systolic_Blood_Pressure_value_pure = math.nan
                         mins_15_post_dose_Systolic_Blood_Pressure_value_form_field_instance = 'This field does not have any data'
@@ -917,7 +917,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_4_post_dose_Diastolic_Blood_Pressure = row["4-hours post dose, Diastolic Blood Pressure"]
                         hours_4_post_dose_Diastolic_Blood_Pressure_pure = hours_4_post_dose_Diastolic_Blood_Pressure.split('|')[0]
                         hours_4_post_dose_Diastolic_Blood_Pressure_form_field_instance = hours_4_post_dose_Diastolic_Blood_Pressure.split('|')[1]
-                        hours_4_post_dose_Diastolic_Blood_Pressure_disname = hours_4_post_dose_Diastolic_Blood_Pressure.split('|')[2]
+                        hours_4_post_dose_Diastolic_Blood_Pressure_disname = hours_4_post_dose_Diastolic_Blood_Pressure.split('|')[0]
                     except Exception as e:
                         hours_4_post_dose_Diastolic_Blood_Pressure_pure =math.nan
                         hours_4_post_dose_Diastolic_Blood_Pressure_form_field_instance = 'This field does not have any data'
@@ -927,7 +927,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_4_post_dose_Diastolic_Blood_Pressure_value = row["4-hours post dose, Diastolic Blood Pressure (Sitting) (mmHg)"]
                         hours_4_post_dose_Diastolic_Blood_Pressure_value_pure = hours_4_post_dose_Diastolic_Blood_Pressure_value.split('|')[0]
                         hours_4_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = hours_4_post_dose_Diastolic_Blood_Pressure_value.split('|')[1]
-                        hours_4_post_dose_Diastolic_Blood_Pressure_value_disname = hours_4_post_dose_Diastolic_Blood_Pressure_value.split('|')[2]
+                        hours_4_post_dose_Diastolic_Blood_Pressure_value_disname = hours_4_post_dose_Diastolic_Blood_Pressure_value.split('|')[0]
                     except Exception as e:
                         hours_4_post_dose_Diastolic_Blood_Pressure_value_pure = math.nan 
                         hours_4_post_dose_Diastolic_Blood_Pressure_value_form_field_instance = 'This field does not have any data'
@@ -937,7 +937,7 @@ def vital_signs(df_root, path_excel_writer):
                         Undefined_Pulse_rate = row["Undefined, Pulse rate"]
                         Undefined_Pulse_rate_pure = Undefined_Pulse_rate.split('|')[0]
                         Undefined_Pulse_rate_form_field_instance = Undefined_Pulse_rate.split('|')[1]
-                        Undefined_Pulse_rate_disname = Undefined_Pulse_rate.split('|')[2]
+                        Undefined_Pulse_rate_disname = Undefined_Pulse_rate.split('|')[0]
                     except Exception as e:
                         Undefined_Pulse_rate_pure = math.nan
                         Undefined_Pulse_rate_form_field_instance = 'This field does not have any data'
@@ -947,7 +947,7 @@ def vital_signs(df_root, path_excel_writer):
                         Undefined_Pulse_rate_value = row["Undefined, Pulse rate (beats/min)"]
                         Undefined_Pulse_rate_value_pure = Undefined_Pulse_rate_value.split('|')[0]
                         Undefined_Pulse_rate_value_form_field_instance = Undefined_Pulse_rate_value.split('|')[1]
-                        Undefined_Pulse_rate_value_disname = Undefined_Pulse_rate_value.split('|')[2]
+                        Undefined_Pulse_rate_value_disname = Undefined_Pulse_rate_value.split('|')[0]
                     except Exception as e:
                         Undefined_Pulse_rate_value_pure = math.nan
                         Undefined_Pulse_rate_value_form_field_instance = 'This field does not have any data'
@@ -957,7 +957,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_4_post_dose_Systolic_Blood_Pressure = row["4-hours post dose, Systolic Blood Pressure"]
                         hours_4_post_dose_Systolic_Blood_Pressure_pure = hours_4_post_dose_Systolic_Blood_Pressure.split('|')[0]
                         hours_4_post_dose_Systolic_Blood_Pressure_form_field_instance = hours_4_post_dose_Systolic_Blood_Pressure.split('|')[1]
-                        hours_4_post_dose_Systolic_Blood_Pressure_disname = hours_4_post_dose_Systolic_Blood_Pressure.split('|')[2]
+                        hours_4_post_dose_Systolic_Blood_Pressure_disname = hours_4_post_dose_Systolic_Blood_Pressure.split('|')[0]
                     except Exception as e:
                         hours_4_post_dose_Systolic_Blood_Pressure_pure = math.nan
                         hours_4_post_dose_Systolic_Blood_Pressure_form_field_instance = 'This field does not have any data'
@@ -967,7 +967,7 @@ def vital_signs(df_root, path_excel_writer):
                         hours_4_post_dose_Systolic_Blood_Pressure_value = row["4-hours post dose, Systolic Blood Pressure  (Sitting) (mmHg)"]
                         hours_4_post_dose_Systolic_Blood_Pressure_value_pure = hours_4_post_dose_Systolic_Blood_Pressure_value.split('|')[0]
                         hours_4_post_dose_Systolic_Blood_Pressure_value_form_field_instance = hours_4_post_dose_Systolic_Blood_Pressure_value.split('|')[1]
-                        hours_4_post_dose_Systolic_Blood_Pressure_value_disname = hours_4_post_dose_Systolic_Blood_Pressure_value.split('|')[2]
+                        hours_4_post_dose_Systolic_Blood_Pressure_value_disname = hours_4_post_dose_Systolic_Blood_Pressure_value.split('|')[0]
                     except Exception as e:
                         hours_4_post_dose_Systolic_Blood_Pressure_value_pure = math.nan
                         hours_4_post_dose_Systolic_Blood_Pressure_value_form_field_instance = 'This field does not have any data'
@@ -977,7 +977,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_15_post_dose_Respiratory_rate = row["15-mins post dose, Respiratory rate"]
                         mins_15_post_dose_Respiratory_rate_pure = mins_15_post_dose_Respiratory_rate.split('|')[0]
                         mins_15_post_dose_Respiratory_rate_form_field_instance = mins_15_post_dose_Respiratory_rate.split('|')[1]
-                        mins_15_post_dose_Respiratory_rate_disname = mins_15_post_dose_Respiratory_rate.split('|')[2]
+                        mins_15_post_dose_Respiratory_rate_disname = mins_15_post_dose_Respiratory_rate.split('|')[0]
                     except Exception as e:
                         mins_15_post_dose_Respiratory_rate_pure = math.nan
                         mins_15_post_dose_Respiratory_rate_form_field_instance = 'This field does not have any data'
@@ -987,7 +987,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_15_post_dose_Respiratory_rate_value = row["15-mins post dose, Respiratory rate (breaths/min)"]
                         mins_15_post_dose_Respiratory_rate_value_pure = mins_15_post_dose_Respiratory_rate_value.split('|')[0]
                         mins_15_post_dose_Respiratory_rate_value_form_field_instance = mins_15_post_dose_Respiratory_rate_value.split('|')[1]
-                        mins_15_post_dose_Respiratory_rate_value_disname = mins_15_post_dose_Respiratory_rate_value.split('|')[2]
+                        mins_15_post_dose_Respiratory_rate_value_disname = mins_15_post_dose_Respiratory_rate_value.split('|')[0]
                     except Exception as e:
                         mins_15_post_dose_Respiratory_rate_value_pure = math.nan
                         mins_15_post_dose_Respiratory_rate_value_form_field_instance = 'This field does not have any data'
@@ -997,7 +997,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_30_post_dose_Respiratory_rate = row["30-mins post dose, Respiratory rate"]
                         mins_30_post_dose_Respiratory_rate_pure = mins_30_post_dose_Respiratory_rate.split('|')[0]
                         mins_30_post_dose_Respiratory_rate_form_field_instance = mins_30_post_dose_Respiratory_rate.split('|')[1]
-                        mins_30_post_dose_Respiratory_rate_disname = mins_30_post_dose_Respiratory_rate.split('|')[2]
+                        mins_30_post_dose_Respiratory_rate_disname = mins_30_post_dose_Respiratory_rate.split('|')[0]
                     except Exception as e:
                         mins_30_post_dose_Respiratory_rate_pure = math.nan
                         mins_30_post_dose_Respiratory_rate_form_field_instance = 'This field does not have any data'
@@ -1007,7 +1007,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_30_post_dose_Respiratory_rate_value = row["30-mins post dose, Respiratory rate (breaths/min)"]
                         mins_30_post_dose_Respiratory_rate_value_pure = mins_30_post_dose_Respiratory_rate_value.split('|')[0]
                         mins_30_post_dose_Respiratory_rate_value_form_field_instance = mins_30_post_dose_Respiratory_rate_value.split('|')[1]
-                        mins_30_post_dose_Respiratory_rate_value_disname = mins_30_post_dose_Respiratory_rate_value.split('|')[2]
+                        mins_30_post_dose_Respiratory_rate_value_disname = mins_30_post_dose_Respiratory_rate_value.split('|')[0]
                     except Exception as e:
                         mins_30_post_dose_Respiratory_rate_value_pure = math.nan
                         mins_30_post_dose_Respiratory_rate_value_form_field_instance = 'This field does not have any data'
@@ -1017,7 +1017,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_15_post_dose_Pulse_rate = row["15-mins post dose, Pulse rate"]
                         mins_15_post_dose_Pulse_rate_pure = mins_15_post_dose_Pulse_rate.split('|')[0]
                         mins_15_post_dose_Pulse_rate_form_field_instance = mins_15_post_dose_Pulse_rate.split('|')[1]
-                        mins_15_post_dose_Pulse_rate_disname = mins_15_post_dose_Pulse_rate.split('|')[2]
+                        mins_15_post_dose_Pulse_rate_disname = mins_15_post_dose_Pulse_rate.split('|')[0]
                     except Exception as e:
                         mins_15_post_dose_Pulse_rate_pure = math.nan 
                         mins_15_post_dose_Pulse_rate_form_field_instance = 'This field does not have any data'
@@ -1027,7 +1027,7 @@ def vital_signs(df_root, path_excel_writer):
                         mins_15_post_dose_Pulse_rate_value = row["15-mins post dose, Pulse rate (beats/min)"]
                         mins_15_post_dose_Pulse_rate_value_pure = mins_15_post_dose_Pulse_rate_value.split('|')[0]
                         mins_15_post_dose_Pulse_rate_value_form_field_instance = mins_15_post_dose_Pulse_rate_value.split('|')[1]
-                        mins_15_post_dose_Pulse_rate_value_disname = mins_15_post_dose_Pulse_rate_value.split('|')[2]
+                        mins_15_post_dose_Pulse_rate_value_disname = mins_15_post_dose_Pulse_rate_value.split('|')[0]
                     except Exception as e:
                         mins_15_post_dose_Pulse_rate_value_pure = math.nan
                         mins_15_post_dose_Pulse_rate_value_form_field_instance = 'This field does not have any data'

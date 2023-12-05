@@ -75,7 +75,7 @@ def informed_consent_revision(df_root, path_excel_writer):
                     signature_date =  row['Informed consent signature date']
                     signature_date_pure = signature_date.split('|')[0]
                     signature_date_form_field_instance = signature_date.split('|')[1]
-                    signature_date_disname = signature_date.split('|')[2]
+                    signature_date_disname = signature_date.split('|')[0]
                 except:
                     signature_date_pure = ''
                     signature_date_form_field_instance = 'This field does not have any data'
@@ -85,7 +85,7 @@ def informed_consent_revision(df_root, path_excel_writer):
                     prior_screening_number = row['Prior screening number']
                     prior_screening_number_pure = prior_screening_number.split('|')[0]
                     prior_screening_number_form_field_instance = prior_screening_number.split('|')[1]
-                    prior_screening_number_disname = prior_screening_number.split('|')[2]
+                    prior_screening_number_disname = prior_screening_number.split('|')[0]
                 except:
                     prior_screening_number_pure = math.nan
                     prior_screening_number_form_field_instance = 'This field does not have any data'

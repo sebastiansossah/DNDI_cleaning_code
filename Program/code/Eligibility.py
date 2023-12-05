@@ -245,7 +245,7 @@ def eligibility(df_root, path_excel_writer):
                         date_of_decision = row['Date of decision to not go beyond screening']
                         date_of_decision_pure = date_of_decision.split('|')[0]
                         date_of_decision_form_field_instance = date_of_decision.split('|')[1]
-                        date_of_decision_disname = date_of_decision.split('|')[2]
+                        date_of_decision_disname = date_of_decision.split('|')[0]
                     except Exception as e:
                         date_of_decision_pure = ''
                         date_of_decision_form_field_instance = 'This field doesnt have any data'
@@ -255,7 +255,7 @@ def eligibility(df_root, path_excel_writer):
                         date_decision_not_randomize = row['Date of decision to not randomize the participant']
                         date_decision_not_randomize_pure = date_decision_not_randomize.split('|')[0]
                         date_decision_not_randomize_form_field_instance = date_decision_not_randomize.split('|')[1]
-                        date_decision_not_randomize_disname = date_decision_not_randomize.split('|')[2]
+                        date_decision_not_randomize_disname = date_decision_not_randomize.split('|')[0]
                     except Exception as e:
                         date_decision_not_randomize_pure = ''
                         date_decision_not_randomize_form_field_instance = 'This field doesnt have any data'
@@ -265,7 +265,7 @@ def eligibility(df_root, path_excel_writer):
                         randomization_number = row['Randomization number allocated to the replacement subject']
                         randomization_number_pure = randomization_number.split('|')[0]
                         randomization_number_form_field_isntance = randomization_number.split('|')[1]
-                        randomization_number_disname = randomization_number.split('|')[2]
+                        randomization_number_disname = randomization_number.split('|')[0]
                     except Exception as e:
                         randomization_number_pure = ''
                         randomization_number_form_field_isntance = 'This field doesnt have any data'
@@ -285,7 +285,7 @@ def eligibility(df_root, path_excel_writer):
                         eligibility_criteria_number = row['Eligibility criteria number']
                         eligibility_criteria_number_pure = eligibility_criteria_number.split('|')[0]
                         eligibility_criteria_number_form_field_instance = eligibility_criteria_number.split('|')[1]
-                        eligibility_criteria_number_disname = eligibility_criteria_number.split('|')[2]
+                        eligibility_criteria_number_disname = eligibility_criteria_number.split('|')[0]
                     except:
                         eligibility_criteria_number_pure = math.nan
                         eligibility_criteria_number_form_field_instance = 'This field doesnt have any data'
@@ -402,7 +402,7 @@ def eligibility(df_root, path_excel_writer):
                             if float(subject_eligible_for_study_pure) == 1.0:
                                 if float(covid_result) == 1.0:
                                     error = [subject, visit, 'Is the subject eligible for the study?', subject_eligible_for_study_form_field_instance, \
-                                            'The Subject can not be eligible because he/she had a positive COVID-19 test result, please review', covid_result, 'IE0270']
+                                            'The Subject can not be eligible because he/she had a positive COVID-19 test result, please review', subject_eligible_for_study_disname, 'IE0270']
                                     lista_revision.append(error)
                                 else:
                                     pass
@@ -414,7 +414,7 @@ def eligibility(df_root, path_excel_writer):
                             if float(subject_eligible_for_study_pure) == 1.0:
                                 if float(urinary_test) != 0.0:
                                     error = [subject, visit, 'Is the subject eligible for the study?', subject_eligible_for_study_form_field_instance, \
-                                            'The participant can not be eligible because he/she has trace/positive results in the urinary drug screen', urinary_test, 'IE0350']
+                                            'The participant can not be eligible because he/she has trace/positive results in the urinary drug screen', subject_eligible_for_study_disname, 'IE0350']
                                     lista_revision.append(error)
                                 else:
                                     pass
@@ -438,7 +438,6 @@ def eligibility(df_root, path_excel_writer):
                         try:
                             if float(subject_eligible_for_study_pure) == 1.0:
                                 if float(cuenta_lesiones) > 4.0 or float(diametro_lesiones) > 400.0:
-                                    print(cuenta_lesiones - diametro_lesiones)
                                     error = [subject, visit, 'Is the subject eligible for the study?', subject_eligible_for_study_form_field_instance, \
                                             'The participant has more than 4 lesions, or lesions over 4cm long in diameter or lesions with mucosal involvement in the Lesion Measurement form, he/she should not be eligible for randomization', \
                                                 cuenta_lesiones, 'IE0447']

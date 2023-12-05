@@ -99,7 +99,7 @@ def alcohol_screen(df_root, path_excel_writer):
                         please_provide_reason = row['Please provide the reason']
                         please_provide_reason_pure = please_provide_reason.split('|')[0]
                         please_provide_reason_form_field_instance = please_provide_reason.split('|')[1]
-                        please_provide_reason_disname = please_provide_reason.split('|')[2]
+                        please_provide_reason_disname = please_provide_reason.split('|')[0]
                     except Exception as e:
                         please_provide_reason_pure = ''
                         please_provide_reason_form_field_instance = 'This field does not have any data'
@@ -109,7 +109,7 @@ def alcohol_screen(df_root, path_excel_writer):
                         date_test_performed = row['Date of test performed']
                         date_test_performed_pure = date_test_performed.split('|')[0]
                         date_test_performed_form_field_instance = date_test_performed.split('|')[1]
-                        date_test_performed_disname = date_test_performed.split('|')[2]
+                        date_test_performed_disname = date_test_performed.split('|')[0]
                     except Exception as e:
                         date_test_performed_pure = ''
                         date_test_performed_form_field_instance = 'This field does not have any data'
@@ -119,7 +119,7 @@ def alcohol_screen(df_root, path_excel_writer):
                         test_result = row['Test result']
                         test_result_pure = test_result.split('|')[0]
                         test_result_form_field_instance = test_result.split('|')[1]
-                        test_result_disname = test_result.split('|')[2]
+                        test_result_disname = test_result.split('|')[0]
                     except Exception as e:
                         test_result_pure = math.nan
                         test_result_form_field_instance = 'This field does not have any data'
@@ -129,7 +129,7 @@ def alcohol_screen(df_root, path_excel_writer):
                         levels_alcohol_percentaje = row['Levels of alcohol in the serum (BAC) (%)']
                         levels_alcohol_percentaje_pure = levels_alcohol_percentaje.split('|')[0]
                         levels_alcohol_percentaje_form_field_instance = levels_alcohol_percentaje.split('|')[1]
-                        levels_alcohol_percentaje_disname = levels_alcohol_percentaje.split('|')[2]
+                        levels_alcohol_percentaje_disname = levels_alcohol_percentaje.split('|')[0]
                     except Exception as e:
                         levels_alcohol_percentaje_pure = math.nan
                         levels_alcohol_percentaje_form_field_instance = 'This field does not have any data'
@@ -139,7 +139,7 @@ def alcohol_screen(df_root, path_excel_writer):
                         levels_alcohol_mg_dl = row['Levels of alcohol in the serum (BAC) (mg/dL)']
                         levels_alcohol_mg_dl_pure = levels_alcohol_mg_dl.split('|')[0]
                         levels_alcohol_mg_dl_form_field_instance = levels_alcohol_mg_dl.split('|')[1]
-                        levels_alcohol_mg_dl_disname = levels_alcohol_mg_dl.split('|')[2]
+                        levels_alcohol_mg_dl_disname = levels_alcohol_mg_dl.split('|')[0]
                     except Exception as e:
                         levels_alcohol_mg_dl_pure = math.nan
                         levels_alcohol_mg_dl_form_field_instance = 'This field does not have any data'

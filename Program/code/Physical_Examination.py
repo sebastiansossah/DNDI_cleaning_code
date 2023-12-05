@@ -101,7 +101,7 @@ def physical_examination(df_root, path_excel_writer):
                         date_examination_performed = row['Date of examination performed']
                         date_examination_performed_pure = date_examination_performed.split('|')[0]
                         date_examination_performed_form_field_instance = date_examination_performed.split('|')[1]
-                        date_examination_performed_disname = date_examination_performed.split('|')[2] 
+                        date_examination_performed_disname = date_examination_performed.split('|')[0] 
                     except Exception as e:
                         date_examination_performed_pure = ''
                         date_examination_performed_form_field_instance = 'This field does not have any data'

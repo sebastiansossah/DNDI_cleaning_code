@@ -100,7 +100,7 @@ def miltefosine_administration(df_root, path_excel_writer):
                         date_dosing = row['Date of dosing']
                         date_dosing_pure = date_dosing.split('|')[0]
                         date_dosing_form_field_instance = date_dosing.split('|')[1]
-                        date_dosing_disname = date_dosing.split('|')[2]
+                        date_dosing_disname = date_dosing.split('|')[0]
                     except:
                         date_dosing_pure = ''
                         date_dosing_form_field_instance = 'This field does not have any data'
@@ -110,7 +110,7 @@ def miltefosine_administration(df_root, path_excel_writer):
                         time_dosing = row['Time of Dosing']
                         time_dosing_pure = time_dosing.split('|')[0]
                         time_dosing_form_field_instance = time_dosing.split('|')[1]
-                        time_dosing_disname = time_dosing.split('|')[2]
+                        time_dosing_disname = time_dosing.split('|')[0]
                     except:
                         time_dosing_pure = ''
                         time_dosing_form_field_instance = 'This field does not have any data'
@@ -120,7 +120,7 @@ def miltefosine_administration(df_root, path_excel_writer):
                         dose_mg = row['Dose (mg)']
                         dose_mg_pure = dose_mg.split('|')[0]
                         dose_mg_form_field_instance = dose_mg.split('|')[1]
-                        dose_mg_disname = dose_mg.split('|')[2]
+                        dose_mg_disname = dose_mg.split('|')[0]
                     except:
                         dose_mg_pure = ''
                         dose_mg_form_field_instance = 'This field does not have any data'
@@ -140,7 +140,7 @@ def miltefosine_administration(df_root, path_excel_writer):
                         miltefosine_administration_id = row['Miltefosine Administration ID']
                         miltefosine_administration_id_pure = miltefosine_administration_id.split('|')[0]
                         miltefosine_administration_id_form_field_instance = miltefosine_administration_id.split('|')[1]
-                        miltefosine_administration_id_disname = miltefosine_administration_id.split('|')[2]
+                        miltefosine_administration_id_disname = miltefosine_administration_id.split('|')[0]
                     except:
                         miltefosine_administration_id_pure = ''
                         miltefosine_administration_id_form_field_instance = 'This field does not have any data'
@@ -160,7 +160,7 @@ def miltefosine_administration(df_root, path_excel_writer):
                         reason_adjustment = row['Reason for dose adjustment']
                         reason_adjustment_pure = reason_adjustment.split('|')[0]
                         reason_adjustment_form_field_instance = reason_adjustment.split('|')[1]
-                        reason_adjustment_disname = reason_adjustment.split('|')[2]
+                        reason_adjustment_disname = reason_adjustment.split('|')[0]
                     except:
                         reason_adjustment_pure = ''
                         reason_adjustment_form_field_instance = 'This field does not have any data'

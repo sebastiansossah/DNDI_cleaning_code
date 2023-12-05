@@ -75,7 +75,7 @@ def demographic(df_root, path_excel_writer):
                         birth_year = row['Birth Year']
                         birth_year_pure = birth_year.split('|')[0]
                         birth_year_form_field_instance = birth_year.split('|')[1]
-                        birth_year_disname = birth_year.split('|')[2]
+                        birth_year_disname = birth_year.split('|')[0]
                     except:
                         birth_year = ''
                         birth_year_form_field_instance = 'This field does not have any data'
@@ -85,7 +85,7 @@ def demographic(df_root, path_excel_writer):
                         age_at_consent =  row['Age at consent']
                         age_at_consent_pure = int(age_at_consent.split('|')[0])
                         age_at_consent_form_field_instance = age_at_consent.split('|')[1]
-                        age_at_consent_disname = age_at_consent.split('|')[2]   
+                        age_at_consent_disname = age_at_consent.split('|')[0]   
                     except:
                         age_at_consent_pure = ''
                         age_at_consent_form_field_instance = 'This field does not have any data'

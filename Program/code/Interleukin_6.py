@@ -88,7 +88,7 @@ def interleukin_6(df_root, path_excel_writer):
                         Provide_the_reason = row["Provide the reason"]
                         Provide_the_reason_pure = Provide_the_reason.split('|')[0]
                         Provide_the_reason_form_field_instance = Provide_the_reason.split('|')[1]
-                        Provide_the_reason_disname = Provide_the_reason.split('|')[2]
+                        Provide_the_reason_disname = Provide_the_reason.split('|')[0]
                     except Exception as e:
                         Provide_the_reason_pure = math.nan
                         Provide_the_reason_form_field_instance = 'This field does not have any data'
@@ -98,7 +98,7 @@ def interleukin_6(df_root, path_excel_writer):
                         date_collected = row["Date Sample Collected"]
                         date_collected_pure = date_collected.split('|')[0]
                         date_collected_form_field_instance = date_collected.split('|')[1]
-                        date_collected_disname = date_collected.split('|')[2]
+                        date_collected_disname = date_collected.split('|')[0]
                     except Exception as e:
                         date_collected_pure = ''
                         date_collected_form_field_instance = 'This field does not have any data'
@@ -108,7 +108,7 @@ def interleukin_6(df_root, path_excel_writer):
                         Result_pg_ml = row["Result (pg/ml)"]
                         Result_pg_ml_pure = Result_pg_ml.split('|')[0]
                         Result_pg_ml_form_field_instance = Result_pg_ml.split('|')[1]
-                        Result_pg_ml_disname = Result_pg_ml.split('|')[2]
+                        Result_pg_ml_disname = Result_pg_ml.split('|')[0]
                     except Exception as e:
                         Result_pg_ml_pure = math.nan
                         Result_pg_ml_form_field_instance = 'This field does not have any data'

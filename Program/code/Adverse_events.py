@@ -241,7 +241,7 @@ def adverse_events(df_root, path_excel_writer):
                         adverse_event_id = row['Adverse Event ID']
                         adverse_event_id_pure = adverse_event_id.split('|')[0]
                         adverse_event_id_form_field_instance = adverse_event_id.split('|')[1]
-                        adverse_event_id_disname = adverse_event_id.split('|')[2]
+                        adverse_event_id_disname = adverse_event_id.split('|')[0]
                     except:
                         adverse_event_id_pure = ''
                         adverse_event_id_form_field_instance = 'This field does not have any data'
@@ -261,7 +261,7 @@ def adverse_events(df_root, path_excel_writer):
                         start_date = row['Start Date']
                         start_date_pure = str(start_date.split('|')[0]).split(' ')[0]
                         start_date_form_field_instnace = start_date.split('|')[1]
-                        start_date_disname = start_date.split('|')[2]
+                        start_date_disname = start_date.split('|')[0]
                     except:
                         start_date_pure = ''
                         start_date_form_field_instnace = 'This field does not have any data'
@@ -291,7 +291,7 @@ def adverse_events(df_root, path_excel_writer):
                         frequency = row['Frequency']
                         frequency_pure = frequency.split('|')[0]
                         frequency_form_field_instance = frequency.split('|')[1]
-                        frequency_form_disname = frequency.split('|')[2]
+                        frequency_form_disname = frequency.split('|')[0]
                     except:
                         frequency_pure = ''
                         frequency_form_field_instance = 'This field does not have any data'
@@ -380,7 +380,7 @@ def adverse_events(df_root, path_excel_writer):
                         start_time = row['Start time']
                         start_time_pure = start_time.split('|')[0]
                         start_time_form_field_instance = start_time.split('|')[1]
-                        start_time_disname = start_time.split('|')[2]
+                        start_time_disname = start_time.split('|')[0]
                     except:
                         start_time_pure = ''
                         start_time_form_field_instance = 'This field does not have any data'
@@ -390,7 +390,7 @@ def adverse_events(df_root, path_excel_writer):
                         end_date = row['End date']
                         end_date_pure = str(end_date.split('|')[0]).split(' ')[0]
                         end_date_form_field_instance = end_date.split('|')[1]
-                        end_date_disname = end_date.split('|')[2]
+                        end_date_disname = end_date.split('|')[0]
                     except:
                         end_date_pure = ''
                         end_date_form_field_instance = 'This field does not have any data'
@@ -400,7 +400,7 @@ def adverse_events(df_root, path_excel_writer):
                         sae_start_date_AE_became_serious = row['SAE Start date (AE became serious)']
                         sae_start_date_AE_became_serious_pure = sae_start_date_AE_became_serious.split('|')[0]
                         sae_start_date_AE_became_serious_form_field_instance = sae_start_date_AE_became_serious.split('|')[1]
-                        sae_start_date_AE_became_serious_disname = sae_start_date_AE_became_serious.split('|')[2]
+                        sae_start_date_AE_became_serious_disname = sae_start_date_AE_became_serious.split('|')[0]
                     except:
                         sae_start_date_AE_became_serious_pure = ''
                         sae_start_date_AE_became_serious_form_field_instance = 'This field does not have any data'

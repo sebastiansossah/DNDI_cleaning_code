@@ -100,7 +100,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                         date_confirmed_diagnosis = row['Date of confirmed diagnosis of CL']
                         date_confirmed_diagnosis_pure = date_confirmed_diagnosis.split('|')[0]
                         date_confirmed_diagnosis_form_field_instance = date_confirmed_diagnosis.split('|')[1]
-                        date_confirmed_diagnosis_disname = date_confirmed_diagnosis.split('|')[2]
+                        date_confirmed_diagnosis_disname = date_confirmed_diagnosis.split('|')[0]
                     except Exception as e:
                         date_confirmed_diagnosis_pure = ''
                         date_confirmed_diagnosis_form_field_instance = 'This field does not have any data'
@@ -110,7 +110,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                         date_new_sample = row['Date of new sample taken']
                         date_new_sample_pure = date_new_sample.split('|')[0]
                         date_new_sample_form_field_instance = date_new_sample.split('|')[1]
-                        date_new_sample_disname = date_new_sample.split('|')[2]
+                        date_new_sample_disname = date_new_sample.split('|')[0]
                     except Exception as e:
                         date_new_sample_pure = ''
                         date_new_sample_form_field_instance = 'This field does not have any data'
@@ -150,7 +150,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                         date_diagnosis = row['Date of Diagnosis']
                         date_diagnosis_pure = date_diagnosis.split('|')[0]
                         date_diagnosis_form_field_instance = date_diagnosis.split('|')[1]
-                        date_diagnosis_disname = date_diagnosis.split('|')[2]
+                        date_diagnosis_disname = date_diagnosis.split('|')[0]
                     except Exception as e:
                         date_diagnosis_pure = ''
                         date_diagnosis_form_field_instance = 'This field does not have any data'

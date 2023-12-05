@@ -96,7 +96,7 @@ def covid_19_testing(df_root, path_excel_writer):
                         provide_reason = row['Provide the reason']
                         provide_reason_pure = provide_reason.split('|')[0]
                         provide_reason_form_field_instance = provide_reason.split('|')[1]
-                        provide_reason_disname = provide_reason.split('|')[2]
+                        provide_reason_disname = provide_reason.split('|')[0]
                     except Exception as e:
                         provide_reason_pure = math.nan
                         provide_reason_form_field_instance = 'This field does not have any data'
@@ -106,7 +106,7 @@ def covid_19_testing(df_root, path_excel_writer):
                         date_test_performed = row['Date of test performed']
                         date_test_performed_pure = date_test_performed.split('|')[0]
                         date_test_performed_form_field_instance = date_test_performed.split('|')[1]
-                        date_test_performed_disname = date_test_performed.split('|')[2] 
+                        date_test_performed_disname = date_test_performed.split('|')[0] 
                     except Exception as e:
                         date_test_performed_pure = ''
                         date_test_performed_form_field_instance = 'This field does not have any data'
@@ -116,7 +116,7 @@ def covid_19_testing(df_root, path_excel_writer):
                         result = row['Result']
                         result_pure = result.split('|')[0]
                         result_form_field_instance = result.split('|')[1]
-                        result_disname = result.split('|')[2]
+                        result_disname = result.split('|')[0]
                     except Exception as e:
                         result_pure = math.nan
                         result_form_field_instance = 'This field does not have any data'

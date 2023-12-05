@@ -95,7 +95,7 @@ def adminsitration_CpG_ODN(df_root, path_excel_writer):
                         date_dosing = row['Date of dosing']
                         date_dosing_pure = date_dosing.split('|')[0]
                         date_dosing_form_field_instance = date_dosing.split('|')[1]
-                        date_dosing_disname =  date_dosing.split('|')[2]
+                        date_dosing_disname =  date_dosing.split('|')[0]
                     except:
                         date_dosing_pure = ''
                         date_dosing_form_field_instance = 'This field doesnt have any data'

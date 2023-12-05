@@ -112,7 +112,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                         alanine_aminotransferase_result = row['Alanine Aminotransferase (ALT), Result (U/L)']
                         alanine_aminotransferase_result_pure = alanine_aminotransferase_result.split('|')[0]
                         alanine_aminotransferase_result_form_field_instance = alanine_aminotransferase_result.splti('|')[1]
-                        alanine_aminotransferase_result_disname = alanine_aminotransferase_result.splti('|')[2]
+                        alanine_aminotransferase_result_disname = alanine_aminotransferase_result.splti('|')[0]
                     except Exception as e:
                         alanine_aminotransferase_result_pure = math.nan
                         alanine_aminotransferase_result_form_field_instance = 'This field does not have any data'
@@ -132,7 +132,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                         aspartate_aminotransferase_result = row['Aspartate Aminotransferase (AST), Result (U/L)']
                         aspartate_aminotransferase_result_pure = aspartate_aminotransferase_result.split('|')[0]
                         aspartate_aminotransferase_result_form_field_instance = aspartate_aminotransferase_result.split('|')[1]
-                        aspartate_aminotransferase_result_disname = aspartate_aminotransferase_result.split('|')[2]
+                        aspartate_aminotransferase_result_disname = aspartate_aminotransferase_result.split('|')[0]
                     except Exception as e:
                         aspartate_aminotransferase_result_pure = math.nan
                         aspartate_aminotransferase_result_form_field_instance = 'This field does not have any data'
@@ -162,7 +162,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                         creatine_kinase_result = row['Creatine Kinase (CK), Result (U/L)']
                         creatine_kinase_result_pure = creatine_kinase_result.split('|')[0]
                         creatine_kinase_result_form_field_instance = creatine_kinase_result.split('|')[1]
-                        creatine_kinase_result_disname = creatine_kinase_result.split('|')[2]
+                        creatine_kinase_result_disname = creatine_kinase_result.split('|')[0]
                     except Exception as e:
                         creatine_kinase_result_pure = math.nan
                         creatine_kinase_result_form_field_instance = 'This field does not have any data'
@@ -172,7 +172,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                         date_collected = row['Date Collected']
                         date_collected_pure = date_collected.split('|')[0]
                         date_collected_form_field_instance = date_collected.split('|')[1]
-                        date_collected_disname = date_collected.split('|')[2]
+                        date_collected_disname = date_collected.split('|')[0]
                     except Exception as e:
                         date_collected_pure = ''
                         date_collected_form_field_instance = 'This field does not have any data'
@@ -192,7 +192,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                         serum_creatine_result = row['Serum Creatinine, Result (mg/dL)']
                         serum_creatine_result_pure = serum_creatine_result.split('|')[0]
                         serum_creatine_result_form_field_instance = serum_creatine_result.split('|')[1]
-                        serum_creatine_result_disname = serum_creatine_result.split('|')[2]
+                        serum_creatine_result_disname = serum_creatine_result.split('|')[0]
                     except Exception as e:
                         serum_creatine_result_pure = math.nan
                         serum_creatine_result_form_field_instance = 'This field does not have any data'

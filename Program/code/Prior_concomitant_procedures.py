@@ -135,7 +135,7 @@ def prior_concomitant_procedures(df_root, path_excel_writer):
                         procedure_id = row['Procedure ID']
                         procedure_id_pure = procedure_id.split('|')[0]
                         procedure_id_form_field_instance = procedure_id.split('|')[1]
-                        procedure_id_disname = procedure_id.split('|')[2]
+                        procedure_id_disname = procedure_id.split('|')[0]
                     except:
                         procedure_id_pure = ''
                         procedure_id_form_field_instance = 'This field does not have any data'
@@ -145,7 +145,7 @@ def prior_concomitant_procedures(df_root, path_excel_writer):
                         procedure_name = row['Procedure Name']
                         procedure_name_pure = procedure_name.split('|')[0]
                         procedure_name_form_field_instance = procedure_name.split('|')[1]
-                        procedure_name_disname = procedure_name.split('|')[2]
+                        procedure_name_disname = procedure_name.split('|')[0]
                     except:
                         procedure_name_pure = ''
                         procedure_name_form_field_instance = 'This field does not have any data'
@@ -175,7 +175,7 @@ def prior_concomitant_procedures(df_root, path_excel_writer):
                         adverse_event_id = row['Adverse Event ID']
                         adverse_event_id_pure = adverse_event_id.split('|')[0]
                         adverse_event_id_form_field_instance = adverse_event_id.split('|')[1]
-                        adverse_event_id_disname = adverse_event_id.split('|')[2]
+                        adverse_event_id_disname = adverse_event_id.split('|')[0]
                     except:
                         adverse_event_id_pure = ''
                         adverse_event_id_form_field_instance = 'This field does not have any data'
@@ -185,7 +185,7 @@ def prior_concomitant_procedures(df_root, path_excel_writer):
                         start_date = row['Start date']
                         start_date_pure = start_date.split('|')[0]
                         start_date_form_field_instance = start_date.split('|')[1]
-                        start_date_disname = start_date.split('|')[2]
+                        start_date_disname = start_date.split('|')[0]
                     except:
                         start_date_pure = ''
                         start_date_form_field_instance = 'This field does not have any data'
@@ -205,7 +205,7 @@ def prior_concomitant_procedures(df_root, path_excel_writer):
                         end_date = row['End date']
                         end_date_pure = end_date.split('|')[0]
                         end_date_form_field_instance = end_date.split('|')[1]
-                        end_date_disname = end_date.split('|')[2]
+                        end_date_disname = end_date.split('|')[0]
                     except:
                         end_date_pure = ''
                         end_date_form_field_instance = 'This field does not have any data'
@@ -215,7 +215,7 @@ def prior_concomitant_procedures(df_root, path_excel_writer):
                         aditional_adverse_event = row['Aditional Adverse Event ID']
                         aditional_adverse_event_pure = aditional_adverse_event.split('|')[0]
                         aditional_adverse_event_form_field_instance = aditional_adverse_event.split('|')[1]
-                        aditional_adverse_event_disname = aditional_adverse_event.split('|')[2]
+                        aditional_adverse_event_disname = aditional_adverse_event.split('|')[0]
                     except:
                         aditional_adverse_event_pure = ''
                         aditional_adverse_event_form_field_instance = 'This field does not have any data'

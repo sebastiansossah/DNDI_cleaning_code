@@ -95,7 +95,7 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
                         onset_date = row['Onset Date/First Diagnosis/Surgery']
                         onset_date_pure = onset_date.split('|')[0]
                         onset_date_form_field_instance = onset_date.split('|')[1]
-                        onset_date_disname = onset_date.split('|')[2]
+                        onset_date_disname = onset_date.split('|')[0]
                     except Exception as e:
                         onset_date_pure = ''
                         onset_date_form_field_instance = 'This field does not have any data'
@@ -105,7 +105,7 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
                         end_date = row['End Date']
                         end_date_pure = end_date.split('|')[0]
                         end_date_form_field_instance = end_date.split('|')[1]
-                        end_date_disname = end_date.split('|')[2]
+                        end_date_disname = end_date.split('|')[0]
                     except Exception as e:
                         end_date_pure = ''
                         end_date_form_field_instance = 'This field does not have any data'

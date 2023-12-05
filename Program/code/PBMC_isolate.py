@@ -101,7 +101,7 @@ def PBMC_isolate(df_root, path_excel_writer):
                         date_sample_collected = row['Date of the sample collected']
                         date_sample_collected_pure = date_sample_collected.split('|')[0]
                         date_sample_collected_form_field_instance = date_sample_collected.split('|')[1]
-                        date_sample_collected_disname = date_sample_collected.split('|')[2]
+                        date_sample_collected_disname = date_sample_collected.split('|')[0]
                     except Exception as e:
                         date_sample_collected_pure = ''
                         date_sample_collected_form_field_instance = 'This field does not have any data'

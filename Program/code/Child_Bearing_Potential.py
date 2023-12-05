@@ -137,7 +137,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                         date_of_start_condom = row['Date of start of systematic use of condom']
                         date_of_start_condom_pure = date_of_start_condom.split('|')[0]
                         date_of_start_condom_form_field_instance = date_of_start_condom.split('|')[1]
-                        date_of_start_condom_disname = date_of_start_condom.split('|')[2]
+                        date_of_start_condom_disname = date_of_start_condom.split('|')[0]
                     except:
                         date_of_start_condom_pure = ''
                         date_of_start_condom_form_field_instance = 'This field does not have any data'
@@ -147,7 +147,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                         date_start_contraceptive = row['Date of start of contraceptive method']
                         date_start_contraceptive_pure = date_start_contraceptive.split('|')[0]
                         date_start_contraceptive_form_field_instance = date_start_contraceptive.split('|')[1]
-                        date_start_contraceptive_disname = date_start_contraceptive.split('|')[2]
+                        date_start_contraceptive_disname = date_start_contraceptive.split('|')[0]
                     except:
                         date_start_contraceptive_pure = ''
                         date_start_contraceptive_form_field_instance = 'This field does not have any data'
@@ -157,7 +157,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                         last_mestruation_year = row['Year of Last Menstruation']
                         last_mestruation_year_pure = last_mestruation_year.split('|')[0]
                         last_mestruation_year_form_field_instance = last_mestruation_year.split('|')[1]
-                        last_mestruation_year_disname = last_mestruation_year.split('|')[2]
+                        last_mestruation_year_disname = last_mestruation_year.split('|')[0]
                     except:
                         last_mestruation_year_pure = math.nan
                         last_mestruation_year_form_field_instance = 'This field does not have any data'
@@ -177,7 +177,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                         last_mestruation_month = row['Month of Last Menstruation']
                         last_mestruation_month_pure = last_mestruation_month.split('|')[0]
                         last_mestruation_month_form_field_instance = last_mestruation_month.split('|')[1]
-                        last_mestruation_month_disname = last_mestruation_month.split('|')[2]
+                        last_mestruation_month_disname = last_mestruation_month.split('|')[0]
                     except:
                         last_mestruation_month_pure = math.nan
                         last_mestruation_month_form_field_instance = 'This field does not have any data'

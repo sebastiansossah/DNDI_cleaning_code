@@ -101,7 +101,7 @@ def injection_site_examination(df_root, path_excel_writer):
                         provide_the_reason = row['Provide the reason']
                         provide_the_reason_pure = provide_the_reason.split('|')[0]
                         provide_the_reason_form_field_instance = provide_the_reason.split('|')[1]
-                        provide_the_reason_disname = provide_the_reason.split('|')[2]
+                        provide_the_reason_disname = provide_the_reason.split('|')[0]
                     except Exception as e:
                         provide_the_reason_pure = ''
                         provide_the_reason_form_field_instance = 'This field does not have any data'
@@ -111,7 +111,7 @@ def injection_site_examination(df_root, path_excel_writer):
                         date_injection = row['Date of the Injection site examination']
                         date_injection_pure = date_injection.split('|')[0]
                         date_injection_form_field_instace = date_injection.split('|')[1]
-                        date_injection_disname = date_injection.split('|')[2]
+                        date_injection_disname = date_injection.split('|')[0]
                     except Exception as e:
                         date_injection_pure = ''
                         date_injection_form_field_instace = 'This field does not have any data'
@@ -131,7 +131,7 @@ def injection_site_examination(df_root, path_excel_writer):
                         post_dose_2_hours = row['2-hours post dose, Injection site']
                         post_dose_2_hours_pure = post_dose_2_hours.split('|')[0]
                         post_dose_2_hours_form_field_instance = post_dose_2_hours.split('|')[1]
-                        post_dose_2_hours_disname = post_dose_2_hours.split('|')[2]
+                        post_dose_2_hours_disname = post_dose_2_hours.split('|')[0]
                     except Exception as e:
                         post_dose_2_hours_pure = math.nan
                         post_dose_2_hours_form_field_instance = 'This field does not have any data'
@@ -141,7 +141,7 @@ def injection_site_examination(df_root, path_excel_writer):
                         post_dose_4_hours = row['4-hours post dose, Injection site']
                         post_dose_4_hours_pure = post_dose_4_hours.split('|')[0]
                         post_dose_4_hours_form_field_instance = post_dose_4_hours.split('|')[1]
-                        post_dose_4_hours_disname = post_dose_4_hours.split('|')[2]
+                        post_dose_4_hours_disname = post_dose_4_hours.split('|')[0]
                     except Exception as e:
                         post_dose_4_hours_pure = math.nan
                         post_dose_4_hours_form_field_instance = 'This field does not have any data'
@@ -151,7 +151,7 @@ def injection_site_examination(df_root, path_excel_writer):
                         post_dose_8_hours = row['8-hours post dose, Injection site']
                         post_dose_8_hours_pure = post_dose_8_hours.split('|')[0]
                         post_dose_8_hours_form_field_instance = post_dose_8_hours.split('|')[1]
-                        post_dose_8_hours_disname = post_dose_8_hours.split('|')[2]
+                        post_dose_8_hours_disname = post_dose_8_hours.split('|')[0]
                     except Exception as e:
                         post_dose_8_hours_pure = math.nan
                         post_dose_8_hours_form_field_instance = 'This field does not have any data'

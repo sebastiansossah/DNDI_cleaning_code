@@ -100,7 +100,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                         date_collected = row['Date Collected']
                         date_collected_pure = date_collected.split('|')[0]
                         date_collected_form_field_instance = date_collected.split('|')[1] 
-                        date_collected_disname = date_collected.split('|')[2] 
+                        date_collected_disname = date_collected.split('|')[0] 
                     except Exception as e:
                         date_collected_pure = ''
                         blood_sample_collected_form_field_instance = 'This field does not have any data'
@@ -115,7 +115,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                         INR = row['INR']
                         INR_pure = INR.split('|')[0]
                         INR_form_field_instance = INR.split('|')[1]
-                        INR_disname = INR.split('|')[2]
+                        INR_disname = INR.split('|')[0]
                     except Exception as e:
                         INR_pure = math.nan
                         INR_form_field_instance = 'This field does not have any data'
@@ -140,7 +140,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                         INR_result = row['INR, Result']
                         INR_result_pure = INR_result.split('|')[0]
                         INR_result_form_field_instance = INR_result.split('|')[1]
-                        INR_result_disname = INR_result.split('|')[2]
+                        INR_result_disname = INR_result.split('|')[0]
                     except Exception as e:
                         INR_result_pure = ''
                         INR_result_form_field_instance = 'This field does not have any data'
@@ -150,7 +150,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                         PT = row['PT']
                         PT_pure = PT.split('|')[0]
                         PT_form_field_isntance = PT.split('|')[1]
-                        PT_disname = PT.split('|')[2]
+                        PT_disname = PT.split('|')[0]
                     except Exception as e:
                         PT_pure = math.nan
                         PT_form_field_isntance = 'This field does not have any data'
@@ -175,7 +175,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                         PT_result = row['PT, Result (Seconds)']
                         PT_result_pure = PT_result.split('|')[0]
                         PT_result_form_field_instance = PT_result.split('|')[1]
-                        PT_result_disname = PT_result.split('|')[2]
+                        PT_result_disname = PT_result.split('|')[0]
                     except Exception as e:
                         PT_result_pure = math.nan     
                         PT_result_form_field_instance = 'This field does not have any data'
@@ -185,7 +185,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                         aPTT = row['aPTT']
                         aPTT_pure = aPTT.split('|')[0]
                         aPTT_form_field_instance = aPTT.split('|')[1]
-                        aPTT_disname = aPTT.split('|')[2]
+                        aPTT_disname = aPTT.split('|')[0]
                     except Exception as e:
                         aPTT_pure = math.nan
                         aPTT_form_field_instance = 'This field does not have any data'
@@ -210,7 +210,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                         aPTT_result = row['aPTT, Result (Seconds)']
                         aPTT_result_pure = aPTT_result.split('|')[0]
                         aPTT_result_form_field_instance = aPTT_result.split('|')[1]
-                        aPTT_result_disname = aPTT_result.split('|')[2]
+                        aPTT_result_disname = aPTT_result.split('|')[0]
                     except Exception as e:
                         aPTT_result_pure = math.nan
                         aPTT_result_form_field_instance = 'This field does not have any data'
