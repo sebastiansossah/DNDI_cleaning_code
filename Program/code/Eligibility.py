@@ -398,16 +398,17 @@ def eligibility(df_root, path_excel_writer):
                             lista_logs.append(f'Revision IE0220 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                         # Revision para IE0270
-                        try:
-                            if float(subject_eligible_for_study_pure) == 1.0:
-                                if float(covid_result) == 1.0:
-                                    error = [subject, visit, 'Is the subject eligible for the study?', subject_eligible_for_study_form_field_instance, \
-                                            'The Subject can not be eligible because he/she had a positive COVID-19 test result, please review', subject_eligible_for_study_disname, 'IE0270']
-                                    lista_revision.append(error)
-                                else:
-                                    pass
-                        except Exception as e:
-                            lista_logs.append(f'Revision IE0270 --> {e} - Subject: {subject},  Visit: {visit} ')
+                        if visit == 'D-1':
+                            try:
+                                if float(subject_eligible_for_study_pure) == 1.0:
+                                    if float(covid_result) == 1.0:
+                                        error = [subject, visit, 'Is the subject eligible for the study?', subject_eligible_for_study_form_field_instance, \
+                                                'The Subject can not be eligible because he/she had a positive COVID-19 test result, please review', subject_eligible_for_study_disname, 'IE0270']
+                                        lista_revision.append(error)
+                                    else:
+                                        pass
+                            except Exception as e:
+                                lista_logs.append(f'Revision IE0270 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                         # Revision para IE0350
                         try:
