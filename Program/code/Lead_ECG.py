@@ -1688,7 +1688,7 @@ def lead_ECG(df_root, path_excel_writer):
                         try:
                             if float((predose_triplicate_2_time_formated - predose_triplicate_1_time_formated).total_seconds()/60) > 2.0:
                                 error = [subject, visit, 'Pre dose triplicate 2, Time 24 hrs', predose_triplicate_2_time_form_field_instance,\
-                                            'Pre dose triplicate 2 Time should be within 2 minutes after Pre dose triplicate 1, Time', predose_triplicate_2_time_disname, 'LE0570']
+                                            'Pre dose triplicate 2 Time should be within 2 minutes after Pre dose triplicate 1, Time', f'{predose_triplicate_1_time_disname} - {predose_triplicate_2_time_disname}', 'LE0570']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision LE0570--> {e} - Subject: {subject},  Visit: {visit} ')  
@@ -1698,7 +1698,7 @@ def lead_ECG(df_root, path_excel_writer):
                         try:
                             if float((predose_triplicate_3_time_formated - predose_triplicate_2_time_formated).total_seconds()/60) > 2.0:
                                 error = [subject, visit, 'Pre dose triplicate 3, Time 24 hrs', predose_triplicate_3_time_form_field_instance,\
-                                            'Pre dose triplicate 3 Time should be within 2 minutes after Pre dose triplicate 2, Time', predose_triplicate_3_time_disname, 'LE0580']
+                                            'Pre dose triplicate 3 Time should be within 2 minutes after Pre dose triplicate 2, Time', f'{predose_triplicate_2_time_disname} - {predose_triplicate_3_time_disname}', 'LE0580']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision LE0580--> {e} - Subject: {subject},  Visit: {visit} ')  

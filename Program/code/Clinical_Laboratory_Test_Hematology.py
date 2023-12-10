@@ -595,7 +595,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                             if float(genero) == 1.0:
                                 if float(Erythrocyte_result_pure) > 40.3 and float(Erythrocyte_result_pure) < 74.8:
                                     error = [subject, visit, 'Erythrocyte sedimentation rate (ESR), Out of normal range?', \
-                                             Erythrocyte_result_form_field_instance, 'According to the result, the value is not out of range, please review.', \
+                                             Erythrocyte_result_form_field_instance, 'According to the result, the value is not out of range, please review. (40.3 - 74.8)', \
                                                 Erythrocyte_result_disname, 'LBT0060']
                                     lista_revision.append(error)
                                 
@@ -603,7 +603,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(Erythrocyte_result_pure) > 42.5 and float(Erythrocyte_result_pure) < 73.0:
                                     error = [subject, visit, 'Erythrocyte sedimentation rate (ESR), Out of normal range?', \
                                              Erythrocyte_result_form_field_instance, \
-                                                'According to the result, the value is not out of range, please review.' , Erythrocyte_result_disname, 'LBT0060']
+                                                'According to the result, the value is not out of range, please review. (42.5 - 73.0)' , Erythrocyte_result_disname, 'LBT0060']
                                     lista_revision.append(error)
 
                         # Revision LBT0270
@@ -611,7 +611,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                             if float(genero) == 1.0:
                                 if float(Erythrocyte_result_pure) < 40.3 or float(Erythrocyte_result_pure) > 74.8:
                                     error = [subject, visit, 'Erythrocyte sedimentation rate (ESR), Out of normal range?', \
-                                             Erythrocyte_result_form_field_instance,'According to the result, the value is out of range, please review.', \
+                                             Erythrocyte_result_form_field_instance,'According to the result, the value is out of range, please review. (40.3 - 74.8)', \
                                                 Erythrocyte_result_disname, 'LBT0270']
                                     lista_revision.append(error)
                                 
@@ -619,7 +619,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(Erythrocyte_result_pure) < 42.5 or float(Erythrocyte_result_pure) > 73.0:
                                     error = [subject, visit, 'Erythrocyte sedimentation rate (ESR), Out of normal range?', \
                                              Erythrocyte_result_form_field_instance, \
-                                                'According to the result, the value is out of range, please review.' , Erythrocyte_result_disname, 'LBT0270']
+                                                'According to the result, the value is out of range, please review. (42.5 - 73.0)' , Erythrocyte_result_disname, 'LBT0270']
                                     lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision LBT0060--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -630,7 +630,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                             if float(WBC_result_pure) > 45.0 and float(WBC_result_pure) < 110.0:
                                 error = [subject, visit, 'White blood Cell count (WBC), Out of normal range?', \
                                          WBC_result_form_field_instance,\
-                                            'According to the result, the value is not out of range, please review.' , WBC_result_disname, 'LBT0070']
+                                            'According to the result, the value is not out of range, please review. (45.0 - 110.0)' , WBC_result_disname, 'LBT0070']
                                 lista_revision.append(error)
 
                         # Revision LBT0280
@@ -638,7 +638,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                             if float(WBC_result_pure) < 45.0 or float(WBC_result_pure) > 110.0:
                                 error = [subject, visit, 'White blood Cell count (WBC), Out of normal range?', \
                                          WBC_result_form_field_instance,\
-                                            'According to the result, the value is out of range, please review.' , WBC_result_disname, 'LBT0280']
+                                            'According to the result, the value is out of range, please review. (45.0 - 110)' , WBC_result_disname, 'LBT0280']
                                 lista_revision.append(error)
                                             
                     except Exception as e:
@@ -650,14 +650,14 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                             if float(genero) == 1.0:
                                 if float(Neutrophil_result_pure) > 40.3 and float(Neutrophil_result_pure) < 74.8:
                                     error = [subject, visit, 'Neutrophil, Out of normal range?', Neutrophil_result_form_field_instance, \
-                                             'According to the result, the value is not out of range, please review.' , \
+                                             'According to the result, the value is not out of range, please review. (40.3 - 74.8)' , \
                                                 Neutrophil_result_disname, 'LBT0080']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
                                 if float(Neutrophil_result_pure) > 42.5 and float(Neutrophil_result_pure) < 73.0:
                                     error = [subject, visit, 'Neutrophil, Out of normal range?', Neutrophil_result_form_field_instance, \
-                                             'According to the result, the value is not out of range, please review.', \
+                                             'According to the result, the value is not out of range, please review. (42.5 - 73.0)', \
                                                 Neutrophil_result_disname, 'LBT0080']
                                     lista_revision.append(error)
 
@@ -666,14 +666,14 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                             if float(genero) == 1.0:
                                 if float(Neutrophil_result_pure) < 40.3 or float(Neutrophil_result_pure) > 74.8:
                                     error = [subject, visit, 'Neutrophil, Out of normal range?', Neutrophil_result_form_field_instance, \
-                                             'According to the result, the value is out of range, please review.', \
+                                             'According to the result, the value is out of range, please review. (40.3 - 74.8)', \
                                                 Neutrophil_result_disname, 'LBT0290']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
                                 if float(Neutrophil_result_pure) < 42.5 or float(Neutrophil_result_pure) > 73.0:
                                     error = [subject, visit, 'Neutrophil, Out of normal range?', Neutrophil_result_form_field_instance, \
-                                             'According to the result, the value is out of range, please review.',  \
+                                             'According to the result, the value is out of range, please review.( 42.5 - 73.0)',  \
                                                 Neutrophil_result_disname, 'LBT0290']
                                     lista_revision.append(error)
                     except Exception as e:
@@ -685,14 +685,14 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                             if float(genero) == 1.0:
                                 if float(Lymphocyte_result_pure) > 18.2 and float(Lymphocyte_result_pure) < 47.4:
                                     error = [subject, visit, 'Lymphocyte, Out of normal range?', Lymphocyte_result_form_field_instance,\
-                                             'According to the result, the value is not out of range, please review.', \
+                                             'According to the result, the value is not out of range, please review. (18.5 - 47.4)', \
                                                 Lymphocyte_result_disname, 'LBT0090']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
                                 if float(Lymphocyte_result_pure) > 12.2 and float(Lymphocyte_result_pure) < 47.1:
                                     error = [subject, visit, 'Lymphocyte, Out of normal range?', Lymphocyte_result_form_field_instance,\
-                                             'According to the result, the value is not out of range, please review.', \
+                                             'According to the result, the value is not out of range, please review. (12.2 - 47.1)', \
                                                 Lymphocyte_result_disname, 'LBT0090']
                                     lista_revision.append(error)
 
@@ -702,7 +702,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(Lymphocyte_result_pure) < 18.2 or float(Lymphocyte_result_pure) > 47.4:
                                     error = [subject, visit, 'Lymphocyte, Out of normal range?', \
                                              Lymphocyte_result_form_field_instance,\
-                                                'According to the result, the value is out of range, please review.', \
+                                                'According to the result, the value is out of range, please review. (18.2 - 47.4)', \
                                                     Lymphocyte_result_disname, 'LBT0300']
                                     lista_revision.append(error)
                                 
@@ -710,7 +710,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(Lymphocyte_result_pure) < 12.2 or float(Lymphocyte_result_pure) > 47.1:
                                     error = [subject, visit, 'Lymphocyte, Out of normal range?', \
                                              Lymphocyte_result_form_field_instance,\
-                                                'According to the result, the value is out of range, please review.', \
+                                                'According to the result, the value is out of range, please review. (12.2 - 47.1)', \
                                                     Lymphocyte_result_disname, 'LBT0300']
                                     lista_revision.append(error)
                     except Exception as e:
@@ -722,14 +722,14 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                             if float(genero) == 1.0:
                                 if float(Monocytes_result_pure) > 4.4 and float(Monocytes_result_pure) < 12.3:
                                     error = [subject, visit, 'Monocytes, Out of normal range?', Monocytes_result_form_field_instance,\
-                                             'According to the result, the value is not out of range, please review.', \
+                                             'According to the result, the value is not out of range, please review. (4.4 - 12.3)', \
                                                 Monocytes_result_disname, 'LBT0100']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
                                 if float(Monocytes_result_pure) > 4.3 and float(Monocytes_result_pure) < 11.0:
                                     error = [subject, visit, 'Monocytes, Out of normal range?', Monocytes_result_form_field_instance,\
-                                             'According to the result, the value is not out of range, please review.', \
+                                             'According to the result, the value is not out of range, please review. (4.3 - 11.0)', \
                                                 Monocytes_result_disname, 'LBT0100']
                                     lista_revision.append(error)
 
@@ -738,14 +738,14 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                             if float(genero) == 1.0:
                                 if float(Monocytes_result_pure) < 4.4 or float(Monocytes_result_pure) > 12.3:
                                     error = [subject, visit, 'Monocytes, Out of normal range?', Monocytes_result_form_field_instance,\
-                                             'According to the result, the value is out of range, please review.', \
+                                             'According to the result, the value is out of range, please review. (4.4 - 12.3)', \
                                                 Monocytes_result_disname, 'LBT0310']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
                                 if float(Monocytes_result_pure) < 4.3 or float(Monocytes_result_pure) > 11.0:
                                     error = [subject, visit, 'Monocytes, Out of normal range?', Monocytes_result_form_field_instance,\
-                                             'According to the result, the value is out of range, please review.', \
+                                             'According to the result, the value is out of range, please review. (4.3 - 11.0)', \
                                                 Monocytes_result_disname, 'LBT0310']
                                     lista_revision.append(error)
                     except Exception as e:
@@ -757,14 +757,14 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                             if float(genero) == 1.0:
                                 if float(Eosinophil_result_pure) > 0.0 and float(Eosinophil_result_pure) < 4.4 :
                                     error = [subject, visit, 'Eosinophil, Out of normal range?', Eosinophil_result_form_field_instance,\
-                                             'According to the result, the value is not out of range, please review.', \
+                                             'According to the result, the value is not out of range, please review. (0.0 - 4.4)', \
                                                 Eosinophil_result_disname, 'LBT0110']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
                                 if float(Eosinophil_result_pure) > 0.0 and float(Eosinophil_result_pure) < 3.0:
                                     error = [subject, visit, 'Eosinophil, Out of normal range?', Eosinophil_result_form_field_instance,\
-                                             'According to the result, the value is not out of range, please review.', \
+                                             'According to the result, the value is not out of range, please review. (0.0 - 3.0)', \
                                                 Eosinophil_result_disname, 'LBT0110']
                                     lista_revision.append(error)
                     
@@ -773,14 +773,14 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                             if float(genero) == 1.0:
                                 if float(Eosinophil_result_pure) < 0.0 or float(Eosinophil_result_pure) > 4.4 :
                                     error = [subject, visit, 'Eosinophil, Out of normal range?',Eosinophil_result_form_field_instance,\
-                                             'According to the result, the value is out of range, please review.', \
+                                             'According to the result, the value is out of range, please review. (0.0 - 4.4)', \
                                                 Eosinophil_result_disname, 'LBT0320']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
                                 if float(Eosinophil_result_pure) < 0.0 or float(Eosinophil_result_pure) > 3.0:
                                     error = [subject, visit, 'Eosinophil, Out of normal range?', Eosinophil_result_form_field_instance,\
-                                             'According to the result, the value is out of range, please review.', \
+                                             'According to the result, the value is out of range, please review. (0.0 - 3.0)', \
                                                 Eosinophil_result_disname, 'LBT0320']
                                     lista_revision.append(error)
                     except Exception as e:
@@ -791,14 +791,14 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         if float(Basophil_out_normal_pure) == 1.0:
                             if float(Basophil_result_pure) > 0.0 and float(Basophil_result_pure) < 0.7:
                                 error = [subject, visit, 'Basophil, Out of normal range?', Basophil_result_form_field_instance,\
-                                         'According to the result, the value is not out of range, please review.', Basophil_result_disname, 'LBT0120']
+                                         'According to the result, the value is not out of range, please review. (0.0 - 0.7)', Basophil_result_disname, 'LBT0120']
                                 lista_revision.append(error)
 
                         # Revision LBT0330
                         elif float(Basophil_out_normal_pure) == 0.0:
                             if float(Basophil_result_pure) < 0.0 or float(Basophil_result_pure) > 0.7:
                                 error = [subject, visit, 'Basophil, Out of normal range?', Basophil_result_form_field_instance,\
-                                         'According to the result, the value is out of range, please review.', Basophil_result_disname, 'LBT0330']
+                                         'According to the result, the value is out of range, please review. (0.0 - 0.7)', Basophil_result_disname, 'LBT0330']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision LBT0120--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -810,7 +810,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(absolute_Neutrophil_result_pure) > 1820.0 and float(absolute_Neutrophil_result_pure) < 7150.0 :
                                     error = [subject, visit, 'Absolute Neutrophil count, Out of normal range? ', \
                                              absolute_Neutrophil_result_form_field_instance, \
-                                                'According to the result, the value is not out of range, please review.', \
+                                                'According to the result, the value is not out of range, please review. (1820.0 - 7150.0)', \
                                                     absolute_Neutrophil_result_disname, 'LBT0130']
                                     lista_revision.append(error)
                                 
@@ -818,7 +818,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(absolute_Neutrophil_result_pure) > 2000.0 and float(absolute_Neutrophil_result_pure) < 7150.0:
                                     error = [subject, visit, 'Absolute Neutrophil count, Out of normal range?', \
                                              absolute_Neutrophil_result_form_field_instance,\
-                                                'According to the result, the value is not out of range, please review.', \
+                                                'According to the result, the value is not out of range, please review. (2000.0 - 7150.0)', \
                                                     absolute_Neutrophil_result_disname, 'LBT0130']
                                     lista_revision.append(error)
 
@@ -828,7 +828,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(absolute_Neutrophil_result_pure) < 1820.0 or float(absolute_Neutrophil_result_pure) > 7150.0 :
                                     error = [subject, visit, 'Absolute Neutrophil count, Out of normal range?',  \
                                              absolute_Neutrophil_result_form_field_instance, \
-                                                'According to the result, the value is out of range, please review.', \
+                                                'According to the result, the value is out of range, please review. (1820.0 - 7150.0)', \
                                                     absolute_Neutrophil_result_disname, 'LBT0340']
                                     lista_revision.append(error)
                                 
@@ -836,7 +836,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(absolute_Neutrophil_result_pure) < 2000.0 or float(absolute_Neutrophil_result_pure) > 7150.0:
                                     error = [subject, visit, 'Absolute Neutrophil count, Out of normal range?', \
                                              absolute_Neutrophil_result_form_field_instance, \
-                                                'According to the result, the value is out of range, please review.', \
+                                                'According to the result, the value is out of range, please review. (2000.0 - 7150.0)', \
                                                     absolute_Neutrophil_result_disname, 'LBT0340']
                                     lista_revision.append(error)
                     except Exception as e:
@@ -849,7 +849,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(absolute_lymphocyte_result_pure) > 1820.0 and float(absolute_lymphocyte_result_pure) < 7150.0 :
                                     error = [subject, visit, 'Absolute lymphocyte count, Out of normal range?', \
                                              absolute_lymphocyte_result_form_field_isntance,\
-                                                'According to the result, the value is not out of range, please review.', \
+                                                'According to the result, the value is not out of range, please review. (1820.0 - 7150.0)', \
                                                     absolute_lymphocyte_result_disname, 'LBT0140']
                                     lista_revision.append(error)
                                 
@@ -857,7 +857,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(absolute_lymphocyte_result_pure) > 2000.0 and float(absolute_lymphocyte_result_pure) < 7150.0:
                                     error = [subject, visit, 'Absolute lymphocyte count, Out of normal range?', \
                                              absolute_lymphocyte_result_form_field_isntance,\
-                                                'According to the result, the value is not out of range, please review.', \
+                                                'According to the result, the value is not out of range, please review. (2000.0 - 7150.0)', \
                                                     absolute_lymphocyte_result_disname, 'LBT0140']
                                     lista_revision.append(error)
 
@@ -867,7 +867,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(absolute_lymphocyte_result_pure) < 1820.0 or float(absolute_lymphocyte_result_pure) > 7150.0 :
                                     error = [subject, visit, 'Absolute lymphocyte count, Out of normal range?', \
                                              absolute_lymphocyte_result_form_field_isntance, \
-                                                'According to the result, the value is out of range, please review.', \
+                                                'According to the result, the value is out of range, please review. (1820.0 - 7150.0)', \
                                                     absolute_lymphocyte_result_disname, 'LBT0350']
                                     lista_revision.append(error)
                                 
@@ -875,7 +875,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(absolute_lymphocyte_result_pure) < 2000.0 or float(absolute_lymphocyte_result_pure) > 7150.0:
                                     error = [subject, visit, 'Absolute lymphocyte count, Out of normal range?', \
                                              absolute_lymphocyte_result_form_field_isntance, \
-                                                'According to the result, the value is out of range, please review.', \
+                                                'According to the result, the value is out of range, please review. (2000.0 - 7150.0)', \
                                                     absolute_lymphocyte_result_disname, 'LBT0350']
                                     lista_revision.append(error)
 
@@ -889,7 +889,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(absolute_monocyte_result_pure) > 190.0 and float(absolute_monocyte_result_pure) < 770.0 :
                                     error = [subject, visit, 'Absolute monocyte count, Out of normal range?', \
                                              absolute_monocyte_result_form_field_instance,\
-                                                'According to the result, the value is not out of range, please review.', \
+                                                'According to the result, the value is not out of range, please review. (190.0 - 770.0)', \
                                                     absolute_monocyte_result_disname, 'LBT0150']
                                     lista_revision.append(error)
                                 
@@ -897,7 +897,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(absolute_monocyte_result_pure) > 290.0 and float(absolute_monocyte_result_pure) < 710.0:
                                     error = [subject, visit, 'Absolute monocyte count, Out of normal range?', \
                                              absolute_monocyte_result_form_field_instance, \
-                                                'According to the result, the value is not out of range, please review.', \
+                                                'According to the result, the value is not out of range, please review. (290.0 - 710.0)', \
                                                     absolute_monocyte_result_disname, 'LBT0150']
                                     lista_revision.append(error)
 
@@ -907,7 +907,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(absolute_monocyte_result_pure) < 190.0 or float(absolute_monocyte_result_pure) > 770.0 :
                                     error = [subject, visit, 'Absolute monocyte count, Out of normal range?', \
                                              absolute_monocyte_result_form_field_instance,\
-                                                'According to the result, the value is out of range, please review.', \
+                                                'According to the result, the value is out of range, please review. (190.0 - 770.0)', \
                                                     absolute_monocyte_result_disname, 'LBT0360']
                                     lista_revision.append(error)
                                 
@@ -915,7 +915,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(absolute_monocyte_result_pure) < 290.0 or float(absolute_monocyte_result_pure) > 710.0:
                                     error = [subject, visit, 'Absolute monocyte count, Out of normal range?', \
                                              absolute_monocyte_result_form_field_instance,\
-                                                'According to the result, the value is out of range, please review.', \
+                                                'According to the result, the value is out of range, please review. (290.0 - 710.0)', \
                                                     absolute_monocyte_result_disname, 'LBT0360']
                                     lista_revision.append(error)
                     except Exception as e:
@@ -928,7 +928,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(absolute_eosinophil_result_pure) > 30.0 and float(absolute_eosinophil_result_pure) < 440.0 :
                                     error = [subject, visit, 'Absolute eosinophil count, Out of normal range?',\
                                              absolute_eosinophil_result_form_field_instance,\
-                                                'According to the result, the value is not out of range, please review.', \
+                                                'According to the result, the value is not out of range, please review. (30.0 - 440.0)', \
                                                     absolute_eosinophil_result_disname, 'LBT0160']
                                     lista_revision.append(error)
                                 
@@ -936,7 +936,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(absolute_eosinophil_result_pure) > 30.0 and float(absolute_eosinophil_result_pure) < 270.0:
                                     error = [subject, visit, 'Absolute eosinophil count, Out of normal range?'.\
                                              absolute_eosinophil_result_form_field_instance,\
-                                                'According to the result, the value is not out of range, please review.', \
+                                                'According to the result, the value is not out of range, please review. (30.0 - 270.0 )', \
                                                     absolute_eosinophil_result_disname, 'LBT0160']
                                     lista_revision.append(error)
 
@@ -946,7 +946,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(absolute_eosinophil_result_pure) < 30.0 or float(absolute_eosinophil_result_pure) > 440.0 :
                                     error = [subject, visit, 'Absolute eosinophil count, Out of normal range?',\
                                              absolute_eosinophil_result_form_field_instance,\
-                                                'According to the result, the value is out of range, please review.', \
+                                                'According to the result, the value is out of range, please review. (30.0 - 440.0)', \
                                                     absolute_eosinophil_result_disname, 'LBT0370']
                                     lista_revision.append(error)
                                 
@@ -954,7 +954,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(absolute_eosinophil_result_pure) < 30.0 or float(absolute_eosinophil_result_pure) > 270.0:
                                     error = [subject, visit, 'Absolute eosinophil count, Out of normal range?', \
                                              absolute_eosinophil_result_form_field_instance,\
-                                                'According to the result, the value is out of range, please review.', \
+                                                'According to the result, the value is out of range, please review. (30.0 - 270.0 )', \
                                                     absolute_eosinophil_result_disname, 'LBT0370']
                                     lista_revision.append(error)
                     except Exception as e:
@@ -966,7 +966,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                             if float(absolute_basophil_result_pure) > 10.0 and float(absolute_basophil_result_pure) < 50.0:
                                 error = [subject, visit, 'Absolute basophil count, Out of normal range?',\
                                          absolute_basophil_result_form_field_isntance,\
-                                            'According to the result, the value is not out of range, please review.',\
+                                            'According to the result, the value is not out of range, please review. (10.0 - 50.0 )',\
                                                   absolute_basophil_result_disname, 'LBT0170']
                                 lista_revision.append(error)
 
@@ -975,7 +975,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                             if float(absolute_basophil_result_pure) < 10.0 or float(absolute_basophil_result_pure) > 50.0:
                                 error = [subject, visit, 'Absolute basophil count, Out of normal range?', \
                                          absolute_basophil_result_form_field_isntance,\
-                                            'According to the result, the value is out of range, please review.', \
+                                            'According to the result, the value is out of range, please review. (10.0 - 50.0 )', \
                                                 absolute_basophil_result_disname, 'LBT0380']
                                 lista_revision.append(error)
                     except Exception as e:
@@ -988,14 +988,14 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(RBC__result_pure) > 4.6 and float(RBC__result_pure) < 6.2 :
                                     error = [subject, visit, 'Red Blood cell count (RBC), Out of normal range?',\
                                              RBC__result_form_field_isntance,\
-                                                'According to the result, the value is not out of range, please review.', RBC__result_disname, 'LBT0180']
+                                                'According to the result, the value is not out of range, please review. (4.6 - 6.2)', RBC__result_disname, 'LBT0180']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
                                 if float(RBC__result_pure) > 4.2 and float(RBC__result_pure) < 5.4:
                                     error = [subject, visit, 'Red Blood cell count (RBC), Out of normal range?',\
                                               RBC__result_form_field_isntance,\
-                                                'According to the result, the value is not out of range, please review.' , RBC__result_disname, 'LBT0180']
+                                                'According to the result, the value is not out of range, please review. (4.2 - 5.4)' , RBC__result_disname, 'LBT0180']
                                     lista_revision.append(error)
 
                         # Revision LBT0390
@@ -1004,14 +1004,14 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(RBC__result_pure) < 4.6 or float(RBC__result_pure) > 6.2 :
                                     error = [subject, visit, 'Red Blood cell count (RBC), Out of normal range?',\
                                              RBC__result_form_field_isntance,\
-                                                'According to the result, the value is out of range, please review.', RBC__result_disname, 'LBT0390']
+                                                'According to the result, the value is out of range, please review. (4.6 - 6.2)', RBC__result_disname, 'LBT0390']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
                                 if float(RBC__result_pure) < 4.2 or float(RBC__result_pure) > 5.4:
                                     error = [subject, visit, 'Red Blood cell count (RBC), Out of normal range?',\
                                              RBC__result_form_field_isntance,\
-                                                'According to the result, the value is out of range, please review.' , RBC__result_disname, 'LBT0390']
+                                                'According to the result, the value is out of range, please review. (4.2 - 5.4)' , RBC__result_disname, 'LBT0390']
                                     lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision LBT0180--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1023,7 +1023,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(Haemoglobin_result_pure) > 13.5 and float(Haemoglobin_result_pure) < 18.0 :
                                     error = [subject, visit, 'Haemoglobin (Hgb), Out of normal range?', \
                                              Haemoglobin_result_form_field_instance,\
-                                                'According to the result, the value is not out of range, please review.', \
+                                                'According to the result, the value is not out of range, please review. (13.5 - 18.0)', \
                                                     Haemoglobin_result_disname, 'LBT0190']
                                     lista_revision.append(error)
                                 
@@ -1031,7 +1031,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(Haemoglobin_result_pure) > 12.0 and float(Haemoglobin_result_pure) < 16.0:
                                     error = [subject, visit, 'Haemoglobin (Hgb), Out of normal range?', \
                                              Haemoglobin_result_form_field_instance,\
-                                                'According to the result, the value is not out of range, please review.', \
+                                                'According to the result, the value is not out of range, please review. (12.0 - 16.0 )', \
                                                     Haemoglobin_result_disname, 'LBT0190']
                                     lista_revision.append(error)
 
@@ -1041,7 +1041,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(Haemoglobin_result_pure) < 13.5 or float(Haemoglobin_result_pure) > 18.0 :
                                     error = [subject, visit, 'Haemoglobin (Hgb), Out of normal range?', \
                                              Haemoglobin_result_form_field_instance,\
-                                             'According to the result, the value is out of range, please review.', \
+                                             'According to the result, the value is out of range, please review. (13.5 - 18.0 )', \
                                                 Haemoglobin_result_disname, 'LBT0400']
                                     lista_revision.append(error)
                                 
@@ -1049,7 +1049,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(Haemoglobin_result_pure) < 12.0 or float(Haemoglobin_result_pure) > 16.0:
                                     error = [subject, visit, 'Haemoglobin (Hgb), Out of normal range?', \
                                              Haemoglobin_result_form_field_instance,\
-                                                'According to the result, the value is out of range, please review.', 
+                                                'According to the result, the value is out of range, please review. (12.0 - 16.0)', 
                                                 Haemoglobin_result_disname, 'LBT0400']
                                     lista_revision.append(error)
                     except Exception as e:
@@ -1062,7 +1062,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(Hematocrit_result_pure) > 40.0 and float(Hematocrit_result_pure) < 54.0 :
                                     error = [subject, visit, 'Hematocrit, Out of normal range?',\
                                              Hematocrit_result_form_field_isntance,\
-                                                'According to the result, the value is not out of range, please review.', \
+                                                'According to the result, the value is not out of range, please review. (40.0 - 54.0)', \
                                                     Hematocrit_result_disname, 'LBT0200']
                                     lista_revision.append(error)
                                 
@@ -1070,7 +1070,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(Hematocrit_result_pure) > 38.0 and float(Hematocrit_result_pure) < 48.0:
                                     error = [subject, visit, 'Hematocrit, Out of normal range?', \
                                              Hematocrit_result_form_field_isntance,\
-                                                'According to the result, the value is not out of range, please review.', \
+                                                'According to the result, the value is not out of range, please review. (38.0 - 48.0)', \
                                                     Hematocrit_result_disname, 'LBT0200']
                                     lista_revision.append(error)
 
@@ -1080,7 +1080,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(Hematocrit_result_pure) < 40.0 or float(Hematocrit_result_pure) > 54.0 :
                                     error = [subject, visit, 'Hematocrit, Out of normal range?', \
                                              Hematocrit_result_form_field_isntance,\
-                                                'According to the result, the value is out of range, please review.', \
+                                                'According to the result, the value is out of range, please review. (40.0 - 54.0)', \
                                                     Hematocrit_result_disname, 'LBT0410']
                                     lista_revision.append(error)
                                 
@@ -1088,7 +1088,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(Hematocrit_result_pure) > 38.0 or float(Hematocrit_result_pure) > 48.0:
                                     error = [subject, visit, 'Hematocrit, Out of normal range?', \
                                              Hematocrit_result_form_field_isntance,\
-                                                'According to the result, the value is out of range, please review.', \
+                                                'According to the result, the value is out of range, please review. (38.0 - 48.0 )', \
                                                     Hematocrit_result_disname, 'LBT0410']
                                     lista_revision.append(error)
                     except Exception as e:
@@ -1101,7 +1101,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(MCV_result_pure) > 86.0 and float(MCV_result_pure) < 96.0 :
                                     error = [subject, visit, 'Mean Corpuscular Volume (MCV), Out of normal range?', \
                                              MCV_result_form_field_instance,\
-                                                'According to the result, the value is not out of range, please review.', \
+                                                'According to the result, the value is not out of range, please review. (86.0 - 96.0)', \
                                                     MCV_result_disname, 'LBT0210']
                                     lista_revision.append(error)
                                 
@@ -1109,7 +1109,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(MCV_result_pure) > 86.0 and float(MCV_result_pure) < 96.0:
                                     error = [subject, visit, 'Mean Corpuscular Volume (MCV), Out of normal range?',\
                                              MCV_result_form_field_instance,\
-                                                'According to the result, the value is not out of range, please review.', \
+                                                'According to the result, the value is not out of range, please review. (86.0 - 96.0)', \
                                                     MCV_result_disname, 'LBT0210']
                                     lista_revision.append(error)
 
@@ -1119,7 +1119,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(MCV_result_pure) < 86.0 or float(MCV_result_pure) > 96.0 :
                                     error = [subject, visit, 'Mean Corpuscular Volume (MCV), Out of normal range?', \
                                              MCV_result_form_field_instance,\
-                                                'According to the result, the value is out of range, please review.', \
+                                                'According to the result, the value is out of range, please review. (86.0 - 96.0 )', \
                                                     MCV_result_disname, 'LBT0420']
                                     lista_revision.append(error)
                                 
@@ -1127,7 +1127,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(MCV_result_pure) < 86.0 or float(MCV_result_pure) > 96.0:
                                     error = [subject, visit, 'Mean Corpuscular Volume (MCV), Out of normal range?',\
                                              MCV_result_form_field_instance,\
-                                                'According to the result, the value is out of range, please review.' , 
+                                                'According to the result, the value is out of range, please review. (86.0 - 96.0)' , 
                                                 MCV_result_form_field_instance, 'LBT0420']
                                     lista_revision.append(error)
                     except Exception as e:
@@ -1140,7 +1140,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(MCH_result_pure) > 86.0 and float(MCH_result_pure) < 96.0 :
                                     error = [subject, visit, 'Mean Corpuscular Haemoglobin (MCH), Out of normal range?',
                                              MCH_result_form_field_instance,\
-                                                'According to the result, the value is not out of range, please review.', \
+                                                'According to the result, the value is not out of range, please review. (86.0 - 96.0)', \
                                                     MCH_result_disname, 'LBT0220']
                                     lista_revision.append(error)
                                 
@@ -1148,7 +1148,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(MCH_result_pure) > 86.0 and float(MCH_result_pure) < 96.0:
                                     error = [subject, visit, 'Mean Corpuscular Haemoglobin (MCH), Out of normal range? ',\
                                              MCH_result_form_field_instance,\
-                                                'According to the result, the value is not out of range, please review.', \
+                                                'According to the result, the value is not out of range, please review. (86.0 - 96.0)', \
                                                     MCH_result_disname, 'LBT0220']
                                     lista_revision.append(error)
 
@@ -1158,7 +1158,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(MCH_result_pure) < 86.0 or float(MCH_result_pure) > 96.0 :
                                     error = [subject, visit, 'Mean Corpuscular Haemoglobin (MCH), Out of normal range? ',\
                                              MCH_result_form_field_instance,\
-                                                'According to the result, the value is out of range, please review.', \
+                                                'According to the result, the value is out of range, please review. (86.0 - 96.0)', \
                                                     MCH_result_disname, 'LBT0430']
                                     lista_revision.append(error)
                                 
@@ -1166,7 +1166,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(MCH_result_pure) < 86.0 or float(MCH_result_pure) > 96.0:
                                     error = [subject, visit, 'Mean Corpuscular Haemoglobin (MCH), Out of normal range? ', \
                                              MCH_result_form_field_instance,\
-                                                'According to the result, the value is out of range, please review.' , \
+                                                'According to the result, the value is out of range, please review. (86.0 - 96.0)' , \
                                                     MCH_result_disname, 'LBT0430']
                                     lista_revision.append(error)
                     except Exception as e:
@@ -1179,7 +1179,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(MCHC_result_pure) > 86.0 and float(MCHC_result_pure) < 96.0 :
                                     error = [subject, visit, 'Mean Corpuscular Haemoglobin Concentration (MCHC), Out of normal range? ',\
                                              MCHC_result_form_field_instance,\
-                                                'According to the result, the value is not out of range, please review.', \
+                                                'According to the result, the value is not out of range, please review. (86.0 - 96.0 )', \
                                                     MCHC_result_disname, 'LBT0230']
                                     lista_revision.append(error)
                                 
@@ -1187,7 +1187,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(MCHC_result_pure) > 86.0 and float(MCHC_result_pure) < 96.0:
                                     error = [subject, visit, 'Mean Corpuscular Haemoglobin Concentration (MCHC), Out of normal range?',\
                                              MCHC_result_form_field_instance,\
-                                                'According to the result, the value is not out of range, please review.', \
+                                                'According to the result, the value is not out of range, please review. (86.0 - 96.0)', \
                                                     MCHC_result_disname, 'LBT0230']
                                     lista_revision.append(error)
 
@@ -1197,7 +1197,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(MCHC_result_pure) < 86.0 or float(MCHC_result_pure) > 96.0 :
                                     error = [subject, visit, 'Mean Corpuscular Haemoglobin Concentration (MCHC), Out of normal range? ',\
                                              MCHC_result_form_field_instance,\
-                                                'According to the result, the value is out of range, please review.', \
+                                                'According to the result, the value is out of range, please review. (86.0 - 96.0)', \
                                                     MCHC_result_disname, 'LBT0440']
                                     lista_revision.append(error)
                                 
@@ -1205,7 +1205,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(MCHC_result_pure) < 86.0 or float(MCHC_result_pure) > 96.0:
                                     error = [subject, visit, 'Mean Corpuscular Haemoglobin Concentration (MCHC), Out of normal range?',\
                                              MCHC_result_form_field_instance,\
-                                                'According to the result, the value is out of range, please review.',\
+                                                'According to the result, the value is out of range, please review. (86.0 - 96.0)',\
                                                       MCHC_result_disname, 'LBT0440']
                                     lista_revision.append(error)
                     except Exception as e:
@@ -1218,7 +1218,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(platelet_count_result_pure) > 150.0 and float(platelet_count_result_pure) < 400.0:
                                     error = [subject, visit, 'Platelet Count, Out of normal range? ', \
                                              platelet_count_result_form_field_instance,\
-                                                'According to the result, the value is not out of range, please review.',\
+                                                'According to the result, the value is not out of range, please review. (150.0 - 400.0)',\
                                                       platelet_count_result_disname, 'LBT0240']
                                     lista_revision.append(error)
                                 
@@ -1226,7 +1226,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(platelet_count_result_pure) > 186.0 and float(platelet_count_result_pure) < 353.0:
                                     error = [subject, visit, 'Platelet Count, Out of normal range? ', \
                                              platelet_count_result_form_field_instance,\
-                                                'According to the result, the value is not out of range, please review.', \
+                                                'According to the result, the value is not out of range, please review. (186.0 - 353.0)', \
                                                     platelet_count_result_disname, 'LBT0240']
                                     lista_revision.append(error)
 
@@ -1236,7 +1236,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(platelet_count_result_pure) < 150.0 or float(platelet_count_result_pure) > 400.0:
                                     error = [subject, visit, 'Platelet Count, Out of normal range? ', \
                                              platelet_count_result_form_field_instance,\
-                                                'According to the result, the value is out of range, please review.', \
+                                                'According to the result, the value is out of range, please review. (150.0 - 400.0)', \
                                                     platelet_count_result_disname, 'LBT0450']
                                     lista_revision.append(error)
                                 
@@ -1244,7 +1244,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(platelet_count_result_pure) < 186.0 or float(platelet_count_result_pure) > 353.0:
                                     error = [subject, visit, 'Platelet Count, Out of normal range? ', \
                                              platelet_count_result_form_field_instance,\
-                                                'According to the result, the value is out of range, please review.', \
+                                                'According to the result, the value is out of range, please review. (186.0 - 353.0)', \
                                                     platelet_count_result_disname, 'LBT0450']
                                     lista_revision.append(error)
                     except Exception as e:
@@ -1257,7 +1257,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(MPV_result_pure) > 9.7 and float(MPV_result_pure) < 11.9:
                                     error = [subject, visit, 'Mean Platelet volume (MPV), Out of normal range? ',\
                                              MPV_result_form_field_instance,\
-                                                'According to the result, the value is not out of range, please review.', \
+                                                'According to the result, the value is not out of range, please review. (9.7 - 11.9)', \
                                                     MPV_result_disname, 'LBT0250']
                                     lista_revision.append(error)
                                 
@@ -1265,7 +1265,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(MPV_result_pure) > 9.6 and float(MPV_result_pure) < 12.0:
                                     error = [subject, visit, 'Mean Platelet volume (MPV), Out of normal range? ', \
                                              MPV_result_form_field_instance,\
-                                                'According to the result, the value is not out of range, please review.', \
+                                                'According to the result, the value is not out of range, please review. (9.6 - 12.0)', \
                                                     MPV_result_disname, 'LBT0250']
                                     lista_revision.append(error)
 
@@ -1275,7 +1275,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(MPV_result_pure) < 9.7 or float(MPV_result_pure) > 11.9:
                                     error = [subject, visit, 'Mean Platelet volume (MPV), Out of normal range? ',\
                                              MPV_result_form_field_instance,\
-                                                'According to the result, the value is out of range, please review.', \
+                                                'According to the result, the value is out of range, please review. (9.7 - 11.9)', \
                                                     MPV_result_disname, 'LBT0460']
                                     lista_revision.append(error)
                                 
@@ -1283,7 +1283,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                 if float(MPV_result_pure) < 9.6 or float(MPV_result_pure) > 12.0:
                                     error = [subject, visit, 'Mean Platelet volume (MPV), Out of normal range? ',\
                                              MPV_result_form_field_instance,\
-                                                'According to the result, the value is out of range, please review.',\
+                                                'According to the result, the value is out of range, please review. (9.6 - 12.0)',\
                                                       MPV_result_disname, 'LBT0460']
                                     lista_revision.append(error)
                     except Exception as e:
