@@ -65,7 +65,8 @@ if __name__ == '__main__':
     df_root.rename(columns = {'Instancia':'FormFieldInstance Id'}, inplace = True)
     df_root = df_root[(df_root['activityState']== 'DATA_VERIFIED') | (df_root['activityState']== 'DATA_ENTRY_COMPLETE')]
     #df_root = df_root[(df_root['QueryState']!= 'OPEN')]
-    df_root = df_root[(df_root['TypeQuery']!= 'QUERY') | (df_root['TypeQuery']!= 'AUTOQUERY')]
+    df_root = df_root[(df_root['TypeQuery']!= 'QUERY')]
+    df_root = df_root[(df_root['TypeQuery']!= 'AUTOQUERY')] 
     print(df_root.shape)
     path_excel_writer = r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\Program\output\DNDi_cleaning_yyyymmdd.xlsx".replace('yyyymmdd', current_date)
     log_file = r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\Program\output\DNDi_log_yyyymmdd.txt".replace('yyyymmdd', current_date)

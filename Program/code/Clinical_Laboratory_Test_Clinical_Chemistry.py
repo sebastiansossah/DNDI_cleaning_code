@@ -746,7 +746,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         if float(Protein_out_normal_pure) == 1.0:
                             if float(Protein_total_result_pure) > 64.0 and float(Protein_total_result_pure) < 83.0:
                                 error = [subject, visit, 'Protein (Total), Out of normal range?', Protein_total_result_form_field_instance ,\
-                                         'According to the result, the value is not out of range, please review. (6.4 - 86.0)', \
+                                         'According to the result, the value is not out of range, please review. (64.0 - 86.0)', \
                                             f'{Protein_out_normal_disname} - {Protein_total_result_pure}', 'LBC0330']
                                 lista_revision.append(error)
 
@@ -754,7 +754,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         elif float(Protein_out_normal_pure) == 0.0:
                             if float(Protein_total_result_pure) < 64.0 or float(Protein_total_result_pure) > 83.0:
                                 error = [subject, visit, 'Protein (Total), Out of normal range?', Protein_total_result_form_field_instance,\
-                                         'According to the result, the value is out of range, please review. (6.4 - 86.0)', \
+                                         'According to the result, the value is out of range, please review. (64.0 - 83.0)', \
                                             f'{Protein_out_normal_disname} - {Protein_total_result_pure}', 'LBC0130']
                                 lista_revision.append(error)
                                             

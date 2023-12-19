@@ -1194,18 +1194,18 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         # Revision LBT0440
                         elif float(MCHC_out_normal_pure) == 0.0:
                             if float(genero) == 1.0:
-                                if float(MCHC_result_pure) < 86.0 or float(MCHC_result_pure) > 96.0 :
+                                if float(MCHC_result_pure) < 32.0 or float(MCHC_result_pure) > 38.0 :
                                     error = [subject, visit, 'Mean Corpuscular Haemoglobin Concentration (MCHC), Out of normal range? ',\
                                              MCHC_result_form_field_instance,\
-                                                'According to the result, the value is out of range, please review. (86.0 - 96.0)', \
+                                                'According to the result, the value is out of range, please review. (32.0 - 38.0)', \
                                                     MCHC_result_disname, 'LBT0440']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(MCHC_result_pure) < 86.0 or float(MCHC_result_pure) > 96.0:
+                                if float(MCHC_result_pure) < 32.0 or float(MCHC_result_pure) > 32.0:
                                     error = [subject, visit, 'Mean Corpuscular Haemoglobin Concentration (MCHC), Out of normal range?',\
                                              MCHC_result_form_field_instance,\
-                                                'According to the result, the value is out of range, please review. (86.0 - 96.0)',\
+                                                'According to the result, the value is out of range, please review. (32.0 - 38.0)',\
                                                       MCHC_result_disname, 'LBT0440']
                                     lista_revision.append(error)
                     except Exception as e:
