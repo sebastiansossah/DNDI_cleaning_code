@@ -800,16 +800,16 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                     try:
                         # Revision LBC0350
                         if float(Sodium_out_normal_pure) == 1.0:
-                            if float(Sodium_result_pure) > 132.0 and float(Sodium_result_pure) < 146.0:
+                            if float(Sodium_result_pure) > 136.0 and float(Sodium_result_pure) < 145.0:
                                 error = [subject, visit, 'Sodium, Out of normal range?', Sodium_result_form_field_instance ,\
-                                         'According to the result, the value is not out of range, please review. (132.0 - 146.0)', f'{Sodium_out_normal_disname} - {Sodium_result_pure}', 'LBC0350']
+                                         'According to the result, the value is not out of range, please review. (136.0 - 145.0)', f'{Sodium_out_normal_disname} - {Sodium_result_pure}', 'LBC0350']
                                 lista_revision.append(error)
 
                         # Revision LBC0150
                         elif float(Sodium_out_normal_pure) == 0.0:
-                            if float(Sodium_result_pure) < 132.0 or float(Sodium_result_pure) > 146.0:
+                            if float(Sodium_result_pure) < 136.0 or float(Sodium_result_pure) > 145.0:
                                 error = [subject, visit, 'Sodium, Out of normal range?', Sodium_result_form_field_instance ,\
-                                         'According to the result, the value is out of range, please review. (132.0 - 146.0)',  f'{Sodium_out_normal_disname} - {Sodium_result_pure}', 'LBC0150']
+                                         'According to the result, the value is out of range, please review. (136.0 - 145.0)',  f'{Sodium_out_normal_disname} - {Sodium_result_pure}', 'LBC0150']
                                 lista_revision.append(error)
                                             
                     except Exception as e:
@@ -1040,16 +1040,16 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                     try:
                         # Revision LBC0450
                         if float(C_Reactive_out_normal_pure) == 1.0:
-                            if float(C_Reactive_result_pure) > 0.0 and float(C_Reactive_result_pure) < 5.0 :
+                            if float(C_Reactive_result_pure) > 0.0 and float(C_Reactive_result_pure) < 0.5 :
                                 error = [subject, visit, 'C-Reactive Protein, Out of normal range?', C_Reactive_result_form_field_instance ,\
-                                         'According to the result, the value is not out of range, please review. (0.0 - 5.0)', f'{C_Reactive_out_normal_disname} - {C_Reactive_result_pure}', 'LBC0450']
+                                         'According to the result, the value is not out of range, please review. (0.0 - 0.5)', f'{C_Reactive_out_normal_disname} - {C_Reactive_result_pure}', 'LBC0450']
                                 lista_revision.append(error)
 
                         # Revision LBC0250
                         elif float(C_Reactive_out_normal_pure) == 0.0:
-                            if float(C_Reactive_result_pure) <  0.0  or float(C_Reactive_result_pure) > 5.0 :
+                            if float(C_Reactive_result_pure) <  0.0  or float(C_Reactive_result_pure) > 0.5 :
                                 error = [subject, visit, 'C-Reactive Protein, Out of normal range?', C_Reactive_result_form_field_instance ,\
-                                         'According to the result, the value is out of range, please review. (0.0 - 5.0)', f'{C_Reactive_out_normal_disname} - {C_Reactive_result_pure}', 'LBC0250']
+                                         'According to the result, the value is out of range, please review. (0.0 - 0.5)', f'{C_Reactive_out_normal_disname} - {C_Reactive_result_pure}', 'LBC0250']
                                 lista_revision.append(error)
                                             
                     except Exception as e:
