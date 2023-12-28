@@ -60,13 +60,15 @@ def date_of_visit(df_root, path_excel_writer):
             pru['status'] = pru_1['activityState'].unique()
             pru = pru.merge(df_informed, on=['Subject'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
-            
+
 
             for index, row in pru.iterrows():
 
                 status = row['status']
                 subject = row['Subject']
                 visit = row['Visit']
+
+
 
                 informed_consent_date = row['Valor']
                 end_study_date = row['end_study_date']
@@ -142,14 +144,15 @@ def date_of_visit(df_root, path_excel_writer):
 
             else:
                 try:
-                    if datetime.strptime(lista_valores_diccionario_visitas[i].split('|')[0], '%d-%b-%Y')  <= datetime.strptime(lista_valores_diccionario_visitas[i-1].split('|')[0], '%d-%b-%Y'):
-                        error = [sujeto, lista_keys_diccionario_visitas[i], 'Visit Date', lista_valores_diccionario_visitas[i].split('|')[1] ,'Visit date must be greater than the previous visit date' , \
-                                  lista_valores_diccionario_visitas[i].split('|')[0], 'VS0020']
-                        lista_revision.append(error)
-                    else:
-                        pass
+                    if lista_valores_diccionario_visitas[i-1].split('|')[0] != '':
+                        if datetime.strptime(lista_valores_diccionario_visitas[i].split('|')[0], '%d-%b-%Y')  <= datetime.strptime(lista_valores_diccionario_visitas[i-1].split('|')[0], '%d-%b-%Y'):
+                            error = [sujeto, lista_keys_diccionario_visitas[i], 'Visit Date', lista_valores_diccionario_visitas[i].split('|')[1] ,'Visit date must be greater than the previous visit date' , \
+                                    lista_valores_diccionario_visitas[i].split('|')[0], 'VS0020']
+                            lista_revision.append(error)
+                        else:
+                            pass
                 except Exception as e:
-                    lista_logs.append(f'Revision VS0050 --> {e} - Subject: {subject},  Visit: {visit}  ')
+                    lista_logs.append(f'Revision VS0020 --> {e} - Subject: {subject},  Visit: {visit}  ')
                     
     
     excel_writer = load_workbook(path_excel_writer)
@@ -170,6 +173,6 @@ def date_of_visit(df_root, path_excel_writer):
 
 if __name__ == '__main__':
     path_excel = r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\Program\output\prueba.xlsx"
-    df_root = pd.read_excel(r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\data\newDNDI.xlsx")
+    df_root = pd.read_excel(r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\Program\data\82cd544d-3f72-4cf1-ba30-6bf53a799067.xlsx")
     date_of_visit(df_root, path_excel ) 
 

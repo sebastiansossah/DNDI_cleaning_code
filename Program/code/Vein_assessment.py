@@ -140,7 +140,7 @@ def vein_assesment(df_root, path_excel_writer):
                             lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> VA0050
-                    if date_of_assesment_pure == '':
+                    if date_of_assesment_pure == '' or end_study_date =='' or str(end_study_date) =='nan':
                         pass
                     else:
                         try:

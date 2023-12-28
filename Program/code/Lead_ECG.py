@@ -796,7 +796,9 @@ def lead_ECG(df_root, path_excel_writer):
                             lista_logs.append(f'Revision LE0050--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> LE0060
-                    if date_of_egc_pure != '':
+                    if  str(end_study_date) == 'nan' or end_study_date == '' or date_of_egc_pure == '':
+                        pass
+                    else:
                         try:
                             if datetime.strptime(str(date_of_egc_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
                                 pass

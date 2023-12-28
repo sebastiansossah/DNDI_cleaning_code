@@ -246,7 +246,9 @@ def Pharmacokinetic_blood_sampling(df_root, path_excel_writer):
                             lista_logs.append(f'Revision PK0030--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> PK0040
-                    if Date_of_blood_sample_collected_pure != '':
+                    if  str(end_study_date) == 'nan' or end_study_date == '' or Date_of_blood_sample_collected_pure == '':
+                        pass
+                    else:
                         try:
                             if datetime.strptime(str(Date_of_blood_sample_collected_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
                                 pass

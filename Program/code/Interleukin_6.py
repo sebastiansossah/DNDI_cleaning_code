@@ -202,7 +202,9 @@ def interleukin_6(df_root, path_excel_writer):
                             lista_logs.append(f'Revision IN0040--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> IN0050
-                    if date_collected_pure != '':
+                    if  str(end_study_date) == 'nan' or end_study_date == '' or date_collected_pure == '':
+                        pass
+                    else:
                         try:
                             if datetime.strptime(str(date_collected_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
                                 pass

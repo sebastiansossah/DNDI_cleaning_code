@@ -210,7 +210,9 @@ def immunoassay(df_root, path_excel_writer):
                             lista_logs.append(f'Revision IM0020--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> IM0030
-                    if date_collected_pure != '':
+                    if  str(end_study_date) == 'nan' or end_study_date == '' or date_collected_pure == '':
+                        pass
+                    else:
                         try:
                             if datetime.strptime(str(date_collected_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
                                 pass

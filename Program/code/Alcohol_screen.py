@@ -248,7 +248,9 @@ def alcohol_screen(df_root, path_excel_writer):
                             lista_logs.append(f'Revision AS0070--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> AS0080
-                    if date_test_performed_pure != '':
+                    if  str(end_study_date) == 'nan' or end_study_date == '' or date_test_performed_pure == '':
+                        pass
+                    else:
                         try:
                             if datetime.strptime(str(date_test_performed_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
                                 pass

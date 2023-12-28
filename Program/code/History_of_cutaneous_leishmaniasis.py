@@ -211,7 +211,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer):
                             lista_logs.append(f'Revision CL0010--> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision CL0020
-                    if date_confirmed_diagnosis_pure == '':
+                    if date_confirmed_diagnosis_pure == '' or date_new_sample_pure == '':
                         pass
                     else:
                         try:

@@ -205,7 +205,9 @@ def urinary_drug_screen(df_root, path_excel_writer):
                             lista_logs.append(f'Revision UD0050--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> UD0060
-                    if date_of_test_pure != '':
+                    if  str(end_study_date) == 'nan' or end_study_date == '' or date_of_test_pure == '':
+                        pass
+                    else:
                         try:
                             if datetime.strptime(str(date_of_test_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
                                 pass
@@ -215,8 +217,7 @@ def urinary_drug_screen(df_root, path_excel_writer):
                         except Exception as e:
                             lista_logs.append(f'Revision UD0060 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
-                    else:
-                        pass
+        
 
 
     excel_writer = load_workbook(path_excel_writer)

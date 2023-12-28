@@ -533,20 +533,23 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                             lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')  
 
                     # Revision LBT0010
-                    try:
-                        date_format = '%d-%b-%Y'
-                        date_collected_f = datetime.strptime(date_collected_pure, date_format)
-                        date_of_visit_f = datetime.strptime(date_of_visit, date_format)
+                    if date_collected_pure =='':
+                        pass
+                    else:
+                        try:
+                            date_format = '%d-%b-%Y'
+                            date_collected_f = datetime.strptime(date_collected_pure, date_format)
+                            date_of_visit_f = datetime.strptime(date_of_visit, date_format)
 
-                        if date_collected_f != date_of_visit_f:
-                            error = [subject, visit, 'Date Collected', date_collected_form_field_instance, \
-                                     'The date should be the same as the visit date in the "Date of Visit" Form',  \
-                                        f'{date_collected_disname} - {date_of_visit}', 'LBT0010']
-                            lista_revision.append(error)
-                        else:
-                            pass
-                    except Exception as e:
-                        lista_logs.append(f'Revision LBT0010--> {e} - Subject: {subject},  Visit: {visit} ')
+                            if date_collected_f != date_of_visit_f:
+                                error = [subject, visit, 'Date Collected', date_collected_form_field_instance, \
+                                        'The date should be the same as the visit date in the "Date of Visit" Form',  \
+                                            f'{date_collected_disname} - {date_of_visit}', 'LBT0010']
+                                lista_revision.append(error)
+                            else:
+                                pass
+                        except Exception as e:
+                            lista_logs.append(f'Revision LBT0010--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision LBT0030
                     if date_collected_pure != '':
@@ -566,7 +569,9 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                             lista_logs.append(f'Revision LBT0030--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> LBT0040
-                    if date_collected_pure != '':
+                    if  str(end_study_date) == 'nan' or end_study_date == '' or date_collected_pure == '':
+                        pass
+                    else:
                         try:
                             if datetime.strptime(str(date_collected_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
                                 pass

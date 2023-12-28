@@ -242,7 +242,9 @@ def lesion_measurement(df_root, path_excel_writer):
                             lista_logs.append(f'Revision LM0040--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> LM0050
-                    if Date_of_assessment_performed_pure != '':
+                    if  str(end_study_date) == 'nan' or end_study_date == '' or Date_of_assessment_performed_pure == '':
+                        pass
+                    else:
                         try:
                             if datetime.strptime(str(Date_of_assessment_performed_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
                                 pass

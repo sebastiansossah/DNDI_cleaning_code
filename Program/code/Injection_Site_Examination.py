@@ -213,7 +213,9 @@ def injection_site_examination(df_root, path_excel_writer):
                             lista_logs.append(f'Revision IS0030--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> IS0040
-                    if date_injection_pure != '':
+                    if  str(end_study_date) == 'nan' or end_study_date == '' or date_injection_pure == '':
+                        pass
+                    else:
                         try:
                             if datetime.strptime(str(date_injection_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
                                 pass
