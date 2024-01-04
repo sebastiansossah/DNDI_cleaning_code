@@ -147,6 +147,9 @@ def adminsitration_CpG_ODN(df_root, path_excel_writer):
                     except Exception as e:
                             lista_logs.append(f'Revision IMP0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
+                    # Revision IMP0030
+                            
+
                     # Revision IMP0040
                     try:
                         if datetime.strptime(str(date_dosing_pure), '%d-%b-%Y') >= datetime.strptime(str(inform_consent_date), '%d-%b-%Y'):
@@ -185,6 +188,10 @@ def adminsitration_CpG_ODN(df_root, path_excel_writer):
                                 date_dosing_list_review.append(date_dosing_pure)
                         except Exception as e:
                                 lista_logs.append(f'Revision IMP0060 --> {e} - Subject: {subject},  Visit: {visit} ')
+                    
+                    # Revision IMP0070
+                    # try:
+                    #     if 
 
                     # Revision IMP0080
                     try: 
@@ -213,7 +220,11 @@ def adminsitration_CpG_ODN(df_root, path_excel_writer):
                                       lista_revision.append(error)
                     except Exception as e:
                          lista_logs.append(f'Revision IMP0090 --> {e} - Subject: {subject},  Visit: {visit} ')
-
+                        
+                    
+                    #Revision IMP0100
+                    # try:
+                    #     if reason_dose_adjustment_pure:                         
     
     excel_writer = load_workbook(path_excel_writer)
     column_names = ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']
