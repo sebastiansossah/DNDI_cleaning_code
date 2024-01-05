@@ -206,9 +206,9 @@ def physical_examination(df_root, path_excel_writer):
 
                     try:
                         eight_hours_time = row['8-hours post dose, Time']
-                        eight_hours_time_pure = eight_hours.split('|')[0]
-                        eight_hours_time_form_field_instance = eight_hours.split('|')[1]
-                        eight_hours_time_disname = eight_hours.split('|')[2]
+                        eight_hours_time_pure = eight_hours_time.split('|')[0]
+                        eight_hours_time_form_field_instance = eight_hours_time.split('|')[1]
+                        eight_hours_time_disname = eight_hours_time.split('|')[2]
                     except Exception as e:
                         eight_hours_time_pure = math.nan
                         eight_hours_time_form_field_instance = 'This field does not have any data'
@@ -518,8 +518,9 @@ def physical_examination(df_root, path_excel_writer):
                         
                         # Revision PE0150
                         if str(time_dosing_cpg_administration) != 'nan':
-                            dif_eight = float((datetime.strptime(eight_hours_time_pure, '%H:%M') - datetime.strptime(time_dosing_cpg_administration, '%H:%M')).total_seconds() / 60)
+                            
                             try:
+                                dif_eight = float((datetime.strptime(eight_hours_time_pure, '%H:%M') - datetime.strptime(time_dosing_cpg_administration, '%H:%M')).total_seconds() / 60)
                                 if dif_eight > 495.0 or dif_eight < 465.0:
                                     
                                     error = [subject, visit, '8-hours post dose, Time', eight_hours_time_form_field_instance,\

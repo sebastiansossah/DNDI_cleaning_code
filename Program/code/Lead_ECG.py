@@ -46,6 +46,14 @@ def lead_ECG(df_root, path_excel_writer):
     df_visit_done = df_visit_done[['Visit','Participante','Valor_completo']]
     df_visit_done = df_visit_done.rename(columns={'Participante':'Subject', 'Valor_completo':'was_DV_performed'})
 
+
+    df_time_dosing1 = df_root[df_root['name']=='CpG ODN D35 Administration'].sort_values(by='FormFieldInstance Id')
+    df_time_dosing1 = df_time_dosing1[(df_time_dosing1['Campo']=='Date of dosing') | (df_time_dosing1['Campo']=='Time of Dosing')]
+    df_time_dosing = df_time_dosing1[df_time_dosing1['Campo']=='Date of dosing']
+    df_time_dosing['time_dosing_cpg_administration'] =  df_time_dosing1[df_time_dosing1['FormFieldInstance Id'].isin(df_time_dosing['FormFieldInstance Id'] + 1) & (df_time_dosing1['Campo'] == 'Time of Dosing')]['Valor'].values
+    df_time_dosing =df_time_dosing[['Participante','Valor', 'time_dosing_cpg_administration']]
+    df_time_dosing = df_time_dosing.rename(columns={'Participante':'Subject', 'Valor':'date_ex_to_join'})
+
     lista_revision = []
     lista_logs = ['12-Lead ECG']
 
@@ -64,10 +72,17 @@ def lead_ECG(df_root, path_excel_writer):
             pru['Subject'] = sujeto
             pru['Visit'] = visita
             pru['status'] = pru_1['activityState'].unique()
+            try:
+                pru['date_ex_to_join'] = pru['Date of ECG Performed'].str.split('|',expand= True)[0]
+            except:
+                pru['date_ex_to_join'] = 'Nothing to join'
+
             pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_informed, on=['Subject'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
             pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
+            pru = pru.merge(df_time_dosing, on=['Subject', 'date_ex_to_join'], how='left')
+
 
 
             for index, row in pru.iterrows():
@@ -79,6 +94,7 @@ def lead_ECG(df_root, path_excel_writer):
                 was_DV_performed_pure = was_DV_performed.split('|')[0]
                 was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
    
+                time_dosing_cpg_administration = row['time_dosing_cpg_administration']
                 date_of_visit = row['Date_of_visit']
                 date_inform_consent = row['Informed_consent_date']
                 end_study_date = row['end_study_date']
@@ -692,6 +708,9 @@ def lead_ECG(df_root, path_excel_writer):
                         min_60_time_time_formated = ''
                         min_60_time_disname = 'Empty'       
 
+                    
+                    if str(time_dosing_cpg_administration) != 'nan':
+                        print(pru)
                     #----------------------------------------------------------------------------------------------------------------------------
 
                     # Revision GE0070
@@ -1684,7 +1703,22 @@ def lead_ECG(df_root, path_excel_writer):
                         lista_logs.append(f'Revision LE0680--> {e} - Subject: {subject},  Visit: {visit} ')  
                     
                     # -------------------------------------------- Time Revisions ---------------------------------------------------------------------------------------
+                    
+                    # Revision LE0560
+                    if str(time_dosing_cpg_administration) != 'nan':
+                            
+                        try:
+                            dif = float((datetime.strptime(predose_triplicate_1_time_pure, '%H:%M') - datetime.strptime(time_dosing_cpg_administration, '%H:%M')).total_seconds() / 60)
+                            if dif > 60.0:
+                                    
+                                error = [subject, visit, '8-hours post dose, Time', predose_triplicate_1_time_form_field_instance,\
+                                             'The time selected should be less than 60 min before the study treatment administration', \
+                                                f'Pre dose triplicate 1, Time 24 hrs: {predose_triplicate_1_time_pure} - dose time administration{time_dosing_cpg_administration}', 'LE0560']
+                                lista_revision.append(error)
 
+                        except Exception as e:
+                            lista_logs.append(f'Revision LE0560 --> {e} - Subject: {subject},  Visit: {visit} ')  
+                     
                     # Revision LE0570
                     if str(predose_triplicate_2_time_formated) != '' and str(predose_triplicate_1_time_formated) != '':
                         try:
@@ -1704,7 +1738,55 @@ def lead_ECG(df_root, path_excel_writer):
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision LE0580--> {e} - Subject: {subject},  Visit: {visit} ')  
-                    
+                        
+
+                    # Revision LE0590
+                    if str(time_dosing_cpg_administration) != 'nan':
+                            
+                        try:
+                            dif_15 = float((datetime.strptime(min_15_time_pure, '%H:%M') - datetime.strptime(time_dosing_cpg_administration, '%H:%M')).total_seconds() / 60)
+                            if dif_15 > 23.0 or dif_15 < 7.0:
+                                    
+                                error = [subject, visit, '15-min post dose, Time 24 hrs', min_15_time_form_field_instance,\
+                                             'The time selected should be less than 23min and greater than 7 min after the study treatment administration', \
+                                                f'15-min post dose, Time 24 hrs: {min_15_time_pure} - dose time administration{time_dosing_cpg_administration}', 'LE0590']
+                                lista_revision.append(error)
+
+                        except Exception as e:
+                            lista_logs.append(f'Revision LE0590 --> {e} - Subject: {subject},  Visit: {visit} ')  
+
+
+                    # Revision LE0600
+                    if str(time_dosing_cpg_administration) != 'nan':
+                            
+                        try:
+                            dif_30 = float((datetime.strptime(min_30_time_pure, '%H:%M') - datetime.strptime(time_dosing_cpg_administration, '%H:%M')).total_seconds() / 60)
+                            if dif_30 > 38.0 or dif_30 < 22.0:
+                                    
+                                error = [subject, visit, '30-min post dose, Time 24 hrs', min_30_time_form_field_instance,\
+                                             'The time selected should be less than 38 min and greater than 22 min after the study treatment administration', \
+                                                f'30-min post dose, Time 24 hrs: {min_30_time_pure} - dose time administration{time_dosing_cpg_administration}', 'LE0600']
+                                lista_revision.append(error)
+
+                        except Exception as e:
+                            lista_logs.append(f'Revision LE0600 --> {e} - Subject: {subject},  Visit: {visit} ')  
+
+
+                    # Revision LE0610
+                    if str(time_dosing_cpg_administration) != 'nan':
+                            
+                        try:
+                            dif_60 = float((datetime.strptime(min_60_time_pure, '%H:%M') - datetime.strptime(time_dosing_cpg_administration, '%H:%M')).total_seconds() / 60)
+                            if dif_60 > 68.0 or dif_60 < 52.0:
+                                    
+                                error = [subject, visit, '60-min post dose, Time 24 hrs', min_60_time_form_field_instance,\
+                                             'The time selected should be less than 38 min and greater than 22 min after the study treatment administration', \
+                                                f'60-min post dose, Time 24 hrs: {min_60_time_pure} - dose time administration{time_dosing_cpg_administration}', 'LE0610']
+                                lista_revision.append(error)
+
+                        except Exception as e:
+                            lista_logs.append(f'Revision LE0610 --> {e} - Subject: {subject},  Visit: {visit} ')  
+
 
     excel_writer = load_workbook(path_excel_writer)
     column_names = ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']
