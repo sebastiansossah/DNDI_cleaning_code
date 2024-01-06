@@ -157,7 +157,7 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
                     try:
                         if float(any_relevant_medical_pure) == 1.0:
                             if type(medical_surgical_pure) == pd.Series:
-                                print('revision MS0010 revisar medical or surgical')
+                   
                                 pass
                             elif medical_surgical_pure != '' :
                                 pass
@@ -172,7 +172,7 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
                     try:
                         if float(any_relevant_medical_pure) == 0.0:
                             if type(medical_surgical_pure) != pd.Series:
-                                print('revision MS0020 revisar medical or surgical')
+          
                                 pass
                             elif medical_surgical_pure == '':
                                 pass
@@ -203,7 +203,7 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
                         # Revision MS0050
                         try: 
                             if type(onset_date_pure) == pd.Series:
-                                print('revision MS0050 revisar medical or surgical')
+                        
                                 for date in onset_date_pure:
                                     onset_date_year = str(date).split('-')[2]
                                     if int(onset_date_year) < int(demographic_year):
@@ -235,11 +235,6 @@ def Medical_or_surgical_history(df_root, path_excel_writer):
                                 lista_logs.append(f'Revision MS0060 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                             # Revision MS070
-                            try:
-                                if medical_surgical_pure != '':
-                                    print('hacer la revision MS070')
-                            except:
-                                pass
         
                     
 

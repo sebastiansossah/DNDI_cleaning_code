@@ -708,9 +708,6 @@ def lead_ECG(df_root, path_excel_writer):
                         min_60_time_time_formated = ''
                         min_60_time_disname = 'Empty'       
 
-                    
-                    if str(time_dosing_cpg_administration) != 'nan':
-                        print(pru)
                     #----------------------------------------------------------------------------------------------------------------------------
 
                     # Revision GE0070
@@ -1711,7 +1708,7 @@ def lead_ECG(df_root, path_excel_writer):
                             dif = float((datetime.strptime(predose_triplicate_1_time_pure, '%H:%M') - datetime.strptime(time_dosing_cpg_administration, '%H:%M')).total_seconds() / 60)
                             if dif > 60.0:
                                     
-                                error = [subject, visit, '8-hours post dose, Time', predose_triplicate_1_time_form_field_instance,\
+                                error = [subject, visit, 'Pre dose triplicate 1, Time 24 hrs', predose_triplicate_1_time_form_field_instance,\
                                              'The time selected should be less than 60 min before the study treatment administration', \
                                                 f'Pre dose triplicate 1, Time 24 hrs: {predose_triplicate_1_time_pure} - dose time administration{time_dosing_cpg_administration}', 'LE0560']
                                 lista_revision.append(error)
