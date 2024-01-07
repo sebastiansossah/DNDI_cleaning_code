@@ -45,6 +45,15 @@ def injection_site_examination(df_root, path_excel_writer):
     df_visit_done = df_visit_done[['Visit','Participante','Valor_completo']]
     df_visit_done = df_visit_done.rename(columns={'Participante':'Subject', 'Valor_completo':'was_DV_performed'})
 
+
+    df_time_dosing1 = df_root[df_root['name']=='CpG ODN D35 Administration'].sort_values(by='FormFieldInstance Id')
+    df_time_dosing1 = df_time_dosing1[(df_time_dosing1['Campo']=='Date of dosing') | (df_time_dosing1['Campo']=='Time of Dosing')]
+    df_time_dosing = df_time_dosing1[df_time_dosing1['Campo']=='Date of dosing']
+    df_time_dosing['time_dosing_cpg_administration'] =  df_time_dosing1[df_time_dosing1['FormFieldInstance Id'].isin(df_time_dosing['FormFieldInstance Id'] + 1) & (df_time_dosing1['Campo'] == 'Time of Dosing')]['Valor'].values
+    df_time_dosing =df_time_dosing[['Participante','Valor', 'time_dosing_cpg_administration']]
+    df_time_dosing = df_time_dosing.rename(columns={'Participante':'Subject', 'Valor':'date_ex_to_join'})
+
+
     lista_logs = ['Injection Site Examination']
     lista_revision = []
 
@@ -67,11 +76,18 @@ def injection_site_examination(df_root, path_excel_writer):
             pru = pru[1:].set_axis(new_columns, axis=1)
             pru['Subject'] = sujeto
             pru['Visit'] = visita
+
+            try:
+                pru['date_ex_to_join'] = pru['Date of the Injection site examination'].str.split('|',expand= True)[0]
+            except:
+                pru['date_ex_to_join'] = 'Nothing to join'
+
             pru['status'] = pru_1['activityState'].unique()
             pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_informed, on=['Subject'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
             pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
+            pru = pru.merge(df_time_dosing, on=['Subject', 'date_ex_to_join'], how='left')
 
             for index, row in pru.iterrows():
                 status = row['status']
@@ -81,10 +97,12 @@ def injection_site_examination(df_root, path_excel_writer):
                 date_of_visit = row['Date_of_visit']
                 date_inform_consent = row['Informed_consent_date']
                 end_study_date = row['end_study_date']
+                time_dosing_cpg_administration = row['time_dosing_cpg_administration']
 
                 was_DV_performed = row['was_DV_performed']
                 was_DV_performed_pure = was_DV_performed.split('|')[0]
                 was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
+
    
                 if status != '':
                     try:
@@ -156,7 +174,41 @@ def injection_site_examination(df_root, path_excel_writer):
                         post_dose_8_hours_pure = math.nan
                         post_dose_8_hours_form_field_instance = 'This field does not have any data'
                         post_dose_8_hours_disname = 'Empty'
-
+                    
+                    # ----------TIME variables 
+                    try:
+                        predose_time = row['Predose, Time']
+                        predose_time_pure = predose_time.split('|')[0]
+                        predose_time_form_field_instance = predose_time.split('|')[1]
+                    except:
+                        predose_time_pure = math.nan
+                        predose_time_form_field_instance = 'This field does not have any data'
+                    
+                    try:
+                        post_dose_2H = row['2-hours post dose, Time']
+                        post_dose_2H_pure = post_dose_2H.split('|')[0]
+                        post_dose_2H_form_field_instance = post_dose_2H.split('|')[1]
+                    except:
+                        post_dose_2H_pure = math.nan
+                        post_dose_2H_form_field_instance  = 'This field does not have any data'
+                    
+                    try:
+                        post_dose_4H = row['4-hours post dose, Time']
+                        post_dose_4H_pure = post_dose_4H.split('|')[0]
+                        post_dose_4H_form_field_instance = post_dose_4H.split('|')[1]
+                    except:
+                        post_dose_4H_pure  = math.nan
+                        post_dose_4H_form_field_instance = 'This field does not have any data'
+                    
+                    try:
+                        post_dose_8H = row['8-hours post dose, Time']
+                        post_dose_8H_pure = post_dose_8H.split('|')[0]
+                        post_dose_8H_form_field_instance = post_dose_8H.split('|')[1]
+                    except:
+                        post_dose_8H_pure  = math.nan
+                        post_dose_8H_form_field_instance = 'This field does not have any data'
+ 
+                    
                     # ---------------------------------------------------------------------------------------------
                     # Revision GE0070
                     if float(was_DV_performed_pure) !=  1.0:
@@ -363,6 +415,68 @@ def injection_site_examination(df_root, path_excel_writer):
                             lista_logs.append(f'Revision IS0130--> {e} - Subject: {subject},  Visit: {visit} ')
 
 
+                    # Revision IS0060
+                    if str(time_dosing_cpg_administration) != 'nan':
+                            
+                        try:
+                            dif = float((datetime.strptime(predose_time_pure, '%H:%M') - datetime.strptime(time_dosing_cpg_administration, '%H:%M')).total_seconds() / 60)
+                            if dif > 60.0:
+                                    
+                                error = [subject, visit, 'Pre dose, Time', predose_time_form_field_instance,\
+                                             'The time selected should be less than 60 min before the study treatment administration', \
+                                                f'Pre dose, Time: {predose_time_pure} - dose time administration{time_dosing_cpg_administration}', 'IS0060']
+                                lista_revision.append(error)
+
+                        except Exception as e:
+                            lista_logs.append(f'Revision IS0060 --> {e} - Subject: {subject},  Visit: {visit} ')  
+
+
+                        # Revision IS0070
+                        if str(time_dosing_cpg_administration) != 'nan':
+                            
+                            try:
+                                dif_2H = float((datetime.strptime(post_dose_2H_pure, '%H:%M') - datetime.strptime(time_dosing_cpg_administration, '%H:%M')).total_seconds() / 60)
+                                if dif_2H > 135.0 or dif_2H < 105.0:
+                                    
+                                    error = [subject, visit, '2-hours post dose, Time', post_dose_2H_form_field_instance,\
+                                             'The time selected should be less than 2h15 and greater than 1h45 after the study treatment administration', \
+                                                f'2-hours post dose, Time: {post_dose_2H_pure} - dose time administration{time_dosing_cpg_administration}', 'IS0070']
+                                    lista_revision.append(error)
+
+                            except Exception as e:
+                                lista_logs.append(f'Revision IS0070 --> {e} - Subject: {subject},  Visit: {visit} ')  
+
+
+                        # Revision IS0080
+                        if str(time_dosing_cpg_administration) != 'nan':
+                            
+                            try:
+                                dif_4H = float((datetime.strptime(post_dose_4H_pure, '%H:%M') - datetime.strptime(time_dosing_cpg_administration, '%H:%M')).total_seconds() / 60)
+                                if dif_4H > 255.0 or dif_4H < 225.0:
+                                    
+                                    error = [subject, visit, '4-hours post dose, Time', post_dose_4H_form_field_instance,\
+                                             'The time selected should be less than 4h15 and greater than 3h45 after the study treatment administration', \
+                                                f'4-hours post dose, Time: {post_dose_4H_pure} - dose time administration{time_dosing_cpg_administration}', 'IS0080']
+                                    lista_revision.append(error)
+
+                            except Exception as e:
+                                lista_logs.append(f'Revision IS0080 --> {e} - Subject: {subject},  Visit: {visit} ')
+
+
+                        # Revision IS0090
+                        if str(time_dosing_cpg_administration) != 'nan':
+                            
+                            try:
+                                dif_8H = float((datetime.strptime(post_dose_8H_pure, '%H:%M') - datetime.strptime(time_dosing_cpg_administration, '%H:%M')).total_seconds() / 60)
+                                if dif_8H > 495.0 or dif_8H < 465.0:
+                                    
+                                    error = [subject, visit, '8-hours post dose, Time', post_dose_8H_form_field_instance,\
+                                             'The time selected should be less than 8h15 and greater than 7h45 after the study treatment administration', \
+                                                f'8-hours post dose, Time: {post_dose_8H_pure} - dose time administration{time_dosing_cpg_administration}', 'IS0090']
+                                    lista_revision.append(error)
+
+                            except Exception as e:
+                                lista_logs.append(f'Revision IS0090 --> {e} - Subject: {subject},  Visit: {visit} ')
 
     excel_writer = load_workbook(path_excel_writer)
     column_names = ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']
