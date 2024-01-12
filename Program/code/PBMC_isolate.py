@@ -1,6 +1,7 @@
+import math
 import numpy as np
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, timedelta
 from revision_fechas import revision_fecha
 import warnings
 from log_writer import log_writer
@@ -43,6 +44,29 @@ def PBMC_isolate(df_root, path_excel_writer):
     df_visit_done = df_visit_done[['Visit','Participante','Valor_completo']]
     df_visit_done = df_visit_done.rename(columns={'Participante':'Subject', 'Valor_completo':'was_DV_performed'})
 
+
+    df_time_dosing1 = df_root[df_root['name']=='CpG ODN D35 Administration'].sort_values(by='FormFieldInstance Id')
+    df_time_dosing1 = df_time_dosing1[(df_time_dosing1['Campo']=='Date of dosing') | (df_time_dosing1['Campo']=='Time of Dosing')]
+    df_time_dosing = df_time_dosing1[df_time_dosing1['Campo']=='Date of dosing']
+    df_time_dosing['time_dosing_cpg_administration'] =  df_time_dosing1[df_time_dosing1['FormFieldInstance Id'].isin(df_time_dosing['FormFieldInstance Id'] + 1) & (df_time_dosing1['Campo'] == 'Time of Dosing')]['Valor'].values
+    df_time_dosing =df_time_dosing[['Participante','Valor', 'time_dosing_cpg_administration']]
+    df_time_dosing = df_time_dosing.rename(columns={'Participante':'Subject', 'Valor':'date_ex_to_join'})
+
+    df_time_dosing12 = df_root[df_root['name']=='CpG ODN D35 Administration'].sort_values(by='FormFieldInstance Id')
+    df_time_dosing12 = df_time_dosing12[(df_time_dosing12['Campo']=='Date of dosing') | (df_time_dosing12['Campo']=='Time of Dosing')]
+    df_time_dosing2 = df_time_dosing12[df_time_dosing12['Campo']=='Date of dosing']
+    df_time_dosing2['time_dosing_cpg_administration'] =  df_time_dosing12[df_time_dosing12['FormFieldInstance Id'].isin(df_time_dosing2['FormFieldInstance Id'] + 1) & (df_time_dosing12['Campo'] == 'Time of Dosing')]['Valor'].values
+    df_time_dosing2 =df_time_dosing2[['Participante','Valor', 'time_dosing_cpg_administration']]
+    df_time_dosing2 = df_time_dosing2.rename(columns={'Participante':'Subject', 'Valor':'date_ex_to_join2', 'time_dosing_cpg_administration': 'time_dosing_cpg_administration2'})
+
+    df_time_dosing123 = df_root[df_root['name']=='CpG ODN D35 Administration'].sort_values(by='FormFieldInstance Id')
+    df_time_dosing123 = df_time_dosing123[(df_time_dosing123['Campo']=='Date of dosing') | (df_time_dosing123['Campo']=='Time of Dosing')]
+    df_time_dosing3 = df_time_dosing123[df_time_dosing123['Campo']=='Date of dosing']
+    df_time_dosing3['time_dosing_cpg_administration'] =  df_time_dosing123[df_time_dosing123['FormFieldInstance Id'].isin(df_time_dosing3['FormFieldInstance Id'] + 1) & (df_time_dosing123['Campo'] == 'Time of Dosing')]['Valor'].values
+    df_time_dosing3 =df_time_dosing3[['Participante','Valor', 'time_dosing_cpg_administration']]
+    df_time_dosing3 = df_time_dosing3.rename(columns={'Participante':'Subject', 'Valor':'date_ex_to_join3', 'time_dosing_cpg_administration': 'time_dosing_cpg_administration3'})
+
+
     lista_logs = ['PBMC Isolate']
     lista_revision = []
 
@@ -61,10 +85,33 @@ def PBMC_isolate(df_root, path_excel_writer):
             pru['Subject'] = sujeto
             pru['Visit'] = visita
             pru['status'] = pru_1['activityState'].unique()
+
+            try:
+                pru['date_ex_to_join'] = pru['Date of the sample collected'].str.split('|',expand= True)[0]
+            except:
+                pru['date_ex_to_join'] = 'Nothing to join'
+
+            #try:
+            pru['date_ex_to_join2'] = pru['date_ex_to_join'].apply(
+                        lambda x: (datetime.strptime(x, '%d-%b-%Y') - timedelta(days=1)).strftime('%d-%b-%Y'))
+            pru['date_ex_to_join2'] = pru['date_ex_to_join2'].astype(str).str.upper()
+
+            #try:
+            pru['date_ex_to_join3'] = pru['date_ex_to_join'].apply(
+                        lambda x: (datetime.strptime(x, '%d-%b-%Y') - timedelta(days=2)).strftime('%d-%b-%Y'))
+            pru['date_ex_to_join3'] = pru['date_ex_to_join3'].astype(str).str.upper()
+
+
+
+
+   
             pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_informed, on=['Subject'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
             pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
+            pru = pru.merge(df_time_dosing, on=['Subject', 'date_ex_to_join'], how='left')
+            pru = pru.merge(df_time_dosing2, on=['Subject', 'date_ex_to_join2'], how='left')
+            pru = pru.merge(df_time_dosing3, on=['Subject', 'date_ex_to_join3'], how='left')
 
             for index, row in pru.iterrows():
                 status = row['status']
@@ -78,7 +125,11 @@ def PBMC_isolate(df_root, path_excel_writer):
                 was_DV_performed = row['was_DV_performed']
                 was_DV_performed_pure = was_DV_performed.split('|')[0]
                 was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
-   
+
+                time_dosing_cpg_administration = row['time_dosing_cpg_administration']
+                time_dosing_cpg_administration2 = row['time_dosing_cpg_administration2']
+                time_dosing_cpg_administration3 = row['time_dosing_cpg_administration3']
+
                 if status != '':
 
                     try:
@@ -106,6 +157,15 @@ def PBMC_isolate(df_root, path_excel_writer):
                         date_sample_collected_pure = ''
                         date_sample_collected_form_field_instance = 'This field does not have any data'
                         date_sample_collected_disname = 'Empty'
+                    
+                    try:
+                        Time_collected = row['Time collected'] 
+                        Time_collected_pure = Time_collected.split('|')[0]
+                        Time_collected_form_field_instance = Time_collected.split('|')[1]
+                    except Exception as e:
+                        Time_collected_pure = ''
+                        Time_collected_form_field_instance = 'This field does not have any data'
+
 
                     # --------------------------------------------------------------------------
                     # Revision GE0070
@@ -174,6 +234,33 @@ def PBMC_isolate(df_root, path_excel_writer):
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision PB0040 --> {e} - Subject: {subject},  Visit: {visit}  ')
+                        
+                    # Revision PB0050
+                    if visit in ['D1', 'D15','D29' ]:
+                        if str(time_dosing_cpg_administration) != 'nan':
+                            if Time_collected_pure == '':
+                                error = [subject, visit, 'Time Collected', Time_collected_form_field_instance ,\
+                                        f'There should be a time on visit {visita}', Time_collected, 'PB0050']
+                                lista_revision.append(error)
+                        else:
+                                dif = float((datetime.strptime(time_dosing_cpg_administration, '%H:%M') - datetime.strptime(Time_collected_pure, '%H:%M')).total_seconds() / 60)
+                                if dif >= 0.0 or dif <= 90.0:
+                                    
+                                    error = [subject, visit, 'Time Collected', Time_collected_form_field_instance,\
+                                             'The date and time collected must be between 0 and 90 minutes before the study treatment administration time', \
+                                                f'Time Collected: {Time_collected_pure} - dose time administration{time_dosing_cpg_administration}', 'PB0050']
+                                    lista_revision.append(error)
+
+                    # Revision PB0060
+                    if visit in ['D2', 'D16', 'D30']:
+                        if str(time_dosing_cpg_administration2) == 'nan' and str(time_dosing_cpg_administration3) == 'nan':
+                            error =  [subject, visit, 'Time Collected', Time_collected_form_field_instance,\
+                                             'The date and time collected must be between 24 and 25 hours  after the study treatment administration time of the day before', \
+                                                f'Time Collected: {Time_collected_pure} - dose time administration{time_dosing_cpg_administration}', 'PB0060']
+                            lista_revision.append(error)
+
+
+
 
     excel_writer = load_workbook(path_excel_writer)
     column_names = ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']
