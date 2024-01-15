@@ -419,7 +419,7 @@ def injection_site_examination(df_root, path_excel_writer):
                     if str(time_dosing_cpg_administration) != 'nan':
                             
                         try:
-                            dif = float((datetime.strptime(predose_time_pure, '%H:%M') - datetime.strptime(time_dosing_cpg_administration, '%H:%M')).total_seconds() / 60)
+                            dif = float((datetime.strptime(time_dosing_cpg_administration, '%H:%M') - datetime.strptime(predose_time_pure, '%H:%M')).total_seconds() / 60)
                             if dif > 60.0:
                                     
                                 error = [subject, visit, 'Pre dose, Time', predose_time_form_field_instance,\
