@@ -420,7 +420,7 @@ def injection_site_examination(df_root, path_excel_writer):
                             
                         try:
                             dif = float((datetime.strptime(time_dosing_cpg_administration, '%H:%M') - datetime.strptime(predose_time_pure, '%H:%M')).total_seconds() / 60)
-                            if dif > 60.0:
+                            if dif < 0.0  or  dif > 60.0:
                                     
                                 error = [subject, visit, 'Pre dose, Time', predose_time_form_field_instance,\
                                              'The time selected should be less than 60 min before the study treatment administration', \

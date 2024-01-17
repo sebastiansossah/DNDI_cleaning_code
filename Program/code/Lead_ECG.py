@@ -1704,9 +1704,9 @@ def lead_ECG(df_root, path_excel_writer):
                     # Revision LE0560
                     if str(time_dosing_cpg_administration) != 'nan':
                             
-                        try:
-                            dif = float((datetime.strptime(predose_triplicate_1_time_pure, '%H:%M') - datetime.strptime(time_dosing_cpg_administration, '%H:%M')).total_seconds() / 60)
-                            if dif > 60.0:
+                        try: 
+                            dif = float((datetime.strptime(time_dosing_cpg_administration, '%H:%M') - datetime.strptime(predose_triplicate_1_time_pure, '%H:%M')).total_seconds() / 60)
+                            if dif < 0.0 or dif > 60.0:
                                     
                                 error = [subject, visit, 'Pre dose triplicate 1, Time 24 hrs', predose_triplicate_1_time_form_field_instance,\
                                              'The time selected should be less than 60 min before the study treatment administration', \
@@ -1719,7 +1719,8 @@ def lead_ECG(df_root, path_excel_writer):
                     # Revision LE0570
                     if str(predose_triplicate_2_time_formated) != '' and str(predose_triplicate_1_time_formated) != '':
                         try:
-                            if float((predose_triplicate_2_time_formated - predose_triplicate_1_time_formated).total_seconds()/60) > 2.0:
+                            dif_predose_2 = float((predose_triplicate_2_time_formated - predose_triplicate_1_time_formated).total_seconds()/60) 
+                            if dif_predose_2 < 0.0 or  dif_predose_2 > 2.0:
                                 error = [subject, visit, 'Pre dose triplicate 2, Time 24 hrs', predose_triplicate_2_time_form_field_instance,\
                                             'Pre dose triplicate 2 Time should be within 2 minutes after Pre dose triplicate 1, Time', f'{predose_triplicate_1_time_disname} - {predose_triplicate_2_time_disname}', 'LE0570']
                                 lista_revision.append(error)
@@ -1729,7 +1730,8 @@ def lead_ECG(df_root, path_excel_writer):
                     # Revision LE0580
                     if  str(predose_triplicate_2_time_formated) != '' and str(predose_triplicate_3_time_formated) != '':
                         try:
-                            if float((predose_triplicate_3_time_formated - predose_triplicate_2_time_formated).total_seconds()/60) > 2.0:
+                            dif_3 = float((predose_triplicate_3_time_formated - predose_triplicate_2_time_formated).total_seconds()/60)
+                            if dif_3 <0.0 or  dif_3 > 2.0:
                                 error = [subject, visit, 'Pre dose triplicate 3, Time 24 hrs', predose_triplicate_3_time_form_field_instance,\
                                             'Pre dose triplicate 3 Time should be within 2 minutes after Pre dose triplicate 2, Time', f'{predose_triplicate_2_time_disname} - {predose_triplicate_3_time_disname}', 'LE0580']
                                 lista_revision.append(error)

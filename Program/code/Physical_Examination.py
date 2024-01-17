@@ -478,7 +478,8 @@ def physical_examination(df_root, path_excel_writer):
                         #Revision PE0120
                         if str(time_dosing_cpg_administration) != 'nan':
                             try:
-                                if float((datetime.strptime(time_dosing_cpg_administration, '%H:%M') - datetime.strptime(predose_clinical_time_pure, '%H:%M')).total_seconds() / 60) > 60.0:
+                                dif = float((datetime.strptime(time_dosing_cpg_administration, '%H:%M') - datetime.strptime(predose_clinical_time_pure, '%H:%M')).total_seconds() / 60)
+                                if dif < 0.0 or dif > 60.0:
                                     error = [subject, visit, 'Pre dose, Time', predose_clinical_time_form_field_instnance,\
                                              'The time selected should be less than 60 min before the study treatment administration', \
                                                 f'Pre dose, Time: {predose_clinical_time_pure} - dose time administration{time_dosing_cpg_administration}', 'PE0120']

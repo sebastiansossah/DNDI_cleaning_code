@@ -45,6 +45,13 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer):
     df_visit_done = df_visit_done[['Visit','Participante','Valor_completo']]
     df_visit_done = df_visit_done.rename(columns={'Participante':'Subject', 'Valor_completo':'was_DV_performed'})
 
+    df_time_dosing1 = df_root[df_root['name']=='CpG ODN D35 Administration'].sort_values(by='FormFieldInstance Id')
+    df_time_dosing1 = df_time_dosing1[(df_time_dosing1['Campo']=='Date of dosing') | (df_time_dosing1['Campo']=='Time of Dosing')]
+    df_time_dosing = df_time_dosing1[df_time_dosing1['Campo']=='Date of dosing']
+    df_time_dosing['time_dosing_cpg_administration'] =  df_time_dosing1[df_time_dosing1['FormFieldInstance Id'].isin(df_time_dosing['FormFieldInstance Id'] + 1) & (df_time_dosing1['Campo'] == 'Time of Dosing')]['Valor'].values
+    df_time_dosing =df_time_dosing[['Participante','Valor', 'time_dosing_cpg_administration']]
+    df_time_dosing = df_time_dosing.rename(columns={'Participante':'Subject', 'Valor':'date_ex_to_join'})
+
     lista_logs = ['Pharmacodynamic Blood Sampling (PD) -Cytokines/Chemokines']
     lista_revision = []
 
@@ -63,10 +70,17 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer):
             pru['Subject'] = sujeto
             pru['Visit'] = visita
             pru['status'] = pru_1['activityState'].unique()
+
+            try:
+                pru['date_ex_to_join'] = pru['Date of blood sample collected'].str.split('|',expand= True)[0]
+            except:
+                pru['date_ex_to_join'] = 'Nothing to join'
+
             pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_informed, on=['Subject'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
             pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
+            pru = pru.merge(df_time_dosing, on=['Subject', 'date_ex_to_join'], how='left')
 
 
             for index, row in pru.iterrows():
@@ -81,6 +95,8 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer):
                 was_DV_performed = row['was_DV_performed']
                 was_DV_performed_pure = was_DV_performed.split('|')[0]
                 was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
+
+                time_dosing_cpg_administration = row['time_dosing_cpg_administration']
    
                 if status != '':
                     try:
@@ -114,7 +130,7 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer):
                         Date_of_blood_sample_collected_disname = 'Empty'
 
                     try:
-                        Pre_dose = row["Pre-dose"]
+                        Pre_dose = row['Pre-dose, Time']
                         Pre_dose_pure = Pre_dose.split('|')[0]
                         Pre_dose_form_field_instance = Pre_dose.split('|')[1]
                         Pre_dose_disname = Pre_dose.split('|')[0]
@@ -134,7 +150,7 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer):
                         Pre_dose_Reason_Not_Done_disname = 'Empty'
 
                     try:
-                        H8 = row["8h"]
+                        H8 = row["8h, Time"]
                         H8_pure = H8.split('|')[0]
                         H8_form_field_instance = H8.split('|')[1]
                         H8_disname = H8.split('|')[0] 
@@ -209,7 +225,8 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer):
                         except Exception as e:
                             lista_logs.append(f'Revision PD0020--> {e} - Subject: {subject},  Visit: {visit} ')
 
-                    # Revision -> PD0040
+
+                    # Revision -> PD0030
                     if  str(end_study_date) == 'nan' or end_study_date == '' or Date_of_blood_sample_collected_pure == '':
                         pass
                     else:
@@ -218,10 +235,10 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer):
                                 pass
                             else: 
                                 error = [subject, visit, 'Date of blood sample collected', Date_of_blood_sample_collected,\
-                                        'Date of blood sample collected must be before the End of study/Early withdrawal date. ', Date_of_blood_sample_collected_disname, 'PD0040']
+                                        'Date of blood sample collected must be before the End of study/Early withdrawal date. ', Date_of_blood_sample_collected_disname, 'PD0030']
                                 lista_revision.append(error)
                         except Exception as e:
-                            lista_logs.append(f'Revision PD0040 --> {e} - Subject: {subject},  Visit: {visit}  ')
+                            lista_logs.append(f'Revision PD0030 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
 
                     lista_validacion = [
@@ -255,6 +272,40 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer):
                                     lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision PD0050--> {e} - Subject: {subject},  Visit: {visit} ')
+
+
+                    # Revision PD0060
+                    if str(time_dosing_cpg_administration) != 'nan':
+                            
+                        try:
+                            dif = float((datetime.strptime(time_dosing_cpg_administration , '%H:%M') - datetime.strptime(Pre_dose_pure, '%H:%M')).total_seconds() / 60)
+                            if dif < 0.0 or dif > 60.0:
+                                    
+                                error = [subject, visit, 'Pre dose, Time', Pre_dose_form_field_instance,\
+                                             'Pre dose Time is not within 60 minutes before the study treatment administration time.', \
+                                                f'Pre dose, Time: {Pre_dose_pure} - dose time administration{time_dosing_cpg_administration}', 'PD0060']
+                                lista_revision.append(error)
+
+                        except Exception as e:
+                            lista_logs.append(f'Revision PD0060 --> {e} - Subject: {subject},  Visit: {visit} ')  
+
+
+                    # Revision PD0070
+                    if str(time_dosing_cpg_administration) != 'nan':
+                            
+                        try:
+                            dif_8h = float((datetime.strptime(H8_pure, '%H:%M') - datetime.strptime(time_dosing_cpg_administration, '%H:%M')).total_seconds() / 60)
+                            if dif_8h > 495.0 or dif_8h < 465.0:
+                                    
+                                error = [subject, visit, '8h, Time', H8_form_field_instance,\
+                                             'The time selected should be less than 8h15 and greater than 7H45 min after the study treatment administration', \
+                                                f'8h, Time: {H8_pure} - dose time administration{time_dosing_cpg_administration}', 'PD0070']
+                                lista_revision.append(error)
+
+                        except Exception as e:
+                                lista_logs.append(f'Revision PD0070 --> {e} - Subject: {subject},  Visit: {visit} ')  
+
+
 
     excel_writer = load_workbook(path_excel_writer)
     column_names = ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']
