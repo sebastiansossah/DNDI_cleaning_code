@@ -44,6 +44,13 @@ def mRNA_markers(df_root, path_excel_writer):
     df_visit_done = df_visit_done[['Visit','Participante','Valor_completo']]
     df_visit_done = df_visit_done.rename(columns={'Participante':'Subject', 'Valor_completo':'was_DV_performed'})
 
+    df_time_dosing1 = df_root[df_root['name']=='CpG ODN D35 Administration'].sort_values(by='FormFieldInstance Id')
+    df_time_dosing1 = df_time_dosing1[(df_time_dosing1['Campo']=='Date of dosing') | (df_time_dosing1['Campo']=='Time of Dosing')]
+    df_time_dosing = df_time_dosing1[df_time_dosing1['Campo']=='Date of dosing']
+    df_time_dosing['time_dosing_cpg_administration'] =  df_time_dosing1[df_time_dosing1['FormFieldInstance Id'].isin(df_time_dosing['FormFieldInstance Id'] + 1) & (df_time_dosing1['Campo'] == 'Time of Dosing')]['Valor'].values
+    df_time_dosing =df_time_dosing[['Participante','Valor', 'time_dosing_cpg_administration']]
+    df_time_dosing = df_time_dosing.rename(columns={'Participante':'Subject', 'Valor':'date_ex_to_join'})
+
     lista_logs = ['mRNA Markers']
     lista_revision = []
 
@@ -59,10 +66,19 @@ def mRNA_markers(df_root, path_excel_writer):
             pru['Subject'] = sujeto
             pru['Visit'] = visita
             pru['status'] = pru_1['activityState'].unique()
+            try:
+                pru['date_ex_to_join'] = pru['Date of blood sample collected'].str.split('|',expand= True)[0]
+            except:
+                pru['date_ex_to_join'] = 'Nothing to join'
+
             pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_informed, on=['Subject'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
             pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
+            pru = pru.merge(df_time_dosing, on=['Subject', 'date_ex_to_join'], how='left')
+
+            # print(pru)
+            # print('---------------------')
 
             for index, row in pru.iterrows():
                 status = row['status']
@@ -76,6 +92,8 @@ def mRNA_markers(df_root, path_excel_writer):
                 was_DV_performed = row['was_DV_performed']
                 was_DV_performed_pure = was_DV_performed.split('|')[0]
                 was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
+
+                time_dosing_cpg_administration = row['time_dosing_cpg_administration']
    
                 if status != '':
                     try:
@@ -117,6 +135,15 @@ def mRNA_markers(df_root, path_excel_writer):
                         Pre_dose_pure = ''
                         Pre_dose_form_field_instance = 'This field does not have any data'
                         Pre_dose_disname = 'Empty'
+             
+                    try:
+                        Pre_dose_time = row['Pre-dose, Time']
+                        Pre_dose_time_pure = Pre_dose_time.split('|')[0]
+                        Pre_dose_time_form_field_instance = Pre_dose_time.split('|')[1]
+                    except Exception as e:
+                        Pre_dose_time_pure = ''
+                        Pre_dose_time_form_field_instance = 'This field does not have any data'
+    
                     
                     try:
                         Pre_dose_Reason_not_done = row["Pre-dose, Reason not done"]
@@ -129,7 +156,7 @@ def mRNA_markers(df_root, path_excel_writer):
                         Pre_dose_Reason_not_done_disname = 'Empty'
 
                     try:
-                        hours_04_post_dose = row["04-hours post dose"]
+                        hours_04_post_dose = row['04-hours post dose, Time']
                         hours_04_post_dose_pure = hours_04_post_dose.split('|')[0]
                         hours_04_post_dose_form_field_instance = hours_04_post_dose.split('|')[1]
                         hours_04_post_dose_disname = hours_04_post_dose.split('|')[0]
@@ -137,6 +164,7 @@ def mRNA_markers(df_root, path_excel_writer):
                         hours_04_post_dose_pure = ''
                         hours_04_post_dose_form_field_instance = 'This field does not have any data'
                         hours_04_post_dose_disname = 'Empty'
+
                     
                     try:
                         hours_04_post_dose_Reason_not_done = row["04-hours post dose, Reason not done"]
@@ -149,14 +177,12 @@ def mRNA_markers(df_root, path_excel_writer):
                         hours_04_post_dose_Reason_not_done_disname = 'Empty'
                     
                     try:
-                        hours_12_post_dose = row["12-hours post dose"]
+                        hours_12_post_dose = row['12-hours post dose, Time']
                         hours_12_post_dose_pure = hours_12_post_dose.split('|')[0]
                         hours_12_post_dose_form_field_instance = hours_12_post_dose.split('|')[1]
-                        hours_12_post_dose_disname = hours_12_post_dose.split('|')[0]
                     except Exception as e:
                         hours_12_post_dose_pure = ''
                         hours_12_post_dose_form_field_instance = 'This field does not have any data'
-                        hours_12_post_dose_disname = 'Empty'
                     
                     try:
                         hours_12_post_dose_Reason_not_done = row["12-hours post dose, Reason not done"]
@@ -267,6 +293,55 @@ def mRNA_markers(df_root, path_excel_writer):
                                     lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision MR0050--> {e} - Subject: {subject},  Visit: {visit} ')
+
+
+                    # Revision MR0060
+                    if str(time_dosing_cpg_administration) != 'nan':
+                            
+                        try:
+                            dif = float((datetime.strptime(time_dosing_cpg_administration , '%H:%M') - datetime.strptime(Pre_dose_time_pure, '%H:%M')).total_seconds() / 60)
+                            if dif < 0.0 or dif > 60.0:
+                                    
+                                error = [subject, visit, 'Pre dose, Time', Pre_dose_time_form_field_instance,\
+                                             'Pre dose Time is not within 60 minutes before the study treatment administration time.', \
+                                                f'Pre dose, Time: {Pre_dose_time_pure} - dose time administration{time_dosing_cpg_administration}', 'MR0060']
+                                lista_revision.append(error)
+
+                        except Exception as e:
+                            lista_logs.append(f'Revision MR0060 --> {e} - Subject: {subject},  Visit: {visit} ')  
+
+
+                    # Revision MR0070
+                    if str(time_dosing_cpg_administration) != 'nan':
+                            
+                        try:
+                            dif_4h = float((datetime.strptime(hours_04_post_dose_pure, '%H:%M') - datetime.strptime(time_dosing_cpg_administration, '%H:%M')).total_seconds() / 60)
+                            if dif_4h > 255.0 or dif_4h < 225.0:
+                                    
+                                error = [subject, visit, '04-hours post dose, Time', hours_04_post_dose_form_field_instance,\
+                                             '4-hours post dose, Time  is not within 4 hours (+/- 15 minutes) minutes after the study treatment administration time.', \
+                                                f'4-hours post dose: {hours_04_post_dose_pure} - dose time administration{time_dosing_cpg_administration}', 'MR0070']
+                                lista_revision.append(error)
+
+                        except Exception as e:
+                                lista_logs.append(f'Revision MR0070 --> {e} - Subject: {subject},  Visit: {visit} ')  
+
+
+                    # Revision MR0080
+                    if str(time_dosing_cpg_administration) != 'nan':
+                            
+                        try:
+                            dif_12h = float((datetime.strptime(hours_12_post_dose_pure, '%H:%M') - datetime.strptime(time_dosing_cpg_administration, '%H:%M')).total_seconds() / 60)
+                            if dif_12h > 735.0 or dif_12h < 705.0:
+                                    
+                                error = [subject, visit, '12-hours post dose', hours_12_post_dose_form_field_instance,\
+                                             '12-hours post dose, Time  is not within 12 hours (+/- 15 minutes) minutes after the study treatment administration time.', \
+                                                f'12-hours post dose: {hours_12_post_dose_pure} - dose time administration{time_dosing_cpg_administration}', 'MR0080']
+                                lista_revision.append(error)
+
+                        except Exception as e:
+                                lista_logs.append(f'Revision MR0080 --> {e} - Subject: {subject},  Visit: {visit} ')  
+
 
 
     excel_writer = load_workbook(path_excel_writer)
