@@ -271,7 +271,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                     # Revision LBD0050
                     try:
                         if float(aspartate_aminotransferase_out_normal_pure) == 1.0:
-                            if float(aspartate_aminotransferase_result_pure) > 5.0 and \
+                            if float(aspartate_aminotransferase_result_pure) > 11.0 and \
                             float(aspartate_aminotransferase_result_pure) < 34.0:
                                 
                                 error = [subject, visit, 'Aspartate Aminotransferase (AST), Out of normal range? ', aspartate_aminotransferase_result_form_field_instance,\
@@ -281,7 +281,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                     
                         # Revision LBD0090
                         elif float(aspartate_aminotransferase_out_normal_pure) == 0.0:
-                            if float(aspartate_aminotransferase_result_pure) < 5.0 or \
+                            if float(aspartate_aminotransferase_result_pure) < 11.0 or \
                             float(aspartate_aminotransferase_result_pure) > 34.0:
                                 
                                 error = [subject, visit, 'Aspartate Aminotransferase (AST), Out of normal range? ', aspartate_aminotransferase_result_form_field_instance,\
@@ -295,23 +295,44 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                     # Revision LBD0060
                     try:
                         if float(alanine_aminotransferase_out_normal_pure) == 1.0:
-                            if float(alanine_aminotransferase_result_pure) > 0.0 and \
-                            float(alanine_aminotransferase_result_pure) < 55.0:
-                                
-                                error = [subject, visit, 'Alanine Aminotransferase (ALT), Out of normal range?', alanine_aminotransferase_result_form_field_instance ,\
-                                        'According to the result, the value is not out of range, please review' , \
-                                            alanine_aminotransferase_result_disname, 'LBD0060']
-                                lista_revision.append(error)
+
+                            if genero == 1.0:
+                                if float(alanine_aminotransferase_result_pure) > 0.0 and \
+                                float(alanine_aminotransferase_result_pure) < 45.0:
+                                    
+                                    error = [subject, visit, 'Alanine Aminotransferase (ALT), Out of normal range?', alanine_aminotransferase_result_form_field_instance ,\
+                                            'If Out of range="No"and Alanine Aminotransferase (ALT), Result (U/L) is not between 0 and 34 (Female) or is not between 0 and 45 (Male)' , \
+                                                alanine_aminotransferase_result_disname, 'LBD0060']
+                                    lista_revision.append(error)
+
+                            elif genero == 2.0:
+                                if float(alanine_aminotransferase_result_pure) > 0.0 and \
+                                float(alanine_aminotransferase_result_pure) < 34.0:
+                                    
+                                    error = [subject, visit, 'Alanine Aminotransferase (ALT), Out of normal range?', alanine_aminotransferase_result_form_field_instance ,\
+                                            'If Out of range="No"and Alanine Aminotransferase (ALT), Result (U/L) is not between 0 and 34 (Female) or is not between 0 and 45 (Male)' , \
+                                                alanine_aminotransferase_result_disname, 'LBD0060']
+                                    lista_revision.append(error)
                         
                         # Revision LBD0100
                         elif float(alanine_aminotransferase_out_normal_pure) == 0.0:
-                            if float(alanine_aminotransferase_result_pure) < 0.0 or \
-                            float(alanine_aminotransferase_result_pure) > 55.0:
-                                
-                                error = [subject, visit, 'Alanine Aminotransferase (ALT), Out of normal range?', alanine_aminotransferase_result_form_field_instance ,\
-                                        'According to the result, the value is out of range, please review' , \
-                                            alanine_aminotransferase_result_disname, 'LBD0100']
-                                lista_revision.append(error)                                
+
+                            if genero == 1.0:
+                                if float(alanine_aminotransferase_result_pure) < 0.0 or \
+                                float(alanine_aminotransferase_result_pure) > 45.0:
+                                    error = [subject, visit, 'Alanine Aminotransferase (ALT), Out of normal range?', alanine_aminotransferase_result_form_field_instance ,\
+                                            'If Out of range="No"and Alanine Aminotransferase (ALT), Result (U/L) is not between 0 and 34 (Female) or is not between 0 and 45 (Male)' , \
+                                                alanine_aminotransferase_result_disname, 'LBD0100']
+                                    lista_revision.append(error)       
+
+                            elif genero == 1.0:
+                                if float(alanine_aminotransferase_result_pure) < 0.0 or \
+                                float(alanine_aminotransferase_result_pure) > 34.0:
+                                    error = [subject, visit, 'Alanine Aminotransferase (ALT), Out of normal range?', alanine_aminotransferase_result_form_field_instance ,\
+                                            'If Out of range="No"and Alanine Aminotransferase (ALT), Result (U/L) is not between 0 and 34 (Female) or is not between 0 and 45 (Male)' , \
+                                                alanine_aminotransferase_result_disname, 'LBD0100']
+                                    lista_revision.append(error)              
+
                     except Exception as e:
                         lista_logs.append(f'Revision LBD0060--> {e} - Subject: {subject},  Visit: {visit} ')
 

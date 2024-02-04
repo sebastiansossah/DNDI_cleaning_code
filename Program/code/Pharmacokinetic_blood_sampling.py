@@ -416,7 +416,7 @@ def Pharmacokinetic_blood_sampling(df_root, path_excel_writer):
 
 
                     # Revision PK0120
-                    if str(time_dosing_cpg_administration) != 'nan':
+                    if str(time_dosing_cpg_administration) != 'nan' and str(min_30_post_dose_pure) != '':
                             
                         try:
                             dif_30m = float((datetime.strptime(min_30_post_dose_pure, '%H:%M') - datetime.strptime(time_dosing_cpg_administration, '%H:%M')).total_seconds() / 60)

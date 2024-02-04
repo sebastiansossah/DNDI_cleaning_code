@@ -517,6 +517,22 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         Uric_Acid_result_form_field_instance = 'This field does not have any data'
                         Uric_Acid_result_disname = 'Empty'
 
+                    try:
+                        ferretin_result = row['Ferritin, Result (mg/L)']
+                        ferretin_result_pure = ferretin_result.split('|')[0]
+                        ferretin_result_form_field_instance = ferretin_result.split('|')[1]
+                    except:
+                        ferretin_result_pure = math.nan
+                        ferretin_result_form_field_instance = 'Empty'
+                    
+                    try:
+                        ferretin_out_normal = row['Ferritin, Out of normal range?']
+                        ferretin_out_normal_pure = ferretin_out_normal.split('|')[0]
+                        ferretin_out_normal_form_field_instance = ferretin_out_normal.split('|')[1]
+                    except:
+                        ferretin_out_normal_pure = math.nan
+                        ferretin_out_normal_form_field_instance = 'Empty'
+
                     #-------------------------------------------------------------------------------------------------
 
                     # Revision GE0070
@@ -710,53 +726,80 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                     try:
                         # Revision LBC0310
                         if float(Aspartate_out_normal_pure) == 1.0:
-                            if float(Aspartate_result_pure) > 5.0 and float(Aspartate_result_pure) < 34.0:
+                            if float(Aspartate_result_pure) > 11.0 and float(Aspartate_result_pure) < 34.0:
                                 error = [subject, visit, 'Aspartate Aminotransferase (AST), Out of normal range?', Aspartate_result_form_field_instance ,\
-                                         'According to the result, the value is not out of range, please review. (5.0 - 34.0)' , f'{Aspartate_out_normal_disname} - {Aspartate_result_pure}', 'LBC0310']
+                                         'According to the result, the value is not out of range, please review. (11.0 - 34.0)' , f'{Aspartate_out_normal_disname} - {Aspartate_result_pure}', 'LBC0310']
                                 lista_revision.append(error)
 
                         # Revision LBC0110
                         elif float(Aspartate_out_normal_pure) == 0.0:
-                            if float(Aspartate_result_pure) < 5.0 or float(Aspartate_result_pure) > 34.0:
+                            if float(Aspartate_result_pure) < 11.0 or float(Aspartate_result_pure) > 34.0:
                                 error = [subject, visit, 'Aspartate Aminotransferase (AST), Out of normal range?', Aspartate_result_form_field_instance ,\
-                                         'According to the result, the value is out of range, please review. (5.0 - 34.0)' , f'{Aspartate_out_normal_disname} - {Aspartate_result_pure}', 'LBC0110']
+                                         'According to the result, the value is out of range, please review. (11.0 - 34.0)' , f'{Aspartate_out_normal_disname} - {Aspartate_result_pure}', 'LBC0110']
                                 lista_revision.append(error)
                                             
                     except Exception as e:
                         lista_logs.append(f'Revision LBC0310--> {e} - Subject: {subject},  Visit: {visit} ')
 
+                    # Revision LBC0320
                     try:
-                        # Revision LBC0320
                         if float(Alanine_out_normal_pure) == 1.0:
-                            if float(Alanine_result_pure) > 0.0 and float(Alanine_result_pure) < 55.0:
-                                error = [subject, visit, 'Alanine Aminotransferase (ALT), Out of normal range?', Alanine_result_form_field_isntance ,\
-                                         'According to the result, the value is not out of range, please review. (0.0 - 55.0)' , f'{Alanine_out_normal_disname} - {Alanine_result_pure}', 'LBC0320']
-                                lista_revision.append(error)
 
+                            if genero == 1.0:
+                                if float(Alanine_result_pure) > 0.0 and \
+                                float(Alanine_result_pure) < 45.0:
+                                    
+                                    error = [subject, visit, 'Alanine Aminotransferase (ALT), Out of normal range?', Alanine_result_form_field_isntance ,\
+                                            'If Out of range="No"and Alanine Aminotransferase (ALT), Result (U/L) is not between 0 and 34 (Female) or is not between 0 and 45 (Male)' , \
+                                                Alanine_result_pure, 'LBC0320']
+                                    lista_revision.append(error)
+
+                            elif genero == 2.0:
+                                if float(Alanine_result_pure) > 0.0 and \
+                                float(Alanine_result_pure) < 34.0:
+                                    
+                                    error = [subject, visit, 'Alanine Aminotransferase (ALT), Out of normal range?', Alanine_result_form_field_isntance ,\
+                                            'If Out of range="No"and Alanine Aminotransferase (ALT), Result (U/L) is not between 0 and 34 (Female) or is not between 0 and 45 (Male)' , \
+                                                Alanine_result_pure, 'LBC0320']
+                                    lista_revision.append(error)
+                        
                         # Revision LBC0120
                         elif float(Alanine_out_normal_pure) == 0.0:
-                            if float(Alanine_result_pure) < 0.0 or float(Alanine_result_pure) > 55.0:
-                                error = [subject, visit, 'Alanine Aminotransferase (ALT), Out of normal range?', Alanine_result_form_field_isntance ,\
-                                         'According to the result, the value is out of range, please review. (0.0 - 55.0)' , f'{Alanine_out_normal_disname} - {Alanine_result_pure}', 'LBC0120']
-                                lista_revision.append(error)
-                                            
+
+                            if genero == 1.0:
+                                if float(Alanine_result_pure) < 0.0 or \
+                                float(Alanine_result_pure) > 45.0:
+                                    error = [subject, visit, 'Alanine Aminotransferase (ALT), Out of normal range?', Alanine_result_form_field_isntance ,\
+                                            'If Out of range="No"and Alanine Aminotransferase (ALT), Result (U/L) is not between 0 and 34 (Female) or is not between 0 and 45 (Male)' , \
+                                                Alanine_result_pure, 'LBC0120']
+                                    lista_revision.append(error)       
+
+                            elif genero == 1.0:
+                                if float(Alanine_result_pure) < 0.0 or \
+                                float(Alanine_result_pure) > 34.0:
+                                    error = [subject, visit, 'Alanine Aminotransferase (ALT), Out of normal range?', Alanine_result_form_field_isntance ,\
+                                            'If Out of range="No"and Alanine Aminotransferase (ALT), Result (U/L) is not between 0 and 34 (Female) or is not between 0 and 45 (Male)' , \
+                                                Alanine_result_pure, 'LBC0120']
+                                    lista_revision.append(error)              
+
                     except Exception as e:
-                        lista_logs.append(f'Revision LBC0320--> {e} - Subject: {subject},  Visit: {visit} ')
+                        lista_logs.append(f'Revision LBC0120--> {e} - Subject: {subject},  Visit: {visit} ')
+
 
                     try:
                         # Revision LBC0330
                         if float(Protein_out_normal_pure) == 1.0:
-                            if float(Protein_total_result_pure) > 64.0 and float(Protein_total_result_pure) < 83.0:
+                            if float(Protein_total_result_pure) > 6.4 and float(Protein_total_result_pure) < 8.3:
                                 error = [subject, visit, 'Protein (Total), Out of normal range?', Protein_total_result_form_field_instance ,\
-                                         'According to the result, the value is not out of range, please review. (64.0 - 86.0)', \
+                                         'According to the result, the value is not out of range, please review. (6.4 - 8.3)', \
                                             f'{Protein_out_normal_disname} - {Protein_total_result_pure}', 'LBC0330']
                                 lista_revision.append(error)
 
                         # Revision LBC0130
                         elif float(Protein_out_normal_pure) == 0.0:
-                            if float(Protein_total_result_pure) < 64.0 or float(Protein_total_result_pure) > 83.0:
+                            if float(Protein_total_result_pure) < 6.4 or float(Protein_total_result_pure) > 8.3:
                                 error = [subject, visit, 'Protein (Total), Out of normal range?', Protein_total_result_form_field_instance,\
-                                         'According to the result, the value is out of range, please review. (64.0 - 83.0)', \
+                                         'According to the result, the value is out of range, please review. (6.4 - 8.3)', \
                                             f'{Protein_out_normal_disname} - {Protein_total_result_pure}', 'LBC0130']
                                 lista_revision.append(error)
                                             
@@ -872,17 +915,17 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                     try:
                         # Revision LBC0380
                         if float(Bicarbonate_out_normal_pure) == 1.0:
-                            if float(Bicarbonate_result_pure) > 0.0 and float(Bicarbonate_result_pure) < 29.0 :
+                            if float(Bicarbonate_result_pure) > 22.0 and float(Bicarbonate_result_pure) < 31.0 :
                                 error = [subject, visit, 'Bicarbonate, Out of normal range?', Bicarbonate_result_form_field_instance,\
-                                         'According to the result, the value is not out of range, please review. (0.0 - 29.0)', \
+                                         'According to the result, the value is not out of range, please review. (22.0 - 31.0)', \
                                             f'{Bicarbonate_out_normal_disname} - {Bicarbonate_result_pure}', 'LBC0380']
                                 lista_revision.append(error)
 
                         # Revision LBC0180
                         elif float(Bicarbonate_out_normal_pure) == 0.0:
-                            if float(Bicarbonate_result_pure) <  0.0  or float(Bicarbonate_result_pure) > 29.0 :
+                            if float(Bicarbonate_result_pure) <  22.0  or float(Bicarbonate_result_pure) > 31.0 :
                                 error = [subject, visit, 'Bicarbonate, Out of normal range?', Bicarbonate_result_form_field_instance ,\
-                                         'According to the result, the value is out of range, please review. (0.0 - 29.0)', \
+                                         'According to the result, the value is out of range, please review. (22.0 - 31.0)', \
                                             f'{Bicarbonate_out_normal_disname} - {Bicarbonate_result_pure}', 'LBC0180']
                                 lista_revision.append(error)
                                             
@@ -1057,6 +1100,41 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                     except Exception as e:
                         lista_logs.append(f'Revision LBC0450--> {e} - Subject: {subject},  Visit: {visit}')
                     
+
+                    try:
+                        # Revision LBC0470
+                        if float(ferretin_out_normal_pure) == 1.0:
+                            if float(genero) == 1.0:
+                                if float(ferretin_result_pure) >  21.81 and float(ferretin_result_pure) < 274.66 :
+                                    error = [subject, visit, 'Ferritin, Out of normal range?', ferretin_out_normal_form_field_instance ,\
+                                             'According to the result, the value is not out of range, please review. (21.81 - 274.66)', ferretin_result_pure, 'LBC0470']
+                                    lista_revision.append(error)
+                                
+                            elif float(genero) == 2.0:
+                                if float(ferretin_result_pure) > 4.63 and float(ferretin_result_pure) < 204.0 :
+                                    error = [subject, visit, 'Ferritin, Out of normal range?', ferretin_out_normal_form_field_instance ,\
+                                             'According to the result, the value is not out of range, please review. (4.63 - 204.0)', ferretin_result_pure, 'LBC0470']
+                                    lista_revision.append(error)
+
+                        # Revision LBC0480
+                        elif float(ferretin_out_normal_pure) == 0.0:
+                            if float(genero) == 1.0:
+                                if float(ferretin_result_pure) < 21.81 or float(ferretin_result_pure) > 274.66 :
+                                    error = [subject, visit, 'Ferritin, Out of normal range?', ferretin_out_normal_form_field_instance,\
+                                             'According to the result, the value is out of range, please review. (21.81 - 274.66)', ferretin_result_pure, 'LBC0480']
+                                    lista_revision.append(error)
+                                
+                            elif float(genero) == 2.0:
+                                if float(ferretin_result_pure) < 4.63 or float(ferretin_result_pure) > 204.0:
+                                    error = [subject, visit, 'Ferritin, Out of normal range?', ferretin_out_normal_form_field_instance ,\
+                                             'According to the result, the value is out of range, please review. (4.63 - 204.0)', ferretin_result_pure, 'LBC0480']
+                                    lista_revision.append(error)
+
+                    except Exception as e:
+                        lista_logs.append(f'Revision LBC0470--> {e} - Subject: {subject},  Visit: {visit} ')
+
+
+                
                     lista_validacion = ['Alkaline Phosphatase',
                                         'Alkaline Phosphatase, Result (U/L)',
                                         'Alkaline Phosphatase, Out of normal range?',
