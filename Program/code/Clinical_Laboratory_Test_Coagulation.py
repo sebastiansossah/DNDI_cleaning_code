@@ -376,14 +376,14 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
                     try:
                         # Revision LBO0120
                         if float(INR_out_normal_range_pure) == 1.0:
-                            if float(INR_result_pure) > 0.8 and float(INR_result_pure) < 1.1 :
+                            if  float(INR_result_pure) <= 1.1 :
                                 error = [subject, visit, 'INR, Out of normal range?', INR_result_form_field_instance ,\
                                          'According to the result, the value is not out of range, please review.', INR_result_disname, 'LBO0120']
                                 lista_revision.append(error)
 
                         # Revision LBO0130
                         elif float(INR_out_normal_range_pure) == 0.0:
-                            if float(INR_result_pure) < 0.8  or float(INR_result_pure) > 1.1 :
+                            if float(INR_result_pure) >= 1.1 :
                                 error = [subject, visit, 'INR, Out of normal range?', INR_result_form_field_instance ,\
                                          'According to the result, the value is out of range, please review.', INR_result_disname, 'LBO0130']
                                 lista_revision.append(error)

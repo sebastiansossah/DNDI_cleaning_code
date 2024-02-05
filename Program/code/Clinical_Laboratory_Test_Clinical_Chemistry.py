@@ -706,17 +706,17 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                     try:
                         # Revision LBC0300
                         if float(Albumin_out_normal_pure) == 1.0:
-                            if float(Albumin_result_pure) > 3.5 and float(Albumin_result_pure) < 4.5:
+                            if float(Albumin_result_pure) > 3.5 and float(Albumin_result_pure) < 5.0:
                                 error = [subject, visit, 'Albumin, Out of normal range?', Albumin_result_form_field_instance ,\
-                                         'According to the result, the value is not out of range, please review. (3.5 - 4.5)', \
+                                         'According to the result, the value is not out of range, please review. (3.5 - 5.0)', \
                                             f'{Albumin_out_normal_disname} - {Albumin_result_pure}', 'LBC0300']
                                 lista_revision.append(error)
 
                         # Revision LBC0100
                         elif float(Albumin_out_normal_pure) == 0.0:
-                            if float(Albumin_result_pure) < 3.5 or float(Albumin_result_pure) > 4.5:
+                            if float(Albumin_result_pure) < 3.5 or float(Albumin_result_pure) > 56.0:
                                 error = [subject, visit, 'Albumin, Out of normal range?', Albumin_result_form_field_instance ,\
-                                         'According to the result, the value is out of range, please review. (3.5 - 4.5)', \
+                                         'According to the result, the value is out of range, please review. (3.5 - 5.0)', \
                                             f'{Albumin_out_normal_disname} - {Albumin_result_pure}', 'LBC0100']
                                 lista_revision.append(error)
                                             
@@ -863,16 +863,16 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                     try:
                         # Revision LBC0360
                         if float(Potassium_out_normal_pure) == 1.0:
-                            if float(Potassium_result_pure) > 3.5 and float(Potassium_result_pure) < 4.5 :
+                            if float(Potassium_result_pure) > 3.5 and float(Potassium_result_pure) < 5.1 :
                                 error = [subject, visit, 'Potassium, Out of normal range?', Potassium_result_form_field_instance ,\
-                                         'According to the result, the value is not out of range, please review. (3.5 - 4.5)', f'{Potassium_out_normal_disname} - {Potassium_result_pure}', 'LBC0360']
+                                         'According to the result, the value is not out of range, please review. (3.5 - 5.1)', f'{Potassium_out_normal_disname} - {Potassium_result_pure}', 'LBC0360']
                                 lista_revision.append(error)
 
                         # Revision LBC0160
                         elif float(Potassium_out_normal_pure) == 0.0:
-                            if float(Potassium_result_pure) <  3.5  or float(Potassium_result_pure) > 4.5 :
+                            if float(Potassium_result_pure) <  3.5  or float(Potassium_result_pure) > 5.1 :
                                 error = [subject, visit, 'Potassium, Out of normal range?', Potassium_result_form_field_instance ,\
-                                         'According to the result, the value is out of range, please review. (3.5 - 4.5)', f'{Potassium_out_normal_disname} - {Potassium_result_pure}', 'LBC0160']
+                                         'According to the result, the value is out of range, please review. (3.5 - 5.1)', f'{Potassium_out_normal_disname} - {Potassium_result_pure}', 'LBC0160']
                                 lista_revision.append(error)
                                             
                     except Exception as e:
@@ -881,33 +881,21 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                     try:
                         # Revision LBC0370
                         if float(Calcium_out_normal_pure) == 1.0:
-                            if float(subject_age) < 20.0:
-                                if float(Calcium_result_pure) > 8.8 and float(Calcium_result_pure) < 10.4 :
-                                    error = [subject, visit, 'Calcium, Out of normal range?', Calcium_result_form_field_instance ,\
-                                             'According to the result, the value is not out of range, please review. (8.8 - 10.4)', f'{Calcium_out_normal_disname} - {Calcium_result_pure}', 'LBC0370']
-                                    lista_revision.append(error)
-                                
-                            elif float(subject_age) > 19.0:
-                                if float(Calcium_result_pure) > 8.4 and float(Calcium_result_pure) < 10.2:
-                                    error = [subject, visit, 'Calcium, Out of normal range?', Calcium_result_form_field_instance ,\
+
+                            if float(Calcium_result_pure) > 8.4 and float(Calcium_result_pure) < 10.2:
+                                error = [subject, visit, 'Calcium, Out of normal range?', Calcium_result_form_field_instance ,\
                                              'According to the result, the value is not out of range, please review. (8.4 - 10.2)', \
                                                 f'{Calcium_out_normal_disname} - {Calcium_result_pure}', 'LBC0370']
-                                    lista_revision.append(error)
+                                lista_revision.append(error)
 
                         # Revision LBC0170
                         elif float(Calcium_out_normal_pure) == 0.0:
-                            if float(subject_age) < 20.0:
-                                if float(Calcium_result_pure) < 8.8 or float(Calcium_result_pure) > 10.4 :
-                                    error = [subject, visit, 'Calcium, Out of normal range?', Calcium_result_form_field_instance,\
-                                             'According to the result, the value is out of range, please review. (8.8 - 10.4)', f'{Calcium_out_normal_disname} - {Calcium_result_pure}', 'LBC0170']
-                                    lista_revision.append(error)
+
+                            if float(Calcium_result_pure) < 8.4 or float(Calcium_result_pure) > 10.2 :
+                                error = [subject, visit, 'Calcium, Out of normal range?', Calcium_result_form_field_instance,\
+                                             'According to the result, the value is out of range, please review. (8.4 - 10.2)', f'{Calcium_out_normal_disname} - {Calcium_result_pure}', 'LBC0170']
+                                lista_revision.append(error)
                                 
-                            elif float(subject_age) > 19.0:
-                                if float(Calcium_result_pure) < 8.4 or float(Calcium_result_pure) > 10.2:
-                                    error = [subject, visit, 'Calcium, Out of normal range?', Calcium_result_form_field_instance,\
-                                             'According to the result, the value is out of range, please review. (8.4 - 10.2)', \
-                                                f'{Calcium_out_normal_disname} - {Calcium_result_pure}', 'LBC0170']
-                                    lista_revision.append(error)
 
                     except Exception as e:
                         lista_logs.append(f'Revision LBC0370 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -985,31 +973,19 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                     try:
                         # Revision LBC0410
                         if float(Urea_BUN_out_normal_pure) == 1.0:
-                            if float(genero) == 1.0:
-                                if float(Urea_BUN_result_pure) >  18.0 and float(Urea_BUN_result_pure) < 45.0 :
-                                    error = [subject, visit, 'Urea (BUN), Out of normal range?', Urea_BUN_result_form_field_instance ,\
-                                             'According to the result, the value is not out of range, please review. (18.0 - 45.0)', f'{Urea_BUN_out_normal_disname} - {Urea_BUN_result_pure}', 'LBC0410']
-                                    lista_revision.append(error)
-                                
-                            elif float(genero) == 2.0:
-                                if float(Urea_BUN_result_pure) > 15.0 and float(Urea_BUN_result_pure) <  45.0:
-                                    error = [subject, visit, 'Urea (BUN), Out of normal range?', Urea_BUN_result_form_field_instance ,\
-                                             'According to the result, the value is not out of range, please review. (15.0 - 45.0)', f'{Urea_BUN_out_normal_disname} - {Urea_BUN_result_pure}', 'LBC0410']
-                                    lista_revision.append(error)
+                            if float(Urea_BUN_result_pure) >  18.84 and float(Urea_BUN_result_pure) < 42.80:
+                                error = [subject, visit, 'Urea (BUN), Out of normal range?', Urea_BUN_result_form_field_instance ,\
+                                             'According to the result, the value is not out of range, please review. (18.84 - 42.80)', f'{Urea_BUN_out_normal_disname} - {Urea_BUN_result_pure}', 'LBC0410']
+                                lista_revision.append(error)
 
                         # Revision LBC0210
                         elif float(Urea_BUN_out_normal_pure) == 0.0:
-                            if float(genero) == 1.0:
-                                if float(Urea_BUN_result_pure) < 18.0 or float(Urea_BUN_result_pure) > 45.0 :
-                                    error = [subject, visit, 'Urea (BUN), Out of normal range?', Urea_BUN_result_form_field_instance ,\
-                                             'According to the result, the value is out of range, please review. (18.0 - 45.0)', f'{Urea_BUN_out_normal_disname} - {Urea_BUN_result_pure}', 'LBC0210']
-                                    lista_revision.append(error)
-                                
-                            elif float(genero) == 2.0:
-                                if float(Urea_BUN_result_pure) < 15.0 or float(Urea_BUN_result_pure) > 45.0:
-                                    error = [subject, visit, 'Urea (BUN), Out of normal range?', Urea_BUN_result_form_field_instance ,\
-                                             'According to the result, the value is out of range, please review. (15.0 - 45.0)', f'{Urea_BUN_out_normal_disname} - {Urea_BUN_result_pure}', 'LBC0210']
-                                    lista_revision.append(error)
+     
+                            if float(Urea_BUN_result_pure) < 18.84 or float(Urea_BUN_result_pure) > 42.80:
+                                error = [subject, visit, 'Urea (BUN), Out of normal range?', Urea_BUN_result_form_field_instance ,\
+                                             'According to the result, the value is out of range, please review. (18.84 - 42.80)', f'{Urea_BUN_out_normal_disname} - {Urea_BUN_result_pure}', 'LBC0210']
+                                lista_revision.append(error)
+
 
                     except Exception as e:
                         lista_logs.append(f'Revision LBC0410--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1049,16 +1025,16 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                     try:
                         # Revision LBC0430
                         if float(Cholesterol_out_normal_pure) == 1.0:
-                            if float(Cholesterol_result_pure) > 120.0 and float(Cholesterol_result_pure) < 200.0 :
+                            if float(Cholesterol_result_pure) <=  200.0 :
                                 error = [subject, visit, 'Cholesterol (Total), Out of normal range?', Cholesterol_result_form_field_instance ,\
-                                         'According to the result, the value is not out of range, please review. (120.0 - 200.0)', f'{Cholesterol_out_normal_pure} - {Cholesterol_result_pure}', 'LBC0430']
+                                         'According to the result, the value is not out of range, please review. (< 200.0)', f'{Cholesterol_out_normal_pure} - {Cholesterol_result_pure}', 'LBC0430']
                                 lista_revision.append(error)
 
                         # Revision LBC0230
                         elif float(Cholesterol_out_normal_pure) == 0.0:
-                            if float(Cholesterol_result_pure) <  120.0  or float(Cholesterol_result_pure) > 200.0 :
+                            if float(Cholesterol_result_pure) >=  200.0  :
                                 error = [subject, visit, 'Cholesterol (Total), Out of normal range?', Cholesterol_result_form_field_instance ,\
-                                         'According to the result, the value is out of range, please review. (120.0 - 200.0)', f'{Cholesterol_out_normal_pure} - {Cholesterol_result_pure}', 'LBC0230']
+                                         'According to the result, the value is out of range, please review. (< 200.0)', f'{Cholesterol_out_normal_pure} - {Cholesterol_result_pure}', 'LBC0230']
                                 lista_revision.append(error)
                                             
                     except Exception as e:
@@ -1067,14 +1043,14 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                     try:
                         # Revision LBC0440
                         if float(Triglycerides_out_normal_pure) == 1.0:
-                            if float(Triglycerides_result_pure) > 50.0 and float(Triglycerides_result_pure) < 150.0 :
+                            if float(Triglycerides_result_pure) <= 150.0 :
                                 error = [subject, visit, 'Triglycerides, Out of normal range?', Triglycerides_result_form_field_instance ,\
-                                         'According to the result, the value is not out of range, please review. (50.0 - 150.0)', f'{Triglycerides_out_normal_disname} - {Triglycerides_result_pure}', 'LBC0440']
+                                         'According to the result, the value is not out of range, please review. (< 150.0)', f'{Triglycerides_out_normal_disname} - {Triglycerides_result_pure}', 'LBC0440']
                                 lista_revision.append(error)
 
                         # Revision LBC0240
                         elif float(Triglycerides_out_normal_pure) == 0.0:
-                            if float(Triglycerides_result_pure) <  50.0  or float(Triglycerides_result_pure) > 150.0 :
+                            if float(Triglycerides_result_pure) >= 150.0 :
                                 error = [subject, visit, 'Triglycerides, Out of normal range?', Triglycerides_result_form_field_instance,\
                                          'According to the result, the value is out of range, please review. (50.0 - 150.0)', f'{Triglycerides_out_normal_disname} - {Triglycerides_result_pure}', 'LBC0240']
                                 lista_revision.append(error)
@@ -1085,16 +1061,16 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                     try:
                         # Revision LBC0450
                         if float(C_Reactive_out_normal_pure) == 1.0:
-                            if float(C_Reactive_result_pure) > 0.0 and float(C_Reactive_result_pure) < 0.5 :
+                            if float(C_Reactive_result_pure) <= 0.5 :
                                 error = [subject, visit, 'C-Reactive Protein, Out of normal range?', C_Reactive_result_form_field_instance ,\
-                                         'According to the result, the value is not out of range, please review. (0.0 - 0.5)', f'{C_Reactive_out_normal_disname} - {C_Reactive_result_pure}', 'LBC0450']
+                                         'According to the result, the value is not out of range, please review. (< 0.5)', f'{C_Reactive_out_normal_disname} - {C_Reactive_result_pure}', 'LBC0450']
                                 lista_revision.append(error)
 
                         # Revision LBC0250
                         elif float(C_Reactive_out_normal_pure) == 0.0:
-                            if float(C_Reactive_result_pure) <  0.0  or float(C_Reactive_result_pure) > 0.5 :
+                            if  float(C_Reactive_result_pure) >= 0.5 :
                                 error = [subject, visit, 'C-Reactive Protein, Out of normal range?', C_Reactive_result_form_field_instance ,\
-                                         'According to the result, the value is out of range, please review. (0.0 - 0.5)', f'{C_Reactive_out_normal_disname} - {C_Reactive_result_pure}', 'LBC0250']
+                                         'According to the result, the value is out of range, please review. (< 0.5)', f'{C_Reactive_out_normal_disname} - {C_Reactive_result_pure}', 'LBC0250']
                                 lista_revision.append(error)
                                             
                     except Exception as e:

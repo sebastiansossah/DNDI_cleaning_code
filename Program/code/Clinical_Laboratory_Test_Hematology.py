@@ -660,9 +660,9 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(Neutrophil_result_pure) > 42.5 and float(Neutrophil_result_pure) < 73.0:
+                                if float(Neutrophil_result_pure) > 42.5 and float(Neutrophil_result_pure) < 73.2:
                                     error = [subject, visit, 'Neutrophil, Out of normal range?', Neutrophil_result_form_field_instance, \
-                                             'According to the result, the value is not out of range, please review. (42.5 - 73.0)', \
+                                             'According to the result, the value is not out of range, please review. (42.5 - 73.2)', \
                                                 Neutrophil_result_disname, 'LBT0080']
                                     lista_revision.append(error)
 
@@ -676,9 +676,9 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(Neutrophil_result_pure) < 42.5 or float(Neutrophil_result_pure) > 73.0:
+                                if float(Neutrophil_result_pure) < 42.5 or float(Neutrophil_result_pure) > 73.2:
                                     error = [subject, visit, 'Neutrophil, Out of normal range?', Neutrophil_result_form_field_instance, \
-                                             'According to the result, the value is out of range, please review.( 42.5 - 73.0)',  \
+                                             'According to the result, the value is out of range, please review.( 42.5 - 73.2)',  \
                                                 Neutrophil_result_disname, 'LBT0290']
                                     lista_revision.append(error)
                     except Exception as e:
@@ -688,34 +688,34 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         # Revision LBT0090
                         if float(Lymphocyte_out_normal_pure) == 1.0:
                             if float(genero) == 1.0:
-                                if float(Lymphocyte_result_pure) > 18.2 and float(Lymphocyte_result_pure) < 47.4:
+                                if float(Lymphocyte_result_pure) > 12.2 and float(Lymphocyte_result_pure) < 47.1:
                                     error = [subject, visit, 'Lymphocyte, Out of normal range?', Lymphocyte_result_form_field_instance,\
-                                             'According to the result, the value is not out of range, please review. (18.5 - 47.4)', \
+                                             'According to the result, the value is not out of range, please review. (12.2 - 47.1)', \
                                                 Lymphocyte_result_disname, 'LBT0090']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(Lymphocyte_result_pure) > 12.2 and float(Lymphocyte_result_pure) < 47.1:
+                                if float(Lymphocyte_result_pure) > 18.2 and float(Lymphocyte_result_pure) < 47.4:
                                     error = [subject, visit, 'Lymphocyte, Out of normal range?', Lymphocyte_result_form_field_instance,\
-                                             'According to the result, the value is not out of range, please review. (12.2 - 47.1)', \
+                                             'According to the result, the value is not out of range, please review. (18.2 - 47.4)', \
                                                 Lymphocyte_result_disname, 'LBT0090']
                                     lista_revision.append(error)
 
                         # Revision LBT0300
                         elif float(Lymphocyte_out_normal_pure) == 0.0:
                             if float(genero) == 1.0:
-                                if float(Lymphocyte_result_pure) < 18.2 or float(Lymphocyte_result_pure) > 47.4:
-                                    error = [subject, visit, 'Lymphocyte, Out of normal range?', \
-                                             Lymphocyte_result_form_field_instance,\
-                                                'According to the result, the value is out of range, please review. (18.2 - 47.4)', \
-                                                    Lymphocyte_result_disname, 'LBT0300']
-                                    lista_revision.append(error)
-                                
-                            elif float(genero) == 2.0:
                                 if float(Lymphocyte_result_pure) < 12.2 or float(Lymphocyte_result_pure) > 47.1:
                                     error = [subject, visit, 'Lymphocyte, Out of normal range?', \
                                              Lymphocyte_result_form_field_instance,\
                                                 'According to the result, the value is out of range, please review. (12.2 - 47.1)', \
+                                                    Lymphocyte_result_disname, 'LBT0300']
+                                    lista_revision.append(error)
+                                
+                            elif float(genero) == 2.0:
+                                if float(Lymphocyte_result_pure) < 18.2 or float(Lymphocyte_result_pure) > 47.4:
+                                    error = [subject, visit, 'Lymphocyte, Out of normal range?', \
+                                             Lymphocyte_result_form_field_instance,\
+                                                'According to the result, the value is out of range, please review. (18.2 - 47.4)', \
                                                     Lymphocyte_result_disname, 'LBT0300']
                                     lista_revision.append(error)
                     except Exception as e:
@@ -851,36 +851,36 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         # Revision LBT0140
                         if float(absolute_lymphocyte_pure) == 1.0:
                             if float(genero) == 1.0:
-                                if float(absolute_lymphocyte_result_pure) > 1820.0 and float(absolute_lymphocyte_result_pure) < 7150.0 :
+                                if float(absolute_lymphocyte_result_pure) > 0.85 and float(absolute_lymphocyte_result_pure) < 3.00 :
                                     error = [subject, visit, 'Absolute lymphocyte count, Out of normal range?', \
                                              absolute_lymphocyte_result_form_field_isntance,\
-                                                'According to the result, the value is not out of range, please review. (1820.0 - 7150.0)', \
+                                                'According to the result, the value is not out of range, please review. (0.85 - 3.00)', \
                                                     absolute_lymphocyte_result_disname, 'LBT0140']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(absolute_lymphocyte_result_pure) > 2000.0 and float(absolute_lymphocyte_result_pure) < 7150.0:
+                                if float(absolute_lymphocyte_result_pure) > 1.16 and float(absolute_lymphocyte_result_pure) < 3.18:
                                     error = [subject, visit, 'Absolute lymphocyte count, Out of normal range?', \
                                              absolute_lymphocyte_result_form_field_isntance,\
-                                                'According to the result, the value is not out of range, please review. (2000.0 - 7150.0)', \
+                                                'According to the result, the value is not out of range, please review. (1.16  - 3.18)', \
                                                     absolute_lymphocyte_result_disname, 'LBT0140']
                                     lista_revision.append(error)
 
                         # Revision LBT0350
                         elif float(absolute_lymphocyte_pure) == 0.0:
                             if float(genero) == 1.0:
-                                if float(absolute_lymphocyte_result_pure) < 1820.0 or float(absolute_lymphocyte_result_pure) > 7150.0 :
+                                if float(absolute_lymphocyte_result_pure) < 0.85 or float(absolute_lymphocyte_result_pure) > 3.00 :
                                     error = [subject, visit, 'Absolute lymphocyte count, Out of normal range?', \
                                              absolute_lymphocyte_result_form_field_isntance, \
-                                                'According to the result, the value is out of range, please review. (1820.0 - 7150.0)', \
+                                                'According to the result, the value is out of range, please review. (0.85 - 3.00)', \
                                                     absolute_lymphocyte_result_disname, 'LBT0350']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(absolute_lymphocyte_result_pure) < 2000.0 or float(absolute_lymphocyte_result_pure) > 7150.0:
+                                if float(absolute_lymphocyte_result_pure) < 1.16 or float(absolute_lymphocyte_result_pure) > 3.18:
                                     error = [subject, visit, 'Absolute lymphocyte count, Out of normal range?', \
                                              absolute_lymphocyte_result_form_field_isntance, \
-                                                'According to the result, the value is out of range, please review. (2000.0 - 7150.0)', \
+                                                'According to the result, the value is out of range, please review. (1.16  - 3.18)', \
                                                     absolute_lymphocyte_result_disname, 'LBT0350']
                                     lista_revision.append(error)
 
@@ -891,36 +891,36 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         # Revision LBT0150
                         if float(absolute_monocyte_pure) == 1.0:
                             if float(genero) == 1.0:
-                                if float(absolute_monocyte_result_pure) > 190.0 and float(absolute_monocyte_result_pure) < 770.0 :
+                                if float(absolute_monocyte_result_pure) > 0.19 and float(absolute_monocyte_result_pure) < 0.77 :
                                     error = [subject, visit, 'Absolute monocyte count, Out of normal range?', \
                                              absolute_monocyte_result_form_field_instance,\
-                                                'According to the result, the value is not out of range, please review. (190.0 - 770.0)', \
+                                                'According to the result, the value is not out of range, please review. (0.19 - 0.77)', \
                                                     absolute_monocyte_result_disname, 'LBT0150']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(absolute_monocyte_result_pure) > 290.0 and float(absolute_monocyte_result_pure) < 710.0:
+                                if float(absolute_monocyte_result_pure) > 0.29 and float(absolute_monocyte_result_pure) < 0.71:
                                     error = [subject, visit, 'Absolute monocyte count, Out of normal range?', \
                                              absolute_monocyte_result_form_field_instance, \
-                                                'According to the result, the value is not out of range, please review. (290.0 - 710.0)', \
+                                                'According to the result, the value is not out of range, please review. (0.29 - 0.71)', \
                                                     absolute_monocyte_result_disname, 'LBT0150']
                                     lista_revision.append(error)
 
                         # Revision LBT0360
                         elif float(absolute_monocyte_pure) == 0.0:
                             if float(genero) == 1.0:
-                                if float(absolute_monocyte_result_pure) < 190.0 or float(absolute_monocyte_result_pure) > 770.0 :
+                                if float(absolute_monocyte_result_pure) < 0.19 or float(absolute_monocyte_result_pure) > 0.77 :
                                     error = [subject, visit, 'Absolute monocyte count, Out of normal range?', \
                                              absolute_monocyte_result_form_field_instance,\
-                                                'According to the result, the value is out of range, please review. (190.0 - 770.0)', \
+                                                'According to the result, the value is out of range, please review. (0.19 - 0.77)', \
                                                     absolute_monocyte_result_disname, 'LBT0360']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(absolute_monocyte_result_pure) < 290.0 or float(absolute_monocyte_result_pure) > 710.0:
+                                if float(absolute_monocyte_result_pure) < 0.29 or float(absolute_monocyte_result_pure) > 0.71:
                                     error = [subject, visit, 'Absolute monocyte count, Out of normal range?', \
                                              absolute_monocyte_result_form_field_instance,\
-                                                'According to the result, the value is out of range, please review. (290.0 - 710.0)', \
+                                                'According to the result, the value is out of range, please review. (0.29 - 0.71)', \
                                                     absolute_monocyte_result_disname, 'LBT0360']
                                     lista_revision.append(error)
                     except Exception as e:
@@ -930,36 +930,36 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         # Revision LBT0160 
                         if float(absolute_eosinophil_pure) == 1.0:
                             if float(genero) == 1.0:
-                                if float(absolute_eosinophil_result_pure) > 30.0 and float(absolute_eosinophil_result_pure) < 440.0 :
+                                if float(absolute_eosinophil_result_pure) > 0.03 and float(absolute_eosinophil_result_pure) < 0.44 :
                                     error = [subject, visit, 'Absolute eosinophil count, Out of normal range?',\
                                              absolute_eosinophil_result_form_field_instance,\
-                                                'According to the result, the value is not out of range, please review. (30.0 - 440.0)', \
+                                                'According to the result, the value is not out of range, please review. (0.03 - 0.44)', \
                                                     absolute_eosinophil_result_disname, 'LBT0160']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(absolute_eosinophil_result_pure) > 30.0 and float(absolute_eosinophil_result_pure) < 270.0:
+                                if float(absolute_eosinophil_result_pure) > 0.03 and float(absolute_eosinophil_result_pure) < 0.27:
                                     error = [subject, visit, 'Absolute eosinophil count, Out of normal range?'.\
                                              absolute_eosinophil_result_form_field_instance,\
-                                                'According to the result, the value is not out of range, please review. (30.0 - 270.0 )', \
+                                                'According to the result, the value is not out of range, please review. (0.03 - 0.27 )', \
                                                     absolute_eosinophil_result_disname, 'LBT0160']
                                     lista_revision.append(error)
 
                         # Revision LBT0370
                         elif float(absolute_eosinophil_pure) == 0.0:
                             if float(genero) == 1.0:
-                                if float(absolute_eosinophil_result_pure) < 30.0 or float(absolute_eosinophil_result_pure) > 440.0 :
+                                if float(absolute_eosinophil_result_pure) < 0.03 or float(absolute_eosinophil_result_pure) >  0.44:
                                     error = [subject, visit, 'Absolute eosinophil count, Out of normal range?',\
                                              absolute_eosinophil_result_form_field_instance,\
-                                                'According to the result, the value is out of range, please review. (30.0 - 440.0)', \
+                                                'According to the result, the value is out of range, please review. (0.03 - 0.44)', \
                                                     absolute_eosinophil_result_disname, 'LBT0370']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(absolute_eosinophil_result_pure) < 30.0 or float(absolute_eosinophil_result_pure) > 270.0:
+                                if float(absolute_eosinophil_result_pure) < 0.03 or float(absolute_eosinophil_result_pure) > 0.27:
                                     error = [subject, visit, 'Absolute eosinophil count, Out of normal range?', \
                                              absolute_eosinophil_result_form_field_instance,\
-                                                'According to the result, the value is out of range, please review. (30.0 - 270.0 )', \
+                                                'According to the result, the value is out of range, please review. (0.03 - 0.27 )', \
                                                     absolute_eosinophil_result_disname, 'LBT0370']
                                     lista_revision.append(error)
                     except Exception as e:
