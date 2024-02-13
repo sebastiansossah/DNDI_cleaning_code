@@ -297,10 +297,11 @@ def physical_examination(df_root, path_excel_writer):
                         for validador_raw_uno in lista_validacion_uno:
                             try: 
                                 validador_uno = row[validador_raw_uno].split('|')[0]
+                                
                             except:
-                                validador_uno = math.nan
+                                validador_uno = ''
 
-                            if math.isnan(float(validador_uno)) or validador_uno != '-' or validador_uno != np.nan or  str(validador_uno) != 'nan' or float(validador_uno) !=0.0 or str(validador_uno) != '':
+                            if   validador_uno != '-' or validador_uno != np.nan or  str(validador_uno) != 'nan' or  str(validador_uno) != '':
                                 mi_cuenta+=1
                             else:
                                 pass
