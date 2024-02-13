@@ -1027,14 +1027,14 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
                         if float(Cholesterol_out_normal_pure) == 1.0:
                             if float(Cholesterol_result_pure) <=  200.0 :
                                 error = [subject, visit, 'Cholesterol (Total), Out of normal range?', Cholesterol_result_form_field_instance ,\
-                                         'According to the result, the value is not out of range, please review. (< 200.0)', f'{Cholesterol_out_normal_pure} - {Cholesterol_result_pure}', 'LBC0430']
+                                         'According to the result, the value is not out of range, please review. (< 200.0)', f'{Cholesterol_out_normal_disname} - {Cholesterol_result_pure}', 'LBC0430']
                                 lista_revision.append(error)
 
                         # Revision LBC0230
                         elif float(Cholesterol_out_normal_pure) == 0.0:
                             if float(Cholesterol_result_pure) >=  200.0  :
                                 error = [subject, visit, 'Cholesterol (Total), Out of normal range?', Cholesterol_result_form_field_instance ,\
-                                         'According to the result, the value is out of range, please review. (< 200.0)', f'{Cholesterol_out_normal_pure} - {Cholesterol_result_pure}', 'LBC0230']
+                                         'According to the result, the value is out of range, please review. (< 200.0)', f'{Cholesterol_out_normal_disname} - {Cholesterol_result_pure}', 'LBC0230']
                                 lista_revision.append(error)
                                             
                     except Exception as e:
