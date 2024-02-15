@@ -120,6 +120,16 @@ def adminsitration_CpG_ODN(df_root, path_excel_writer):
                         dosing_event_pure =  math.nan
                         dosing_event_form_field_instance = 'This field doesnt have any data'
                         dosing_event_disname = 'Empty'
+
+                    try:
+                        dose_mg = row['Dose (mg)']
+                        dose_mg_pure = dose_mg.split('|')[0]
+                        dose_mg_form_field_instance = dose_mg.split('|')[1]
+                    except:
+                        dose_mg_pure = math.nan
+                        dose_mg_form_field_instance = 'This field doesnt have any data'
+                         
+                    
                     # ---------------------------------------------------------------------------------------
                     if date_dosing_pure == '':
                          pass
@@ -189,9 +199,12 @@ def adminsitration_CpG_ODN(df_root, path_excel_writer):
                         except Exception as e:
                                 lista_logs.append(f'Revision IMP0060 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
-                    # Revision IMP0070
+                    # # Revision IMP0070
                     # try:
-                    #     if 
+                         
+
+
+
 
                     # Revision IMP0080
                     try: 
@@ -223,8 +236,19 @@ def adminsitration_CpG_ODN(df_root, path_excel_writer):
                         
                     
                     #Revision IMP0100
-                    # try:
-                    #     if reason_dose_adjustment_pure:                         
+                    try:
+                        if float(dose_mg_pure) == 0.0 and float(reason_dose_adjustment_pure) == 1.0:
+                            if float(action_taken_CpG) == 2.0:
+                                pass
+                            else:
+                                error = [subject, visit, 'Reason for dose adjustment', dosing_event_form_field_instance, \
+                                                    'If dosing is 0 and the reason for adjustment is "Adverse event" there should be an adverse event created where the action taken (CPG ODN 035) should be CT  dose reduced', \
+                                                        dosing_event_disname, 'IMP0100']
+                                lista_revision.append(error)
+                    except:
+                         lista_logs.append(f'Revision IMP0100 --> {e} - Subject: {subject},  Visit: {visit} ') 
+                                 
+                                                  
     
     excel_writer = load_workbook(path_excel_writer)
     column_names = ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']
