@@ -28,15 +28,15 @@ def child_bearing_potential(df_root, path_excel_writer):
     df_visit_date = df_visit_date.rename(columns={'Participante':'Subject'})
 
     df_demographic = df_root[df_root['name']=='Demographics']
-    df_demographic = df_demographic[['Visit','Participante', 'Campo', 'Valor']]
+    df_demographic = df_demographic[['Participante', 'Campo', 'Valor']]
     df_demographic = df_demographic[df_demographic['Campo']=='Gender']
-    df_demographic = df_demographic[['Visit','Participante','Valor']]
+    df_demographic = df_demographic[['Participante','Valor']]
     df_demographic = df_demographic.rename(columns={'Participante':'Subject', 'Valor':'Genero'})
 
     df_demographic_age = df_root[df_root['name']=='Demographics']
-    df_demographic_age = df_demographic_age[['Visit','Participante', 'Campo', 'Valor']]
+    df_demographic_age = df_demographic_age[['Participante', 'Campo', 'Valor']]
     df_demographic_age = df_demographic_age[df_demographic_age['Campo']=='Birth Year']
-    df_demographic_age = df_demographic_age[['Visit','Participante','Valor']]
+    df_demographic_age = df_demographic_age[['Participante','Valor']]
     df_demographic_age = df_demographic_age.rename(columns={'Participante':'Subject', 'Valor':'Birth_year'})
 
     df_visit_done = df_root[df_root['name']=='Date of visit']
@@ -54,22 +54,30 @@ def child_bearing_potential(df_root, path_excel_writer):
     subdatasets = [df_contraception.iloc[start:end] for start, end in zip(date_indices, date_indices[1:] + [None])]
     df_to_join = pd.DataFrame()
     for sub in subdatasets:
+        #print(sub)
         #if sub['Valor'].tolist()  in [5, 5.0, '5', '5.0', 9]:
         if len([float(x) for x in sub['Valor'].tolist() if x in [5, 5.0, '5', '5.0', 9]]) != 0:
             df_to_join = sub[(sub['Campo'] == 'Indication Category') | (sub['Campo'] == 'Start date')]
-            sujeto = df_to_join.Participante.unique()
+            sujeto_prior = df_to_join.Participante.unique()
             df_to_join = df_to_join[['Campo', 'Valor']].T
             new_columns = df_to_join.iloc[0]
             df_to_join = df_to_join[1:].set_axis(new_columns, axis=1)
-            df_to_join['Subject'] = sujeto
+            df_to_join['Subject'] = sujeto_prior
             break
+        else:
+            df_to_join['Subject'] = '011002'
+            df_to_join['start_date_combined_hormonal'] = 'algo'
+
     df_to_join = df_to_join.rename(columns={'Participante':'Subject', 'Start date':'start_date_combined_hormonal'})
+
+    #print(df_to_join)
+
 
     df_medical_surgical = df_root[df_root['name']== 'Medical Or Surgical History (other than Leishmaniasis)']
     df_medical_surgical = df_medical_surgical[['Visit','Participante', 'Campo', 'Valor', 'FormFieldInstance Id']]
     df_medical_surgical = df_medical_surgical[df_medical_surgical['Campo']== 'Onset Date/First Diagnosis/Surgery']
     df_medical_surgical['Date of start of contraceptive method'] = df_medical_surgical['Valor']
-    df_medical_surgical = df_medical_surgical[['Visit','Participante','Valor', 'Date of start of contraceptive method']]
+    df_medical_surgical = df_medical_surgical[['Participante','Valor', 'Date of start of contraceptive method']]
     df_medical_surgical = df_medical_surgical.rename(columns={'Participante':'Subject', 'Valor':'onset_date_medical_contraceptive'})
 
     lista_revision = []
@@ -89,11 +97,13 @@ def child_bearing_potential(df_root, path_excel_writer):
             pru['Visit'] = visita
             pru['status'] = pru_1['activityState'].unique()
             pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
-            pru = pru.merge(df_demographic, on=['Subject', 'Visit'], how='left')
-            pru = pru.merge(df_demographic_age, on=['Subject', 'Visit'], how='left')
+            pru = pru.merge(df_demographic, on=['Subject'], how='left')
+            pru = pru.merge(df_demographic_age, on=['Subject'], how='left')
             pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_to_join, on=['Subject'], how='left')
             pru = pru.merge(df_medical_surgical, on=['Subject', 'Date of start of contraceptive method' ], how='left')
+            # print(pru)
+            # print('------------------------------')
 
             for index, row in pru.iterrows():
                 status = row['status']

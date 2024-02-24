@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import os
 import math
 from datetime import datetime
 from revision_fechas import revision_fecha
@@ -14,6 +15,16 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
     Esta funcion tiene como finalidad la revision de cada uno de los puntos 
     del edit check para el formulario de Clinical Laboratory Test - Clinical Chemistry D-1
     '''
+    # Normals ranges file
+    script_directory = os.path.dirname(os.path.abspath(__file__)) if '__file__' in locals() else os.getcwd()
+    relative_folder_path = r"data\rangos_normales"
+    folder_path = os.path.join(script_directory.replace('\code', ''), relative_folder_path)
+    file = os.listdir(folder_path)
+    path = f"{folder_path}\{[x for x in file if 'chemestry_D1' in x][0]}" 
+    df_normal_ranges = pd.read_csv(path, sep=';')
+
+    #---------------------------------------------------------------------------------------
+
     df= df_root[df_root['name']== 'Clinical Laboratory Test - Clinical Chemistry D-1']
     lista_sujetos = df['Participante'].unique()
     df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id', 'displayName']]
@@ -32,9 +43,9 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
     df_informed = df_informed.rename(columns={'Participante':'Subject', 'Valor':'Informed_consent_date'})
 
     df_demographic = df_root[df_root['name']=='Demographics']
-    df_demographic = df_demographic[['Visit','Participante', 'Campo', 'Valor']]
+    df_demographic = df_demographic[['Participante', 'Campo', 'Valor']]
     df_demographic = df_demographic[df_demographic['Campo']=='Gender']
-    df_demographic = df_demographic[['Visit','Participante','Valor']]
+    df_demographic = df_demographic[['Participante','Valor']]
     df_demographic = df_demographic.rename(columns={'Participante':'Subject', 'Valor':'Genero'})
 
     clicinical_chemestry_principal = df_root[df_root['name']=='Clinical Laboratory Test - Clinical Chemistry']
@@ -56,6 +67,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
     df_visit_done = df_visit_done[['Visit','Participante','Valor_completo']]
     df_visit_done = df_visit_done.rename(columns={'Participante':'Subject', 'Valor_completo':'was_DV_performed'})
 
+    
     lista_revision = []
     lista_logs = ['Clinical Laboratory Test - Clinical Chemistry D-1']
 
@@ -76,10 +88,14 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
             pru['status'] = pru_1['activityState'].unique()
             pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_informed, on=['Subject'], how='left')
-            pru = pru.merge(df_demographic, on=['Subject', 'Visit'], how='left')
+            pru = pru.merge(df_demographic, on=['Subject'], how='left')
             pru = pru.merge(clicinical_chemestry_principal, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
             pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
+            # print(pru)
+            # print('---------')
+
+            
             
             for index, row in pru.iterrows():
                 status = row['status']
@@ -270,10 +286,14 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                     
                     # Revision LBD0050
                     try:
+                        # if float(aspartate_aminotransferase_out_normal_pure) == 1.0:
+                        #     if float(aspartate_aminotransferase_result_pure) > 11.0 and \
+                        #     float(aspartate_aminotransferase_result_pure) < 34.0 :
+
                         if float(aspartate_aminotransferase_out_normal_pure) == 1.0:
-                            if float(aspartate_aminotransferase_result_pure) > 11.0 and \
-                            float(aspartate_aminotransferase_result_pure) < 34.0:
-                                
+                            if float(aspartate_aminotransferase_result_pure) > float(df_normal_ranges[df_normal_ranges['field']=="Aspartate Aminotransferase (AST), Result (U/L)"]['min'].iloc[0])  and \
+                            float(aspartate_aminotransferase_result_pure) <  float(df_normal_ranges[df_normal_ranges['field']=="Aspartate Aminotransferase (AST), Result (U/L)"]['max'].iloc[0]):
+
                                 error = [subject, visit, 'Aspartate Aminotransferase (AST), Out of normal range? ', aspartate_aminotransferase_result_form_field_instance,\
                                         'According to the result, the value is not out of range, please review' , \
                                             aspartate_aminotransferase_result_disname, 'LBD0050']
@@ -281,9 +301,9 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                     
                         # Revision LBD0090
                         elif float(aspartate_aminotransferase_out_normal_pure) == 0.0:
-                            if float(aspartate_aminotransferase_result_pure) < 11.0 or \
-                            float(aspartate_aminotransferase_result_pure) > 34.0:
-                                
+                            if float(aspartate_aminotransferase_result_pure) < float(df_normal_ranges[df_normal_ranges['field']=="Aspartate Aminotransferase (AST), Result (U/L)"]['min'].iloc[0]) or \
+                            float(aspartate_aminotransferase_result_pure) > float(df_normal_ranges[df_normal_ranges['field']=="Aspartate Aminotransferase (AST), Result (U/L)"]['max'].iloc[0]):
+       
                                 error = [subject, visit, 'Aspartate Aminotransferase (AST), Out of normal range? ', aspartate_aminotransferase_result_form_field_instance,\
                                         'According to the result, the value is out of range, please review' , \
                                             aspartate_aminotransferase_result_disname, 'LBD0090']
@@ -296,19 +316,23 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                     try:
                         if float(alanine_aminotransferase_out_normal_pure) == 1.0:
 
-                            if genero == 1.0:
-                                if float(alanine_aminotransferase_result_pure) > 0.0 and \
-                                float(alanine_aminotransferase_result_pure) < 45.0:
-                                    
+                            # if genero == 1.0:
+                            #     if float(alanine_aminotransferase_result_pure) > 0.0 and \
+                            #     float(alanine_aminotransferase_result_pure) < 45.0:
+                            if float(genero) == 1.0:
+                 
+                                if float(alanine_aminotransferase_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Alanine Aminotransferase (ALT), Result (U/L)") & (df_normal_ranges['gender']== 1)]['min'].iloc[0]) and \
+                                float(alanine_aminotransferase_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Alanine Aminotransferase (ALT), Result (U/L)") & (df_normal_ranges['gender']== 1)]['max'].iloc[0]):             
+                    
                                     error = [subject, visit, 'Alanine Aminotransferase (ALT), Out of normal range?', alanine_aminotransferase_result_form_field_instance ,\
                                             'If Out of range="No"and Alanine Aminotransferase (ALT), Result (U/L) is not between 0 and 34 (Female) or is not between 0 and 45 (Male)' , \
                                                 alanine_aminotransferase_result_disname, 'LBD0060']
                                     lista_revision.append(error)
 
-                            elif genero == 2.0:
-                                if float(alanine_aminotransferase_result_pure) > 0.0 and \
-                                float(alanine_aminotransferase_result_pure) < 34.0:
-                                    
+                            elif float(genero) == 2.0:
+                                if float(alanine_aminotransferase_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Alanine Aminotransferase (ALT), Result (U/L)") & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) and \
+                                float(alanine_aminotransferase_result_pure) <  float(df_normal_ranges[(df_normal_ranges['field']== "Alanine Aminotransferase (ALT), Result (U/L)") & (df_normal_ranges['gender']== 2)]['max'].iloc[0]):
+                        
                                     error = [subject, visit, 'Alanine Aminotransferase (ALT), Out of normal range?', alanine_aminotransferase_result_form_field_instance ,\
                                             'If Out of range="No"and Alanine Aminotransferase (ALT), Result (U/L) is not between 0 and 34 (Female) or is not between 0 and 45 (Male)' , \
                                                 alanine_aminotransferase_result_disname, 'LBD0060']
@@ -316,18 +340,21 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                         
                         # Revision LBD0100
                         elif float(alanine_aminotransferase_out_normal_pure) == 0.0:
-
-                            if genero == 1.0:
-                                if float(alanine_aminotransferase_result_pure) < 0.0 or \
-                                float(alanine_aminotransferase_result_pure) > 45.0:
+                           
+                            if float(genero) == 1.0:
+                 
+                                if float(alanine_aminotransferase_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Alanine Aminotransferase (ALT), Result (U/L)") & (df_normal_ranges['gender']== 1)]['min'].iloc[0]) or \
+                                float(alanine_aminotransferase_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Alanine Aminotransferase (ALT), Result (U/L)") & (df_normal_ranges['gender']== 1)]['max'].iloc[0]):
+               
                                     error = [subject, visit, 'Alanine Aminotransferase (ALT), Out of normal range?', alanine_aminotransferase_result_form_field_instance ,\
                                             'If Out of range="No"and Alanine Aminotransferase (ALT), Result (U/L) is not between 0 and 34 (Female) or is not between 0 and 45 (Male)' , \
                                                 alanine_aminotransferase_result_disname, 'LBD0100']
                                     lista_revision.append(error)       
 
-                            elif genero == 1.0:
-                                if float(alanine_aminotransferase_result_pure) < 0.0 or \
-                                float(alanine_aminotransferase_result_pure) > 34.0:
+                            elif float(genero) == 2.0:
+                                if float(alanine_aminotransferase_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Alanine Aminotransferase (ALT), Result (U/L)") & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) or \
+                                float(alanine_aminotransferase_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Alanine Aminotransferase (ALT), Result (U/L)") & (df_normal_ranges['gender']== 2)]['max'].iloc[0]):
+                            
                                     error = [subject, visit, 'Alanine Aminotransferase (ALT), Out of normal range?', alanine_aminotransferase_result_form_field_instance ,\
                                             'If Out of range="No"and Alanine Aminotransferase (ALT), Result (U/L) is not between 0 and 34 (Female) or is not between 0 and 45 (Male)' , \
                                                 alanine_aminotransferase_result_disname, 'LBD0100']
@@ -341,13 +368,15 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                         # Revision LBD0070
                         if float(serum_creatine_out_normal_pure) == 1.0:
                             if float(genero) == 1.0:
-                                if float(serum_creatine_result_pure) > 0.73 and float(serum_creatine_result_pure) <  1.18  :
+                                if float(serum_creatine_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Serum Creatinine, Result (mg/dL)") & (df_normal_ranges['gender']== 1)]['min'].iloc[0]) and \
+                                     float(serum_creatine_result_pure) <  float(df_normal_ranges[(df_normal_ranges['field']== "Serum Creatinine, Result (mg/dL)") & (df_normal_ranges['gender']== 1)]['max'].iloc[0])  :
                                     error = [subject, visit, 'Serum Creatinine, Out of normal range?', serum_creatine_result_form_field_instance ,\
                                              'According to the result, the value is not out of range, please review.' , serum_creatine_result_disname, 'LBD0070']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(serum_creatine_result_pure) >  0.55  and float(serum_creatine_result_pure) < 1.02 :
+                                if float(serum_creatine_result_pure) >  float(df_normal_ranges[(df_normal_ranges['field']== "Serum Creatinine, Result (mg/dL)") & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) and \
+                                    float(serum_creatine_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Serum Creatinine, Result (mg/dL)") & (df_normal_ranges['gender']== 2)]['max'].iloc[0]) :
                                     error = [subject, visit, 'Serum Creatinine, Out of normal range?', serum_creatine_result_form_field_instance ,\
                                              'According to the result, the value is not out of range, please review.' , serum_creatine_result_disname, 'LBD0070']
                                     lista_revision.append(error)
@@ -355,13 +384,16 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                         # Revision LBD0110
                         elif float(serum_creatine_out_normal_pure) == 0.0:
                             if float(genero) == 1.0:
-                                if float(serum_creatine_result_pure) < 0.73 or float(serum_creatine_result_pure) > 1.18 :
+                                if float(serum_creatine_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Serum Creatinine, Result (mg/dL)") & (df_normal_ranges['gender']== 1)]['min'].iloc[0]) or \
+                                    float(serum_creatine_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Serum Creatinine, Result (mg/dL)") & (df_normal_ranges['gender']== 1)]['max'].iloc[0]) :
+                            
                                     error = [subject, visit, 'Serum Creatinine, Out of normal range?', serum_creatine_result_form_field_instance ,\
                                              'According to the result, the value is out of range, please review.', serum_creatine_result_disname, 'LBD0110']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(serum_creatine_result_pure) < 0.55 or float(serum_creatine_result_pure) > 1.02:
+                                if float(serum_creatine_result_pure) <  float(df_normal_ranges[(df_normal_ranges['field']== "Serum Creatinine, Result (mg/dL)") & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) or \
+                                    float(serum_creatine_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Serum Creatinine, Result (mg/dL)") & (df_normal_ranges['gender']== 2)]['max'].iloc[0]):
                                     error = [subject, visit, 'Serum Creatinine, Out of normal range?', serum_creatine_result_form_field_instance ,\
                                              'According to the result, the value is out of range, please review.' , serum_creatine_result_disname, 'LBD0110']
                                     lista_revision.append(error)
@@ -372,13 +404,17 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                         # Revision LBD0080
                         if float(creatine_kinase_out_normal_pure) == 1.0:
                             if float(genero) == 1.0:
-                                if float(creatine_kinase_result_pure) > 30.0 and float(creatine_kinase_result_pure) <  200.0 :
+                                if float(creatine_kinase_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Creatine Kinase (CK), Result (U/L)") & (df_normal_ranges['gender']== 1)]['min'].iloc[0]) and \
+                                    float(creatine_kinase_result_pure) <  float(df_normal_ranges[(df_normal_ranges['field']== "Creatine Kinase (CK), Result (U/L)") & (df_normal_ranges['gender']== 1)]['max'].iloc[0]) :
+
                                     error = [subject, visit, 'Creatine Kinase (CK), Out of normal range?', creatine_kinase_result_form_field_instance ,\
                                              'According to the result, the value is not out of range, please review.' , creatine_kinase_result_disname, 'LBD0080']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(creatine_kinase_result_pure) >  29.0  and float(creatine_kinase_result_pure) < 168.0 :
+                                #if float(creatine_kinase_result_pure) >  29.0  and float(creatine_kinase_result_pure) < 168.0 :
+                                if float(creatine_kinase_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Creatine Kinase (CK), Result (U/L)") & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) and \
+                                    float(creatine_kinase_result_pure) <  float(df_normal_ranges[(df_normal_ranges['field']== "Creatine Kinase (CK), Result (U/L)") & (df_normal_ranges['gender']== 2)]['max'].iloc[0]) :
                                     error = [subject, visit, 'Creatine Kinase (CK), Out of normal range?', creatine_kinase_result_form_field_instance ,\
                                              'According to the result, the value is not out of range, please review.' , creatine_kinase_result_disname, 'LBD0080']
                                     lista_revision.append(error)
@@ -386,13 +422,16 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                         # Revision LBD0120
                         elif float(creatine_kinase_out_normal_pure) == 0.0:
                             if float(genero) == 1.0:
-                                if float(creatine_kinase_result_pure) < 30.0 or float(creatine_kinase_result_pure) > 200.0 :
+                                if float(creatine_kinase_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Creatine Kinase (CK), Result (U/L)") & (df_normal_ranges['gender']== 1)]['min'].iloc[0])  or \
+                                    float(creatine_kinase_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Creatine Kinase (CK), Result (U/L)") & (df_normal_ranges['gender']== 1)]['max'].iloc[0]) :
                                     error = [subject, visit, 'Creatine Kinase (CK), Out of normal range?', creatine_kinase_result_form_field_instance ,\
                                              'According to the result, the value is out of range, please review.' , creatine_kinase_result_disname, 'LBD0120']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(creatine_kinase_result_pure) < 29.0 or float(creatine_kinase_result_pure) > 168.0 :
+                                # if float(creatine_kinase_result_pure) < 29.0 or float(creatine_kinase_result_pure) > 168.0 :
+                                if float(creatine_kinase_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Creatine Kinase (CK), Result (U/L)") & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) or \
+                                    float(creatine_kinase_result_pure) >  float(df_normal_ranges[(df_normal_ranges['field']== "Creatine Kinase (CK), Result (U/L)") & (df_normal_ranges['gender']== 2)]['max'].iloc[0]) :
                                     error = [subject, visit, 'Creatine Kinase (CK), Out of normal range?', creatine_kinase_result_form_field_instance ,\
                                              'According to the result, the value is out of range, please review.' , creatine_kinase_result_disname, 'LBD0120']
                                     lista_revision.append(error)

@@ -53,6 +53,13 @@ def injection_site_examination(df_root, path_excel_writer):
     df_time_dosing =df_time_dosing[['Participante','Valor', 'time_dosing_cpg_administration']]
     df_time_dosing = df_time_dosing.rename(columns={'Participante':'Subject', 'Valor':'date_ex_to_join'})
 
+    df_time_milteosine1 = df_root[df_root['name']== 'Miltefosine Administration'].sort_values(by='FormFieldInstance Id')
+    df_time_milteosine1 = df_time_milteosine1[(df_time_milteosine1['Campo']=='Date of dosing') | (df_time_milteosine1['Campo']=='Time of Dosing')]
+    df_time_milteosine = df_time_milteosine1[df_time_milteosine1['Campo']=='Date of dosing']
+    df_time_milteosine['time_dosing_miltefosine_administration'] =  df_time_milteosine1[df_time_milteosine1['FormFieldInstance Id'].isin(df_time_milteosine['FormFieldInstance Id'] + 1) & (df_time_milteosine1['Campo'] == 'Time of Dosing')]['Valor'].values
+    df_time_milteosine =df_time_milteosine[['Participante','Valor', 'time_dosing_miltefosine_administration']]
+    df_time_milteosine = df_time_milteosine.rename(columns={'Participante':'Subject', 'Valor':'date_ex_to_join'})
+
 
     lista_logs = ['Injection Site Examination']
     lista_revision = []
@@ -88,6 +95,10 @@ def injection_site_examination(df_root, path_excel_writer):
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
             pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_time_dosing, on=['Subject', 'date_ex_to_join'], how='left')
+            pru = pru.merge(df_time_milteosine, on=['Subject', 'date_ex_to_join'], how='left')
+            # if sujeto =='011002':
+            #     print(pru)
+            #     print('---------------------------------------')
 
             for index, row in pru.iterrows():
                 status = row['status']
@@ -98,6 +109,7 @@ def injection_site_examination(df_root, path_excel_writer):
                 date_inform_consent = row['Informed_consent_date']
                 end_study_date = row['end_study_date']
                 time_dosing_cpg_administration = row['time_dosing_cpg_administration']
+                time_dosing_miltefosine_administration = row['time_dosing_miltefosine_administration']
 
                 was_DV_performed = row['was_DV_performed']
                 was_DV_performed_pure = was_DV_performed.split('|')[0]

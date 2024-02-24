@@ -53,6 +53,13 @@ def physical_examination(df_root, path_excel_writer):
     df_time_dosing =df_time_dosing[['Participante','Valor', 'time_dosing_cpg_administration']]
     df_time_dosing = df_time_dosing.rename(columns={'Participante':'Subject', 'Valor':'date_ex_to_join'})
 
+    df_time_milteosine1 = df_root[df_root['name']== 'Miltefosine Administration'].sort_values(by='FormFieldInstance Id')
+    df_time_milteosine1 = df_time_milteosine1[(df_time_milteosine1['Campo']=='Date of dosing') | (df_time_milteosine1['Campo']=='Time of Dosing')]
+    df_time_milteosine = df_time_milteosine1[df_time_milteosine1['Campo']=='Date of dosing']
+    df_time_milteosine['time_dosing_miltefosine_administration'] =  df_time_milteosine1[df_time_milteosine1['FormFieldInstance Id'].isin(df_time_milteosine['FormFieldInstance Id'] + 1) & (df_time_milteosine1['Campo'] == 'Time of Dosing')]['Valor'].values
+    df_time_milteosine =df_time_milteosine[['Participante','Valor', 'time_dosing_miltefosine_administration']]
+    df_time_milteosine = df_time_milteosine.rename(columns={'Participante':'Subject', 'Valor':'date_ex_to_join'})
+
     lista_revision = []
     lista_logs = ['Physical Examination']
 
@@ -77,6 +84,12 @@ def physical_examination(df_root, path_excel_writer):
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
             pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_time_dosing, on=['Subject', 'date_ex_to_join'], how='left')
+            pru = pru.merge(df_time_milteosine, on=['Subject', 'date_ex_to_join'], how='left')
+            # print('----------------------------')
+            # print(sujeto)
+            # print('----------------------------')
+            # print(pru)
+            # print('------------------')
 
             for index, row in pru.iterrows():
                 status = row['status']
@@ -88,6 +101,7 @@ def physical_examination(df_root, path_excel_writer):
                 end_study_date = row['end_study_date']
 
                 time_dosing_cpg_administration = row['time_dosing_cpg_administration']
+                time_dosing_miltefosine_administration = row['time_dosing_miltefosine_administration']
 
                 was_DV_performed = row['was_DV_performed']
                 was_DV_performed_pure = was_DV_performed.split('|')[0]
@@ -475,7 +489,8 @@ def physical_examination(df_root, path_excel_writer):
                                     lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision PE0080 --> {e} - Subject: {subject},  Visit: {visit} ')
-                        
+
+                        #--------------------------------------------------------------------- Medicamento CPG ------------------------------    
                         #Revision PE0120
                         if str(time_dosing_cpg_administration) != 'nan':
                             try:
@@ -532,6 +547,66 @@ def physical_examination(df_root, path_excel_writer):
 
                             except Exception as e:
                                 lista_logs.append(f'Revision PE0150 --> {e} - Subject: {subject},  Visit: {visit} ')  
+                        
+                        #--------------------------------------------------------------------- Medicamento Miltefosine  ------------------------------    
+
+                        #Revision PE0050
+                        if str(time_dosing_miltefosine_administration) != 'nan':
+                            try:
+                                dif_M = float((datetime.strptime(time_dosing_miltefosine_administration, '%H:%M') - datetime.strptime(predose_clinical_time_pure, '%H:%M')).total_seconds() / 60)
+                                
+                                if dif_M < 0.0 or dif_M > 60.0:
+                                    error = [subject, visit, 'Pre dose, Time', predose_clinical_time_form_field_instnance,\
+                                             'The time selected should be less than 60 min before the study treatment administration', \
+                                                f'Pre dose, Time: {predose_clinical_time_pure} - dose time administration{time_dosing_miltefosine_administration}', 'PE0050']
+                                    lista_revision.append(error)
+                            except Exception as e:
+                                lista_logs.append(f'Revision PE0050 --> {e} - Subject: {subject},  Visit: {visit} ')
+                        
+                        # Revision PE0060
+                        if str(time_dosing_miltefosine_administration) != 'nan':
+
+                            try:
+                                dif_two_M = float((datetime.strptime(two_hours_time_pure, '%H:%M') - datetime.strptime(time_dosing_miltefosine_administration, '%H:%M')).total_seconds() / 60)
+                                
+                                if  dif_two_M > 135.0 or dif_two_M < 105.0:
+                                    error = [subject, visit, '2-hours post dose, Time', two_hours_time_fomr_field_instance,\
+                                             'The time selected should be less than 2h15 and greater than 1h45 after the study treatment administration', \
+                                                f'2-hours post dose,Time: {two_hours_time_pure} - dose time administration{time_dosing_miltefosine_administration}', 'PE0060']
+                                    lista_revision.append(error)
+
+                            except Exception as e:
+                                lista_logs.append(f'Revision PE0060 --> {e} - Subject: {subject},  Visit: {visit} ')
+                        
+                        # Revision PE0070
+                        if str(time_dosing_miltefosine_administration) != 'nan':
+
+                            try:
+                                dif_four_M = float((datetime.strptime(four_hours_time_pure, '%H:%M') - datetime.strptime(time_dosing_miltefosine_administration, '%H:%M')).total_seconds() / 60)
+                     
+                                if  dif_four_M > 255.0 or dif_four_M < 225.0:
+                                    
+                                    error = [subject, visit, '4-hours post dose, Time', four_hours_time_form_field_isntance,\
+                                             'The time selected should be less than 4h15 and greater than 3h45 after the study treatment administration', \
+                                                f'4-hours post dose,Time: {four_hours_time_pure} - dose time administration{time_dosing_miltefosine_administration}', 'PE0070']
+                                    lista_revision.append(error)
+
+                            except Exception as e:
+                                lista_logs.append(f'Revision PE0070 --> {e} - Subject: {subject},  Visit: {visit} ')
+                        
+                        # Revision PE0080
+                        if str(time_dosing_miltefosine_administration) != 'nan':
+                            try:
+                                dif_eight_M = float((datetime.strptime(eight_hours_time_pure, '%H:%M') - datetime.strptime(time_dosing_miltefosine_administration, '%H:%M')).total_seconds() / 60)
+                                if dif_eight_M > 495.0 or dif_eight_M < 465.0:
+                                    error = [subject, visit, '8-hours post dose, Time', eight_hours_time_form_field_instance,\
+                                             'The time selected should be less than 4h15 and greater than 3h45 after the study treatment administration', \
+                                                f'8-hours post dose,Time: {eight_hours_time_pure} - dose time administration{time_dosing_miltefosine_administration}', 'PE0080']
+                                    lista_revision.append(error)
+
+                            except Exception as e:
+                                lista_logs.append(f'Revision PE0080 --> {e} - Subject: {subject},  Visit: {visit} ')  
+
 
     excel_writer = load_workbook(path_excel_writer)
     column_names = ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']

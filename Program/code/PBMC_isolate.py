@@ -44,6 +44,7 @@ def PBMC_isolate(df_root, path_excel_writer):
     df_visit_done = df_visit_done[['Visit','Participante','Valor_completo']]
     df_visit_done = df_visit_done.rename(columns={'Participante':'Subject', 'Valor_completo':'was_DV_performed'})
 
+    #----------------------------------------------------------- CPG --------------------------------------------------------------------------------------
 
     df_time_dosing1 = df_root[df_root['name']=='CpG ODN D35 Administration'].sort_values(by='FormFieldInstance Id')
     df_time_dosing1 = df_time_dosing1[(df_time_dosing1['Campo']=='Date of dosing') | (df_time_dosing1['Campo']=='Time of Dosing')]
@@ -66,6 +67,30 @@ def PBMC_isolate(df_root, path_excel_writer):
     df_time_dosing3 =df_time_dosing3[['Participante','Valor', 'time_dosing_cpg_administration']]
     df_time_dosing3 = df_time_dosing3.rename(columns={'Participante':'Subject', 'Valor':'date_ex_to_join3', 'time_dosing_cpg_administration': 'time_dosing_cpg_administration3'})
 
+    #----------------------------------------------------------- Miltefosine --------------------------------------------------------------------------------------
+
+    df_time_dosing1_miltefosine = df_root[df_root['name']== 'Miltefosine Administration'].sort_values(by='FormFieldInstance Id')
+    df_time_dosing1_miltefosine = df_time_dosing1_miltefosine[(df_time_dosing1_miltefosine['Campo']=='Date of dosing') | (df_time_dosing1_miltefosine['Campo']=='Time of Dosing')]
+    df_time_dosing_miltefosine = df_time_dosing1_miltefosine[df_time_dosing1_miltefosine['Campo']=='Date of dosing']
+    df_time_dosing_miltefosine['time_dosing_Miltefosine_administration'] =  df_time_dosing1_miltefosine[df_time_dosing1_miltefosine['FormFieldInstance Id'].isin(df_time_dosing_miltefosine['FormFieldInstance Id'] + 1) & (df_time_dosing1_miltefosine['Campo'] == 'Time of Dosing')]['Valor'].values
+    df_time_dosing_miltefosine =df_time_dosing_miltefosine[['Participante','Valor', 'time_dosing_Miltefosine_administration']]
+    df_time_dosing_miltefosine = df_time_dosing_miltefosine.rename(columns={'Participante':'Subject', 'Valor':'date_ex_to_join'})
+
+    df_time_dosing12_Miltefosine = df_root[df_root['name']== 'Miltefosine Administration'].sort_values(by='FormFieldInstance Id')
+    df_time_dosing12_Miltefosine = df_time_dosing12_Miltefosine[(df_time_dosing12_Miltefosine['Campo']=='Date of dosing') | (df_time_dosing12_Miltefosine['Campo']=='Time of Dosing')]
+    df_time_dosing2_Miltefosine = df_time_dosing12_Miltefosine[df_time_dosing12_Miltefosine['Campo']=='Date of dosing']
+    df_time_dosing2_Miltefosine['time_dosing_Miltefosine_administration2'] =  df_time_dosing12_Miltefosine[df_time_dosing12_Miltefosine['FormFieldInstance Id'].isin(df_time_dosing2_Miltefosine['FormFieldInstance Id'] + 1) & (df_time_dosing12_Miltefosine['Campo'] == 'Time of Dosing')]['Valor'].values
+    df_time_dosing2_Miltefosine = df_time_dosing2_Miltefosine[['Participante','Valor', 'time_dosing_Miltefosine_administration2']]
+    df_time_dosing2_Miltefosine = df_time_dosing2_Miltefosine.rename(columns={'Participante':'Subject', 'Valor':'date_ex_to_join2'})
+
+    df_time_dosing123_Miltefosine = df_root[df_root['name']== 'Miltefosine Administration'].sort_values(by='FormFieldInstance Id')
+    df_time_dosing123_Miltefosine = df_time_dosing123_Miltefosine[(df_time_dosing123_Miltefosine['Campo']=='Date of dosing') | (df_time_dosing123_Miltefosine['Campo']=='Time of Dosing')]
+    df_time_dosing3_Miltefosine = df_time_dosing123_Miltefosine[df_time_dosing123_Miltefosine['Campo']=='Date of dosing']
+    df_time_dosing3_Miltefosine['time_dosing_Miltefosine_administration3'] =  df_time_dosing123_Miltefosine[df_time_dosing123_Miltefosine['FormFieldInstance Id'].isin(df_time_dosing3_Miltefosine['FormFieldInstance Id'] + 1) & (df_time_dosing123_Miltefosine['Campo'] == 'Time of Dosing')]['Valor'].values
+    df_time_dosing3_Miltefosine =df_time_dosing3_Miltefosine[['Participante','Valor', 'time_dosing_Miltefosine_administration3']]
+    df_time_dosing3_Miltefosine = df_time_dosing3_Miltefosine.rename(columns={'Participante':'Subject', 'Valor':'date_ex_to_join3'})
+
+    #------------------------------------------
 
     lista_logs = ['PBMC Isolate']
     lista_revision = []
@@ -104,14 +129,28 @@ def PBMC_isolate(df_root, path_excel_writer):
 
 
 
+
    
             pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_informed, on=['Subject'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
             pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
+
+            # GPC Join ------------------------------------------------------------------
             pru = pru.merge(df_time_dosing, on=['Subject', 'date_ex_to_join'], how='left')
             pru = pru.merge(df_time_dosing2, on=['Subject', 'date_ex_to_join2'], how='left')
             pru = pru.merge(df_time_dosing3, on=['Subject', 'date_ex_to_join3'], how='left')
+            
+            # Miltefosine Join ------------------------------------------------------------------
+            pru = pru.merge(df_time_dosing_miltefosine, on=['Subject', 'date_ex_to_join'], how='left')
+            pru = pru.merge(df_time_dosing2_Miltefosine, on=['Subject', 'date_ex_to_join2'], how='left')
+            pru = pru.merge(df_time_dosing3_Miltefosine, on=['Subject', 'date_ex_to_join3'], how='left')
+            
+
+
+            #if sujeto =='011002':
+                # print(pru)
+                # print('---------------------')
 
             for index, row in pru.iterrows():
                 status = row['status']
@@ -126,9 +165,16 @@ def PBMC_isolate(df_root, path_excel_writer):
                 was_DV_performed_pure = was_DV_performed.split('|')[0]
                 was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
 
+                
                 time_dosing_cpg_administration = row['time_dosing_cpg_administration']
                 time_dosing_cpg_administration2 = row['time_dosing_cpg_administration2']
                 time_dosing_cpg_administration3 = row['time_dosing_cpg_administration3']
+
+                time_dosing_Miltefosine_administration = row['time_dosing_Miltefosine_administration']
+                time_dosing_Miltefosine_administration2 = row['time_dosing_Miltefosine_administration2']
+                time_dosing_Miltefosine_administration3 = row['time_dosing_Miltefosine_administration3']
+
+
 
                 if status != '':
 
@@ -234,21 +280,24 @@ def PBMC_isolate(df_root, path_excel_writer):
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision PB0040 --> {e} - Subject: {subject},  Visit: {visit}  ')
-                        
+ 
+                    # Revision CPG ------------------------------------------------------------------------------------------------------------------------------------------------------------
+
                     # Revision PB0050
                     if visit in ['D1', 'D15','D29' ]:
-                        if str(time_dosing_cpg_administration) != 'nan':
+                        if str(time_dosing_cpg_administration) == 'nan':
                             if Time_collected_pure == '':
                                 error = [subject, visit, 'Time Collected', Time_collected_form_field_instance ,\
                                         f'There should be a time on visit {visita}', Time_collected, 'PB0050']
                                 lista_revision.append(error)
                         else:
+                               
                                 dif = float((datetime.strptime(time_dosing_cpg_administration, '%H:%M') - datetime.strptime(Time_collected_pure, '%H:%M')).total_seconds() / 60)
                                 if dif >= 0.0 or dif <= 90.0:
-                                    
+                                        
                                     error = [subject, visit, 'Time Collected', Time_collected_form_field_instance,\
-                                             'The date and time collected must be between 0 and 90 minutes before the study treatment administration time', \
-                                                f'Time Collected: {Time_collected_pure} - dose time administration{time_dosing_cpg_administration}', 'PB0050']
+                                                'The date and time collected must be between 0 and 90 minutes before the study treatment administration time', \
+                                                    f'Time Collected: {Time_collected_pure} - dose time administration{time_dosing_cpg_administration}', 'PB0050']
                                     lista_revision.append(error)
 
                     # Revision PB0060
@@ -258,6 +307,83 @@ def PBMC_isolate(df_root, path_excel_writer):
                                              'The date and time collected must be between 24 and 25 hours  after the study treatment administration time of the day before', \
                                                 f'Time Collected: {Time_collected_pure} - dose time administration{time_dosing_cpg_administration}', 'PB0060']
                             lista_revision.append(error)
+                        
+                        if str(time_dosing_cpg_administration2) != 'nan':
+                            time_date_compare_1_gcp =  row['date_ex_to_join2'] + ' ' + time_dosing_cpg_administration2
+                            time_to_compare_pbmc_1 = date_sample_collected_pure + ' ' + Time_collected_pure
+
+                            dif_25_1 = float((datetime.strptime(time_to_compare_pbmc_1, '%d-%b-%Y %H:%M') - datetime.strptime(time_date_compare_1_gcp, '%d-%b-%Y %H:%M')).total_seconds() / 60)
+                            #print(dif_25_1)
+                            if dif_25_1 < 1440 or dif_25_1 > 1500:
+                                error =  [subject, visit, 'Time Collected', Time_collected_form_field_instance,\
+                                                'The date and time collected must be between 24 and 25 hours  after the study treatment administration time of the day before', \
+                                                    f'Time Collected: {Time_collected_pure} - dose time administration{time_dosing_cpg_administration}', 'PB0060']
+                                lista_revision.append(error)
+                        
+                        if str(time_dosing_cpg_administration3) != 'nan':
+                            time_date_compare_2_gcp =  row['date_ex_to_join3'] + ' ' + time_dosing_cpg_administration3
+                            time_to_compare_pbmc_2 = date_sample_collected_pure + ' ' + Time_collected_pure
+
+                            dif_25_2 = float((datetime.strptime(time_to_compare_pbmc_2, '%d-%b-%Y %H:%M') - datetime.strptime(time_date_compare_2_gcp, '%d-%b-%Y %H:%M')).total_seconds() / 60)
+             
+                            if dif_25_2 < 1440 or dif_25_2 > 1500:
+                                error =  [subject, visit, 'Time Collected', Time_collected_form_field_instance,\
+                                                'The date and time collected must be between 24 and 25 hours  after the study treatment administration time of the day before', \
+                                                    f'Time Collected: {Time_collected_pure} - dose time administration{time_dosing_cpg_administration}', 'PB0060']
+                                lista_revision.append(error)
+
+                    # Revision Miltefosine ------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+                    # Revision PB0050
+                    if visit in ['D1', 'D15','D29' ]:
+                        if str(time_dosing_Miltefosine_administration) == 'nan':
+                            if Time_collected_pure == '':
+                                error = [subject, visit, 'Time Collected', Time_collected_form_field_instance ,\
+                                        f'There should be a time on visit {visita}', Time_collected, 'PB0050']
+                                lista_revision.append(error)
+                        else:
+                               
+                                dif = float((datetime.strptime(time_dosing_Miltefosine_administration, '%H:%M') - datetime.strptime(Time_collected_pure, '%H:%M')).total_seconds() / 60)
+                                if dif >= 0.0 or dif <= 90.0:
+                                        
+                                    error = [subject, visit, 'Time Collected', Time_collected_form_field_instance,\
+                                                'The date and time collected must be between 0 and 90 minutes before the study treatment administration time', \
+                                                    f'Time Collected: {Time_collected_pure} - dose time administration{time_dosing_Miltefosine_administration}', 'PB0050']
+                                    lista_revision.append(error)
+
+                    # Revision PB0060
+                    if visit in ['D2', 'D16', 'D30']:
+                        if str(time_dosing_Miltefosine_administration2) == 'nan' and str(time_dosing_Miltefosine_administration3) == 'nan':
+                            error =  [subject, visit, 'Time Collected', Time_collected_form_field_instance,\
+                                             'The date and time collected must be between 24 and 25 hours  after the study treatment administration time of the day before', \
+                                                f'Time Collected: {Time_collected_pure} - dose time administration{time_dosing_cpg_administration}', 'PB0060']
+                            lista_revision.append(error)
+                        
+                        if str(time_dosing_Miltefosine_administration2) != 'nan':
+                            time_date_compare_1_miltefosine =  row['date_ex_to_join2'] + ' ' + time_dosing_Miltefosine_administration2
+                            time_to_compare_pbmc_1 = date_sample_collected_pure + ' ' + Time_collected_pure
+
+                            dif_25_1_M = float((datetime.strptime(time_to_compare_pbmc_1, '%d-%b-%Y %H:%M') - datetime.strptime(time_date_compare_1_miltefosine, '%d-%b-%Y %H:%M')).total_seconds() / 60)
+                           
+                            if dif_25_1_M < 1440 or dif_25_1_M > 1500:
+                                error =  [subject, visit, 'Time Collected', Time_collected_form_field_instance,\
+                                                'The date and time collected must be between 24 and 25 hours  after the study treatment administration time of the day before', \
+                                                    f'Time Collected: {Time_collected_pure} - dose time administration{time_dosing_cpg_administration}', 'PB0060']
+                                lista_revision.append(error)
+                        
+                        if str(time_dosing_Miltefosine_administration3) != 'nan':
+                            time_date_compare_2_miltefosine =  row['date_ex_to_join3'] + ' ' + time_dosing_Miltefosine_administration3
+                            time_to_compare_pbmc_2 = date_sample_collected_pure + ' ' + Time_collected_pure
+
+                            dif_25_2 = float((datetime.strptime(time_to_compare_pbmc_2, '%d-%b-%Y %H:%M') - datetime.strptime(time_date_compare_2_miltefosine, '%d-%b-%Y %H:%M')).total_seconds() / 60)
+              
+                            if dif_25_2 < 1440 or dif_25_2 > 1500:
+                                error =  [subject, visit, 'Time Collected', Time_collected_form_field_instance,\
+                                                'The date and time collected must be between 24 and 25 hours  after the study treatment administration time of the day before', \
+                                                    f'Time Collected: {Time_collected_pure} - dose time administration{time_dosing_cpg_administration}', 'PB0060']
+                                lista_revision.append(error)
+
+
 
 
 

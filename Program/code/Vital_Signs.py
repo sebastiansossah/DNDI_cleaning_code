@@ -53,6 +53,14 @@ def vital_signs(df_root, path_excel_writer):
     df_time_dosing =df_time_dosing[['Participante','Valor', 'time_dosing_cpg_administration']]
     df_time_dosing = df_time_dosing.rename(columns={'Participante':'Subject', 'Valor':'date_ex_to_join'})
 
+    df_time_milteosine1 = df_root[df_root['name']== 'Miltefosine Administration'].sort_values(by='FormFieldInstance Id')
+    df_time_milteosine1 = df_time_milteosine1[(df_time_milteosine1['Campo']=='Date of dosing') | (df_time_milteosine1['Campo']=='Time of Dosing')]
+    df_time_milteosine = df_time_milteosine1[df_time_milteosine1['Campo']=='Date of dosing']
+    df_time_milteosine['time_dosing_miltefosine_administration'] =  df_time_milteosine1[df_time_milteosine1['FormFieldInstance Id'].isin(df_time_milteosine['FormFieldInstance Id'] + 1) & (df_time_milteosine1['Campo'] == 'Time of Dosing')]['Valor'].values
+    df_time_milteosine =df_time_milteosine[['Participante','Valor', 'time_dosing_miltefosine_administration']]
+    df_time_milteosine = df_time_milteosine.rename(columns={'Participante':'Subject', 'Valor':'date_ex_to_join'})
+
+
     lista_revision = []
     lista_logs = ['Vital Signs']
 
@@ -82,6 +90,10 @@ def vital_signs(df_root, path_excel_writer):
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
             pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_time_dosing, on=['Subject', 'date_ex_to_join'], how='left')
+            pru = pru.merge(df_time_milteosine, on=['Subject', 'date_ex_to_join'], how='left')
+            # if sujeto =='011002':
+            #     print(pru)
+            #     print('---------------------------------------')
 
             for index, row in pru.iterrows():
                 status = row['status']
@@ -92,6 +104,9 @@ def vital_signs(df_root, path_excel_writer):
                 date_inform_consent = row['Informed_consent_date']
                 end_study_date = row['end_study_date']
                 time_dosing_cpg_administration = row['time_dosing_cpg_administration']
+                time_dosing_miltefosine_administration = row['time_dosing_miltefosine_administration']
+
+                
 
                 was_DV_performed = row['was_DV_performed']
                 was_DV_performed_pure = was_DV_performed.split('|')[0]
@@ -2130,7 +2145,7 @@ def vital_signs(df_root, path_excel_writer):
                     except Exception as e:
                         lista_logs.append(f'Revision VS0980--> {e} - Subject: {subject},  Visit: {visit} ')
 
-
+                    # -------------------------------------------------------------------------------- Revision para CPG ----------------------------------------------------
                     # Revision VS0990
                     if str(time_dosing_cpg_administration) != 'nan':
                             
@@ -2257,9 +2272,141 @@ def vital_signs(df_root, path_excel_writer):
 
                             except Exception as e:
                                 lista_logs.append(f'Revision VS1060 --> {e} - Subject: {subject},  Visit: {visit} ')
+                        
+                        # -------------------------------------------------------------------------------- Revision para Miltefosine ----------------------------------------------------
+                    # Revision VS0990
+                    if str(time_dosing_miltefosine_administration) != 'nan':
+                            
+                        try:
+                            dif_M = float((datetime.strptime(time_dosing_miltefosine_administration, '%H:%M') - datetime.strptime(predose_time_pure, '%H:%M')).total_seconds() / 60)
+                          
+                            if dif_M < 0.0 or dif_M > 60.0:
+                                
+                                error = [subject, visit, 'Pre dose, Time', predose_time_form_field_definition,\
+                                             'The time selected should be less than 60 min before the study treatment administration', \
+                                                f'Pre dose, Time: {predose_time_pure} - dose time administration{time_dosing_miltefosine_administration}', 'VS0990']
+                                lista_revision.append(error)
 
+                        except Exception as e:
+                            lista_logs.append(f'Revision VS0990 --> {e} - Subject: {subject},  Visit: {visit} ')  
+                    
+    
+                        # Revision VS1000
+                        if str(time_dosing_miltefosine_administration) != 'nan':
+                            
+                            try:
+                                dif_15_M = float((datetime.strptime(post_dose_15_pure, '%H:%M') - datetime.strptime(time_dosing_miltefosine_administration, '%H:%M')).total_seconds() / 60)
+                  
+                                if dif_15_M > 23.0 or dif_15_M < 7.0:
+                                    
+                                    error = [subject, visit, '15-mins post dose, Time', post_dose_15_form_field_instance,\
+                                             'The time selected should be less than 23min and greater than 7 min after the study treatment administration', \
+                                                f'15-mins post dose, Time: {post_dose_15_pure} - dose time administration{time_dosing_miltefosine_administration}', 'VS1000']
+                                    lista_revision.append(error)
 
+                            except Exception as e:
+                                lista_logs.append(f'Revision VS1000 --> {e} - Subject: {subject},  Visit: {visit} ')  
+                            
+    
+                        # Revision VS1010
+                        if str(time_dosing_miltefosine_administration) != 'nan':
+                            
+                            try:
+                                dif_30_M = float((datetime.strptime(post_dose_30_pure, '%H:%M') - datetime.strptime(time_dosing_miltefosine_administration, '%H:%M')).total_seconds() / 60)
+                                if dif_30_M > 38.0 or dif_30_M < 22.0:
+                          
+                                    error = [subject, visit, '30-mins post dose, Time', post_dose_30_form_field_instance,\
+                                             'The time selected should be less than 38 min and greater than 22 min after the study treatment administration', \
+                                                f'30-mins post dose, Time: {post_dose_30_pure} - dose time administration{time_dosing_miltefosine_administration}', 'VS1010']
+                                    lista_revision.append(error)
 
+                            except Exception as e:
+                                lista_logs.append(f'Revision VS1010 --> {e} - Subject: {subject},  Visit: {visit} ')  
+    
+
+                        # Revision VS1020
+                        if str(time_dosing_miltefosine_administration) != 'nan':
+                            
+                            try:
+                                dif_60_M = float((datetime.strptime(post_dose_60_pure, '%H:%M') - datetime.strptime(time_dosing_miltefosine_administration, '%H:%M')).total_seconds() / 60)
+                 
+                                if dif_60_M > 68.0 or dif_60_M < 52.0:
+                                    
+                                    error = [subject, visit, '60-mins post dose, Time', post_dose_60_form_field_instance,\
+                                             'The time selected should be less than 68 min and greater than 52 min after the study treatment administration', \
+                                                f'60-mins post dose, Time: {post_dose_60_pure} - dose time administration{time_dosing_miltefosine_administration}', 'VS1020']
+                                    lista_revision.append(error)
+
+                            except Exception as e:
+                                lista_logs.append(f'Revision VS1020 --> {e} - Subject: {subject},  Visit: {visit} ')  
+    
+
+                        # Revision VS1030
+                        if str(time_dosing_miltefosine_administration) != 'nan':
+                            
+                            try:
+                                dif_2H_M = float((datetime.strptime(post_dose_2H_pure, '%H:%M') - datetime.strptime(time_dosing_miltefosine_administration, '%H:%M')).total_seconds() / 60)
+                    
+                                if dif_2H_M > 135.0 or dif_2H_M < 105.0:
+                                    
+                                    error = [subject, visit, '2-hours post dose, Time', post_dose_2H_form_field_instance,\
+                                             'The time selected should be less than 2h15 and greater than 1h45 after the study treatment administration', \
+                                                f'2-hours post dose, Time: {post_dose_2H_pure} - dose time administration{time_dosing_miltefosine_administration}', 'VS1030']
+                                    lista_revision.append(error)
+
+                            except Exception as e:
+                                lista_logs.append(f'Revision VS1030 --> {e} - Subject: {subject},  Visit: {visit} ')  
+    
+
+                        # Revision VS1040
+                        if str(time_dosing_miltefosine_administration) != 'nan':
+                            
+                            try:
+                                dif_4H_M = float((datetime.strptime(post_dose_4H_pure, '%H:%M') - datetime.strptime(time_dosing_miltefosine_administration, '%H:%M')).total_seconds() / 60)
+                         
+                                if dif_4H_M > 255.0 or dif_4H_M < 225.0:
+                                    
+                                    error = [subject, visit, '4-hours post dose, Time', post_dose_4H_form_field_instance,\
+                                             'The time selected should be less than 4h15 and greater than 3h45 after the study treatment administration', \
+                                                f'4-hours post dose, Time: {post_dose_4H_pure} - dose time administration{time_dosing_miltefosine_administration}', 'VS1040']
+                                    lista_revision.append(error)
+
+                            except Exception as e:
+                                lista_logs.append(f'Revision VS1040 --> {e} - Subject: {subject},  Visit: {visit} ')
+    
+
+                        # Revision VS1050
+                        if str(time_dosing_miltefosine_administration) != 'nan':
+                            
+                            try:
+                                dif_8H_M = float((datetime.strptime(post_dose_8H_pure, '%H:%M') - datetime.strptime(time_dosing_miltefosine_administration, '%H:%M')).total_seconds() / 60)
+                        
+                                if dif_8H_M > 495.0 or dif_8H_M < 465.0:
+                                    
+                                    error = [subject, visit, '8-hours post dose, Time', post_dose_8H_form_field_instance,\
+                                             'The time selected should be less than 8h15 and greater than 7h45 after the study treatment administration', \
+                                                f'8-hours post dose, Time: {post_dose_8H_pure} - dose time administration{time_dosing_miltefosine_administration}', 'VS1050']
+                                    lista_revision.append(error)
+
+                            except Exception as e:
+                                lista_logs.append(f'Revision VS1050 --> {e} - Subject: {subject},  Visit: {visit} ')
+    
+
+                        # Revision VS1060
+                        if str(time_dosing_miltefosine_administration) != 'nan':
+                            
+                            try:
+                                dif_12H_M = float((datetime.strptime(post_dose_12H_pure, '%H:%M') - datetime.strptime(time_dosing_miltefosine_administration, '%H:%M')).total_seconds() / 60)
+                  
+                                if dif_12H_M > 735.0 or dif_12H_M < 705.0:
+                                    
+                                    error = [subject, visit, '12-hours post dose, Time', post_dose_12H_form_field_instance,\
+                                             'The time selected should be less than 12h15 and greater than 11h45 after the study treatment administration', \
+                                                f'12-hours post dose, Time: {post_dose_8H_pure} - dose time administration{time_dosing_miltefosine_administration}', 'VS1060']
+                                    lista_revision.append(error)
+
+                            except Exception as e:
+                                lista_logs.append(f'Revision VS1060 --> {e} - Subject: {subject},  Visit: {visit} ')
 
 
     excel_writer = load_workbook(path_excel_writer)

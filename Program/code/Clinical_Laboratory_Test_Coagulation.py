@@ -34,6 +34,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
     df_informed = df_root[df_root['name']=='Informed Consent']
     df_informed = df_informed[['Participante', 'Campo', 'Valor']]
     df_informed = df_informed[df_informed['Campo']=='Informed consent signature date']
+    df_informed = df_informed[['Participante',  'Valor']]
     df_informed = df_informed.rename(columns={'Participante':'Subject', 'Valor':'Informed_consent_date'})
 
     df_end_study_general = df_root[df_root['name']== 'End of Study Treatment (Miltefosine)']
@@ -71,6 +72,8 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer):
             pru = pru.merge(df_informed, on=['Subject'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
             pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
+            #print(pru)
+            # print('------------')
 
             for index, row in pru.iterrows():
                 subject = row['Subject']

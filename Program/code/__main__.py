@@ -59,6 +59,7 @@ if __name__ == '__main__':
     folder_path = os.path.join(script_directory.replace('\code', ''), relative_folder_path)
     file = os.listdir(folder_path)
     path = f"{folder_path}\{file[0]}"
+    print(path)
     current_date = datetime.now().strftime("%Y%m%d")
     
     df_root = pd.read_excel(path)

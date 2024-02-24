@@ -28,12 +28,13 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
     df_informed = df_root[df_root['name']=='Informed Consent']
     df_informed = df_informed[['Participante', 'Campo', 'Valor']]
     df_informed = df_informed[df_informed['Campo']=='Informed consent signature date']
+    df_informed = df_informed[['Participante',  'Valor']]
     df_informed = df_informed.rename(columns={'Participante':'Subject', 'Valor':'Informed_consent_date'})
 
     df_demographic = df_root[df_root['name']=='Demographics']
-    df_demographic = df_demographic[['Visit','Participante', 'Campo', 'Valor']]
+    df_demographic = df_demographic[['Participante', 'Campo', 'Valor']]
     df_demographic = df_demographic[df_demographic['Campo']=='Gender']
-    df_demographic = df_demographic[['Visit','Participante','Valor']]
+    df_demographic = df_demographic[['Participante','Valor']]
     df_demographic = df_demographic.rename(columns={'Participante':'Subject', 'Valor':'Genero'})
 
     df_end_study_general = df_root[df_root['name']== 'End of Study Treatment (Miltefosine)']
@@ -71,9 +72,12 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
             pru['status'] = pru_1['activityState'].unique()
             pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_informed, on=['Subject'], how='left')
-            pru = pru.merge(df_demographic, on=['Subject', 'Visit'], how='left')
+            pru = pru.merge(df_demographic, on=['Subject'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
             pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
+            # print(pru)
+            # print('----------------')
+
 
             for index, row in pru.iterrows():
                 status = row['status']
@@ -1090,7 +1094,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(Hematocrit_result_pure) > 38.0 or float(Hematocrit_result_pure) > 48.0:
+                                if float(Hematocrit_result_pure) < 38.0 or float(Hematocrit_result_pure) > 48.0:
                                     error = [subject, visit, 'Hematocrit, Out of normal range?', \
                                              Hematocrit_result_form_field_isntance,\
                                                 'According to the result, the value is out of range, please review. (38.0 - 48.0 )', \
@@ -1142,7 +1146,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         # Revision LBT0220 
                         if float(MCH_out_normal_pure) == 1.0:
                             if float(genero) == 1.0:
-                                if float(MCH_result_pure) > 86.0 and float(MCH_result_pure) < 96.0 :
+                                if float(MCH_result_pure) > 25.0 and float(MCH_result_pure) < 31.0 :
                                     error = [subject, visit, 'Mean Corpuscular Haemoglobin (MCH), Out of normal range?',
                                              MCH_result_form_field_instance,\
                                                 'According to the result, the value is not out of range, please review. (86.0 - 96.0)', \
@@ -1150,7 +1154,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(MCH_result_pure) > 86.0 and float(MCH_result_pure) < 96.0:
+                                if float(MCH_result_pure) > 25.0 and float(MCH_result_pure) < 31.0:
                                     error = [subject, visit, 'Mean Corpuscular Haemoglobin (MCH), Out of normal range? ',\
                                              MCH_result_form_field_instance,\
                                                 'According to the result, the value is not out of range, please review. (86.0 - 96.0)', \
@@ -1160,7 +1164,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         # Revision LBT0430
                         elif float(MCH_out_normal_pure) == 0.0:
                             if float(genero) == 1.0:
-                                if float(MCH_result_pure) < 86.0 or float(MCH_result_pure) > 96.0 :
+                                if float(MCH_result_pure) < 25.0 or float(MCH_result_pure) > 31.0 :
                                     error = [subject, visit, 'Mean Corpuscular Haemoglobin (MCH), Out of normal range? ',\
                                              MCH_result_form_field_instance,\
                                                 'According to the result, the value is out of range, please review. (86.0 - 96.0)', \
@@ -1168,7 +1172,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(MCH_result_pure) < 86.0 or float(MCH_result_pure) > 96.0:
+                                if float(MCH_result_pure) < 25.0 or float(MCH_result_pure) > 31.0:
                                     error = [subject, visit, 'Mean Corpuscular Haemoglobin (MCH), Out of normal range? ', \
                                              MCH_result_form_field_instance,\
                                                 'According to the result, the value is out of range, please review. (86.0 - 96.0)' , \
@@ -1181,18 +1185,18 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                         # Revision LBT0230
                         if float(MCHC_out_normal_pure) == 1.0:
                             if float(genero) == 1.0:
-                                if float(MCHC_result_pure) > 86.0 and float(MCHC_result_pure) < 96.0 :
+                                if float(MCHC_result_pure) > 32.0 and float(MCHC_result_pure) < 38.0 :
                                     error = [subject, visit, 'Mean Corpuscular Haemoglobin Concentration (MCHC), Out of normal range? ',\
                                              MCHC_result_form_field_instance,\
-                                                'According to the result, the value is not out of range, please review. (86.0 - 96.0 )', \
+                                                'According to the result, the value is not out of range, please review. (32.0 - 38.0 )', \
                                                     MCHC_result_disname, 'LBT0230']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(MCHC_result_pure) > 86.0 and float(MCHC_result_pure) < 96.0:
+                                if float(MCHC_result_pure) > 32.0 and float(MCHC_result_pure) < 38.0:
                                     error = [subject, visit, 'Mean Corpuscular Haemoglobin Concentration (MCHC), Out of normal range?',\
                                              MCHC_result_form_field_instance,\
-                                                'According to the result, the value is not out of range, please review. (86.0 - 96.0)', \
+                                                'According to the result, the value is not out of range, please review. (32.0 - 38.0)', \
                                                     MCHC_result_disname, 'LBT0230']
                                     lista_revision.append(error)
 
@@ -1207,7 +1211,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer):
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(MCHC_result_pure) < 32.0 or float(MCHC_result_pure) > 32.0:
+                                if float(MCHC_result_pure) < 32.0 or float(MCHC_result_pure) > 38.0:
                                     error = [subject, visit, 'Mean Corpuscular Haemoglobin Concentration (MCHC), Out of normal range?',\
                                              MCHC_result_form_field_instance,\
                                                 'According to the result, the value is out of range, please review. (32.0 - 38.0)',\

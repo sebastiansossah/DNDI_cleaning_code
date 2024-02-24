@@ -26,9 +26,9 @@ def eligibility(df_root, path_excel_writer):
 
 
     df_demographic_age = df_root[df_root['name']=='Demographics']
-    df_demographic_age = df_demographic_age[['Visit','Participante', 'Campo', 'Valor']]
+    df_demographic_age = df_demographic_age[['Participante', 'Campo', 'Valor']]
     df_demographic_age = df_demographic_age[df_demographic_age['Campo']=='Age at consent']
-    df_demographic_age = df_demographic_age[['Visit','Participante','Valor']]
+    df_demographic_age = df_demographic_age[['Participante','Valor']]
     df_demographic_age = df_demographic_age.rename(columns={'Participante':'Subject', 'Valor':'age_participant'})
 
     df_covid = df_root[df_root['name']=='Covid 19 testing']
@@ -37,9 +37,10 @@ def eligibility(df_root, path_excel_writer):
     df_covid = df_covid[['Visit','Participante','Valor']]
     df_covid = df_covid.rename(columns={'Participante':'Subject', 'Valor':'covid_result'})
 
+
     df_vein = df_root[df_root['name']=='Vein assessment']
     df_vein = df_vein[['Visit','Participante', 'Campo', 'Valor']]
-    df_vein = df_vein[df_vein['Campo']=='Result']
+    df_vein = df_vein[df_vein['Campo']=='Suitable veins for multiple venepunctures/cannulations found?']
     df_vein = df_vein[['Visit','Participante','Valor']]
     df_vein = df_vein.rename(columns={'Participante':'Subject', 'Valor':'vein_assesment'})
 
@@ -114,10 +115,17 @@ def eligibility(df_root, path_excel_writer):
     df_lead_egc_if_abnormal = df_lead_egc_if_abnormal[['Visit','Participante','Valor']]
     df_lead_egc_if_abnormal = df_lead_egc_if_abnormal.rename(columns={'Participante':'Subject', 'Valor':'abnormal_specify'})
 
+    # df_informed = df_root[df_root['name']=='Informed Consent']
+    # df_informed = df_informed[['Participante', 'Campo', 'Valor']]
+    # df_informed = df_informed[df_informed['Campo']=='Informed consent signature date']
+    # df_informed = df_informed.rename(columns={'Participante':'Subject'})
+
     df_informed = df_root[df_root['name']=='Informed Consent']
-    df_informed = df_informed[['Participante', 'Campo', 'Valor']]
+    df_informed = df_informed[['Visit','Participante', 'Campo', 'Valor']]
     df_informed = df_informed[df_informed['Campo']=='Informed consent signature date']
-    df_informed = df_informed.rename(columns={'Participante':'Subject'})
+    df_informed = df_informed[['Participante','Valor']]
+    df_informed = df_informed.rename(columns={'Participante':'Subject', 'Valor':'Informed_consent_date'})
+
 
     df_lead_egc_undefined = df_root[df_root['name']=='12-Lead ECG']
     df_lead_egc_undefined = df_lead_egc_undefined[['Visit','Participante', 'Campo', 'Valor']]
@@ -151,9 +159,9 @@ def eligibility(df_root, path_excel_writer):
             pru['Subject'] = sujeto
             pru['Visit'] = visita
             pru['status'] = pru_1['activityState'].unique()
-       
+
             pru = pru.merge(df_informed, on=['Subject'], how='left')
-            pru = pru.merge(df_demographic_age, on=['Subject', 'Visit'], how='left')
+            pru = pru.merge(df_demographic_age, on=['Subject'], how='left')
             pru = pru.merge(df_covid, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_vein, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_urinary, on=['Subject', 'Visit'], how='left')
@@ -170,10 +178,17 @@ def eligibility(df_root, path_excel_writer):
             pru = pru.merge(df_lead_egc_undefined, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
 
+            # if sujeto == '011002':
+            # print(pru)
+            # print('-------------------')
+
+
+
             lista_revision_I_E = []
 
-    
+      
             for index, row in pru.iterrows():
+                
                 status = row['status']
                 subject = row['Subject']
                 visit = row['Visit']
@@ -188,15 +203,18 @@ def eligibility(df_root, path_excel_writer):
                 HR_EGC = row['HR']
                 abnormal_specify = row['abnormal_specify']
                 QTCF = row['QTCF_undefined']
-                informed_consent_date = row['Valor']
+                informed_consent_date = row['Informed_consent_date']
                 hiv1_result = row['HIV1_result']
                 hiv2_result = row['HIV2_result']
                 hbsag_result = row['hbsag_result']
                 hcv_result = row['hcv_result']
-                
-                was_DV_performed = row['was_DV_performed']
-                was_DV_performed_pure = was_DV_performed.split('|')[0]
-                was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
+
+                try:
+                    was_DV_performed = row['was_DV_performed']
+                    was_DV_performed_pure = was_DV_performed.split('|')[0]
+                    was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
+                except:
+                    was_DV_performed_pure = math.nan
             
                 if status != '':
 
@@ -209,6 +227,7 @@ def eligibility(df_root, path_excel_writer):
                         subject_eligible_for_study_pure = math.nan
                         subject_eligible_for_study_form_field_instance = 'This field doesnt have any data'
                         subject_eligible_for_study_disname = 'Empty'
+                    
 
                     try:
                         participant_randomization = row['Is the participant eligible to randomization?']
@@ -310,6 +329,8 @@ def eligibility(df_root, path_excel_writer):
                         eligibility_specify_pure = math.nan
                         eligibility_specify_form_field_instance = 'This field doesnt have any data'
                         eligibility_specify_disname = 'Empty'
+                    
+
 
                     #---------------------------------------------------------------------------
                     # Revision GE0070
@@ -413,7 +434,7 @@ def eligibility(df_root, path_excel_writer):
                         # Revision para IE0350
                         try:
                             if float(subject_eligible_for_study_pure) == 1.0:
-                                if float(urinary_test) != 0.0:
+                                if float(urinary_test) == 1.0:
                                     error = [subject, visit, 'Is the subject eligible for the study?', subject_eligible_for_study_form_field_instance, \
                                             'The participant can not be eligible because he/she has trace/positive results in the urinary drug screen', subject_eligible_for_study_disname, 'IE0350']
                                     lista_revision.append(error)
@@ -613,7 +634,7 @@ def eligibility(df_root, path_excel_writer):
                         # Revision para IE0458
                         try:
                             if float(participant_randomization_pure) == 1.0:
-                                if float(HR_EGC) < 100.0 or float(HR_EGC) > 140.0:
+                                if float(HR_EGC) < 45.0 or float(HR_EGC) > 90.0:
                                     error = [subject, visit, 'Is the participant eligible to randomization?', participant_randomization_form_field_instance, \
                                             'The participant has a HR that is not between 45 and 90 bpm,he/she should not be eligible for randomization', HR_EGC, 'IE0458']
                                     lista_revision.append(error)

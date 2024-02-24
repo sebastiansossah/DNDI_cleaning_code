@@ -84,6 +84,8 @@ def pregnancy_test(df_root, path_excel_writer):
             pru = pru.merge(df_informed, on=['Subject'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
             pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
+            # print(pru)
+            # print('------------------')
 
             for index, row in pru.iterrows():
                 status = row['status']
@@ -241,7 +243,7 @@ def pregnancy_test(df_root, path_excel_writer):
                             lista_logs.append(f'Revision RP0060--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> RP0070
-                    if date_test_performed_pure != '':
+                    if date_test_performed_pure != '' and str(end_study_date) != 'nan':
                         try:
                             if datetime.strptime(str(date_test_performed_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
                                 pass

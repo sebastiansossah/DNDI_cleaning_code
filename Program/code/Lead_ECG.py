@@ -46,13 +46,20 @@ def lead_ECG(df_root, path_excel_writer):
     df_visit_done = df_visit_done[['Visit','Participante','Valor_completo']]
     df_visit_done = df_visit_done.rename(columns={'Participante':'Subject', 'Valor_completo':'was_DV_performed'})
 
-
     df_time_dosing1 = df_root[df_root['name']=='CpG ODN D35 Administration'].sort_values(by='FormFieldInstance Id')
     df_time_dosing1 = df_time_dosing1[(df_time_dosing1['Campo']=='Date of dosing') | (df_time_dosing1['Campo']=='Time of Dosing')]
     df_time_dosing = df_time_dosing1[df_time_dosing1['Campo']=='Date of dosing']
     df_time_dosing['time_dosing_cpg_administration'] =  df_time_dosing1[df_time_dosing1['FormFieldInstance Id'].isin(df_time_dosing['FormFieldInstance Id'] + 1) & (df_time_dosing1['Campo'] == 'Time of Dosing')]['Valor'].values
     df_time_dosing =df_time_dosing[['Participante','Valor', 'time_dosing_cpg_administration']]
     df_time_dosing = df_time_dosing.rename(columns={'Participante':'Subject', 'Valor':'date_ex_to_join'})
+
+    df_time_milteosine1 = df_root[df_root['name']== 'Miltefosine Administration'].sort_values(by='FormFieldInstance Id')
+    df_time_milteosine1 = df_time_milteosine1[(df_time_milteosine1['Campo']=='Date of dosing') | (df_time_milteosine1['Campo']=='Time of Dosing')]
+    df_time_milteosine = df_time_milteosine1[df_time_milteosine1['Campo']=='Date of dosing']
+    df_time_milteosine['time_dosing_miltefosine_administration'] =  df_time_milteosine1[df_time_milteosine1['FormFieldInstance Id'].isin(df_time_milteosine['FormFieldInstance Id'] + 1) & (df_time_milteosine1['Campo'] == 'Time of Dosing')]['Valor'].values
+    df_time_milteosine =df_time_milteosine[['Participante','Valor', 'time_dosing_miltefosine_administration']]
+    df_time_milteosine = df_time_milteosine.rename(columns={'Participante':'Subject', 'Valor':'date_ex_to_join'})
+
 
     lista_revision = []
     lista_logs = ['12-Lead ECG']
@@ -82,6 +89,10 @@ def lead_ECG(df_root, path_excel_writer):
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
             pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_time_dosing, on=['Subject', 'date_ex_to_join'], how='left')
+            pru = pru.merge(df_time_milteosine, on=['Subject', 'date_ex_to_join'], how='left')
+            # if sujeto =='011002':
+            #     print(pru)
+            #     print('---------------------------------------')
 
 
 
@@ -95,6 +106,7 @@ def lead_ECG(df_root, path_excel_writer):
                 was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
    
                 time_dosing_cpg_administration = row['time_dosing_cpg_administration']
+                time_dosing_miltefosine_administration = row['time_dosing_miltefosine_administration']
                 date_of_visit = row['Date_of_visit']
                 date_inform_consent = row['Informed_consent_date']
                 end_study_date = row['end_study_date']
@@ -1699,7 +1711,7 @@ def lead_ECG(df_root, path_excel_writer):
                     except Exception as e:
                         lista_logs.append(f'Revision LE0680--> {e} - Subject: {subject},  Visit: {visit} ')  
                     
-                    # -------------------------------------------- Time Revisions ---------------------------------------------------------------------------------------
+                    # -------------------------------------------- Time CPG ---------------------------------------------------------------------------------------
                     
                     # Revision LE0560
                     if str(time_dosing_cpg_administration) != 'nan':
@@ -1785,7 +1797,101 @@ def lead_ECG(df_root, path_excel_writer):
 
                         except Exception as e:
                             lista_logs.append(f'Revision LE0610 --> {e} - Subject: {subject},  Visit: {visit} ')  
+                    
+                    # -------------------------------------------- Time Miltefosine ---------------------------------------------------------------------------------------
 
+                   
+                    # Revision LE0560
+                    if str(time_dosing_miltefosine_administration) != 'nan':
+                            
+                        try: 
+                            dif_M = float((datetime.strptime(time_dosing_miltefosine_administration, '%H:%M') - datetime.strptime(predose_triplicate_1_time_pure, '%H:%M')).total_seconds() / 60)
+                
+                            if dif_M < 0.0 or dif_M > 60.0:
+                                    
+                                error = [subject, visit, 'Pre dose triplicate 1, Time 24 hrs', predose_triplicate_1_time_form_field_instance,\
+                                             'The time selected should be less than 60 min before the study treatment administration', \
+                                                f'Pre dose triplicate 1, Time 24 hrs: {predose_triplicate_1_time_pure} - dose time administration{time_dosing_miltefosine_administration}', 'LE0560']
+                                lista_revision.append(error)
+
+                        except Exception as e:
+                            lista_logs.append(f'Revision LE0560 --> {e} - Subject: {subject},  Visit: {visit} ')  
+                     
+                    # Revision LE0570
+                    if str(predose_triplicate_2_time_formated) != '' and str(predose_triplicate_1_time_formated) != '':
+                        try:
+                            dif_predose_2_M = float((predose_triplicate_2_time_formated - predose_triplicate_1_time_formated).total_seconds()/60) 
+                   
+                            if dif_predose_2_M < 0.0 or  dif_predose_2_M > 2.0:
+                                error = [subject, visit, 'Pre dose triplicate 2, Time 24 hrs', predose_triplicate_2_time_form_field_instance,\
+                                            'Pre dose triplicate 2 Time should be within 2 minutes after Pre dose triplicate 1, Time', f'{predose_triplicate_1_time_disname} - {predose_triplicate_2_time_disname}', 'LE0570']
+                                lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision LE0570--> {e} - Subject: {subject},  Visit: {visit} ')  
+
+                    # Revision LE0580
+                    if  str(predose_triplicate_2_time_formated) != '' and str(predose_triplicate_3_time_formated) != '':
+                        try:
+                            dif_3_M = float((predose_triplicate_3_time_formated - predose_triplicate_2_time_formated).total_seconds()/60)
+
+                            if dif_3_M <0.0 or  dif_3_M > 2.0:
+                                error = [subject, visit, 'Pre dose triplicate 3, Time 24 hrs', predose_triplicate_3_time_form_field_instance,\
+                                            'Pre dose triplicate 3 Time should be within 2 minutes after Pre dose triplicate 2, Time', f'{predose_triplicate_2_time_disname} - {predose_triplicate_3_time_disname}', 'LE0580']
+                                lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision LE0580--> {e} - Subject: {subject},  Visit: {visit} ')  
+                        
+
+                    # Revision LE0590
+                    if str(time_dosing_miltefosine_administration) != 'nan':
+                            
+                        try:
+                            dif_15_M = float((datetime.strptime(min_15_time_pure, '%H:%M') - datetime.strptime(time_dosing_miltefosine_administration, '%H:%M')).total_seconds() / 60)
+                   
+                            if dif_15_M > 23.0 or dif_15_M < 7.0:
+                                    
+                                error = [subject, visit, '15-min post dose, Time 24 hrs', min_15_time_form_field_instance,\
+                                             'The time selected should be less than 23min and greater than 7 min after the study treatment administration', \
+                                                f'15-min post dose, Time 24 hrs: {min_15_time_pure} - dose time administration{time_dosing_miltefosine_administration}', 'LE0590']
+                                lista_revision.append(error)
+
+                        except Exception as e:
+                            lista_logs.append(f'Revision LE0590 --> {e} - Subject: {subject},  Visit: {visit} ')  
+
+
+                    # Revision LE0600
+                    if str(time_dosing_miltefosine_administration) != 'nan':
+                            
+                        try:
+                            dif_30_M = float((datetime.strptime(min_30_time_pure, '%H:%M') - datetime.strptime(time_dosing_miltefosine_administration, '%H:%M')).total_seconds() / 60)
+     
+                            if dif_30_M > 38.0 or dif_30_M < 22.0:
+                                    
+                                error = [subject, visit, '30-min post dose, Time 24 hrs', min_30_time_form_field_instance,\
+                                             'The time selected should be less than 38 min and greater than 22 min after the study treatment administration', \
+                                                f'30-min post dose, Time 24 hrs: {min_30_time_pure} - dose time administration{time_dosing_miltefosine_administration}', 'LE0600']
+                                lista_revision.append(error)
+
+                        except Exception as e:
+                            lista_logs.append(f'Revision LE0600 --> {e} - Subject: {subject},  Visit: {visit} ')  
+
+
+                    # Revision LE0610
+                    if str(time_dosing_miltefosine_administration) != 'nan':
+                            
+                        try:
+                            dif_60_M = float((datetime.strptime(min_60_time_pure, '%H:%M') - datetime.strptime(time_dosing_miltefosine_administration, '%H:%M')).total_seconds() / 60)
+            
+                            if dif_60_M > 68.0 or dif_60_M < 52.0:
+                                    
+                                error = [subject, visit, '60-min post dose, Time 24 hrs', min_60_time_form_field_instance,\
+                                             'The time selected should be less than 38 min and greater than 22 min after the study treatment administration', \
+                                                f'60-min post dose, Time 24 hrs: {min_60_time_pure} - dose time administration{time_dosing_miltefosine_administration}', 'LE0610']
+                                lista_revision.append(error)
+
+                        except Exception as e:
+                            lista_logs.append(f'Revision LE0610 --> {e} - Subject: {subject},  Visit: {visit} ')  
+                    
 
     excel_writer = load_workbook(path_excel_writer)
     column_names = ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']

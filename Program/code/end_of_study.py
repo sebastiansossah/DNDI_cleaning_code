@@ -101,6 +101,8 @@ def end_of_study(df_root, path_excel_writer):
         pru = pru.merge(df_CPG_administration, on=['Subject'], how='left')
         pru = pru.merge(df_CPG_administration_max_date, on=['Subject'], how='left')
         pru = pru.merge(df_CPG_administration_max_date_visit, on=['Subject'], how='left')
+        # print(pru)
+        # print('--------------------')
         
         for index, row in pru.iterrows():
             status = row['status']
@@ -299,16 +301,17 @@ def end_of_study(df_root, path_excel_writer):
             
 
             # Revision ES0150
-            try:
-                if datetime.strptime(str(date_last_treatment_administration_CPG_pure), '%d-%b-%Y') != datetime.strptime(str(max_value_cpg_date), '%d-%b-%Y'):
-                    error = [subject, visit, 'Date of last study treatment administration (CpG ODN D35)', \
-                             date_last_treatment_administration_CPG_form_field_instance, \
-                            'The date must be equal to the greatest date in the CpG ODN D35 administration forms where the dose is different from 0', \
-                                f"{max_value_cpg_date} - {date_last_treatment_administration_CPG_pure}", 'ES0150']
-                    lista_revision.append(error)
-            except Exception as e:
+            if date_last_treatment_administration_CPG_pure != '':
+                try:
+                    if datetime.strptime(str(date_last_treatment_administration_CPG_pure), '%d-%b-%Y') != datetime.strptime(str(max_value_cpg_date).split(' ')[0],'%Y-%m-%d'):
+                        error = [subject, visit, 'Date of last study treatment administration (CpG ODN D35)', \
+                                date_last_treatment_administration_CPG_form_field_instance, \
+                                'The date must be equal to the greatest date in the CpG ODN D35 administration forms where the dose is different from 0', \
+                                    f"{max_value_cpg_date} - {date_last_treatment_administration_CPG_pure}", 'ES0150']
+                        lista_revision.append(error)
+                except Exception as e:
 
-                lista_logs.append(f'Revision ES0150 --> {e} - Subject: {subject},  Visit: {visit} ')
+                    lista_logs.append(f'Revision ES0150 --> {e} - Subject: {subject},  Visit: {visit} ')
 
             # Revision ES0160
             try:

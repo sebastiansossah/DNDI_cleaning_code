@@ -29,18 +29,19 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
     df_informed = df_root[df_root['name']=='Informed Consent']
     df_informed = df_informed[['Participante', 'Campo', 'Valor']]
     df_informed = df_informed[df_informed['Campo']=='Informed consent signature date']
+    df_informed = df_informed[['Participante','Valor']]   
     df_informed = df_informed.rename(columns={'Participante':'Subject', 'Valor':'Informed_consent_date'})
 
     df_demographic = df_root[df_root['name']=='Demographics']
-    df_demographic = df_demographic[['Visit','Participante', 'Campo', 'Valor']]
+    df_demographic = df_demographic[['Participante', 'Campo', 'Valor']]
     df_demographic = df_demographic[df_demographic['Campo']=='Gender']
-    df_demographic = df_demographic[['Visit','Participante','Valor']]
+    df_demographic = df_demographic[['Participante','Valor']]
     df_demographic = df_demographic.rename(columns={'Participante':'Subject', 'Valor':'Genero'})
 
     df_demographic_age = df_root[df_root['name']=='Demographics']
-    df_demographic_age = df_demographic_age[['Visit','Participante', 'Campo', 'Valor']]
+    df_demographic_age = df_demographic_age[['Participante', 'Campo', 'Valor']]
     df_demographic_age = df_demographic_age[df_demographic_age['Campo']=='Age at consent']
-    df_demographic_age = df_demographic_age[['Visit','Participante','Valor']]
+    df_demographic_age = df_demographic_age[['Participante','Valor']]
     df_demographic_age = df_demographic_age.rename(columns={'Participante':'Subject', 'Valor':'age_participant'})
 
     df_end_study_general = df_root[df_root['name']== 'End of Study Treatment (Miltefosine)']
@@ -76,10 +77,12 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer):
             pru['status'] = pru_1['activityState'].unique()
             pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_informed, on=['Subject'], how='left')
-            pru = pru.merge(df_demographic, on=['Subject', 'Visit'], how='left')
-            pru = pru.merge(df_demographic_age, on=['Subject', 'Visit'], how='left')
+            pru = pru.merge(df_demographic, on=['Subject'], how='left')
+            pru = pru.merge(df_demographic_age, on=['Subject'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
             pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
+            # print(pru)
+            # print('-----------------------')
 
             for index, row in pru.iterrows():
                 status = row['status']

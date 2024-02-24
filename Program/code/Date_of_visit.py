@@ -60,6 +60,8 @@ def date_of_visit(df_root, path_excel_writer):
             pru['status'] = pru_1['activityState'].unique()
             pru = pru.merge(df_informed, on=['Subject'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
+            # print(pru)
+            # print('--------------------')
 
 
             for index, row in pru.iterrows():

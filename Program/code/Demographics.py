@@ -54,7 +54,8 @@ def demographic(df_root, path_excel_writer):
             pru['status'] = pru_1['activityState'].unique()
             pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
-
+            # print(pru)
+            # print('---------------------')
             for index, row in pru.iterrows():
                 status = row['status']
 

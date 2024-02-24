@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from datetime import datetime
-from revision_fechas import revision_fecha
+from revision_fechas import revision_fecha, date_format
 from log_writer import log_writer
 import warnings
 pd.set_option('display.max_columns', None)
@@ -111,9 +111,10 @@ def prior_concomitant_medication(df_root, path_excel_writer):
             pru = pru.merge(df_adverse_start, on=['Subject', 'to_join_start'], how='left')
             pru = pru.merge(df_adverse_end, on=['Subject', 'to_join_end'], how='left')
             pru = pru.merge(df_adverse_aditional, on=['Subject', 'to_join_adverse_aditional'], how='left')
-
             pru = pru.merge(df_informed, on=['Subject'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
+            # print(pru)
+            # print('-----------------------')
 
 
             for index, row in pru.iterrows():
@@ -402,47 +403,53 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                         pass
 
                     # Revision -> CM0130
-                    try:
-                        if datetime.strptime(str(start_date_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
-                            pass
-                        else: 
-                            error = [subject, visit, 'Start Date', start_date_form_field_instance,\
-                                     'Start Date must be before the End of study/Early withdrawal date. ', start_date_form_field_instance, 'CM0130']
-                            lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision CM0130 --> {e} - Subject: {subject},  Visit: {visit}  ')
+                    if str(end_study_date) != 'nan':
+                         
+                        try:
+                            print(date_format(start_date_pure))
+                            if datetime.strptime(str(date_format(start_date_pure)), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
+                                pass
+                            else: 
+                                error = [subject, visit, 'Start Date', start_date_form_field_instance,\
+                                        'Start Date must be before the End of study/Early withdrawal date. ', start_date_form_field_instance, 'CM0130']
+                                lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision CM0130 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
                     # Revision CM0140
-                    try:
-                        if datetime.strptime(str(end_date_pure), '%d-%b-%Y') >= datetime.strptime(str(start_date_pure), '%d-%b-%Y'):
-                            pass
-                        else: 
-                            error = [subject, visit, 'End date', end_date_form_field_instance, \
-                                        'The date should be equal or greater than the start date', end_date_disname, 'CM0140']
-                            lista_revision.append(error)
-                    except Exception as e:
-                            lista_logs.append(f'Revision CM0140 --> {e} - Subject: {subject},  Visit: {visit} ')
+                    if end_date_pure != '' and start_date_pure != '':
+                        try:
+                            if datetime.strptime(str(end_date_pure), '%d-%b-%Y') >= datetime.strptime(str(start_date_pure), '%d-%b-%Y'):
+                                pass
+                            else: 
+                                error = [subject, visit, 'End date', end_date_form_field_instance, \
+                                            'The date should be equal or greater than the start date', end_date_disname, 'CM0140']
+                                lista_revision.append(error)
+                        except Exception as e:
+                                lista_logs.append(f'Revision CM0140 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> CM0150
-                    try:
-                        if datetime.strptime(str(end_date_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
-                            pass
-                        else: 
-                            error = [subject, visit, 'End Date', end_date_form_field_instance,\
-                                     'End Date must be before the End of study/Early withdrawal date. ', end_date_disname, 'CM0150']
-                            lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision CM0150 --> {e}  - Subject: {subject},  Visit: {visit} ')
+                    if str(end_study_date) != 'nan':
+                        try:
+                            if datetime.strptime(str(end_date_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
+                                pass
+                            else: 
+                                error = [subject, visit, 'End Date', end_date_form_field_instance,\
+                                        'End Date must be before the End of study/Early withdrawal date. ', end_date_disname, 'CM0150']
+                                lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision CM0150 --> {e}  - Subject: {subject},  Visit: {visit} ')
 
                     # Revision CM0160
-                    try:
-                        days_to_validate = datetime.strptime(str(end_date_pure), '%d-%b-%Y') - datetime.strptime(str(inform_consent_date), '%d-%b-%Y')
-                        if days_to_validate > 56 or days_to_validate < -56:
-                            error = [subject, visit, 'End date', end_date_form_field_instance, \
-                                        'The end date can not be more than 8 weeks before the inform consent date', end_date_disname, 'CM0160']
-                            lista_revision.append(error)
-                    except Exception as e:
-                            lista_logs.append(f'Revision CM0160 --> {e} - Subject: {subject},  Visit: {visit} ')
+                    if end_date_pure != '':
+                        try:
+                            days_to_validate = datetime.strptime(str(end_date_pure), '%d-%b-%Y') - datetime.strptime(str(inform_consent_date), '%d-%b-%Y')
+                            if days_to_validate > 56 or days_to_validate < -56:
+                                error = [subject, visit, 'End date', end_date_form_field_instance, \
+                                            'The end date can not be more than 8 weeks before the inform consent date', end_date_disname, 'CM0160']
+                                lista_revision.append(error)
+                        except Exception as e:
+                                lista_logs.append(f'Revision CM0160 --> {e} - Subject: {subject},  Visit: {visit} ')
 
 
     
