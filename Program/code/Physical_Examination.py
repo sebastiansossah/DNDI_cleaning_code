@@ -85,11 +85,8 @@ def physical_examination(df_root, path_excel_writer):
             pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_time_dosing, on=['Subject', 'date_ex_to_join'], how='left')
             pru = pru.merge(df_time_milteosine, on=['Subject', 'date_ex_to_join'], how='left')
-            # print('----------------------------')
-            # print(sujeto)
-            # print('----------------------------')
             # print(pru)
-            # print('------------------')
+            # print('----------------------')
 
             for index, row in pru.iterrows():
                 status = row['status']

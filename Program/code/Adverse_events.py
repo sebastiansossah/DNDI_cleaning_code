@@ -57,8 +57,23 @@ def adverse_events(df_root, path_excel_writer):
     df_administration_miltefosine = df_root[df_root['name']==  'Miltefosine Administration']
     df_administration_miltefosine = df_administration_miltefosine[['Visit','Participante', 'Campo', 'Valor']]
     df_administration_miltefosine = df_administration_miltefosine[df_administration_miltefosine['Campo'] == 'Date of dosing']
-    df_administration_miltefosine = df_administration_miltefosine[['Participante','Valor']]
+    df_administration_miltefosine['Valor'] = pd.to_datetime(df_administration_miltefosine['Valor'], format='%d-%b-%Y')
+    max_per_participante = df_administration_miltefosine.groupby('Participante')['Valor'].transform('min')
+    df_administration_miltefosine = df_administration_miltefosine[df_administration_miltefosine['Valor'] == max_per_participante]
+    df_administration_miltefosine['Valor'] = pd.to_datetime(df_administration_miltefosine['Valor']).dt.strftime('%d-%b-%Y').str.upper()
+    df_administration_miltefosine = df_administration_miltefosine[['Participante','Valor']].drop_duplicates()
     df_administration_miltefosine = df_administration_miltefosine.rename(columns={'Participante':'Subject', 'Valor':'date_dosing_miltefosine'})
+
+    # df_date_visit_maxima = df_root[df_root['name']== 'Date of visit']
+    # df_date_visit_maxima = df_date_visit_maxima[['Visit','Participante', 'Campo', 'Valor']]
+    # df_date_visit_maxima = df_date_visit_maxima[df_date_visit_maxima['Campo']== 'Visit Date']
+    # df_date_visit_maxima['Valor'] = pd.to_datetime(df_date_visit_maxima['Valor'], format='%d-%b-%Y')
+    # max_per_participante = df_date_visit_maxima.groupby('Participante')['Valor'].transform('max')
+    # df_date_visit_maxima = df_date_visit_maxima[df_date_visit_maxima['Valor'] == max_per_participante]
+    # df_date_visit_maxima['Valor'] = pd.to_datetime(df_date_visit_maxima['Valor']).dt.strftime('%d-%b-%Y').str.upper()
+    # df_date_visit_maxima = df_date_visit_maxima[['Participante', 'Valor' ]]
+    # df_date_visit_maxima = df_date_visit_maxima.rename(columns={'Participante':'Subject', 'Valor':'fecha_visita_maxima'})
+
 
     df_was_completed_cpg = df_root[df_root['name']=='End of Study Treatment (Miltefosine)']
     df_was_completed_cpg = df_was_completed_cpg[['Visit','Participante', 'Campo', 'Valor', 'Variable' ]]
@@ -124,13 +139,23 @@ def adverse_events(df_root, path_excel_writer):
     df_miltefosine_dose_mg = df_miltefosine_dose_mg[df_miltefosine_dose_mg['Variable'] == 'ECMLTDOS']
     df_miltefosine_dose_mg = df_miltefosine_dose_mg[df_miltefosine_dose_mg['Valor'].astype('float') != 0.0]
     df_miltefosine_dose_mg = df_miltefosine_dose_mg[['Participante', 'Valor']]
-    df_miltefosine_dose_mg = df_miltefosine_dose_mg.rename(columns={'Participante':'Subject', 'Valor':'miltefosine_dose_mg'})
+    df_miltefosine_dose_mg['miltefosine_dose_mg'] = df_miltefosine_dose_mg['Valor'].min()
+    df_miltefosine_dose_mg = df_miltefosine_dose_mg[['Participante' ,'miltefosine_dose_mg']].drop_duplicates()
+    df_miltefosine_dose_mg = df_miltefosine_dose_mg.rename(columns={'Participante':'Subject'})
+
+    # df_concomitant_medication = df_root[df_root['name']== 'Prior And Concomitant Medications']
+    # df_concomitant_medication = df_concomitant_medication[['Visit','Participante', 'Campo', 'Valor', 'Variable' ]]
+    # df_concomitant_medication = df_concomitant_medication[df_concomitant_medication['Variable'] == 'CMTRT']
+    # df_concomitant_medication = df_concomitant_medication[['Participante', 'Valor']].drop_duplicates()
+    # df_concomitant_medication = df_concomitant_medication.rename(columns={'Participante':'Subject', 'Valor':'concomitant_medication_name'})
 
     df_concomitant_medication = df_root[df_root['name']== 'Prior And Concomitant Medications']
     df_concomitant_medication = df_concomitant_medication[['Visit','Participante', 'Campo', 'Valor', 'Variable' ]]
-    df_concomitant_medication = df_concomitant_medication[df_concomitant_medication['Variable'] == 'CMTRT']
-    df_concomitant_medication = df_concomitant_medication[['Participante', 'Valor']]
-    df_concomitant_medication = df_concomitant_medication.rename(columns={'Participante':'Subject', 'Valor':'concomitant_medication_name'})
+    df_concomitant_medication = df_concomitant_medication[df_concomitant_medication['Variable'].isin(['CMTRT'])]
+    df_concomitant_medication['concomitant_medication_name'] = df_concomitant_medication.groupby('Participante')['Valor'].transform('count')
+    df_concomitant_medication = df_concomitant_medication[['Participante', 'concomitant_medication_name']].drop_duplicates()
+    df_concomitant_medication = df_concomitant_medication.rename(columns={'Participante':'Subject'})
+
 
     df_concomitant_procedures = df_root[df_root['name']== 'Prior And Concomitant Procedures']
     df_concomitant_procedures = df_concomitant_procedures[['Visit','Participante', 'Campo', 'Valor', 'Variable' ]]
@@ -150,11 +175,11 @@ def adverse_events(df_root, path_excel_writer):
     df_end_study_general_primary_reason = df_end_study_general_primary_reason[['Participante', 'Valor']]
     df_end_study_general_primary_reason = df_end_study_general_primary_reason.rename(columns={'Participante':'Subject', 'Valor':'end_study_general_primary_reason'})
 
-    df_end_study_general = df_root[df_root['name']== 'End of Study Treatment (Miltefosine)']
-    df_end_study_general = df_end_study_general[['Visit','Participante', 'Campo', 'Valor', 'Variable' ]]
-    df_end_study_general = df_end_study_general[df_end_study_general['Variable'] == 'DSDAT']
-    df_end_study_general = df_end_study_general[['Participante', 'Valor']]
-    df_end_study_general = df_end_study_general.rename(columns={'Participante':'Subject', 'Valor':'end_study_date'})
+    df_end_study_general_early = df_root[df_root['name']== 'End of Study Treatment (Miltefosine)']
+    df_end_study_general_early = df_end_study_general_early[['Visit','Participante', 'Campo', 'Valor', 'Variable' ]]
+    df_end_study_general_early = df_end_study_general_early[df_end_study_general_early['Variable'] == 'DSDAT']
+    df_end_study_general_early = df_end_study_general_early[['Participante', 'Valor']]
+    df_end_study_general_early = df_end_study_general_early.rename(columns={'Participante':'Subject', 'Valor':'end_study_date_early'})
 
     lista_revision = []
     lista_logs = ['Adverse Events']
@@ -189,21 +214,22 @@ def adverse_events(df_root, path_excel_writer):
             pru = pru.merge(df_medical_eligibility_date, on=['Subject'], how='left')
             pru = pru.merge(df_administration_CPG, on=['Subject'], how='left')
             pru = pru.merge(df_administration_miltefosine, on=['Subject'], how='left')
-            pru = pru.merge(df_was_completed_cpg, on=['Subject'], how='left')
+            pru = pru.merge(df_was_completed_cpg, on=['Subject'], how='left')  
             pru = pru.merge(df_was_completed_cpg_reason, on=['Subject'], how='left')
             pru = pru.merge(df_cpg_dosing_event_permanentely, on=['Subject'], how='left')
             pru = pru.merge(df_cpg_dosing_event_temporarily, on=['Subject'], how='left')
             pru = pru.merge(df_cpg_dose_mg, on=['Subject'], how='left')
-            pru = pru.merge(df_was_completed_miltefosine, on=['Subject'], how='left')
+            pru = pru.merge(df_was_completed_miltefosine, on=['Subject'], how='left') 
             pru = pru.merge(df_was_completed_miltefosine_reason, on=['Subject'], how='left')
             pru = pru.merge(df_miltefosine_dosing_event_permanentely, on=['Subject'], how='left')
-            pru = pru.merge(df_miltefosine_dosing_event_temporarily, on=['Subject'], how='left')
-            pru = pru.merge(df_miltefosine_dose_mg, on=['Subject'], how='left')
+            pru = pru.merge(df_miltefosine_dosing_event_temporarily, on=['Subject'], how='left') #
+            pru = pru.merge(df_miltefosine_dose_mg, on=['Subject'], how='left') #
             pru = pru.merge(df_concomitant_medication, on=['Subject'], how='left')
             pru = pru.merge(df_concomitant_procedures, on=['Subject'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
             pru = pru.merge(df_end_study_general_primary_reason, on=['Subject'], how='left')
-            pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
+            pru = pru.merge(df_end_study_general_early, on=['Subject'], how='left')
+
         
 
             for index, row in pru.iterrows():
@@ -231,7 +257,7 @@ def adverse_events(df_root, path_excel_writer):
                 concomitant_procedure_name = row['concomitant_procedure_name']
                 end_study_general = row['end_study_general']
                 end_study_general_primary_reason = row['end_study_general_primary_reason']
-                end_study_date = row['end_study_date']
+                end_study_date_early = row['end_study_date_early']
                 
 
                 #if status == 'DATA_ENTRY_COMPLETE':
@@ -266,7 +292,12 @@ def adverse_events(df_root, path_excel_writer):
                         start_date_pure = ''
                         start_date_form_field_instnace = 'This field does not have any data'
                         start_date_disname = 'Empty'
-                    
+                    # start_date = row['Start Date']
+                    # start_date_pure = str(start_date.split('|')[0]).split(' ')[0]
+                    # start_date_form_field_instnace = start_date.split('|')[1]
+                    # start_date_disname = start_date.split('|')[0]
+                    # print(start_date_pure)
+
                     try:
                         outcome = row['Outcome']
                         outcome_pure = outcome.split('|')[0]
@@ -405,6 +436,8 @@ def adverse_events(df_root, path_excel_writer):
                         sae_start_date_AE_became_serious_pure = ''
                         sae_start_date_AE_became_serious_form_field_instance = 'This field does not have any data'
                         sae_start_date_AE_became_serious_disname = 'Empty'
+                        # print(sae_start_date_AE_became_serious_pure)
+                        # print('------------------')
 
                     # ---------------------------------------------------------------------------------------
                     if start_date_pure == '':
@@ -489,52 +522,56 @@ def adverse_events(df_root, path_excel_writer):
                         lista_logs.append(f'Revision AE0050 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0060
-                    try:
-                        if datetime.strptime(str(end_date_pure), '%d-%b-%Y') >= datetime.strptime(str(start_date_pure), '%d-%b-%Y'):
-                            pass
-                        else:
-                            error = [subject, visit, 'End Date', end_date_form_field_instance, \
-                                    'The date should be equal or grater than the start date', \
-                                        end_date_disname, 'AE0060']
-                            lista_revision.append(error) 
-                    except Exception as e:
-                        lista_logs.append(f'Revision AE0050 --> {e} - Subject: {subject},  Visit: {visit} ')
+                    if str(end_date_pure) != 'nan' and str(end_date_pure) != '':
+                        try:
+                            if datetime.strptime(str(end_date_pure), '%d-%b-%Y') >= datetime.strptime(str(start_date_pure), '%d-%b-%Y'):
+                                pass
+                            else:
+                                error = [subject, visit, 'End Date', end_date_form_field_instance, \
+                                        'The date should be equal or grater than the start date', \
+                                            end_date_disname, 'AE0060']
+                                lista_revision.append(error) 
+                        except Exception as e:
+                            lista_logs.append(f'Revision AE0060 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> AE0070
-                    try:
-                        if datetime.strptime(str(end_date_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
-                            pass
-                        else: 
-                            error = [subject, visit, 'End Date', end_date_form_field_instance,\
-                                     'End Date must be before the End of study/Early withdrawal date. ', end_date_disname, 'AE0070']
-                            lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision AE0070 --> {e} - Subject: {subject},  Visit: {visit} ')
-                    
+                    if str(end_date_pure) != 'nan' and str(end_date_pure) != '':
+                        try:
+                            if datetime.strptime(str(end_date_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date_early), '%d-%b-%Y'):
+                                pass
+                            else: 
+                                error = [subject, visit, 'End Date', end_date_form_field_instance,\
+                                        'End Date must be before the End of study/Early withdrawal date. ', end_date_disname, 'AE0070']
+                                lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision AE0070 --> {e} - Subject: {subject},  Visit: {visit} ')
+                        
                     # Revision AE0100
-                    try:
-                        if datetime.strptime(str(sae_start_date_AE_became_serious_pure), '%d-%b-%Y') >= datetime.strptime(str(start_date_pure), '%d-%b-%Y'):
-                            pass
-                        else:
-                            error = [subject, visit, 'SAE Start date (AE became serious)', sae_start_date_AE_became_serious_form_field_instance, \
-                                    'The date must be the equal or later than the adverse event start date. ', \
-                                        sae_start_date_AE_became_serious_disname, 'AE0100']
-                            lista_revision.append(error) 
-                    except Exception as e:
-                        lista_logs.append(f'Revision AE0100 --> {e} - Subject: {subject},  Visit: {visit} ')
+                    if str(sae_start_date_AE_became_serious_pure) != 'nan' and str(sae_start_date_AE_became_serious_pure) != '':                            
+                        try:
+                            if datetime.strptime(str(sae_start_date_AE_became_serious_pure), '%d-%b-%Y') >= datetime.strptime(str(start_date_pure), '%d-%b-%Y'):
+                                pass
+                            else:
+                                error = [subject, visit, 'SAE Start date (AE became serious)', sae_start_date_AE_became_serious_form_field_instance, \
+                                        'The date must be the equal or later than the adverse event start date. ', \
+                                            sae_start_date_AE_became_serious_disname, 'AE0100']
+                                lista_revision.append(error) 
+                        except Exception as e:
+                            lista_logs.append(f'Revision AE0100 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0120
-                    try:
-                        if datetime.strptime(str(start_date_pure), '%d-%b-%Y') <= datetime.strptime(str(date_dosing_CPG), '%d-%b-%Y'):
-                            if float(causal_relation_cpg_pure) != 1.0:
-                                error = [subject, visit, 'Causal relationship with study treatment (CPG ODN D35)', causal_relation_cpg_form_field_instance, \
-                                    'The AE started before the first administration of CpG ODN D35, therefore the causal relationship can not be different from "Not Related"', \
-                                        causal_relation_cpg_disname, 'AE0120']
-                                lista_revision.append(error) 
-                            else:
-                                pass
-                    except Exception as e:
-                        lista_logs.append(f'Revision AE0120 --> {e} - Subject: {subject},  Visit: {visit} ')
+                    if str(date_dosing_CPG) != 'nan' and str(date_dosing_CPG) != '':       
+                        try:
+                            if datetime.strptime(str(start_date_pure), '%d-%b-%Y') <= datetime.strptime(str(date_dosing_CPG), '%d-%b-%Y'):
+                                if float(causal_relation_cpg_pure) != 1.0:
+                                    error = [subject, visit, 'Causal relationship with study treatment (CPG ODN D35)', causal_relation_cpg_form_field_instance, \
+                                        'The AE started before the first administration of CpG ODN D35, therefore the causal relationship can not be different from "Not Related"', \
+                                            causal_relation_cpg_disname, 'AE0120']
+                                    lista_revision.append(error) 
+                                else:
+                                    pass
+                        except Exception as e:
+                            lista_logs.append(f'Revision AE0120 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision AE0130
                     try:
@@ -550,112 +587,120 @@ def adverse_events(df_root, path_excel_writer):
                         lista_logs.append(f'Revision AE0130 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0140
-                    try:
-                        if datetime.strptime(str(start_date_pure), '%d-%b-%Y') <= datetime.strptime(str(date_dosing_CPG), '%d-%b-%Y'):
-                            if float(actions_taken_cpg_pure) != 5.0:
-                                error = [subject, visit, 'Action taken with study treatment (CPG ODN D35)', actions_taken_cpg_form_field_instance, \
-                                    'The AE started before the first administration of CpG ODN D35, therefore the action taken can not be different from "not applicable"', \
-                                        actions_taken_cpg_disname, 'AE0140']
-                                lista_revision.append(error) 
-                            else:
-                                pass
-                    except Exception as e:
-                        lista_logs.append(f'Revision AE0140 --> {e} - Subject: {subject},  Visit: {visit} ')
+                    if str(date_dosing_CPG) != 'nan' and str(date_dosing_CPG) != '':    
+                        try:
+                            if datetime.strptime(str(start_date_pure), '%d-%b-%Y') <= datetime.strptime(str(date_dosing_CPG), '%d-%b-%Y'):
+                                if float(actions_taken_cpg_pure) != 5.0:
+                                    error = [subject, visit, 'Action taken with study treatment (CPG ODN D35)', actions_taken_cpg_form_field_instance, \
+                                        'The AE started before the first administration of CpG ODN D35, therefore the action taken can not be different from "not applicable"', \
+                                            actions_taken_cpg_disname, 'AE0140']
+                                    lista_revision.append(error) 
+                                else:
+                                    pass
+                        except Exception as e:
+                            lista_logs.append(f'Revision AE0140 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0150
-                    try:
-                        if datetime.strptime(str(start_date_pure), '%d-%b-%Y') <= datetime.strptime(str(date_dosing_miltefosine), '%d-%b-%Y'):
-                            if float(actions_taken_miltefosine_pure) != 5.0:
-                                error = [subject, visit, 'Action taken with study treatment (Miltefosine)', actions_taken_miltefosine_form_field_instance, \
-                                    'The AE started before the first administration of Miltefosine, therefore the action taken can not be different from "not applicable"', \
-                                        actions_taken_miltefosine_disname, 'AE0150']
-                                lista_revision.append(error) 
-                            else:
-                                pass
-                    except Exception as e:
-                        lista_logs.append(f'Revision AE0150 --> {e} - Subject: {subject},  Visit: {visit} ')
+                    if isinstance(actions_taken_miltefosine_pure, (int, float, complex)):
+                        try:
+                            if datetime.strptime(str(start_date_pure), '%d-%b-%Y') <= datetime.strptime(str(date_dosing_miltefosine), '%d-%b-%Y'):
+                                if float(actions_taken_miltefosine_pure) != 5.0:
+                                    error = [subject, visit, 'Action taken with study treatment (Miltefosine)', actions_taken_miltefosine_form_field_instance, \
+                                        'The AE started before the first administration of Miltefosine, therefore the action taken can not be different from "not applicable"', \
+                                            actions_taken_miltefosine_disname, 'AE0150']
+                                    lista_revision.append(error) 
+                                else:
+                                    pass
+                        except Exception as e:
+                            lista_logs.append(f'Revision AE0150 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0160
-                    try:
-                        if datetime.strptime(str(end_date_pure), '%d-%b-%Y') <= datetime.strptime(str(date_dosing_CPG), '%d-%b-%Y'):
-                            if float(actions_taken_cpg_pure) != 5.0:
-                                error = [subject, visit, 'Action taken with study treatment (CPG ODN D35)', actions_taken_cpg_form_field_instance, \
-                                    'The AE ended before the first administration of CpG ODN D35, therefore the action taken can not be different from "not applicable"', \
-                                        actions_taken_cpg_disname, 'AE0160']
-                                lista_revision.append(error) 
-                            else:
-                                pass
-                    except Exception as e:
-                        lista_logs.append(f'Revision AE0160 --> {e} - Subject: {subject},  Visit: {visit} ')
+                    if str(date_dosing_CPG) != 'nan' and str(date_dosing_CPG) != '':    
+                        try:
+                            if datetime.strptime(str(end_date_pure), '%d-%b-%Y') <= datetime.strptime(str(date_dosing_CPG), '%d-%b-%Y'):
+                                if float(actions_taken_cpg_pure) != 5.0:
+                                    error = [subject, visit, 'Action taken with study treatment (CPG ODN D35)', actions_taken_cpg_form_field_instance, \
+                                        'The AE ended before the first administration of CpG ODN D35, therefore the action taken can not be different from "not applicable"', \
+                                            actions_taken_cpg_disname, 'AE0160']
+                                    lista_revision.append(error) 
+                                else:
+                                    pass
+                        except Exception as e:
+                            lista_logs.append(f'Revision AE0160 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0170
-                    try:
-                        if datetime.strptime(str(end_date_pure), '%d-%b-%Y') <= datetime.strptime(str(date_dosing_miltefosine), '%d-%b-%Y'):
-                            if float(actions_taken_miltefosine_pure) != 5.0:
-                                error = [subject, visit, 'Action taken with study treatment (Miltefosine)', actions_taken_miltefosine_form_field_instance, \
-                                    'The AE ended before the first administration of Miltefosine, therefore the action taken can not be different from "not applicable"', \
-                                        actions_taken_miltefosine_disname, 'AE0170']
-                                lista_revision.append(error) 
-                            else:
-                                pass
-                    except Exception as e:
-                        lista_logs.append(f'Revision AE0170 --> {e} - Subject: {subject},  Visit: {visit} ')
+                    if str(end_date_pure) != 'nan' and str(end_date_pure) != '' and str(date_dosing_miltefosine) != 'nan' and str(date_dosing_miltefosine) != '':    
+                        try:
+                            if datetime.strptime(str(end_date_pure), '%d-%b-%Y') <= datetime.strptime(str(date_dosing_miltefosine), '%d-%b-%Y'):
+                                if float(actions_taken_miltefosine_pure) != 5.0:
+                                    error = [subject, visit, 'Action taken with study treatment (Miltefosine)', actions_taken_miltefosine_form_field_instance, \
+                                        'The AE ended before the first administration of Miltefosine, therefore the action taken can not be different from "not applicable"', \
+                                            actions_taken_miltefosine_disname, 'AE0170']
+                                    lista_revision.append(error) 
+                                else:
+                                    pass
+                        except Exception as e:
+                            lista_logs.append(f'Revision AE0170 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision AE0180
-                    try:
-                        if datetime.strptime(str(start_date_pure), '%d-%b-%Y') <= datetime.strptime(str(date_dosing_CPG), '%d-%b-%Y'):
-                            if end_date_pure == '':
-                                if float(actions_taken_cpg_pure) == 5.0:
-                                    error = [subject, visit, 'Action taken with study treatment (CPG ODN D35)', actions_taken_cpg_form_field_instance, \
-                                        'The AE started before the first administration of CpG ODN D35, but its ongoing therefore the action taken can not be "not applicable"', \
-                                            actions_taken_cpg_disname, 'AE0180']
-                                    lista_revision.append(error) 
-                                else:
-                                    pass
-                    except Exception as e:
-                        lista_logs.append(f'Revision AE0180 --> {e} - Subject: {subject},  Visit: {visit} ') 
+                    if str(date_dosing_CPG) != 'nan' and str(date_dosing_CPG) != '':    
+                        try:
+                            if datetime.strptime(str(start_date_pure), '%d-%b-%Y') <= datetime.strptime(str(date_dosing_CPG), '%d-%b-%Y'):
+                                if end_date_pure == '':
+                                    if float(actions_taken_cpg_pure) == 5.0:
+                                        error = [subject, visit, 'Action taken with study treatment (CPG ODN D35)', actions_taken_cpg_form_field_instance, \
+                                            'The AE started before the first administration of CpG ODN D35, but its ongoing therefore the action taken can not be "not applicable"', \
+                                                actions_taken_cpg_disname, 'AE0180']
+                                        lista_revision.append(error) 
+                                    else:
+                                        pass
+                        except Exception as e:
+                            lista_logs.append(f'Revision AE0180 --> {e} - Subject: {subject},  Visit: {visit} ') 
 
                     # Revision AE0190
-                    try:
-                        if datetime.strptime(str(end_date_pure), '%d-%b-%Y') <= datetime.strptime(str(date_dosing_miltefosine), '%d-%b-%Y'):
-                            if end_date_pure == '':
-                                if float(actions_taken_miltefosine_pure) == 5.0:
-                                    error = [subject, visit, 'Action taken with study treatment (Miltefosine)', actions_taken_miltefosine_form_field_instance, \
-                                        'The AE started before the first administration of Miltefosine but its ongoing, therefore the action taken can not be "not applicable"', \
-                                            actions_taken_miltefosine_disname, 'AE0190']
-                                    lista_revision.append(error) 
-                                else:
-                                    pass
-                    except Exception as e:
-                        lista_logs.append(f'Revision AE0190 --> {e} - Subject: {subject},  Visit: {visit} ')
+                    if str(end_date_pure) != 'nan' and str(end_date_pure) != '' and str(date_dosing_miltefosine) != 'nan' and str(date_dosing_miltefosine) != '':    
+                        try:
+                            if datetime.strptime(str(end_date_pure), '%d-%b-%Y') <= datetime.strptime(str(date_dosing_miltefosine), '%d-%b-%Y'):
+                                if end_date_pure == '':
+                                    if float(actions_taken_miltefosine_pure) == 5.0:
+                                        error = [subject, visit, 'Action taken with study treatment (Miltefosine)', actions_taken_miltefosine_form_field_instance, \
+                                            'The AE started before the first administration of Miltefosine but its ongoing, therefore the action taken can not be "not applicable"', \
+                                                actions_taken_miltefosine_disname, 'AE0190']
+                                        lista_revision.append(error) 
+                                    else:
+                                        pass
+                        except Exception as e:
+                            lista_logs.append(f'Revision AE0190 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0200
-                    try:
-                        if datetime.strptime(str(start_date_pure), '%d-%b-%Y') <= datetime.strptime(str(date_dosing_CPG), '%d-%b-%Y'):
-                            if datetime.strptime(str(end_date_pure), '%d-%b-%Y') >= datetime.strptime(str(date_dosing_CPG), '%d-%b-%Y'):
-                                if float(actions_taken_cpg_pure) == 5.0:
-                                    error = [subject, visit, 'Action taken with study treatment (CPG ODN D35)', actions_taken_cpg_form_field_instance, \
-                                        'The first administration of CpG ODN D35 was done during the AE, therefore the action taken can not be "not applicable"', \
-                                            actions_taken_cpg_disname, 'AE0200']
-                                    lista_revision.append(error) 
-                                else:
-                                    pass
-                    except Exception as e:
-                        lista_logs.append(f'Revision AE0200 --> {e} - Subject: {subject},  Visit: {visit} ') 
+                    if str(date_dosing_CPG) != 'nan' and str(date_dosing_CPG) != '':    
+                        try:
+                            if datetime.strptime(str(start_date_pure), '%d-%b-%Y') <= datetime.strptime(str(date_dosing_CPG), '%d-%b-%Y'):
+                                if datetime.strptime(str(end_date_pure), '%d-%b-%Y') >= datetime.strptime(str(date_dosing_CPG), '%d-%b-%Y'):
+                                    if float(actions_taken_cpg_pure) == 5.0:
+                                        error = [subject, visit, 'Action taken with study treatment (CPG ODN D35)', actions_taken_cpg_form_field_instance, \
+                                            'The first administration of CpG ODN D35 was done during the AE, therefore the action taken can not be "not applicable"', \
+                                                actions_taken_cpg_disname, 'AE0200']
+                                        lista_revision.append(error) 
+                                    else:
+                                        pass
+                        except Exception as e:
+                            lista_logs.append(f'Revision AE0200 --> {e} - Subject: {subject},  Visit: {visit} ') 
 
                     # Revision AE0210
-                    try:
-                        if datetime.strptime(str(start_date_pure), '%d-%b-%Y') <= datetime.strptime(str(date_dosing_miltefosine), '%d-%b-%Y'):
-                            if datetime.strptime(str(end_date_pure), '%d-%b-%Y') >= datetime.strptime(str(date_dosing_miltefosine), '%d-%b-%Y'):
-                                if float(actions_taken_miltefosine_pure) == 5.0:
-                                    error = [subject, visit, 'Action taken with study treatment (Miltefosine)', actions_taken_miltefosine_form_field_instance, \
-                                        'The AE started before the first administration of Miltefosine but its ongoing, therefore the action taken can not be "not applicable"', \
-                                            actions_taken_miltefosine_disname, 'AE0210']
-                                    lista_revision.append(error) 
-                                else:
-                                    pass
-                    except Exception as e:
-                        lista_logs.append(f'Revision AE0210 --> {e} - Subject: {subject},  Visit: {visit} ')
+                    if str(date_dosing_miltefosine) != 'nan' and str(date_dosing_miltefosine) != '' and str(end_date_pure) != 'nan' and str(end_date_pure) != '':     
+                        try:
+                            if datetime.strptime(str(start_date_pure), '%d-%b-%Y') <= datetime.strptime(str(date_dosing_miltefosine), '%d-%b-%Y'):
+                                if datetime.strptime(str(end_date_pure), '%d-%b-%Y') >= datetime.strptime(str(date_dosing_miltefosine), '%d-%b-%Y'):
+                                    if float(actions_taken_miltefosine_pure) == 5.0:
+                                        error = [subject, visit, 'Action taken with study treatment (Miltefosine)', actions_taken_miltefosine_form_field_instance, \
+                                            'The AE started before the first administration of Miltefosine but its ongoing, therefore the action taken can not be "not applicable"', \
+                                                actions_taken_miltefosine_disname, 'AE0210']
+                                        lista_revision.append(error) 
+                                    else:
+                                        pass
+                        except Exception as e:
+                            lista_logs.append(f'Revision AE0210 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0220
                     try:
@@ -737,81 +782,90 @@ def adverse_events(df_root, path_excel_writer):
                         lista_logs.append(f'Revision AE0280 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0290
-                    try:
-                        if float(actions_taken_miltefosine_pure) == 4.0:
-                            if float(was_completed_miltefosine) ==1.0:
-                                error = [subject, visit, 'Action taken with study treatment (Miltefosine)', actions_taken_miltefosine_form_field_instance, \
-                                        'If Action taken with study treatment (CPG ODN D35) is Dose Reduced, on the CPG ODN D35 study treatment administration form at least one Dose  should be different from 0 and with Reason for dose adjustment reported as Adverse event.', \
-                                            actions_taken_miltefosine_disname, 'AE0290']
-                                lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision AE0290 --> {e} - Subject: {subject},  Visit: {visit} ')
+                    if str(was_completed_miltefosine) == 'nan' and str(was_completed_miltefosine) == '':
+                        try:
+                            if float(actions_taken_miltefosine_pure) == 4.0:
+                                if float(was_completed_miltefosine) ==1.0:
+                                    error = [subject, visit, 'Action taken with study treatment (Miltefosine)', actions_taken_miltefosine_form_field_instance, \
+                                            'If Action taken with study treatment (CPG ODN D35) is Dose Reduced, on the CPG ODN D35 study treatment administration form at least one Dose  should be different from 0 and with Reason for dose adjustment reported as Adverse event.', \
+                                                actions_taken_miltefosine_disname, 'AE0290']
+                                    lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision AE0290 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0300
-                    try:
-                        if float(actions_taken_miltefosine_pure) == 4.0:
-                            if float(was_completed_miltefosine_reason) != 2.0:
-                                error = [subject, visit, 'Action taken with study treatment (Miltefosine)', actions_taken_miltefosine_form_field_instance, \
-                                        'If Action taken with study treatment (Miltefosine) is CT drug stopped (permanently) , on the end of study form, the "Primary reason for not completing the Miltefosine study treatment" should be "SAE or intolerable AE." ', \
-                                            actions_taken_miltefosine_disname, 'AE0300']
-                                lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision AE0300 --> {e} - Subject: {subject},  Visit: {visit} ')
+                    if str(was_completed_miltefosine) == 'nan' and str(was_completed_miltefosine) == '':
+                        try:
+                            if float(actions_taken_miltefosine_pure) == 4.0:
+                                if float(was_completed_miltefosine_reason) != 2.0:
+                                    error = [subject, visit, 'Action taken with study treatment (Miltefosine)', actions_taken_miltefosine_form_field_instance, \
+                                            'If Action taken with study treatment (Miltefosine) is CT drug stopped (permanently) , on the end of study form, the "Primary reason for not completing the Miltefosine study treatment" should be "SAE or intolerable AE." ', \
+                                                actions_taken_miltefosine_disname, 'AE0300']
+                                    lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision AE0300 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0310
-                    try:
-                        if float(actions_taken_miltefosine_pure) == 4.0:
-                            if float(miltefosine_dosing_event_permanentely) != 3.0:
-                                error = [subject, visit, 'Action taken with study treatment (Miltefosine)', actions_taken_miltefosine_form_field_instance, \
-                                        'If Action taken with study treatment (Miltefosine) is CT drug stopped (permanently) , on the Miltefosine study treatment administration form there should be at least one Dosing Event as permanently discontinued and with reason for dose adjustment as Adverse event', \
-                                            actions_taken_miltefosine_disname, 'AE0310']
-                                lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision AE0310 --> {e} - Subject: {subject},  Visit: {visit} ')
+                    if str(miltefosine_dosing_event_permanentely) == 'nan' and str(miltefosine_dosing_event_permanentely) == '':
+                        try:
+                            if float(actions_taken_miltefosine_pure) == 4.0:
+                                if float(miltefosine_dosing_event_permanentely) != 3.0:
+                                    error = [subject, visit, 'Action taken with study treatment (Miltefosine)', actions_taken_miltefosine_form_field_instance, \
+                                            'If Action taken with study treatment (Miltefosine) is CT drug stopped (permanently) , on the Miltefosine study treatment administration form there should be at least one Dosing Event as permanently discontinued and with reason for dose adjustment as Adverse event', \
+                                                actions_taken_miltefosine_disname, 'AE0310']
+                                    lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision AE0310 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0320
-                    try:
-                        if float(actions_taken_miltefosine_pure) == 3.0:
-                            if float(miltefosine_dosing_event_temporarily) != 2.0:
-                                error =  [subject, visit, 'Action taken with study treatment (Miltefosine)', actions_taken_miltefosine_form_field_instance, \
-                                        'Action taken with study treatment (Miltefosine) is CT drug stopped (temporarily) and there is no Miltefosine study treatment administration records with Dosing Event equals to Temporarily discontinued with Reason for dose adjustment reported Adverse event.', \
-                                            actions_taken_miltefosine_disname, 'AE0320']
-                                lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision AE0320 --> {e} - Subject: {subject},  Visit: {visit} ')
+                    if str(miltefosine_dosing_event_temporarily) == 'nan' and str(miltefosine_dosing_event_temporarily) == '':
+                        try:
+                            if float(actions_taken_miltefosine_pure) == 3.0:
+                                if float(miltefosine_dosing_event_temporarily) != 2.0:
+                                    error =  [subject, visit, 'Action taken with study treatment (Miltefosine)', actions_taken_miltefosine_form_field_instance, \
+                                            'Action taken with study treatment (Miltefosine) is CT drug stopped (temporarily) and there is no Miltefosine study treatment administration records with Dosing Event equals to Temporarily discontinued with Reason for dose adjustment reported Adverse event.', \
+                                                actions_taken_miltefosine_disname, 'AE0320']
+                                    lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision AE0320 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0330
-                    try:
-                        if float(actions_taken_miltefosine_pure) == 2.0:
-                            if math.isnan(float(miltefosine_dose_mg)):
-                                error = [subject, visit, 'Action taken with study treatment (Miltefosine)', actions_taken_miltefosine_form_field_instance, \
-                                        'Action taken with study treatment (Miltefosine) is Dose Reduced and there is no Miltefosine study treatment administration records with Dose different from 0 with Reason for dose adjustment reported Adverse event.', \
-                                            actions_taken_miltefosine_disname, 'AE0330']
-                                lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision AE0330 --> {e} - Subject: {subject},  Visit: {visit} ')
+                    if isinstance(actions_taken_miltefosine_pure, (int, float, complex)):
+                        try:
+                            if float(actions_taken_miltefosine_pure) == 2.0:
+                                if math.isnan(float(miltefosine_dose_mg)):
+                                    error = [subject, visit, 'Action taken with study treatment (Miltefosine)', actions_taken_miltefosine_form_field_instance, \
+                                            'Action taken with study treatment (Miltefosine) is Dose Reduced and there is no Miltefosine study treatment administration records with Dose different from 0 with Reason for dose adjustment reported Adverse event.', \
+                                                actions_taken_miltefosine_disname, 'AE0330']
+                                    lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision AE0330 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0340
-                    try:
-                        if float(other_action_taken_pure) == 2.0:
-                            if math.isnan(float(concomitant_medication_name)):
-                                error = [subject, visit, 'Other action taken', other_action_taken_form_field_instance, \
-                                        'If Other action taken="Concomitant medication" at least one concomitant medication form must be completed', \
-                                            other_action_taken_disname, 'AE0340']
-                                lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision AE0340 --> {e} - Subject: {subject},  Visit: {visit} ')
+                    if isinstance(other_action_taken_pure, (int, float, complex)):
+                        try:
+                            if float(other_action_taken_pure) == 2.0:
+                                # if str(concomitant_medication_name) != 'nan' and str(concomitant_medication_name) != '':
+                                if float(concomitant_medication_name) == 0.0 or math.isnan(float(concomitant_medication_name)):
+
+                                    error = [subject, visit, 'Other action taken', other_action_taken_form_field_instance, \
+                                            'If Other action taken="Concomitant medication" at least one concomitant medication form must be completed', \
+                                                other_action_taken_disname, 'AE0340']
+                                    lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision AE0340 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision AE0350
-                    try:
-                        if float(other_action_taken_pure) == 3.0:
-                            if math.isnan(float(concomitant_procedure_name)):
-                                error = [subject, visit, 'Other action taken', other_action_taken_form_field_instance, \
-                                        'If Other action taken="Concomitant procedure" at least one concomitant procedure form must be completed', \
-                                            other_action_taken_disname, 'AE0350']
-                                lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision AE0350 --> {e} - Subject: {subject},  Visit: {visit} ')
+                    if isinstance(other_action_taken_pure, (int, float, complex)):
+                        try:
+                            if float(other_action_taken_pure) == 3.0:
+                                if math.isnan(float(concomitant_procedure_name)):
+                                    error = [subject, visit, 'Other action taken', other_action_taken_form_field_instance, \
+                                            'If Other action taken="Concomitant procedure" at least one concomitant procedure form must be completed', \
+                                                other_action_taken_disname, 'AE0350']
+                                    lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision AE0350 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0360
                     try:
@@ -858,15 +912,16 @@ def adverse_events(df_root, path_excel_writer):
                         lista_logs.append(f'Revision AE0390 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision AE0400
-                    try:
-                        if float(seriousness_criteria_pure) == 1.0:
-                            if float(outcome_pure) != 5.0:
-                                error = [subject, visit, 'Seriousness Criteria ', seriousness_criteria_form_field_instance, \
-                                        'If value is "results in death", the "Outcome" should be "Fatal"', \
-                                            seriousness_criteria_disname, 'AE0400']  
-                                lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision AE0400 --> {e} - Subject: {subject},  Visit: {visit} ')
+                    if str(seriousness_criteria_pure) != 'nan' and str(seriousness_criteria_pure) != '' and str(outcome_pure) != 'nan' and str(outcome_pure) != '':
+                        try:
+                            if float(seriousness_criteria_pure) == 1.0:
+                                if float(outcome_pure) != 5.0:
+                                    error = [subject, visit, 'Seriousness Criteria ', seriousness_criteria_form_field_instance, \
+                                            'If value is "results in death", the "Outcome" should be "Fatal"', \
+                                                seriousness_criteria_disname, 'AE0400']  
+                                    lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision AE0400 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision AE0410
                     try:
@@ -920,6 +975,7 @@ def adverse_events(df_root, path_excel_writer):
 
 if __name__ == '__main__':
     path_excel = r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\Program\output\prueba.xlsx"
-    df_root = pd.read_excel(r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\data\newDNDI_v2.xlsx")
+    df_root = pd.read_excel(r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\Program\data\88781e53-0c6e-42bc-8d84-c01f1015cb4f.xlsx")
+    df_root.rename(columns = {'Instancia':'FormFieldInstance Id'}, inplace = True)
     adverse_events(df_root, path_excel ) 
 

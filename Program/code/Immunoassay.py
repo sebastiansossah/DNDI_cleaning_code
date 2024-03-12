@@ -1,4 +1,5 @@
 import pandas as pd
+import os
 import math
 from datetime import datetime
 from revision_fechas import revision_fecha
@@ -15,7 +16,14 @@ def immunoassay(df_root, path_excel_writer):
     Esta funcion tiene como finalidad la revision de cada uno de los puntos 
     del edit check para el formulario de Immunoassay
     '''
+    # Normals ranges file
 
+    script_directory = os.path.dirname(os.path.abspath(__file__)) if '__file__' in locals() else os.getcwd()
+    relative_folder_path = r"data\rangos_normales"
+    folder_path = os.path.join(script_directory.replace('\code', ''), relative_folder_path)
+    file = os.listdir(folder_path)
+    path = f"{folder_path}\{[x for x in file if 'Immunoassay' in x][0]}" 
+    df_normal_ranges = pd.read_csv(path, sep=';')
 
     df= df_root[df_root['name']== 'Immunoassay (Thyroid Stimulating Hormone)']
     lista_sujetos = df['Participante'].unique()
@@ -237,14 +245,17 @@ def immunoassay(df_root, path_excel_writer):
                     try:
                         # Revision IM0060
                         if float(TSH_out_normal_pure) == 1.0:
-                            if float(TSH_result_pure) > 0.35 and float(TSH_result_pure) < 4.94 :
+                            if float(TSH_result_pure) > float(df_normal_ranges[df_normal_ranges['field']=="TSH, Result (uIU/mL)"]['min'].iloc[0]) \
+                                and float(TSH_result_pure) < float(df_normal_ranges[df_normal_ranges['field']=="TSH, Result (uIU/mL)"]['max'].iloc[0]) :
                                 error = [subject, visit, 'TSH, Out of normal range?', TSH_out_normal_form_field_instance,\
                                          'According to the result, the value is not out of range, please review.', TSH_result_disname, 'IM0060']
                                 lista_revision.append(error)
 
                         # Revision IM0070
                         elif float(TSH_out_normal_pure) == 0.0:
-                            if float(TSH_result_pure) <  0.35  or float(TSH_result_pure) > 4.94 :
+                            #if float(TSH_result_pure) <  0.35  or float(TSH_result_pure) > 4.94 :
+                            if float(TSH_result_pure) < float(df_normal_ranges[df_normal_ranges['field']=="TSH, Result (uIU/mL)"]['min'].iloc[0]) \
+                                or float(TSH_result_pure) > float(df_normal_ranges[df_normal_ranges['field']=="TSH, Result (uIU/mL)"]['max'].iloc[0]) :
                                 error = [subject, visit, 'TSH, Out of normal range?', TSH_out_normal_disname,\
                                          'According to the result, the value is out of range, please review.', \
                                             TSH_result_disname, 'IM0070']

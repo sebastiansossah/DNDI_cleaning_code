@@ -52,6 +52,15 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer):
     df_time_dosing =df_time_dosing[['Participante','Valor', 'time_dosing_cpg_administration']]
     df_time_dosing = df_time_dosing.rename(columns={'Participante':'Subject', 'Valor':'date_ex_to_join'})
 
+    df_time_milteosine1 = df_root[df_root['name']== 'Miltefosine Administration'].sort_values(by='FormFieldInstance Id')
+    df_time_milteosine1 = df_time_milteosine1[(df_time_milteosine1['Campo']=='Date of dosing') | (df_time_milteosine1['Campo']=='Time of Dosing')]
+    df_time_milteosine = df_time_milteosine1[df_time_milteosine1['Campo']=='Date of dosing']
+    df_time_milteosine['time_dosing_miltefosine_administration'] =  df_time_milteosine1[df_time_milteosine1['FormFieldInstance Id'].isin(df_time_milteosine['FormFieldInstance Id'] + 1) & (df_time_milteosine1['Campo'] == 'Time of Dosing')]['Valor'].values
+    df_time_milteosine =df_time_milteosine[['Participante','Valor', 'time_dosing_miltefosine_administration']]
+    df_time_milteosine = df_time_milteosine.rename(columns={'Participante':'Subject', 'Valor':'date_ex_to_join'})
+
+
+
     lista_logs = ['Pharmacodynamic Blood Sampling (PD) -Cytokines/Chemokines']
     lista_revision = []
 
@@ -81,7 +90,10 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer):
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
             pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_time_dosing, on=['Subject', 'date_ex_to_join'], how='left')
-
+            pru = pru.merge(df_time_milteosine, on=['Subject', 'date_ex_to_join'], how='left')
+            # if sujeto =='011002':
+            #     print(pru)
+            #     print('---------------------')
 
             for index, row in pru.iterrows():
                 status = row['status']
@@ -97,6 +109,7 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer):
                 was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
 
                 time_dosing_cpg_administration = row['time_dosing_cpg_administration']
+                time_dosing_miltefosine_administration = row['time_dosing_miltefosine_administration']
    
                 if status != '':
                     try:
@@ -274,8 +287,9 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer):
                             lista_logs.append(f'Revision PD0050--> {e} - Subject: {subject},  Visit: {visit} ')
 
 
+                    # --------------------------------------------- Revision CPG -------------------------------------------------------------------------------------- 
                     # Revision PD0060
-                    if str(time_dosing_cpg_administration) != 'nan':
+                    if str(time_dosing_cpg_administration) != 'nan' and str(Pre_dose_pure) != 'nan':
                             
                         try:
                             dif = float((datetime.strptime(time_dosing_cpg_administration , '%H:%M') - datetime.strptime(Pre_dose_pure, '%H:%M')).total_seconds() / 60)
@@ -291,7 +305,7 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer):
 
 
                     # Revision PD0070
-                    if str(time_dosing_cpg_administration) != 'nan':
+                    if str(time_dosing_cpg_administration) != 'nan' and str(H8_pure) != 'nan':
                             
                         try:
                             dif_8h = float((datetime.strptime(H8_pure, '%H:%M') - datetime.strptime(time_dosing_cpg_administration, '%H:%M')).total_seconds() / 60)
@@ -300,6 +314,42 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer):
                                 error = [subject, visit, '8h, Time', H8_form_field_instance,\
                                              'The time selected should be less than 8h15 and greater than 7H45 min after the study treatment administration', \
                                                 f'8h, Time: {H8_pure} - dose time administration{time_dosing_cpg_administration}', 'PD0070']
+                                lista_revision.append(error)
+
+                        except Exception as e:
+                                lista_logs.append(f'Revision PD0070 --> {e} - Subject: {subject},  Visit: {visit} ')  
+                    
+                    # --------------------------------------------- Revision Miltefosine --------------------------------------------------------------------------------------
+                    # Revision PD0060
+                    if str(time_dosing_miltefosine_administration) != 'nan' and str(Pre_dose_pure) != 'nan'\
+                    and str(time_dosing_miltefosine_administration) != '' and str(Pre_dose_pure) != '':
+                            
+                        try:
+                            dif_M = float((datetime.strptime(time_dosing_miltefosine_administration , '%H:%M') - datetime.strptime(Pre_dose_pure, '%H:%M')).total_seconds() / 60)
+                           
+                            if dif_M < 0.0 or dif_M > 60.0:
+                                    
+                                error = [subject, visit, 'Pre dose, Time', Pre_dose_form_field_instance,\
+                                             'Pre dose Time is not within 60 minutes before the study treatment administration time.', \
+                                                f'Pre dose, Time: {Pre_dose_pure} - dose time administration{time_dosing_miltefosine_administration}', 'PD0060']
+                                lista_revision.append(error)
+
+                        except Exception as e:
+                            lista_logs.append(f'Revision PD0060 --> {e} - Subject: {subject},  Visit: {visit} ')  
+
+
+                    # Revision PD0070
+                    if str(time_dosing_miltefosine_administration) != 'nan' and str(H8_pure) != 'nan' \
+                    and str(time_dosing_miltefosine_administration) != '' and str(H8_pure) != '':
+                            
+                        try:
+                            dif_8h_M = float((datetime.strptime(H8_pure, '%H:%M') - datetime.strptime(time_dosing_miltefosine_administration, '%H:%M')).total_seconds() / 60)
+
+                            if dif_8h_M > 495.0 or dif_8h_M < 465.0:
+                                    
+                                error = [subject, visit, '8h, Time', H8_form_field_instance,\
+                                             'The time selected should be less than 8h15 and greater than 7H45 min after the study treatment administration', \
+                                                f'8h, Time: {H8_pure} - dose time administration{time_dosing_miltefosine_administration}', 'PD0070']
                                 lista_revision.append(error)
 
                         except Exception as e:

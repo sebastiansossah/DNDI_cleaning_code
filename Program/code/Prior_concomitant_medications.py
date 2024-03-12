@@ -406,7 +406,7 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                     if str(end_study_date) != 'nan':
                          
                         try:
-                            print(date_format(start_date_pure))
+                            #print(date_format(start_date_pure))
                             if datetime.strptime(str(date_format(start_date_pure)), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
                                 pass
                             else: 
@@ -429,22 +429,26 @@ def prior_concomitant_medication(df_root, path_excel_writer):
                                 lista_logs.append(f'Revision CM0140 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> CM0150
-                    if str(end_study_date) != 'nan':
-                        try:
-                            if datetime.strptime(str(end_date_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
-                                pass
-                            else: 
-                                error = [subject, visit, 'End Date', end_date_form_field_instance,\
-                                        'End Date must be before the End of study/Early withdrawal date. ', end_date_disname, 'CM0150']
-                                lista_revision.append(error)
-                        except Exception as e:
-                            lista_logs.append(f'Revision CM0150 --> {e}  - Subject: {subject},  Visit: {visit} ')
+                    if str(end_study_date) == '' and str(end_study_date) == 'nan':
+                        if str(end_study_date) != 'nan':
+                            try:
+                                if datetime.strptime(str(end_date_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
+                                    pass
+                                else: 
+                                    error = [subject, visit, 'End Date', end_date_form_field_instance,\
+                                            'End Date must be before the End of study/Early withdrawal date. ', end_date_disname, 'CM0150']
+                                    lista_revision.append(error)
+                            except Exception as e:
+                                lista_logs.append(f'Revision CM0150 --> {e}  - Subject: {subject},  Visit: {visit} ')
 
                     # Revision CM0160
                     if end_date_pure != '':
+                        # print(end_date_pure) 
+                        # print(inform_consent_date)
                         try:
-                            days_to_validate = datetime.strptime(str(end_date_pure), '%d-%b-%Y') - datetime.strptime(str(inform_consent_date), '%d-%b-%Y')
-                            if days_to_validate > 56 or days_to_validate < -56:
+                            days_to_validate_raw = datetime.strptime(str(end_date_pure), '%d-%b-%Y') - datetime.strptime(str(inform_consent_date), '%d-%b-%Y')
+                            days_to_validate = float(days_to_validate_raw.days)
+                            if days_to_validate > 56.0 or days_to_validate < -56.0:
                                 error = [subject, visit, 'End date', end_date_form_field_instance, \
                                             'The end date can not be more than 8 weeks before the inform consent date', end_date_disname, 'CM0160']
                                 lista_revision.append(error)
@@ -472,7 +476,8 @@ def prior_concomitant_medication(df_root, path_excel_writer):
 
 if __name__ == '__main__':
     path_excel = r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\Program\output\prueba.xlsx"
-    df_root = pd.read_excel(r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\data\newDNDI_v2.xlsx")
+    df_root = pd.read_excel(r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\Program\data\88781e53-0c6e-42bc-8d84-c01f1015cb4f.xlsx")
+    df_root.rename(columns = {'Instancia':'FormFieldInstance Id'}, inplace = True)
     prior_concomitant_medication(df_root, path_excel ) 
 
 

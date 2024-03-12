@@ -17,7 +17,7 @@ def miltefosine_administration(df_root, path_excel_writer):
 
     df = df_root[df_root['name']== 'Miltefosine Administration'] 
     lista_sujetos = df['Participante'].unique()
-    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id', 'displayName']]
+    df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id', 'displayName', 'Variable']]
     df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)  + '|' + df['displayName'].astype(str)
 
     
@@ -34,18 +34,69 @@ def miltefosine_administration(df_root, path_excel_writer):
     df_date_visit = df_date_visit[['Participante','Valor']]
     df_date_visit = df_date_visit.rename(columns={'Participante':'Subject', 'Valor':'Visita_randomization'})
 
-    df_adverse = df_root[df_root['name']=='Adverse Events']
-    df_adverse = df_adverse[['Visit','Participante', 'Campo', 'Valor']]
-    df_adverse = df_adverse[df_adverse['Campo']== 'Action taken with study treatment (Miltefosine)']
-    df_adverse = df_adverse[['Participante','Valor']]
-    df_adverse = df_adverse.rename(columns={'Participante':'Subject', 'Valor':'Action_taken_miltefosine'})
+    # df_adverse = df_root[df_root['name']=='Adverse Events']
+    # df_adverse = df_adverse[['Visit','Participante', 'Campo', 'Valor']]
+    # df_adverse = df_adverse[df_adverse['Campo']== 'Action taken with study treatment (Miltefosine)']
+    # df_adverse = df_adverse[df_adverse['Valor'].isin([1,2,3,4,5,6,7,8,9,99,'1','2','3','4','5','6','7','8','9','99',1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0,9.0,99.0 ])]
+    # df_adverse = df_adverse[['Participante','Valor']]
+    # df_adverse = df_adverse.rename(columns={'Participante':'Subject', 'Valor':'Action_taken_miltefosine'})
+
+    dataframe_join_adverse = pd.DataFrame()
+    for sujeto_adverse in set(df_root[df_root['name']=='Adverse Events']['Participante'].tolist()):
+
+        df_adverse = df_root[df_root['Participante']==sujeto_adverse]
+        df_adverse = df_adverse[df_adverse['name']=='Adverse Events']
+
+        df_adverse = df_adverse.sort_values(by=['FormFieldInstance Id'], ascending=True)
+        df_adverse = df_adverse.reset_index(drop=True)
+
+        date_indices = df_adverse.index[df_adverse['Campo'] == 'Adverse Event Reported Term'].tolist()
+        subdatasets = [df_adverse.iloc[start:end] for start, end in zip(date_indices, date_indices[1:] + [None])]
+
+        for subdataset in subdatasets:
+
+            pru_adverse = subdataset[['Campo', 'Valor']].T
+            new_columns_adverse = pru_adverse.iloc[0]
+            pru_adverse = pru_adverse[1:].set_axis(new_columns_adverse, axis=1)
+            pru_adverse['Subject'] = sujeto_adverse
+            pru_adverse = pru_adverse[pru_adverse['Action taken with study treatment (Miltefosine)'].isin([1,2,3,4,5,6,7,8,9,99,'1','2','3','4','5','6','7','8','9','99',1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0,9.0,99.0 ])]
+            pru_adverse =pru_adverse[['Subject','Start Date', 'Action taken with study treatment (Miltefosine)']]
+            pru_adverse = pru_adverse.rename(columns={'Start Date':'to_join', 'Action taken with study treatment (Miltefosine)': 'Action_taken_miltefosine' })
+    
+            dataframe_join_adverse = pd.concat([dataframe_join_adverse, pru_adverse], ignore_index=True)
+    
+    dataframe_join_adverse = dataframe_join_adverse.drop_duplicates()
 
     df_date_visit_adverse = df_root[df_root['name']== 'Adverse Events']
     df_date_visit_adverse = df_date_visit_adverse[['Visit','Participante', 'Campo', 'Valor']]
     df_date_visit_adverse = df_date_visit_adverse[df_date_visit_adverse['Campo']== 'Start Date']
     df_date_visit_adverse['to_join'] = df_date_visit_adverse['Valor']
-    df_date_visit_adverse = df_date_visit_adverse[['Participante', 'to_join','Valor']]
+    df_date_visit_adverse = df_date_visit_adverse[['Participante', 'to_join','Valor']].drop_duplicates()
     df_date_visit_adverse = df_date_visit_adverse.rename(columns={'Participante':'Subject' ,'Valor':'Fecha_adverse'})
+
+    df_date_visit_d1 = df_root[df_root['name']== 'Date of visit']
+    df_date_visit_d1 = df_date_visit_d1[['Visit','Participante', 'Campo', 'Valor']]
+    df_date_visit_d1 = df_date_visit_d1[df_date_visit_d1['Campo']== 'Visit Date']
+    df_date_visit_d1 = df_date_visit_d1[df_date_visit_d1['Visit']== 'D1']
+    df_date_visit_d1 = df_date_visit_d1[['Participante','Valor']]
+    df_date_visit_d1 = df_date_visit_d1.rename(columns={'Participante':'Subject', 'Valor':'fecha_visita_d1'})
+
+    df_date_visit_d28 = df_root[df_root['name']== 'Date of visit']
+    df_date_visit_d28 = df_date_visit_d28[['Visit','Participante', 'Campo', 'Valor']]
+    df_date_visit_d28 = df_date_visit_d28[df_date_visit_d28['Campo']== 'Visit Date']
+    df_date_visit_d28 = df_date_visit_d28[df_date_visit_d28['Visit']== 'D28']
+    df_date_visit_d28 = df_date_visit_d28[['Participante','Valor']]
+    df_date_visit_d28 = df_date_visit_d28.rename(columns={'Participante':'Subject', 'Valor':'fecha_visita_d28'})
+
+    df_date_visit_maxima = df_root[df_root['name']== 'Date of visit']
+    df_date_visit_maxima = df_date_visit_maxima[['Visit','Participante', 'Campo', 'Valor']]
+    df_date_visit_maxima = df_date_visit_maxima[df_date_visit_maxima['Campo']== 'Visit Date']
+    df_date_visit_maxima['Valor'] = pd.to_datetime(df_date_visit_maxima['Valor'], format='%d-%b-%Y')
+    max_per_participante = df_date_visit_maxima.groupby('Participante')['Valor'].transform('max')
+    df_date_visit_maxima = df_date_visit_maxima[df_date_visit_maxima['Valor'] == max_per_participante]
+    df_date_visit_maxima['Valor'] = pd.to_datetime(df_date_visit_maxima['Valor']).dt.strftime('%d-%b-%Y').str.upper()
+    df_date_visit_maxima = df_date_visit_maxima[['Participante', 'Valor' ]]
+    df_date_visit_maxima = df_date_visit_maxima.rename(columns={'Participante':'Subject', 'Valor':'fecha_visita_maxima'})
 
     warnings.filterwarnings('ignore')
 
@@ -58,6 +109,11 @@ def miltefosine_administration(df_root, path_excel_writer):
         sujeto_principal = sujeto_principal.sort_values(by=['FormFieldInstance Id'], ascending=True)
         sujeto_principal = sujeto_principal.reset_index(drop=True)
 
+
+        # miltefosine_administration_id_pure = sujeto_principal[sujeto_principal['Campo']== 'Miltefosine Administration ID']['Valor'][0]
+        # miltefosine_administration_id_form_field_instance = sujeto_principal[sujeto_principal['Campo']== 'Miltefosine Administration ID']['FormFieldInstance Id'][0]
+
+
         date_dosing_historico_list = []
 
         visit_dictionary = {'Screening Visit': '', 'D-1':'', 'D1':'', 'D2':'', 
@@ -67,7 +123,7 @@ def miltefosine_administration(df_root, path_excel_writer):
 
     # Los formularios que estan clasificados como unscheduled, no se pueden iterar con la visita, por lo que usamos el siguiente codigo para realizar la particion
 
-        date_indices = sujeto_principal.index[sujeto_principal['Campo'] == 'Date of dosing'].tolist()
+        date_indices = sujeto_principal.index[sujeto_principal['Variable'] == 'ECMLTDAT'].tolist()
         subdatasets = [sujeto_principal.iloc[start:end] for start, end in zip(date_indices, date_indices[1:] + [None])]
 
         for subdataset in subdatasets:
@@ -79,11 +135,21 @@ def miltefosine_administration(df_root, path_excel_writer):
             pru['Subject'] = sujeto
             pru['Visit'] = 'unscheduled'
             pru['status'] = pru_1['activityState'].unique()
-            pru['to_join'] = pru['Date of dosing'].str.split('|').str[0]
+
+
+            pru['to_join'] = pru['Date of dosing'].str.split('|',expand= True)[0]
+
             pru = pru.merge(df_informed, on=['Subject'], how='left')
-            pru = pru.merge(df_adverse, on=['Subject'], how='left')
+            pru = pru.merge(dataframe_join_adverse, on=['Subject', 'to_join'], how='left')
+
             pru = pru.merge(df_date_visit, on=['Subject'], how='left')
             pru = pru.merge(df_date_visit_adverse, on=['Subject', 'to_join'], how='left')
+            pru = pru.merge(df_date_visit_d1, on=['Subject'], how='left')
+            pru = pru.merge(df_date_visit_d28 ,on=['Subject'], how='left')
+            pru = pru.merge(df_date_visit_maxima ,on=['Subject'], how='left')
+            # print(pru)
+            # print('----------------------')
+
             
             for index, row in pru.iterrows():
                 status = row['status']
@@ -93,6 +159,10 @@ def miltefosine_administration(df_root, path_excel_writer):
                 action_taken_miltefosine = row['Action_taken_miltefosine']
                 visita_randomization = row['Visita_randomization']
                 fecha_adverse = row['Fecha_adverse']
+                fecha_visita_d1 = row['fecha_visita_d1']
+                fecha_visita_d28 = row['fecha_visita_d28']
+                fecha_visita_maxima = row['fecha_visita_maxima']
+
 
                 if status != '':
                     
@@ -136,15 +206,15 @@ def miltefosine_administration(df_root, path_excel_writer):
                         fasting_status_form_field_instance = 'This field does not have any data'
                         fasting_status_disname = 'Empty'
 
-                    try:
-                        miltefosine_administration_id = row['Miltefosine Administration ID']
-                        miltefosine_administration_id_pure = miltefosine_administration_id.split('|')[0]
-                        miltefosine_administration_id_form_field_instance = miltefosine_administration_id.split('|')[1]
-                        miltefosine_administration_id_disname = miltefosine_administration_id.split('|')[0]
-                    except:
-                        miltefosine_administration_id_pure = ''
-                        miltefosine_administration_id_form_field_instance = 'This field does not have any data'
-                        miltefosine_administration_id_disname = 'Empty'
+                    # try:
+                    #     miltefosine_administration_id = row['Miltefosine Administration ID']
+                    #     miltefosine_administration_id_pure = miltefosine_administration_id.split('|')[0]
+                    #     miltefosine_administration_id_form_field_instance = miltefosine_administration_id.split('|')[1]
+                    #     miltefosine_administration_id_disname = miltefosine_administration_id.split('|')[0]
+                    # except:
+                    #     miltefosine_administration_id_pure = ''
+                    #     miltefosine_administration_id_form_field_instance = 'This field does not have any data'
+                    #     miltefosine_administration_id_disname = 'Empty'
                     
                     try:
                         dosing_event = row['Dosing Event']
@@ -192,7 +262,33 @@ def miltefosine_administration(df_root, path_excel_writer):
                         except Exception as e:
                             lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
-                    
+                    # Revision ECML0020
+                    try:
+                        if str(fecha_visita_d1)!= 'nan' and str(fecha_visita_d28) != 'nan':
+                            if datetime.strptime(str(date_dosing_pure), '%d-%b-%Y') > datetime.strptime(str(fecha_visita_d1), '%d-%b-%Y')  and \
+                            datetime.strptime(str(date_dosing_pure), '%d-%b-%Y') < datetime.strptime(str(fecha_visita_d28), '%d-%b-%Y'):
+                                error =  [subject, visit, 'Date of dosing', date_dosing_form_field_instance, \
+                                            'The date must not be between the D1 and the D28 date', date_dosing_disname, 'ECML0020']
+                                lista_revision.append(error)
+
+                                
+
+                        if str(fecha_visita_d1)!= 'nan' and str(fecha_visita_maxima) != 'nan':
+
+                            if datetime.strptime(str(date_dosing_pure), '%d-%b-%Y') > datetime.strptime(str(fecha_visita_d1), '%d-%b-%Y')  and \
+                            datetime.strptime(str(date_dosing_pure), '%d-%b-%Y') < datetime.strptime(str(fecha_visita_maxima), '%d-%b-%Y'):
+                                
+                                error =  [subject, visit, 'Date of dosing', date_dosing_form_field_instance, \
+                                            'The date must not be between the D1 and the D28 date', date_dosing_disname, 'ECML0020']
+                                lista_revision.append(error)
+                            
+                        
+                    except Exception as e:
+                            lista_logs.append(f'Revision ECML0020 --> {e} - Subject: {subject},  Visit: {visit} ')
+
+
+
+
                     # Revision ECML0030
                     try:
                         if date_dosing_pure in date_dosing_historico_list:
@@ -229,32 +325,34 @@ def miltefosine_administration(df_root, path_excel_writer):
                             lista_logs.append(f'Revision ECML0050 --> {e} - Subject: {subject},  Visit: {visit} ')
                               
                     # Revision ECML0080
-                    try:
-                        if float(dosing_event_pure) == 2.0:
-                            if float(reason_adjustment_pure) == 1.0:
-                                if float(action_taken_miltefosine) == 3.0:
-                                    pass
-                                else:
-                                    error = [subject, visit, 'Dosing Event', dosing_event_form_field_instance,\
-                                             'If dosing event is Temporarily discontinued and the reason for adjustment is "Adverse event" there should be an adverse event created where the action taken (Miltefosine) should be CT  drug stopped (temporarily)', \
-                                                 dosing_event_disname, 'ECML0080']
-                                    lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision ECML0080 --> {e} - Subject: {subject},  Visit: {visit} ')
+                    if str(action_taken_miltefosine) == 'nan' and str(action_taken_miltefosine) == '':
+                        try:
+                            if float(dosing_event_pure) == 2.0:
+                                if float(reason_adjustment_pure) == 1.0:
+                                    if float(action_taken_miltefosine) == 3.0:
+                                        pass
+                                    else:
+                                        error = [subject, visit, 'Dosing Event', dosing_event_form_field_instance,\
+                                                'If dosing event is Temporarily discontinued and the reason for adjustment is "Adverse event" there should be an adverse event created where the action taken (Miltefosine) should be CT  drug stopped (temporarily)', \
+                                                    dosing_event_disname, 'ECML0080']
+                                        lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision ECML0080 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision ECML0090
-                    try:
-                        if float(dosing_event_pure) == 3.0:
-                            if float(reason_adjustment_pure) == 1.0:
-                                if float(action_taken_miltefosine) == 4.0:
-                                    pass
-                                else:
-                                    error = [subject, visit, 'Dosing Event', dosing_event_form_field_instance,\
-                                             'If dosing event is Permanently discontinued and the reason for adjustment is "Adverse event" there should be an adverse event created where the action taken (Miltefosine) should be CT  drug stopped (permanently)', \
-                                                 dosing_event_disname, 'ECML0090']
-                                    lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision ECML0090 --> {e} - Subject: {subject},  Visit: {visit} ')
+                    if str(action_taken_miltefosine) == 'nan' and str(action_taken_miltefosine) == '':
+                        try:
+                            if float(dosing_event_pure) == 3.0:
+                                if float(reason_adjustment_pure) == 1.0:
+                                    if float(action_taken_miltefosine) == 4.0:
+                                        pass
+                                    else:
+                                        error = [subject, visit, 'Dosing Event', dosing_event_form_field_instance,\
+                                                'If dosing event is Permanently discontinued and the reason for adjustment is "Adverse event" there should be an adverse event created where the action taken (Miltefosine) should be CT  drug stopped (permanently)', \
+                                                    dosing_event_disname, 'ECML0090']
+                                        lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision ECML0090 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision ECML0100
                     try:
@@ -271,21 +369,22 @@ def miltefosine_administration(df_root, path_excel_writer):
                         lista_logs.append(f'Revision ECML0100 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision ECML0110
-                    try:
-                        if float(subject_vomited_pure) == 1.0:
-                            if str(date_dosing_pure) == str(fecha_adverse):
-                                pass
-                            else: 
-                                error = [subject, visit, 'The date/time of dosing can not be before the randomization date/time', \
-                                        date_dosing_form_field_instance, \
-                                            'The date must not be before the informed consent date', date_dosing_disname, 'ECML0050']
-                                lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision ECML0110 --> {e} - Subject: {subject},  Visit: {visit} ')
+                    if str(fecha_adverse) == 'nan' and str(fecha_adverse) == '':
+                        try:
+                            if float(subject_vomited_pure) == 1.0:
+                                if str(date_dosing_pure) == str(fecha_adverse):
+                                    pass
+                                else: 
+                                    error = [subject, visit, 'The date/time of dosing can not be before the randomization date/time', \
+                                            date_dosing_form_field_instance, \
+                                                'The date must not be before the informed consent date', date_dosing_disname, 'ECML0050']
+                                    lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision ECML0110 --> {e} - Subject: {subject},  Visit: {visit} ')
     
     excel_writer = load_workbook(path_excel_writer)
     column_names = ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']
-    miltefosine_administration_output = pd.DataFrame(lista_revision, columns=column_names)
+    miltefosine_administration_output = pd.DataFrame(lista_revision, columns=column_names).drop_duplicates()
 
  
     sheet = excel_writer.create_sheet('Miltefosine Administration')

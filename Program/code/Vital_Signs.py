@@ -2146,8 +2146,8 @@ def vital_signs(df_root, path_excel_writer):
                         lista_logs.append(f'Revision VS0980--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # -------------------------------------------------------------------------------- Revision para CPG ----------------------------------------------------
-                    # Revision VS0990
-                    if str(time_dosing_cpg_administration) != 'nan':
+                    # Revision VS0990 
+                    if str(time_dosing_cpg_administration) != 'nan' and str(predose_time_pure) != 'nan':
                             
                         try:
                             dif = float((datetime.strptime(time_dosing_cpg_administration, '%H:%M') - datetime.strptime(predose_time_pure, '%H:%M')).total_seconds() / 60)
@@ -2163,7 +2163,7 @@ def vital_signs(df_root, path_excel_writer):
                     
     
                         # Revision VS1000
-                        if str(time_dosing_cpg_administration) != 'nan':
+                        if str(time_dosing_cpg_administration) != 'nan'  and str(post_dose_15_pure) != 'nan':
                             
                             try:
                                 dif_15 = float((datetime.strptime(post_dose_15_pure, '%H:%M') - datetime.strptime(time_dosing_cpg_administration, '%H:%M')).total_seconds() / 60)
@@ -2179,7 +2179,7 @@ def vital_signs(df_root, path_excel_writer):
                             
     
                         # Revision VS1010
-                        if str(time_dosing_cpg_administration) != 'nan':
+                        if str(time_dosing_cpg_administration) != 'nan'  and str(post_dose_30_pure) != 'nan':
                             
                             try:
                                 dif_30 = float((datetime.strptime(post_dose_30_pure, '%H:%M') - datetime.strptime(time_dosing_cpg_administration, '%H:%M')).total_seconds() / 60)
@@ -2195,7 +2195,7 @@ def vital_signs(df_root, path_excel_writer):
     
 
                         # Revision VS1020
-                        if str(time_dosing_cpg_administration) != 'nan':
+                        if str(time_dosing_cpg_administration) != 'nan'  and str(post_dose_60_pure) != 'nan':
                             
                             try:
                                 dif_60 = float((datetime.strptime(post_dose_60_pure, '%H:%M') - datetime.strptime(time_dosing_cpg_administration, '%H:%M')).total_seconds() / 60)
@@ -2211,7 +2211,7 @@ def vital_signs(df_root, path_excel_writer):
     
 
                         # Revision VS1030
-                        if str(time_dosing_cpg_administration) != 'nan':
+                        if str(time_dosing_cpg_administration) != 'nan'  and str(post_dose_2H_pure) != 'nan':
                             
                             try:
                                 dif_2H = float((datetime.strptime(post_dose_2H_pure, '%H:%M') - datetime.strptime(time_dosing_cpg_administration, '%H:%M')).total_seconds() / 60)
@@ -2227,7 +2227,7 @@ def vital_signs(df_root, path_excel_writer):
     
 
                         # Revision VS1040
-                        if str(time_dosing_cpg_administration) != 'nan':
+                        if str(time_dosing_cpg_administration) != 'nan'  and str(post_dose_4H_pure) != 'nan':
                             
                             try:
                                 dif_4H = float((datetime.strptime(post_dose_4H_pure, '%H:%M') - datetime.strptime(time_dosing_cpg_administration, '%H:%M')).total_seconds() / 60)
@@ -2243,7 +2243,7 @@ def vital_signs(df_root, path_excel_writer):
     
 
                         # Revision VS1050
-                        if str(time_dosing_cpg_administration) != 'nan':
+                        if str(time_dosing_cpg_administration) != 'nan'  and str(post_dose_8H_pure) != 'nan':
                             
                             try:
                                 dif_8H = float((datetime.strptime(post_dose_8H_pure, '%H:%M') - datetime.strptime(time_dosing_cpg_administration, '%H:%M')).total_seconds() / 60)
@@ -2259,7 +2259,7 @@ def vital_signs(df_root, path_excel_writer):
     
 
                         # Revision VS1060
-                        if str(time_dosing_cpg_administration) != 'nan':
+                        if str(time_dosing_cpg_administration) != 'nan'  and str(post_dose_12H_pure) != 'nan':
                             
                             try:
                                 dif_12H = float((datetime.strptime(post_dose_12H_pure, '%H:%M') - datetime.strptime(time_dosing_cpg_administration, '%H:%M')).total_seconds() / 60)
@@ -2275,7 +2275,7 @@ def vital_signs(df_root, path_excel_writer):
                         
                         # -------------------------------------------------------------------------------- Revision para Miltefosine ----------------------------------------------------
                     # Revision VS0990
-                    if str(time_dosing_miltefosine_administration) != 'nan':
+                    if str(time_dosing_miltefosine_administration) != 'nan'  and str(predose_time_pure) != 'nan':
                             
                         try:
                             dif_M = float((datetime.strptime(time_dosing_miltefosine_administration, '%H:%M') - datetime.strptime(predose_time_pure, '%H:%M')).total_seconds() / 60)
@@ -2292,7 +2292,7 @@ def vital_signs(df_root, path_excel_writer):
                     
     
                         # Revision VS1000
-                        if str(time_dosing_miltefosine_administration) != 'nan':
+                        if str(time_dosing_miltefosine_administration) != 'nan' and str(post_dose_15_pure) != 'nan':
                             
                             try:
                                 dif_15_M = float((datetime.strptime(post_dose_15_pure, '%H:%M') - datetime.strptime(time_dosing_miltefosine_administration, '%H:%M')).total_seconds() / 60)
@@ -2309,7 +2309,7 @@ def vital_signs(df_root, path_excel_writer):
                             
     
                         # Revision VS1010
-                        if str(time_dosing_miltefosine_administration) != 'nan':
+                        if str(time_dosing_miltefosine_administration) != 'nan' and str(post_dose_30_pure) != 'nan':
                             
                             try:
                                 dif_30_M = float((datetime.strptime(post_dose_30_pure, '%H:%M') - datetime.strptime(time_dosing_miltefosine_administration, '%H:%M')).total_seconds() / 60)
@@ -2325,7 +2325,7 @@ def vital_signs(df_root, path_excel_writer):
     
 
                         # Revision VS1020
-                        if str(time_dosing_miltefosine_administration) != 'nan':
+                        if str(time_dosing_miltefosine_administration) != 'nan' and str(post_dose_60_pure) != 'nan':
                             
                             try:
                                 dif_60_M = float((datetime.strptime(post_dose_60_pure, '%H:%M') - datetime.strptime(time_dosing_miltefosine_administration, '%H:%M')).total_seconds() / 60)
@@ -2342,7 +2342,7 @@ def vital_signs(df_root, path_excel_writer):
     
 
                         # Revision VS1030
-                        if str(time_dosing_miltefosine_administration) != 'nan':
+                        if str(time_dosing_miltefosine_administration) != 'nan' and str(post_dose_2H_pure) != 'nan':
                             
                             try:
                                 dif_2H_M = float((datetime.strptime(post_dose_2H_pure, '%H:%M') - datetime.strptime(time_dosing_miltefosine_administration, '%H:%M')).total_seconds() / 60)
@@ -2359,7 +2359,7 @@ def vital_signs(df_root, path_excel_writer):
     
 
                         # Revision VS1040
-                        if str(time_dosing_miltefosine_administration) != 'nan':
+                        if str(time_dosing_miltefosine_administration) != 'nan' and str(post_dose_4H_pure) != 'nan':
                             
                             try:
                                 dif_4H_M = float((datetime.strptime(post_dose_4H_pure, '%H:%M') - datetime.strptime(time_dosing_miltefosine_administration, '%H:%M')).total_seconds() / 60)
@@ -2376,7 +2376,7 @@ def vital_signs(df_root, path_excel_writer):
     
 
                         # Revision VS1050
-                        if str(time_dosing_miltefosine_administration) != 'nan':
+                        if str(time_dosing_miltefosine_administration) != 'nan' and str(post_dose_8H_pure) != 'nan':
                             
                             try:
                                 dif_8H_M = float((datetime.strptime(post_dose_8H_pure, '%H:%M') - datetime.strptime(time_dosing_miltefosine_administration, '%H:%M')).total_seconds() / 60)
@@ -2393,7 +2393,7 @@ def vital_signs(df_root, path_excel_writer):
     
 
                         # Revision VS1060
-                        if str(time_dosing_miltefosine_administration) != 'nan':
+                        if str(time_dosing_miltefosine_administration) != 'nan' and str(post_dose_12H_pure):
                             
                             try:
                                 dif_12H_M = float((datetime.strptime(post_dose_12H_pure, '%H:%M') - datetime.strptime(time_dosing_miltefosine_administration, '%H:%M')).total_seconds() / 60)

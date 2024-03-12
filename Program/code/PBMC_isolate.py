@@ -288,49 +288,52 @@ def PBMC_isolate(df_root, path_excel_writer):
                         if str(time_dosing_cpg_administration) == 'nan':
                             if Time_collected_pure == '':
                                 error = [subject, visit, 'Time Collected', Time_collected_form_field_instance ,\
-                                        f'There should be a time on visit {visita}', Time_collected, 'PB0050']
+                                        f'There should be a time on visit {visita} ', Time_collected, 'PB0050']
                                 lista_revision.append(error)
                         else:
                                
                                 dif = float((datetime.strptime(time_dosing_cpg_administration, '%H:%M') - datetime.strptime(Time_collected_pure, '%H:%M')).total_seconds() / 60)
-                                if dif >= 0.0 or dif <= 90.0:
+                                if dif >= 0.0 and dif <= 90.0:
+                                    pass
+                                else:
                                         
                                     error = [subject, visit, 'Time Collected', Time_collected_form_field_instance,\
                                                 'The date and time collected must be between 0 and 90 minutes before the study treatment administration time', \
-                                                    f'Time Collected: {Time_collected_pure} - dose time administration{time_dosing_cpg_administration}', 'PB0050']
+                                                    f'Time Collected: {Time_collected_pure} - dose time administration {time_dosing_cpg_administration}', 'PB0050']
                                     lista_revision.append(error)
 
                     # Revision PB0060
                     if visit in ['D2', 'D16', 'D30']:
-                        if str(time_dosing_cpg_administration2) == 'nan' and str(time_dosing_cpg_administration3) == 'nan':
-                            error =  [subject, visit, 'Time Collected', Time_collected_form_field_instance,\
-                                             'The date and time collected must be between 24 and 25 hours  after the study treatment administration time of the day before', \
-                                                f'Time Collected: {Time_collected_pure} - dose time administration{time_dosing_cpg_administration}', 'PB0060']
-                            lista_revision.append(error)
-                        
-                        if str(time_dosing_cpg_administration2) != 'nan':
-                            time_date_compare_1_gcp =  row['date_ex_to_join2'] + ' ' + time_dosing_cpg_administration2
-                            time_to_compare_pbmc_1 = date_sample_collected_pure + ' ' + Time_collected_pure
-
-                            dif_25_1 = float((datetime.strptime(time_to_compare_pbmc_1, '%d-%b-%Y %H:%M') - datetime.strptime(time_date_compare_1_gcp, '%d-%b-%Y %H:%M')).total_seconds() / 60)
-                            #print(dif_25_1)
-                            if dif_25_1 < 1440 or dif_25_1 > 1500:
+                        if str(time_dosing_cpg_administration) != 'nan':
+                            if str(time_dosing_cpg_administration2) == 'nan' and str(time_dosing_cpg_administration3) == 'nan':
                                 error =  [subject, visit, 'Time Collected', Time_collected_form_field_instance,\
                                                 'The date and time collected must be between 24 and 25 hours  after the study treatment administration time of the day before', \
-                                                    f'Time Collected: {Time_collected_pure} - dose time administration{time_dosing_cpg_administration}', 'PB0060']
+                                                    f'Time Collected: {Time_collected_pure} - doesnt have time of administration CPG in vistit: {visit}' , 'PB0060']
                                 lista_revision.append(error)
-                        
-                        if str(time_dosing_cpg_administration3) != 'nan':
-                            time_date_compare_2_gcp =  row['date_ex_to_join3'] + ' ' + time_dosing_cpg_administration3
-                            time_to_compare_pbmc_2 = date_sample_collected_pure + ' ' + Time_collected_pure
+                            
+                            if str(time_dosing_cpg_administration2) != 'nan':
+                                time_date_compare_1_gcp =  row['date_ex_to_join2'] + ' ' + time_dosing_cpg_administration2
+                                time_to_compare_pbmc_1 = date_sample_collected_pure + ' ' + Time_collected_pure
 
-                            dif_25_2 = float((datetime.strptime(time_to_compare_pbmc_2, '%d-%b-%Y %H:%M') - datetime.strptime(time_date_compare_2_gcp, '%d-%b-%Y %H:%M')).total_seconds() / 60)
-             
-                            if dif_25_2 < 1440 or dif_25_2 > 1500:
-                                error =  [subject, visit, 'Time Collected', Time_collected_form_field_instance,\
-                                                'The date and time collected must be between 24 and 25 hours  after the study treatment administration time of the day before', \
-                                                    f'Time Collected: {Time_collected_pure} - dose time administration{time_dosing_cpg_administration}', 'PB0060']
-                                lista_revision.append(error)
+                                dif_25_1 = float((datetime.strptime(time_to_compare_pbmc_1, '%d-%b-%Y %H:%M') - datetime.strptime(time_date_compare_1_gcp, '%d-%b-%Y %H:%M')).total_seconds() / 60)
+                                #print(dif_25_1)
+                                if dif_25_1 < 1440 or dif_25_1 > 1500:
+                                    error =  [subject, visit, 'Time Collected', Time_collected_form_field_instance,\
+                                                    'The date and time collected must be between 24 and 25 hours  after the study treatment administration time of the day before', \
+                                                        f'Time Collected: {Time_collected_pure} - dose time administration {time_dosing_cpg_administration2}', 'PB0060']
+                                    lista_revision.append(error)
+                            
+                            if str(time_dosing_cpg_administration3) != 'nan':
+                                time_date_compare_2_gcp =  row['date_ex_to_join3'] + ' ' + time_dosing_cpg_administration3
+                                time_to_compare_pbmc_2 = date_sample_collected_pure + ' ' + Time_collected_pure
+
+                                dif_25_2 = float((datetime.strptime(time_to_compare_pbmc_2, '%d-%b-%Y %H:%M') - datetime.strptime(time_date_compare_2_gcp, '%d-%b-%Y %H:%M')).total_seconds() / 60)
+                
+                                if dif_25_2 < 1440 or dif_25_2 > 1500:
+                                    error =  [subject, visit, 'Time Collected', Time_collected_form_field_instance,\
+                                                    'The date and time collected must be between 24 and 25 hours  after the study treatment administration time of the day before', \
+                                                        f'Time Collected: {Time_collected_pure} - dose time administration {time_dosing_cpg_administration3}', 'PB0060']
+                                    lista_revision.append(error)
 
                     # Revision Miltefosine ------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -339,13 +342,15 @@ def PBMC_isolate(df_root, path_excel_writer):
                         if str(time_dosing_Miltefosine_administration) == 'nan':
                             if Time_collected_pure == '':
                                 error = [subject, visit, 'Time Collected', Time_collected_form_field_instance ,\
-                                        f'There should be a time on visit {visita}', Time_collected, 'PB0050']
+                                        f'There should be a time on visit {visita} ', Time_collected, 'PB0050']
                                 lista_revision.append(error)
                         else:
                                
                                 dif = float((datetime.strptime(time_dosing_Miltefosine_administration, '%H:%M') - datetime.strptime(Time_collected_pure, '%H:%M')).total_seconds() / 60)
-                                if dif >= 0.0 or dif <= 90.0:
-                                        
+                                if dif >= 0.0 and dif <= 90.0:
+                                    pass
+                                else:
+                                                                            
                                     error = [subject, visit, 'Time Collected', Time_collected_form_field_instance,\
                                                 'The date and time collected must be between 0 and 90 minutes before the study treatment administration time', \
                                                     f'Time Collected: {Time_collected_pure} - dose time administration{time_dosing_Miltefosine_administration}', 'PB0050']
@@ -353,35 +358,36 @@ def PBMC_isolate(df_root, path_excel_writer):
 
                     # Revision PB0060
                     if visit in ['D2', 'D16', 'D30']:
-                        if str(time_dosing_Miltefosine_administration2) == 'nan' and str(time_dosing_Miltefosine_administration3) == 'nan':
-                            error =  [subject, visit, 'Time Collected', Time_collected_form_field_instance,\
-                                             'The date and time collected must be between 24 and 25 hours  after the study treatment administration time of the day before', \
-                                                f'Time Collected: {Time_collected_pure} - dose time administration{time_dosing_cpg_administration}', 'PB0060']
-                            lista_revision.append(error)
-                        
-                        if str(time_dosing_Miltefosine_administration2) != 'nan':
-                            time_date_compare_1_miltefosine =  row['date_ex_to_join2'] + ' ' + time_dosing_Miltefosine_administration2
-                            time_to_compare_pbmc_1 = date_sample_collected_pure + ' ' + Time_collected_pure
-
-                            dif_25_1_M = float((datetime.strptime(time_to_compare_pbmc_1, '%d-%b-%Y %H:%M') - datetime.strptime(time_date_compare_1_miltefosine, '%d-%b-%Y %H:%M')).total_seconds() / 60)
-                           
-                            if dif_25_1_M < 1440 or dif_25_1_M > 1500:
+                        if str(time_dosing_Miltefosine_administration) != 'nan':
+                            if str(time_dosing_Miltefosine_administration2) == 'nan' and str(time_dosing_Miltefosine_administration3) == 'nan':
                                 error =  [subject, visit, 'Time Collected', Time_collected_form_field_instance,\
                                                 'The date and time collected must be between 24 and 25 hours  after the study treatment administration time of the day before', \
-                                                    f'Time Collected: {Time_collected_pure} - dose time administration{time_dosing_cpg_administration}', 'PB0060']
+                                                    f'Time Collected: {Time_collected_pure} - doesnt have time of administration Miltefosine in vistit: {visit}', 'PB0060']
                                 lista_revision.append(error)
-                        
-                        if str(time_dosing_Miltefosine_administration3) != 'nan':
-                            time_date_compare_2_miltefosine =  row['date_ex_to_join3'] + ' ' + time_dosing_Miltefosine_administration3
-                            time_to_compare_pbmc_2 = date_sample_collected_pure + ' ' + Time_collected_pure
+                            
+                            if str(time_dosing_Miltefosine_administration2) != 'nan':
+                                time_date_compare_1_miltefosine =  row['date_ex_to_join2'] + ' ' + time_dosing_Miltefosine_administration2
+                                time_to_compare_pbmc_1 = date_sample_collected_pure + ' ' + Time_collected_pure
 
-                            dif_25_2 = float((datetime.strptime(time_to_compare_pbmc_2, '%d-%b-%Y %H:%M') - datetime.strptime(time_date_compare_2_miltefosine, '%d-%b-%Y %H:%M')).total_seconds() / 60)
-              
-                            if dif_25_2 < 1440 or dif_25_2 > 1500:
-                                error =  [subject, visit, 'Time Collected', Time_collected_form_field_instance,\
-                                                'The date and time collected must be between 24 and 25 hours  after the study treatment administration time of the day before', \
-                                                    f'Time Collected: {Time_collected_pure} - dose time administration{time_dosing_cpg_administration}', 'PB0060']
-                                lista_revision.append(error)
+                                dif_25_1_M = float((datetime.strptime(time_to_compare_pbmc_1, '%d-%b-%Y %H:%M') - datetime.strptime(time_date_compare_1_miltefosine, '%d-%b-%Y %H:%M')).total_seconds() / 60)
+                            
+                                if dif_25_1_M < 1440 or dif_25_1_M > 1500:
+                                    error =  [subject, visit, 'Time Collected', Time_collected_form_field_instance,\
+                                                    'The date and time collected must be between 24 and 25 hours  after the study treatment administration time of the day before', \
+                                                        f'Time Collected: {Time_collected_pure} - dose time administration {time_dosing_Miltefosine_administration2}', 'PB0060']
+                                    lista_revision.append(error)
+                            
+                            if str(time_dosing_Miltefosine_administration3) != 'nan':
+                                time_date_compare_2_miltefosine =  row['date_ex_to_join3'] + ' ' + time_dosing_Miltefosine_administration3
+                                time_to_compare_pbmc_2 = date_sample_collected_pure + ' ' + Time_collected_pure
+
+                                dif_25_2_M = float((datetime.strptime(time_to_compare_pbmc_2, '%d-%b-%Y %H:%M') - datetime.strptime(time_date_compare_2_miltefosine, '%d-%b-%Y %H:%M')).total_seconds() / 60)
+                
+                                if dif_25_2_M < 1440 or dif_25_2_M > 1500:
+                                    error =  [subject, visit, 'Time Collected', Time_collected_form_field_instance,\
+                                                    'The date and time collected must be between 24 and 25 hours  after the study treatment administration time of the day before', \
+                                                        f'Time Collected: {Time_collected_pure} - dose time administration {time_dosing_Miltefosine_administration3}', 'PB0060']
+                                    lista_revision.append(error)
 
 
 
@@ -390,7 +396,7 @@ def PBMC_isolate(df_root, path_excel_writer):
 
     excel_writer = load_workbook(path_excel_writer)
     column_names = ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']
-    PBMC_isolate_output = pd.DataFrame(lista_revision, columns=column_names)
+    PBMC_isolate_output = pd.DataFrame(lista_revision, columns=column_names).drop_duplicates()
     
     sheet = excel_writer.create_sheet("PBMC Isolate")
 

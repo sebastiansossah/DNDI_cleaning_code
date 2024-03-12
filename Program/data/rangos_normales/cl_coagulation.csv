@@ -1,0 +1,4 @@
+field;min;max;gender;age_min;age_max
+PT, Result (Seconds);11.7;15.3;;;
+aPTT, Result (Seconds);23.6;34.8;;;
+INR, Result;0.8;1.1;;;

@@ -1895,7 +1895,7 @@ def lead_ECG(df_root, path_excel_writer):
 
     excel_writer = load_workbook(path_excel_writer)
     column_names = ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']
-    lead_ECG_output = pd.DataFrame(lista_revision, columns=column_names)
+    lead_ECG_output = pd.DataFrame(lista_revision, columns=column_names).drop_duplicates()
     
     sheet = excel_writer.create_sheet("12-Lead ECG")
 

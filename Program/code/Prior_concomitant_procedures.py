@@ -353,15 +353,16 @@ def prior_concomitant_procedures(df_root, path_excel_writer):
                         pass
 
                     # Revision -> PR0140
-                    try:
-                        if datetime.strptime(str(start_date_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
-                            pass
-                        else: 
-                            error = [subject, visit, 'Start Date', start_date_form_field_instance,\
-                                     'Start Date must be before the End of study/Early withdrawal date. ', start_date_disname, 'PR0140']
-                            lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision PR0140 --> {e} - Subject: {subject},  Visit: {visit}  ')
+                    if str(end_study_date) != 'nan':
+                        try:
+                            if datetime.strptime(str(start_date_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
+                                pass
+                            else: 
+                                error = [subject, visit, 'Start Date', start_date_form_field_instance,\
+                                        'Start Date must be before the End of study/Early withdrawal date. ', start_date_disname, 'PR0140']
+                                lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision PR0140 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
                     # Revision PR0150
                     try:
@@ -375,15 +376,16 @@ def prior_concomitant_procedures(df_root, path_excel_writer):
                             lista_logs.append(f'Revision PR0150 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision -> PR0160
-                    try:
-                        if datetime.strptime(str(end_date_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
-                            pass
-                        else: 
-                            error = [subject, visit, 'End Date', end_date_form_field_instance,\
-                                     'End Date must be before the End of study/Early withdrawal date. ', end_date_disname, 'PR0160']
-                            lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision PR0160 --> {e} - Subject: {subject},  Visit: {visit}  ')
+                    if str(end_study_date) != 'nan':
+                        try:
+                            if datetime.strptime(str(end_date_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
+                                pass
+                            else: 
+                                error = [subject, visit, 'End Date', end_date_form_field_instance,\
+                                        'End Date must be before the End of study/Early withdrawal date. ', end_date_disname, 'PR0160']
+                                lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision PR0160 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
     excel_writer = load_workbook(path_excel_writer)
     column_names = ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']

@@ -78,10 +78,9 @@ def eligibility(df_root, path_excel_writer):
     df__lession_count = df__lession_count[['Visit','Participante', 'Campo', 'Valor']]
     df__lession_count = df__lession_count[df__lession_count['Visit']=='Screening Visit']
     df__lession_count = df__lession_count[df__lession_count['Campo']=='Anatomical Location']
-    df__lession_count = df__lession_count[['Visit','Participante','Valor']]
-    df__lession_count = df__lession_count.rename(columns={'Participante':'Subject', 'Valor':'lesion_measurement'})
-    df__lession_count['Count'] = len(df__lession_count['lesion_measurement'])
-    df__lession_count = df__lession_count[['Visit','Subject','Count']]
+    df__lession_count['Count'] = df__lession_count.groupby(by='Participante')['Valor'].transform('count')
+    df__lession_count = df__lession_count[['Participante','Count']].drop_duplicates()
+    df__lession_count = df__lession_count.rename(columns={'Participante':'Subject'})
 
     df__lession_dia  = df_root[df_root['name']=='Lesion Measurement']
     df__lession_dia = df__lession_dia[['Visit','Participante', 'Campo', 'Valor']]
@@ -168,9 +167,9 @@ def eligibility(df_root, path_excel_writer):
             pru = pru.merge(df_virology_HbsAg, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_virology_Hcv, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_virology_HIV, on=['Subject', 'Visit'], how='left')
-            pru = pru.merge(df_virology_HIV2, on=['Subject', 'Visit'], how='left')
+            pru = pru.merge(df_virology_HIV2, on=['Subject', 'Visit'], how='left') #
             pru = pru.merge(df__lession_dia, on=['Subject', 'Visit'], how='left')
-            pru = pru.merge(df__lession_count, on=['Subject', 'Visit'], how='left')
+            pru = pru.merge(df__lession_count, on=['Subject'], how='left')
             pru = pru.merge(df_vital, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_vital_sis, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_lead_egc, on=['Subject', 'Visit'], how='left')
@@ -178,9 +177,9 @@ def eligibility(df_root, path_excel_writer):
             pru = pru.merge(df_lead_egc_undefined, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
 
-            # if sujeto == '011002':
-            # print(pru)
-            # print('-------------------')
+            # if sujeto == '011001':
+            #     print(pru)
+            #     print('-------------------')
 
 
 
@@ -598,11 +597,11 @@ def eligibility(df_root, path_excel_writer):
                         except Exception as e:
                             lista_logs.append(f'Revision IE0440 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
-                        # Revision para IE446
+                        # Revision para IE0446
                         try:
                             if float(participant_randomization_pure) == 1.0:
                                 if float(cuenta_lesiones) > 4.0 or float(diametro_lesiones) > 400.0:
-                                    print(cuenta_lesiones - diametro_lesiones)
+                                    #print(cuenta_lesiones - diametro_lesiones)
                                     error = [subject, visit, 'Is the participant eligible to randomization?', \
                                             participant_randomization_form_field_instance,\
                                                 'The participant has more than 4 lesions, or lesions over 4cm long in diameter or lesions with mucosal involvement in the Lesion Measurement form, he/she should not be eligible for randomization', \
