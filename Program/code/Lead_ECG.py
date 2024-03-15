@@ -56,8 +56,10 @@ def lead_ECG(df_root, path_excel_writer):
     df_time_milteosine1 = df_root[df_root['name']== 'Miltefosine Administration'].sort_values(by='FormFieldInstance Id')
     df_time_milteosine1 = df_time_milteosine1[(df_time_milteosine1['Campo']=='Date of dosing') | (df_time_milteosine1['Campo']=='Time of Dosing')]
     df_time_milteosine = df_time_milteosine1[df_time_milteosine1['Campo']=='Date of dosing']
-    df_time_milteosine['time_dosing_miltefosine_administration'] =  df_time_milteosine1[df_time_milteosine1['FormFieldInstance Id'].isin(df_time_milteosine['FormFieldInstance Id'] + 1) & (df_time_milteosine1['Campo'] == 'Time of Dosing')]['Valor'].values
-    df_time_milteosine =df_time_milteosine[['Participante','Valor', 'time_dosing_miltefosine_administration']]
+    df_time_milteosine['time_dosing_miltefosine_administration1'] =  df_time_milteosine1[df_time_milteosine1['FormFieldInstance Id'].isin(df_time_milteosine['FormFieldInstance Id'] + 1) & (df_time_milteosine1['Campo'] == 'Time of Dosing')]['Valor'].values
+    df_time_milteosine = df_time_milteosine[df_time_milteosine['time_dosing_miltefosine_administration1'].str.split(':').str[0] != '00']
+    df_time_milteosine['time_dosing_miltefosine_administration'] = df_time_milteosine.groupby(['Participante', 'Valor'])['time_dosing_miltefosine_administration1'].transform(lambda x: x.min())
+    df_time_milteosine =df_time_milteosine[['Participante','Valor', 'time_dosing_miltefosine_administration']].drop_duplicates()
     df_time_milteosine = df_time_milteosine.rename(columns={'Participante':'Subject', 'Valor':'date_ex_to_join'})
 
 
@@ -90,9 +92,7 @@ def lead_ECG(df_root, path_excel_writer):
             pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_time_dosing, on=['Subject', 'date_ex_to_join'], how='left')
             pru = pru.merge(df_time_milteosine, on=['Subject', 'date_ex_to_join'], how='left')
-            # if sujeto =='011002':
-            #     print(pru)
-            #     print('---------------------------------------')
+
 
 
 
@@ -1718,7 +1718,7 @@ def lead_ECG(df_root, path_excel_writer):
                             
                         try: 
                             dif = float((datetime.strptime(time_dosing_cpg_administration, '%H:%M') - datetime.strptime(predose_triplicate_1_time_pure, '%H:%M')).total_seconds() / 60)
-                            if dif < 0.0 or dif > 60.0:
+                            if dif < 0.0 or dif > 90.0:
                                     
                                 error = [subject, visit, 'Pre dose triplicate 1, Time 24 hrs', predose_triplicate_1_time_form_field_instance,\
                                              'The time selected should be less than 60 min before the study treatment administration', \

@@ -220,7 +220,7 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer):
                         error = [subject, visit, 'Visit Pages', was_DV_performed_form_field_instance , 'This Form will be disabled because the visit was not done', was_DV_performed_pure, 'GE0070']
                         lista_revision.append(error)
 
-                    if date_collected_pure:
+                    if date_collected_pure == '':
                         pass
                     else:
                         try:

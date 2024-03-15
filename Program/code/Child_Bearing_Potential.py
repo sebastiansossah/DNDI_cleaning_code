@@ -417,7 +417,7 @@ def child_bearing_potential(df_root, path_excel_writer):
                             if math.isnan(onset_date_medical_contraceptive):
                                     error = [subject, visit, 'Contraception method used by Female of child-bearing potential', date_start_contraceptive_form_field_instance, \
                                             'The concomitant medication form related to this contraception method is not accurate (date) or the medication has not been added, please review', \
-                                                date_start_contraceptive_disname, 'CB0090']
+                                                date_start_contraceptive_disname, 'C0100']
                                     lista_revision.append(error)
 
                         # Revision CB0120
