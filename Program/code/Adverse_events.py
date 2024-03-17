@@ -229,7 +229,9 @@ def adverse_events(df_root, path_excel_writer):
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
             pru = pru.merge(df_end_study_general_primary_reason, on=['Subject'], how='left')
             pru = pru.merge(df_end_study_general_early, on=['Subject'], how='left')
-
+            # if sujeto == '011002':
+            #     print(pru)
+            #     print('----------------------')
         
 
             for index, row in pru.iterrows():
@@ -575,7 +577,8 @@ def adverse_events(df_root, path_excel_writer):
 
                     # Revision AE0130
                     try:
-                        if datetime.strptime(str(start_date_pure), '%d-%b-%Y') <= datetime.strptime(str(date_dosing_miltefosine), '%d-%b-%Y'):
+                        if datetime.strptime(str(start_date_pure), '%d-%b-%Y') < datetime.strptime(str(date_dosing_miltefosine), '%d-%b-%Y'):
+                            print(start_date_pure, date_dosing_miltefosine)
                             if float(causal_realation_miltefosine_pure) != 1.0:
                                 error = [subject, visit, 'Causal relationship with study treatment (Miltefosine)', causal_realation_miltefosine_form_field_instance, \
                                     'The AE started before the first administration of CpG ODN D35, therefore the causal relationship can not be different from "Not Related"', \

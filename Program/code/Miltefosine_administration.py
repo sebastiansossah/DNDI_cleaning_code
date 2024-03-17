@@ -265,18 +265,17 @@ def miltefosine_administration(df_root, path_excel_writer):
                     # Revision ECML0020
                     try:
                         if str(fecha_visita_d1)!= 'nan' and str(fecha_visita_d28) != 'nan':
-                            if datetime.strptime(str(date_dosing_pure), '%d-%b-%Y') > datetime.strptime(str(fecha_visita_d1), '%d-%b-%Y')  and \
-                            datetime.strptime(str(date_dosing_pure), '%d-%b-%Y') < datetime.strptime(str(fecha_visita_d28), '%d-%b-%Y'):
+                            if datetime.strptime(str(date_dosing_pure), '%d-%b-%Y') < datetime.strptime(str(fecha_visita_d1), '%d-%b-%Y')  or \
+                            datetime.strptime(str(date_dosing_pure), '%d-%b-%Y') > datetime.strptime(str(fecha_visita_d28), '%d-%b-%Y'):
                                 error =  [subject, visit, 'Date of dosing', date_dosing_form_field_instance, \
-                                            'The date must not be between the D1 and the D28 date', date_dosing_disname, 'ECML0020']
+                                            'The date must be between the D1 and the D28 date', date_dosing_disname, 'ECML0020']
                                 lista_revision.append(error)
 
                                 
 
-                        if str(fecha_visita_d1)!= 'nan' and str(fecha_visita_maxima) != 'nan':
+                        elif str(fecha_visita_d1)!= 'nan' and str(fecha_visita_maxima) != 'nan':
 
-                            if datetime.strptime(str(date_dosing_pure), '%d-%b-%Y') > datetime.strptime(str(fecha_visita_d1), '%d-%b-%Y')  and \
-                            datetime.strptime(str(date_dosing_pure), '%d-%b-%Y') < datetime.strptime(str(fecha_visita_maxima), '%d-%b-%Y'):
+                            if datetime.strptime(str(date_dosing_pure), '%d-%b-%Y') < datetime.strptime(str(fecha_visita_d1), '%d-%b-%Y') : 
                                 
                                 error =  [subject, visit, 'Date of dosing', date_dosing_form_field_instance, \
                                             'The date must not be between the D1 and the D28 date', date_dosing_disname, 'ECML0020']
@@ -290,13 +289,15 @@ def miltefosine_administration(df_root, path_excel_writer):
 
 
                     # Revision ECML0030
+                    date_hour_tuple  =(date_dosing_pure, time_dosing_pure)
+                    #print(date_hour_tuple)
                     try:
-                        if date_dosing_pure in date_dosing_historico_list:
+                        if date_hour_tuple in date_dosing_historico_list:
                             error = [subject, visit, 'Date of dosing', date_dosing_form_field_instance, \
                                             'The dosing date can not be repeated', date_dosing_disname, 'ECML0030']
                             lista_revision.append(error)
                         else:
-                            date_dosing_historico_list.append(date_dosing_pure)
+                            date_dosing_historico_list.append(date_hour_tuple)
                     except Exception as e:
                         lista_logs.append(f'Revision ECML0030 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
@@ -381,7 +382,7 @@ def miltefosine_administration(df_root, path_excel_writer):
                                     lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision ECML0110 --> {e} - Subject: {subject},  Visit: {visit} ')
-    
+
     excel_writer = load_workbook(path_excel_writer)
     column_names = ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']
     miltefosine_administration_output = pd.DataFrame(lista_revision, columns=column_names).drop_duplicates()
