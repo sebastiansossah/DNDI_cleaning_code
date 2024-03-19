@@ -10,7 +10,7 @@ from openpyxl.utils.dataframe import dataframe_to_rows
 
 
 
-def adminsitration_CpG_ODN(df_root, path_excel_writer):
+def adminsitration_CpG_ODN(df_root, path_excel_writer, lista_instancias):
     '''
     Esta funcion tiene como finalidad la revision de cada uno de los puntos 
     del edit check para el formulario de CpG ODN D35 Administration

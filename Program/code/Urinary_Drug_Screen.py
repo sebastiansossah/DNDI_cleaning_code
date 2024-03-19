@@ -8,7 +8,7 @@ from revision_fechas import revision_fecha
 import warnings
 
 
-def urinary_drug_screen(df_root, path_excel_writer):
+def urinary_drug_screen(df_root, path_excel_writer, lista_instancias_abiertas):
     '''
     Esta funcion tiene como finalidad la revision de cada uno de los puntos 
     del edit check para el formulario de Urinary drug screen

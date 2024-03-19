@@ -9,7 +9,7 @@ from revision_fechas import revision_fecha
 import math
 import warnings
 
-def physical_examination(df_root, path_excel_writer):
+def physical_examination(df_root, path_excel_writer, lista_instancias_abiertas):
     '''
     Esta funcion tiene como finalidad la revision de cada uno de los puntos 
     del edit check para el formulario de Physical Examination

@@ -11,7 +11,7 @@ from openpyxl.utils.dataframe import dataframe_to_rows
 warnings.filterwarnings('ignore')
 
 
-def urinalysis(df_root, path_excel_writer):
+def urinalysis(df_root, path_excel_writer, lista_instancias_abiertas):
     '''
     Esta funcion tiene como finalidad la revision de cada uno de los puntos 
     del edit check para el formulario de Urinalysis
