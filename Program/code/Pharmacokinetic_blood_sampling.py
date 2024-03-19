@@ -488,6 +488,7 @@ def Pharmacokinetic_blood_sampling(df_root, path_excel_writer, lista_instancias_
     excel_writer = load_workbook(path_excel_writer)
     column_names = ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']
     Pharmacokinetic_blood_sampling_output = pd.DataFrame(lista_revision, columns=column_names)
+    Pharmacokinetic_blood_sampling_output = Pharmacokinetic_blood_sampling_output[~Pharmacokinetic_blood_sampling_output['Form Field Instance ID'].isin(lista_instancias_abiertas)]
     
     sheet = excel_writer.create_sheet("Pharmacokinetic BS(PK)")
 

@@ -112,18 +112,18 @@ def demographic(df_root, path_excel_writer, lista_instancias_abiertas):
 
     excel_writer = load_workbook(path_excel_writer)
     column_names = ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']
-    Informed_Consent_output = pd.DataFrame(lista_revision, columns=column_names)
-
+    demographic_output = pd.DataFrame(lista_revision, columns=column_names)
+    demographic_output = demographic_output[~demographic_output['Form Field Instance ID'].isin(lista_instancias_abiertas)]
     
     sheet = excel_writer.create_sheet("Demographic")
 
-    for row in dataframe_to_rows(Informed_Consent_output, index=False, header=True):
+    for row in dataframe_to_rows(demographic_output, index=False, header=True):
         sheet.append(row)
 
     excel_writer.save(path_excel_writer)
     log_writer(lista_logs)
 
-    return Informed_Consent_output[['Form Field Instance ID' ,'Standard Error Message']].replace({',': '', ';': ''}, regex=True)
+    return demographic_output[['Form Field Instance ID' ,'Standard Error Message']].replace({',': '', ';': ''}, regex=True)
 
 
 if __name__ == '__main__':

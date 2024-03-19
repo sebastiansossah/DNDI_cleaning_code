@@ -1230,6 +1230,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer, list
     excel_writer = load_workbook(path_excel_writer)
     column_names = ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']
     clinical_laboratory_test_clinical_chemistry_output = pd.DataFrame(lista_revision, columns=column_names)
+    clinical_laboratory_test_clinical_chemistry_output = clinical_laboratory_test_clinical_chemistry_output[~clinical_laboratory_test_clinical_chemistry_output['Form Field Instance ID'].isin(lista_instancias_abiertas)]
 
     
     sheet = excel_writer.create_sheet("CL - Clinical Chemistry")

@@ -237,6 +237,7 @@ def virology(df_root, path_excel_writer, lista_instancias_abiertas):
     excel_writer = load_workbook(path_excel_writer)
     column_names = ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']
     virology_output = pd.DataFrame(lista_revision, columns=column_names)
+    virology_output = virology_output[~virology_output['Form Field Instance ID'].isin(lista_instancias_abiertas)]
     
     sheet = excel_writer.create_sheet("Virology")
 

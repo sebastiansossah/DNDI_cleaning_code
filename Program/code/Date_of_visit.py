@@ -10,7 +10,7 @@ from openpyxl.utils.dataframe import dataframe_to_rows
 
 
 
-def date_of_visit(df_root, path_excel_writer, lista_instancias):
+def date_of_visit(df_root, path_excel_writer, lista_instancias_abiertas):
     '''
     Esta funcion tiene como finalidad la revision de cada uno de los puntos 
     del edit check para el formulario de Date of Visit
@@ -160,7 +160,7 @@ def date_of_visit(df_root, path_excel_writer, lista_instancias):
     excel_writer = load_workbook(path_excel_writer)
     column_names = ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']
     date_of_visit_output = pd.DataFrame(lista_revision, columns=column_names)
-    date_of_visit_output = date_of_visit_output[date_of_visit_output['Form Field Instance ID'] not in lista_instancias]
+    date_of_visit_output = date_of_visit_output[~date_of_visit_output['Form Field Instance ID'].isin(lista_instancias_abiertas)]
 
  
     sheet = excel_writer.create_sheet("Date of visit")

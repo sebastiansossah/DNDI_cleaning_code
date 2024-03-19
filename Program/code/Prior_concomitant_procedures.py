@@ -390,6 +390,7 @@ def prior_concomitant_procedures(df_root, path_excel_writer, lista_instancias_ab
     excel_writer = load_workbook(path_excel_writer)
     column_names = ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']
     prior_concomitant_procedures_output = pd.DataFrame(lista_revision, columns=column_names)
+    prior_concomitant_procedures_output = prior_concomitant_procedures_output[~prior_concomitant_procedures_output['Form Field Instance ID'].isin(lista_instancias_abiertas)]
 
     sheet = excel_writer.create_sheet('Prior Concomitant Procedures')
 

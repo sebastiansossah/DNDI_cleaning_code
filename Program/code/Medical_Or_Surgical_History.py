@@ -251,6 +251,7 @@ def Medical_or_surgical_history(df_root, path_excel_writer, lista_instancias_abi
     excel_writer = load_workbook(path_excel_writer)
     column_names = ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']
     medical_surgical_output = pd.DataFrame(lista_revision, columns=column_names)
+    medical_surgical_output = medical_surgical_output[~medical_surgical_output['Form Field Instance ID'].isin(lista_instancias_abiertas)]
  
     sheet = excel_writer.create_sheet("Medical Or Surgical History")
 

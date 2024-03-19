@@ -397,7 +397,7 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer, lista_instanc
     excel_writer = load_workbook(path_excel_writer)
     column_names = ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']
     history_of_cutaneous_leishmaniasis_output = pd.DataFrame(lista_revision, columns=column_names)
-    
+    history_of_cutaneous_leishmaniasis_output = history_of_cutaneous_leishmaniasis_output[~history_of_cutaneous_leishmaniasis_output['Form Field Instance ID'].isin(lista_instancias_abiertas)]
     sheet = excel_writer.create_sheet("History cutane leishmaniasis")
 
     for row in dataframe_to_rows(history_of_cutaneous_leishmaniasis_output, index=False, header=True):
