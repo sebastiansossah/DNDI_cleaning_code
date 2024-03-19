@@ -255,7 +255,7 @@ def end_of_study(df_root, path_excel_writer, lista_instancias_abiertas):
 
             # Revision ES0040
             try:
-                if float(primary_reason_not_completing_general_pure) == 2.0:
+                if float(primary_reason_not_completing_general_pure) == 3.0:
                     if math.isnan(float(caused_study_discontinuation)):
                         error = [subject, visit, 'Primary reason for not completing the study', primary_reason_not_completing_general_form_field_instance, \
                             'The Primary reason for not completing the study is SAE or intolerable AE, that prevents the participant from continuing, but there are no  adverse events reported with Caused study discontinuation Yes.', \
@@ -266,7 +266,7 @@ def end_of_study(df_root, path_excel_writer, lista_instancias_abiertas):
             
             # Revision ES0050
             try:
-                if float(primary_reason_not_completing_general_pure) != 2.0:
+                if float(primary_reason_not_completing_general_pure) != 3.0:
                     if math.isnan(float(caused_study_discontinuation)):
                         pass
                     else:
@@ -279,7 +279,7 @@ def end_of_study(df_root, path_excel_writer, lista_instancias_abiertas):
 
             # Revision ES0090
             try:
-                if float(primary_reason_not_completing_miltefosine_pure) == 2.0:
+                if float(primary_reason_not_completing_miltefosine_pure) == 3.0:
                      if math.isnan(float(adverse_event_id)):
                         error = [subject, visit, 'Primary reason for not completing the study treatment (miltefosine)', primary_reason_not_completing_miltefosine_form_field_instance, \
                             'The Primary reason for not completing the study is  not SAE or intolerable AE, that prevents the participant from continuing, therefore there should not be any adverse events reported with Caused study discontinuation Yes.', \
@@ -290,7 +290,7 @@ def end_of_study(df_root, path_excel_writer, lista_instancias_abiertas):
             
             # Revision ES0120
             try:
-                if float(primary_reason_not_completing_miltefosine_pure) == 2.0:
+                if float(primary_reason_not_completing_miltefosine_pure) == 3.0:
                     if math.isnan(float(miltefosine_permanently_discontinued)):
                         error = [subject, visit, 'Primary reason for not completing the study treatment (miltefosine)', primary_reason_not_completing_miltefosine_form_field_instance, \
                             'The Primary reason for not completing the study is  not SAE or intolerable AE, that prevents the participant from continuing, therefore there should not be any adverse events reported with Caused study discontinuation Yes.', \
@@ -315,7 +315,7 @@ def end_of_study(df_root, path_excel_writer, lista_instancias_abiertas):
 
             # Revision ES0160
             try:
-                if float(primary_reason_not_completing_CPG_pure) == 2.0:
+                if float(primary_reason_not_completing_CPG_pure) == 3.0:
                     if math.isnan(float(adverse_event_id)):
                         error = [subject, visit, 'Primary reason for not completing the study treatment (CpG ODN D35)', primary_reason_not_completing_CPG_form_field_instance, \
                             'There is no AE form completed, please verify', \
@@ -348,7 +348,7 @@ def end_of_study(df_root, path_excel_writer, lista_instancias_abiertas):
 
             # Revision ES0190
             try:
-                if float(primary_reason_not_completing_CPG_pure) == 2.0:
+                if float(primary_reason_not_completing_CPG_pure) == 3.0:
                     if math.isnan(float(cpg_permanently_discontinued)):
                         error = [subject, visit, 'Primary reason for not completing the study treatment (CpG ODN D35)', primary_reason_not_completing_CPG_form_field_instance, \
                             'If the "Primary reason for not completing the study treatment (CpG ODN D35)" is "SAE or intolerable AE", there should be at least one CpG ODN D35 study treatment record with Dosing Event equals to Permanently discontinued with Reason for dose adjustment reported Adverse event.', \
