@@ -1732,7 +1732,7 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                     if str(predose_triplicate_2_time_formated) != '' and str(predose_triplicate_1_time_formated) != '':
                         try:
                             dif_predose_2 = float((predose_triplicate_2_time_formated - predose_triplicate_1_time_formated).total_seconds()/60) 
-                            if dif_predose_2 < 0.0 or  dif_predose_2 > 2.0:
+                            if  dif_predose_2 < 1.0:
                                 error = [subject, visit, 'Pre dose triplicate 2, Time 24 hrs', predose_triplicate_2_time_form_field_instance,\
                                             'Pre dose triplicate 2 Time should be within 2 minutes after Pre dose triplicate 1, Time', f'{predose_triplicate_1_time_disname} - {predose_triplicate_2_time_disname}', 'LE0570']
                                 lista_revision.append(error)
@@ -1743,7 +1743,7 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                     if  str(predose_triplicate_2_time_formated) != '' and str(predose_triplicate_3_time_formated) != '':
                         try:
                             dif_3 = float((predose_triplicate_3_time_formated - predose_triplicate_2_time_formated).total_seconds()/60)
-                            if dif_3 <0.0 or  dif_3 > 2.0:
+                            if dif_3 > 1.0:
                                 error = [subject, visit, 'Pre dose triplicate 3, Time 24 hrs', predose_triplicate_3_time_form_field_instance,\
                                             'Pre dose triplicate 3 Time should be within 2 minutes after Pre dose triplicate 2, Time', f'{predose_triplicate_2_time_disname} - {predose_triplicate_3_time_disname}', 'LE0580']
                                 lista_revision.append(error)
@@ -1757,6 +1757,7 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         try:
                             dif_15 = float((datetime.strptime(min_15_time_pure, '%H:%M') - datetime.strptime(time_dosing_cpg_administration, '%H:%M')).total_seconds() / 60)
                             if dif_15 > 23.0 or dif_15 < 7.0:
+                                print(min_15_time_pure, time_dosing_cpg_administration)
                                     
                                 error = [subject, visit, '15-min post dose, Time 24 hrs', min_15_time_form_field_instance,\
                                              'The time selected should be less than 23min and greater than 7 min after the study treatment administration', \
@@ -1791,7 +1792,7 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                             if dif_60 > 68.0 or dif_60 < 52.0:
                                     
                                 error = [subject, visit, '60-min post dose, Time 24 hrs', min_60_time_form_field_instance,\
-                                             'The time selected should be less than 38 min and greater than 22 min after the study treatment administration', \
+                                             'The time selected should be less than 68 min and greater than 52 min after the study treatment administration', \
                                                 f'60-min post dose, Time 24 hrs: {min_60_time_pure} - dose time administration{time_dosing_cpg_administration}', 'LE0610']
                                 lista_revision.append(error)
 
@@ -1885,7 +1886,7 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                             if dif_60_M > 68.0 or dif_60_M < 52.0:
                                     
                                 error = [subject, visit, '60-min post dose, Time 24 hrs', min_60_time_form_field_instance,\
-                                             'The time selected should be less than 38 min and greater than 22 min after the study treatment administration', \
+                                             'The time selected should be less than 68 min and greater than 52 min after the study treatment administration', \
                                                 f'60-min post dose, Time 24 hrs: {min_60_time_pure} - dose time administration{time_dosing_miltefosine_administration}', 'LE0610']
                                 lista_revision.append(error)
 

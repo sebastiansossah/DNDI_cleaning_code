@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, timedelta
 from revision_fechas import revision_fecha
 import warnings
 from log_writer import log_writer
@@ -108,6 +108,10 @@ def miltefosine_administration(df_root, path_excel_writer, lista_instancias_abie
         sujeto_principal = df[df['Participante']==sujeto]
         sujeto_principal = sujeto_principal.sort_values(by=['FormFieldInstance Id'], ascending=True)
         sujeto_principal = sujeto_principal.reset_index(drop=True)
+        
+        Lista_fechas_validar = sujeto_principal[sujeto_principal['Variable']=='ECMLTDAT']['Valor'].tolist()
+        Lista_fechas_validar = list(set(Lista_fechas_validar))
+        dates = [datetime.strptime(date_str, '%d-%b-%Y') for date_str in Lista_fechas_validar]
 
 
         # miltefosine_administration_id_pure = sujeto_principal[sujeto_principal['Campo']== 'Miltefosine Administration ID']['Valor'][0]
@@ -116,7 +120,7 @@ def miltefosine_administration(df_root, path_excel_writer, lista_instancias_abie
 
         date_dosing_historico_list = []
 
-        visit_dictionary = {'Screening Visit': '', 'D-1':'', 'D1':'', 'D2':'', 
+        visit_dictionary = {'D1':'', 'D2':'', 
         'D3':'', 'D4':'', 'D7':'', 'D14':'','D15':'', 'D16':'', 'D17':'', 
         'D18':'', 'D21':'', 'D28':'', 'D29':'', 'D30':'', 'D31':'', 'D32':'', 
         'D35':'', 'D42':'', 'D63':'', 'D90':'', 'D105':''}
@@ -286,11 +290,8 @@ def miltefosine_administration(df_root, path_excel_writer, lista_instancias_abie
                             lista_logs.append(f'Revision ECML0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
 
-
-
                     # Revision ECML0030
                     date_hour_tuple  =(date_dosing_pure, time_dosing_pure)
-                    #print(date_hour_tuple)
                     try:
                         if date_hour_tuple in date_dosing_historico_list:
                             error = [subject, visit, 'Date of dosing', date_dosing_form_field_instance, \
@@ -317,14 +318,48 @@ def miltefosine_administration(df_root, path_excel_writer, lista_instancias_abie
                         if datetime.strptime(str(date_dosing_pure), '%d-%b-%Y') >= datetime.strptime(str(visita_randomization), '%d-%b-%Y'):
                             pass
                         else: 
-                            error = [subject, visit, 'The date/time of dosing can not be before the randomization date/time', \
+                            error = [subject, visit, 'Date of dosing', \
                                      date_dosing_form_field_instance, \
                                         'The date must not be before the informed consent date', \
                                             f'{date_dosing_disname} - {visita_randomization}', 'ECML0050']
                             lista_revision.append(error)
                     except Exception as e:
                             lista_logs.append(f'Revision ECML0050 --> {e} - Subject: {subject},  Visit: {visit} ')
-                              
+                    
+                    # Revision ECML0060
+                    #Primero revisa si la fecha de la dosis esta antes de la dosis realizada en la visita d1 p despues de la d28 que es la fecha maxima de la administracion del medicamento
+                    if str(date_dosing_pure) != '' or date_dosing_disname != 'Empty':
+
+                        if datetime.strptime(str(date_dosing_pure), '%d-%b-%Y') < datetime.strptime(str(fecha_visita_d1), '%d-%b-%Y') : 
+                                error = [subject, visit, 'Date of dosing', \
+                                        date_dosing_form_field_instance, \
+                                            'The Miltefosine administration form should have daily dates starting on D1 until the date of last study treatment for miltefosine in the End of study Form', \
+                                                f'{date_dosing_disname}', 'ECML0060']
+                                lista_revision.append(error)
+
+                        elif str(fecha_visita_d28) != 'nan':
+
+                            if datetime.strptime(str(date_dosing_pure), '%d-%b-%Y') > datetime.strptime(str(fecha_visita_d28), '%d-%b-%Y'):
+                                    error = [subject, visit, 'Date of dosing', \
+                                            date_dosing_form_field_instance, \
+                                                'The Miltefosine administration form should have daily dates starting on D1 until the date of last study treatment for miltefosine in the End of study Form', \
+                                                    f'{date_dosing_disname}', 'ECML0060']
+                                    lista_revision.append(error)
+                        
+                        else:
+                            if str(date_dosing_pure) == '':
+                                menos_un_dia = (datetime.strptime(date_dosing_pure, '%d-%b-%Y') - timedelta(days=1))
+                                menos_dos_dia = (datetime.strptime(date_dosing_pure, '%d-%b-%Y') - timedelta(days=2))  
+
+                                if menos_un_dia in dates or menos_dos_dia in dates:
+                                    pass
+                                else:
+                                        error = [subject, visit, 'Date of dosing', dosing_event_form_field_instance,\
+                                                        'The Miltefosine administration form should have daily dates starting on D1 until the date of last study treatment for miltefosine in the End of study Form', \
+                                                            dosing_event_disname, 'ECML0060']
+                                        lista_revision.append(error)
+
+    
                     # Revision ECML0080
                     if str(action_taken_miltefosine) == 'nan' and str(action_taken_miltefosine) == '':
                         try:

@@ -382,6 +382,7 @@ def PBMC_isolate(df_root, path_excel_writer, lista_instancias_abiertas):
                                 dif_25_1_M = float((datetime.strptime(time_to_compare_pbmc_1, '%d-%b-%Y %H:%M') - datetime.strptime(time_date_compare_1_miltefosine, '%d-%b-%Y %H:%M')).total_seconds() / 60)
                             
                                 if dif_25_1_M < 1440 or dif_25_1_M > 1500:
+                                    #print(dif_25_1_M)
                                     error =  [subject, visit, 'Time Collected', Time_collected_form_field_instance,\
                                                     'The date and time collected must be between 24 and 25 hours  after the study treatment administration time of the day before', \
                                                         f'Time Collected: {Time_collected_pure} - dose time administration {time_dosing_Miltefosine_administration}', 'PB0060']
