@@ -3,6 +3,7 @@
 
 #Ignore the data folder 
 Program/data/*
+Program/data/rangos_normales/*
 
 #Ignore the output file
 Program/output/*
