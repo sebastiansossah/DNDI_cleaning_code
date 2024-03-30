@@ -2,7 +2,7 @@
  Program/code/EDA.ipynb
 
 #Ignore the data folder 
-Program\data\*
+Program/data/*
 
 #Ignore the output file
-Program\output\*
+Program/output/*
