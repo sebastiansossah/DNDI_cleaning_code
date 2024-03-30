@@ -106,6 +106,16 @@ def PBMC_isolate(df_root, path_excel_writer, lista_instancias_abiertas):
     df_time_milteosine = df_time_milteosine.rename(columns={'Participante':'Subject', 'Valor':'date_ex_to_join'})
 
 
+    df_time_milteosine1_M = df_root[df_root['name']== 'Miltefosine Administration'].sort_values(by='FormFieldInstance Id')
+    df_time_milteosine1_M = df_time_milteosine1_M[(df_time_milteosine1_M['Campo']=='Date of dosing') | (df_time_milteosine1_M['Campo']=='Time of Dosing')]
+    df_time_milteosine_M = df_time_milteosine1_M[df_time_milteosine1_M['Campo']=='Date of dosing']
+    df_time_milteosine_M['time_dosing_miltefosine_administration1'] =  df_time_milteosine1_M[df_time_milteosine1_M['FormFieldInstance Id'].isin(df_time_milteosine_M['FormFieldInstance Id'] + 1) & (df_time_milteosine1_M['Campo'] == 'Time of Dosing')]['Valor'].values
+    df_time_milteosine_M = df_time_milteosine_M[df_time_milteosine_M['time_dosing_miltefosine_administration1'].str.split(':').str[0] != '00']
+    df_time_milteosine_M['time_dosing_miltefosine_administration_ant'] = df_time_milteosine_M.groupby(['Participante', 'Valor'])['time_dosing_miltefosine_administration1'].transform(lambda x: x.min())
+    df_time_milteosine_M =df_time_milteosine_M[['Participante','Valor', 'time_dosing_miltefosine_administration_ant']].drop_duplicates()
+    df_time_milteosine_M = df_time_milteosine_M.rename(columns={'Participante':'Subject', 'Valor':'date_ex_to_join2'})
+
+
     #------------------------------------------
 
     lista_logs = ['PBMC Isolate']
@@ -160,6 +170,7 @@ def PBMC_isolate(df_root, path_excel_writer, lista_instancias_abiertas):
             
             # Miltefosina tiene 3 tomas diarias, solo se revisa el pbmc despues de la primera toma del dia, por lo que solo es necesario cruzar por el mismo dia
             pru = pru.merge(df_time_milteosine, on=['Subject', 'date_ex_to_join'], how='left')
+            pru = pru.merge(df_time_milteosine_M, on=['Subject', 'date_ex_to_join2'], how='left')
             
 
 
@@ -186,6 +197,8 @@ def PBMC_isolate(df_root, path_excel_writer, lista_instancias_abiertas):
                 time_dosing_cpg_administration3 = row['time_dosing_cpg_administration3']
 
                 time_dosing_Miltefosine_administration = row['time_dosing_miltefosine_administration']
+
+                time_dosing_miltefosine_administration_ant = row['time_dosing_miltefosine_administration_ant']
 
                 # time_dosing_Miltefosine_administration2 = row['time_dosing_Miltefosine_administration2']
                 # time_dosing_Miltefosine_administration3 = row['time_dosing_Miltefosine_administration3']
@@ -376,7 +389,7 @@ def PBMC_isolate(df_root, path_excel_writer, lista_instancias_abiertas):
                     if visit in ['D2', 'D16', 'D30']:
                         if str(time_dosing_Miltefosine_administration) != 'nan':
                             if str(time_dosing_Miltefosine_administration) != 'nan':
-                                time_date_compare_1_miltefosine =  row['date_ex_to_join'] + ' ' + time_dosing_Miltefosine_administration
+                                time_date_compare_1_miltefosine =  row['date_ex_to_join2'] + ' ' + time_dosing_miltefosine_administration_ant
                                 time_to_compare_pbmc_1 = date_sample_collected_pure + ' ' + Time_collected_pure
 
                                 dif_25_1_M = float((datetime.strptime(time_to_compare_pbmc_1, '%d-%b-%Y %H:%M') - datetime.strptime(time_date_compare_1_miltefosine, '%d-%b-%Y %H:%M')).total_seconds() / 60)
@@ -385,7 +398,7 @@ def PBMC_isolate(df_root, path_excel_writer, lista_instancias_abiertas):
                                     #print(dif_25_1_M)
                                     error =  [subject, visit, 'Time Collected', Time_collected_form_field_instance,\
                                                     'The date and time collected must be between 24 and 25 hours  after the study treatment administration time of the day before', \
-                                                        f'Time Collected: {Time_collected_pure} - dose time administration {time_dosing_Miltefosine_administration}', 'PB0060']
+                                                        f'Time Collected: {time_to_compare_pbmc_1} - dose time administration {time_date_compare_1_miltefosine}', 'PB0060']
                                     lista_revision.append(error)
 
 

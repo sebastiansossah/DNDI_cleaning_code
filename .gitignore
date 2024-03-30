@@ -1,0 +1,8 @@
+#ignore the exploration file
+ Program/code/EDA.ipynb
+
+#Ignore the data folder 
+Program\data\*
+
+#Ignore the output file
+Program\output\*

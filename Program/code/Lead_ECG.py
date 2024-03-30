@@ -1734,7 +1734,7 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                             dif_predose_2 = float((predose_triplicate_2_time_formated - predose_triplicate_1_time_formated).total_seconds()/60) 
                             if  dif_predose_2 < 1.0:
                                 error = [subject, visit, 'Pre dose triplicate 2, Time 24 hrs', predose_triplicate_2_time_form_field_instance,\
-                                            'Pre dose triplicate 2 Time should be within 2 minutes after Pre dose triplicate 1, Time', f'{predose_triplicate_1_time_disname} - {predose_triplicate_2_time_disname}', 'LE0570']
+                                            'Pre dose triplicate 2 Time is not at least 1 minute after Pre dose triplicate 1, Time', f'{predose_triplicate_1_time_disname} - {predose_triplicate_2_time_disname}', 'LE0570']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision LE0570--> {e} - Subject: {subject},  Visit: {visit} ')  
@@ -1743,9 +1743,9 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                     if  str(predose_triplicate_2_time_formated) != '' and str(predose_triplicate_3_time_formated) != '':
                         try:
                             dif_3 = float((predose_triplicate_3_time_formated - predose_triplicate_2_time_formated).total_seconds()/60)
-                            if dif_3 > 1.0:
+                            if dif_3 < 1.0:
                                 error = [subject, visit, 'Pre dose triplicate 3, Time 24 hrs', predose_triplicate_3_time_form_field_instance,\
-                                            'Pre dose triplicate 3 Time should be within 2 minutes after Pre dose triplicate 2, Time', f'{predose_triplicate_2_time_disname} - {predose_triplicate_3_time_disname}', 'LE0580']
+                                            'Pre dose triplicate 3 Time is not at least 1 minute after Pre dose triplicate 2, Time', f'{predose_triplicate_2_time_disname} - {predose_triplicate_3_time_disname}', 'LE0580']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision LE0580--> {e} - Subject: {subject},  Visit: {visit} ')  
@@ -1757,7 +1757,7 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         try:
                             dif_15 = float((datetime.strptime(min_15_time_pure, '%H:%M') - datetime.strptime(time_dosing_cpg_administration, '%H:%M')).total_seconds() / 60)
                             if dif_15 > 23.0 or dif_15 < 7.0:
-                                print(min_15_time_pure, time_dosing_cpg_administration)
+                           
                                     
                                 error = [subject, visit, '15-min post dose, Time 24 hrs', min_15_time_form_field_instance,\
                                              'The time selected should be less than 23min and greater than 7 min after the study treatment administration', \
@@ -1808,11 +1808,11 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         try: 
                             dif_M = float((datetime.strptime(time_dosing_miltefosine_administration, '%H:%M') - datetime.strptime(predose_triplicate_1_time_pure, '%H:%M')).total_seconds() / 60)
                 
-                            if dif_M < 0.0 or dif_M > 60.0:
+                            if dif_M < 0.0 or dif_M > 90.0:
                                     
                                 error = [subject, visit, 'Pre dose triplicate 1, Time 24 hrs', predose_triplicate_1_time_form_field_instance,\
-                                             'The time selected should be less than 60 min before the study treatment administration', \
-                                                f'Pre dose triplicate 1, Time 24 hrs: {predose_triplicate_1_time_pure} - dose time administration{time_dosing_miltefosine_administration}', 'LE0560']
+                                             'The time selected should be less than 90 min before the study treatment administration', \
+                                                f'Pre dose triplicate 1, Time 24 hrs: {predose_triplicate_1_time_pure} - dose time administration: {time_dosing_miltefosine_administration}', 'LE0560']
                                 lista_revision.append(error)
 
                         except Exception as e:
@@ -1823,9 +1823,9 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         try:
                             dif_predose_2_M = float((predose_triplicate_2_time_formated - predose_triplicate_1_time_formated).total_seconds()/60) 
                    
-                            if dif_predose_2_M < 0.0 or  dif_predose_2_M > 2.0:
+                            if dif_predose_2_M <  1.0:
                                 error = [subject, visit, 'Pre dose triplicate 2, Time 24 hrs', predose_triplicate_2_time_form_field_instance,\
-                                            'Pre dose triplicate 2 Time should be within 2 minutes after Pre dose triplicate 1, Time', f'{predose_triplicate_1_time_disname} - {predose_triplicate_2_time_disname}', 'LE0570']
+                                            'Pre dose triplicate 2 Time is not at least 1 minute after Pre dose triplicate 1, Time', f'{predose_triplicate_1_time_disname} - {predose_triplicate_2_time_disname}', 'LE0570']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision LE0570--> {e} - Subject: {subject},  Visit: {visit} ')  
@@ -1835,13 +1835,24 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         try:
                             dif_3_M = float((predose_triplicate_3_time_formated - predose_triplicate_2_time_formated).total_seconds()/60)
 
-                            if dif_3_M <0.0 or  dif_3_M > 2.0:
+                            if dif_3_M < 1.0:
                                 error = [subject, visit, 'Pre dose triplicate 3, Time 24 hrs', predose_triplicate_3_time_form_field_instance,\
-                                            'Pre dose triplicate 3 Time should be within 2 minutes after Pre dose triplicate 2, Time', f'{predose_triplicate_2_time_disname} - {predose_triplicate_3_time_disname}', 'LE0580']
+                                            'Pre dose triplicate 3 Time is not at least 1 minute after Pre dose triplicate 2, Time', f'{predose_triplicate_2_time_disname} - {predose_triplicate_3_time_disname}', 'LE0580']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision LE0580--> {e} - Subject: {subject},  Visit: {visit} ')  
                         
+                    # Revision LE0581
+                    if  str(predose_triplicate_1_time_formated) != '' and str(predose_triplicate_3_time_formated) != '':
+                        try:
+                            dif_3_M_1 = float((predose_triplicate_3_time_formated - predose_triplicate_1_time_formated).total_seconds()/60)
+
+                            if dif_3_M_1 < 0.0 or dif_3_M_1 > 6.0:
+                                error = [subject, visit, 'Pre dose triplicate 3, Time 24 hrs', predose_triplicate_3_time_form_field_instance,\
+                                            'Pre dose triplicate 3 Time is not within 6 minutes after Pre dose triplicate 1, Time', f'{predose_triplicate_1_time_disname} - {predose_triplicate_3_time_disname}', 'LE0581']
+                                lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision LE0581--> {e} - Subject: {subject},  Visit: {visit} ')  
 
                     # Revision LE0590
                     if str(time_dosing_miltefosine_administration) != 'nan':

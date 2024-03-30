@@ -66,7 +66,7 @@ if __name__ == '__main__':
     df_root.rename(columns = {'Instancia':'FormFieldInstance Id'}, inplace = True)
     df_root = df_root[(df_root['activityState']== 'DATA_VERIFIED') | (df_root['activityState']== 'DATA_ENTRY_COMPLETE')]
 
-    lista_instancias_abiertas = [str(x) for x in  df_root[(df_root['QueryState'] == 'OPEN') | (df_root['TypeQuery'] == 'QUERY')]['FormFieldInstance Id'].to_list()]
+    lista_instancias_abiertas = [str(x) for x in  df_root[(df_root['TypeQuery'] == 'QUERY')]['FormFieldInstance Id'].to_list()]
     
     print(df_root.shape)
     path_excel_writer = r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\Program\output\DNDi_cleaning_yyyymmdd.xlsx".replace('yyyymmdd', current_date)
