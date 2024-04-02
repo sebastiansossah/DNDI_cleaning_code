@@ -399,7 +399,7 @@ def miltefosine_administration(df_root, path_excel_writer, lista_instancias_abie
                                 if timer_difference > 28800.0:
                                     error = [subject, visit, 'Time of dosing', dosing_event_form_field_instance,\
                                                 'Doses from the same day should have 8h difference between them', \
-                                                    f"{fecha} former time: {(dic_date_time[fecha][i - 1].split('|')[0]), '%H:%M'}, time assessed: {(dic_date_time[fecha][i].split('|')[0]), '%H:%M'}, time difference: {timer_difference/3600}", 'ECML0070']
+                                                    f"{str(fecha).split(' ')[0]} former time: {(dic_date_time[fecha][i - 1].split('|')[0])}, time assessed: {(dic_date_time[fecha][i].split('|')[0])}, time difference: {int((timer_difference - 28800)/60)} minutes", 'ECML0070']
                                     lista_revision.append(error)      
 
                             else:
@@ -407,7 +407,7 @@ def miltefosine_administration(df_root, path_excel_writer, lista_instancias_abie
                                 if timer_difference > 28800.0:
                                     error = [subject, visit, 'Time of dosing', dosing_event_form_field_instance,\
                                                 'Doses from the same day should have 8h difference between them', \
-                                                    f"{fecha} former time: {(dic_date_time[fecha][i - 1].split('|')[0]), '%H:%M'}, time assessed: {(dic_date_time[fecha][i].split('|')[0]), '%H:%M'}, time difference: {timer_difference/3600}", 'ECML0070']
+                                                    f"{str(fecha).split(' ')[0]} former time: {(dic_date_time[fecha][i - 1].split('|')[0])}, time assessed: {(dic_date_time[fecha][i].split('|')[0])}, time difference: {int((timer_difference - 28800)/60)} minutes", 'ECML0070']
                                     lista_revision.append(error)   
     
                     # Revision ECML0080
