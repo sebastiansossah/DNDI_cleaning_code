@@ -5,7 +5,7 @@ import pandas as pd
 from revision_fechas import revision_fecha
 from log_writer import log_writer
 import warnings
-
+import os
 from openpyxl import load_workbook
 from openpyxl.utils.dataframe import dataframe_to_rows
 
@@ -17,6 +17,12 @@ def eligibility(df_root, path_excel_writer, lista_instancias_abiertas):
     Esta funcion tiene como finalidad la revision de cada uno de los puntos 
     del edit check para el formulario de Eligibility
     '''
+    script_directory = os.path.dirname(os.path.abspath(__file__)) if '__file__' in locals() else os.getcwd()
+    relative_folder_path = r"data\rangos_normales"
+    folder_path = os.path.join(script_directory.replace('\code', ''), relative_folder_path)
+    file = os.listdir(folder_path)
+    path = f"{folder_path}\{[x for x in file if 'Eligibility' in x][0]}" 
+    df_normal_ranges = pd.read_csv(path, sep=';')
 
 
     df= df_root[df_root['name']=='Eligibility']
@@ -408,7 +414,8 @@ def eligibility(df_root, path_excel_writer, lista_instancias_abiertas):
                         # Revision para IE0220
                         try:
                             if float(subject_eligible_for_study_pure) == 1.0:
-                                if float(age_participant) < 18 or float(age_participant) > 50:
+                                if float(age_participant) < float(df_normal_ranges[df_normal_ranges['field']=="age_eligibility"]['min'].iloc[0]) or \
+                                    float(age_participant) > float(df_normal_ranges[df_normal_ranges['field']=="age_eligibility"]['max'].iloc[0]) :
                                     error = [subject, visit, 'Is the subject eligible for the study?', subject_eligible_for_study_form_field_instance, \
                                             'The Subject can not be eligible because he/she is not between 18 and 50 years old, please review', age_participant, 'IE0220']
                                     lista_revision.append(error)
@@ -454,22 +461,25 @@ def eligibility(df_root, path_excel_writer, lista_instancias_abiertas):
                         except Exception as e:
                             lista_logs.append(f'Revision IE0441 --> {e} - Subject: {subject},  Visit: {visit} ')
 
-                        # Revision para IE447
-                        #if math.isnan(cuenta_lesiones) != False and  math.isnan(diametro_lesiones):
+
                         try:
                             if float(subject_eligible_for_study_pure) == 1.0:
-                                if float(cuenta_lesiones) > 4.0 or float(diametro_lesiones) > 400.0:
+                                if float(cuenta_lesiones) > float(df_normal_ranges[df_normal_ranges['field']=="cuenta_lesiones"]['max'].iloc[0]) or \
+                                    float(diametro_lesiones) > float(df_normal_ranges[df_normal_ranges['field']=="diametro_lesiones"]['max'].iloc[0]):
+
                                     error = [subject, visit, 'Is the subject eligible for the study?', subject_eligible_for_study_form_field_instance, \
                                             'The participant has more than 4 lesions, or lesions over 4cm long in diameter or lesions with mucosal involvement in the Lesion Measurement form, he/she should not be eligible for randomization', \
-                                                cuenta_lesiones, 'IE0447']
+                                                f"Number of lesions: {cuenta_lesiones} - Diameter of lesion: {diametro_lesiones}", 'IE0447']
                                     lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision IE447 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                         # Revision para IE0451
+                        
                         try:
                             if float(subject_eligible_for_study_pure) == 1.0:
-                                if float(diastolic_preasure) > 90.0:
+                                #if float(diastolic_preasure) > 90.0:
+                                if float(diastolic_preasure) > float(df_normal_ranges[df_normal_ranges['field']=="diastolic_preasure"]['max'].iloc[0]):
                                     error = [subject, visit, 'Is the subject eligible for the study?', subject_eligible_for_study_form_field_instance,\
                                             'The participant has a Diastolic Blood Pressure over 90 mmHg ,he/she should not be eligible for the study', diastolic_preasure, 'IE0451']
                                     lista_revision.append(error)
@@ -479,7 +489,9 @@ def eligibility(df_root, path_excel_writer, lista_instancias_abiertas):
                         # Revision para IE0455
                         try:
                             if float(subject_eligible_for_study_pure) == 1.0:
-                                if float(systolic_preasure) < 100.0 or float(systolic_preasure) > 140.0:
+                                # if float(systolic_preasure) < 100.0 or float(systolic_preasure) > 140.0:
+                                if float(systolic_preasure) < float(df_normal_ranges[df_normal_ranges['field']=="systolic_preasure"]['min'].iloc[0]) or\
+                                      float(systolic_preasure) > float(df_normal_ranges[df_normal_ranges['field']=="systolic_preasure"]['max'].iloc[0]):
                                     error = [subject, visit, 'Is the subject eligible for the study?', subject_eligible_for_study_form_field_instance, \
                                             'The participant has a Systolic Blood Pressure that is not between 100 and 140 mmHg,he/she should not be eligible for the study', systolic_preasure, 'IE0455']
                                     lista_revision.append(error)
@@ -489,7 +501,10 @@ def eligibility(df_root, path_excel_writer, lista_instancias_abiertas):
                         # Revision para IE0459
                         try:
                             if float(subject_eligible_for_study_pure) == 1.0:
-                                if float(HR_EGC) < 45.0 or float(HR_EGC) > 90.0:
+                                #if float(HR_EGC) < 45.0 or float(HR_EGC) > 90.0:
+                                if float(HR_EGC) < float(df_normal_ranges[df_normal_ranges['field']=="HR_EGC"]['min'].iloc[0]) or\
+                                      float(HR_EGC) > float(df_normal_ranges[df_normal_ranges['field']=="HR_EGC"]['max'].iloc[0]) :
+
                                     error = [subject, visit, 'Is the subject eligible for the study?', subject_eligible_for_study_form_field_instance, \
                                             'The participant has a HR that is not between 45 and 90 bpm,he/she should not be eligible for the study', HR_EGC, 'IE0459']
                                     lista_revision.append(error)
@@ -564,7 +579,9 @@ def eligibility(df_root, path_excel_writer, lista_instancias_abiertas):
                         # Revision para IE210
                         try:
                             if float(participant_randomization_pure) == 1.0:
-                                if float(age_participant) < 18.0 or float(age_participant) > 50:
+                                # if float(age_participant) < 18.0 or float(age_participant) > 50:
+                                if float(age_participant) < float(df_normal_ranges[df_normal_ranges['field']=="age_eligibility"]['min'].iloc[0]) or \
+                                    float(age_participant) > float(df_normal_ranges[df_normal_ranges['field']=="age_eligibility"]['max'].iloc[0]):
                                     error = [subject, visit, 'Is the participant eligible to randomization?', participant_randomization_form_field_instance, \
                                             'The Subject can not be eligible because he/she is not between 18 and 50 years old, please review', age_participant, 'IE0210']
                                     lista_revision.append(error)
@@ -598,14 +615,17 @@ def eligibility(df_root, path_excel_writer, lista_instancias_abiertas):
                             lista_logs.append(f'Revision IE0440 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                         # Revision para IE0446
+                        
                         try:
                             if float(participant_randomization_pure) == 1.0:
-                                if float(cuenta_lesiones) > 4.0 or float(diametro_lesiones) > 400.0:
-                                    #print(cuenta_lesiones - diametro_lesiones)
+                                #if float(cuenta_lesiones) > 4.0 or float(diametro_lesiones) > 400.0:
+                                if float(cuenta_lesiones) > float(df_normal_ranges[df_normal_ranges['field']=="cuenta_lesiones"]['max'].iloc[0]) or \
+                                    float(diametro_lesiones) > float(df_normal_ranges[df_normal_ranges['field']=="diametro_lesiones"]['max'].iloc[0]):
+
                                     error = [subject, visit, 'Is the participant eligible to randomization?', \
                                             participant_randomization_form_field_instance,\
                                                 'The participant has more than 4 lesions, or lesions over 4cm long in diameter or lesions with mucosal involvement in the Lesion Measurement form, he/she should not be eligible for randomization', \
-                                                    cuenta_lesiones, 'IE0446']
+                                                    f"Number of lesions: {cuenta_lesiones} - Diameter of lesion: {diametro_lesiones}", 'IE0446']
                                     lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision IE0446 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -613,7 +633,7 @@ def eligibility(df_root, path_excel_writer, lista_instancias_abiertas):
                         # Revision para IE0450
                         try:
                             if float(participant_randomization_pure) == 1.0:
-                                if float(diastolic_preasure) > 90.0:
+                                if float(diastolic_preasure) > float(df_normal_ranges[df_normal_ranges['field']=="diastolic_preasure"]['max'].iloc[0]):
                                     error = [subject, visit, 'Is the participant eligible to randomization?', participant_randomization_disname, \
                                             'The participant has a Diastolic Blood Pressure over 90 mmHg ,he/she should not be eligible for randomization', diastolic_preasure, 'IE0450']
                                     lista_revision.append(error)
@@ -623,7 +643,9 @@ def eligibility(df_root, path_excel_writer, lista_instancias_abiertas):
                         # Revision para IE0454
                         try:
                             if float(participant_randomization_pure) == 1.0:
-                                if float(systolic_preasure) < 100.0 or float(systolic_preasure) > 140.0:
+                                #if float(systolic_preasure) < 100.0 or float(systolic_preasure) > 140.0:
+                                if float(systolic_preasure) < float(df_normal_ranges[df_normal_ranges['field']=="systolic_preasure"]['min'].iloc[0]) or\
+                                      float(systolic_preasure) > float(df_normal_ranges[df_normal_ranges['field']=="systolic_preasure"]['max'].iloc[0]):
                                     error = [subject, visit, 'Is the participant eligible to randomization?', participant_randomization_form_field_instance, \
                                             'The participant has a Systolic Blood Pressure that is not between 100 and 140 mmHg, he/she should not be eligible for randomization', systolic_preasure, 'IE0454']
                                     lista_revision.append(error)
@@ -633,7 +655,9 @@ def eligibility(df_root, path_excel_writer, lista_instancias_abiertas):
                         # Revision para IE0458
                         try:
                             if float(participant_randomization_pure) == 1.0:
-                                if float(HR_EGC) < 45.0 or float(HR_EGC) > 90.0:
+                                #if float(HR_EGC) < 45.0 or float(HR_EGC) > 90.0:
+                                if float(HR_EGC) < float(df_normal_ranges[df_normal_ranges['field']=="HR_EGC"]['min'].iloc[0]) or\
+                                      float(HR_EGC) > float(df_normal_ranges[df_normal_ranges['field']=="HR_EGC"]['max'].iloc[0]) :
                                     error = [subject, visit, 'Is the participant eligible to randomization?', participant_randomization_form_field_instance, \
                                             'The participant has a HR that is not between 45 and 90 bpm,he/she should not be eligible for randomization', HR_EGC, 'IE0458']
                                     lista_revision.append(error)
@@ -709,7 +733,8 @@ def eligibility(df_root, path_excel_writer, lista_instancias_abiertas):
                     # Revision para IE0468
                     try:
                         if float(participant_randomization_pure) == 1.0:
-                            if float(QTCF) > 450.0:
+                            if float(QTCF) > float(df_normal_ranges[df_normal_ranges['field']=="QTCF"]['max'].iloc[0]):
+                                
                                 error = [subject, visit, 'Is the participant eligible to randomization?', participant_randomization_form_field_instance, \
                                          'The participant has a QTcF interval (>450msec), he/she should not be eligible for randomization', QTCF, 'IE0468']
                                 lista_revision.append(error)
