@@ -622,7 +622,7 @@ def adverse_events(df_root, path_excel_writer, lista_instancias_abiertas):
                             lista_logs.append(f'Revision AE0150 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0160
-                    if str(date_dosing_CPG) != 'nan' and str(date_dosing_CPG) != '':    
+                    if str(date_dosing_CPG) != 'nan' and str(date_dosing_CPG) != '' and str(end_date_pure) != 'nan' and str(end_date_pure) != '':    
                         try:
                             if datetime.strptime(str(end_date_pure), '%d-%b-%Y') <= datetime.strptime(str(date_dosing_CPG), '%d-%b-%Y'):
                                 if float(actions_taken_cpg_pure) != 5.0:
@@ -680,7 +680,7 @@ def adverse_events(df_root, path_excel_writer, lista_instancias_abiertas):
                             lista_logs.append(f'Revision AE0190 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0200
-                    if str(date_dosing_CPG) != 'nan' and str(date_dosing_CPG) != '':    
+                    if str(date_dosing_CPG) != 'nan' and str(date_dosing_CPG) != '' and str(end_date_pure) != 'nan' and str(end_date_pure) != '':  
                         try:
                             if datetime.strptime(str(start_date_pure), '%d-%b-%Y') <= datetime.strptime(str(date_dosing_CPG), '%d-%b-%Y'):
                                 if datetime.strptime(str(end_date_pure), '%d-%b-%Y') >= datetime.strptime(str(date_dosing_CPG), '%d-%b-%Y'):
