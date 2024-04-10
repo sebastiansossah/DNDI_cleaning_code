@@ -45,7 +45,7 @@ def adminsitration_CpG_ODN(df_root, path_excel_writer, lista_instancias_abiertas
     df_adverse = df_root[df_root['name']=='Adverse Events']
     df_adverse = df_adverse[['Visit','Participante', 'Campo', 'Valor']]
     df_adverse = df_adverse[df_adverse['Campo']== 'Action taken with study treatment (CPG ODN D35)']
-    df_adverse = df_adverse[['Participante','Valor']]
+    df_adverse = df_adverse[['Participante','Valor']].drop_duplicates()
     df_adverse = df_adverse.rename(columns={'Participante':'Subject', 'Valor':'action_taken_study_treatment'})
 
     lista_revision = []
@@ -77,9 +77,14 @@ def adminsitration_CpG_ODN(df_root, path_excel_writer, lista_instancias_abiertas
             pru = pru.merge(df_informed, on=['Subject'], how='left')
             pru = pru.merge(df_date_visit_randomization, on=['Subject'], how='left')
             pru = pru.merge(df_adverse, on=['Subject'], how='left')
-
+            # print(pru)
+            # print('------------------------------------')
 
             for index, row in pru.iterrows():
+
+                if index != 0:
+                    lista_logs.append('Duplicados en la data, revisar subdataset')
+                
                 status = row['status']
                 subject = row['Subject']
                 visit = row['Visit']

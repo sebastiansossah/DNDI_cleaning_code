@@ -117,347 +117,351 @@ def prior_concomitant_medication(df_root, path_excel_writer, lista_instancias_ab
             # print('-----------------------')
 
 
-            # for index, row in pru.iterrows():
-            #     status = row['status']
-            #     subject = row['Subject']
-            #     visit = row['Visit']
+            for index, row in pru.iterrows():
 
-            #     adverse_event_id_from_table = row['adverse_event_id']
-            #     adverse_event_start_date = row['start_date_adverse']
-            #     adverse_event_end_date = row['end_date_adverse']
-
-            #     adverse_event_id_from_table_aditional = row['to_join_adverse_aditional']
-
-            #     inform_consent_date = row['Inform_consent_date']
-            #     end_study_date = row['end_study_date']
-
-            #     if status != '':
-            #         try:
-            #             concomitant_medication_id = row['Concomitant Medication ID']
-            #             concomitant_medication_id_pure  = concomitant_medication_id.split('|')[0]
-            #             concomitant_medication_id_form_field_instance = concomitant_medication_id.split('|')[1]
-            #             concomitant_medication_id_disname = concomitant_medication_id.split('|')[0]
-            #         except:
-            #             concomitant_medication_id_pure = ''
-            #             concomitant_medication_id_form_field_instance = 'This field does not have any data'
-            #             concomitant_medication_id_disname = 'Empty'
+                if index != 0:
+                    lista_logs.append('Duplicados en la data, revisar subdataset')
                     
-            #         try:
-            #             drug_name = row['Drug Name']
-            #             drug_name_pure = drug_name.split('|')[0]
-            #             drug_name_form_field_instance = drug_name.split('|')[1]
-            #             drug_name_disname = drug_name.split('|')[0]
-            #         except:
-            #             drug_name_pure = ''
-            #             drug_name_form_field_instance = 'This field does not have any data'
-            #             drug_name_disname = 'Empty'
+                status = row['status']
+                subject = row['Subject']
+                visit = row['Visit']
+
+                adverse_event_id_from_table = row['adverse_event_id']
+                adverse_event_start_date = row['start_date_adverse']
+                adverse_event_end_date = row['end_date_adverse']
+
+                adverse_event_id_from_table_aditional = row['to_join_adverse_aditional']
+
+                inform_consent_date = row['Inform_consent_date']
+                end_study_date = row['end_study_date']
+
+                if status != '':
+                    try:
+                        concomitant_medication_id = row['Concomitant Medication ID']
+                        concomitant_medication_id_pure  = concomitant_medication_id.split('|')[0]
+                        concomitant_medication_id_form_field_instance = concomitant_medication_id.split('|')[1]
+                        concomitant_medication_id_disname = concomitant_medication_id.split('|')[0]
+                    except:
+                        concomitant_medication_id_pure = ''
+                        concomitant_medication_id_form_field_instance = 'This field does not have any data'
+                        concomitant_medication_id_disname = 'Empty'
                     
-            #         try:
-            #             adverse_event_id = row['Adverse Event ID']
-            #             adverse_event_id_pure = adverse_event_id.split('|')[0]
-            #             adverse_event_id_form_field_instance = adverse_event_id.split('|')[1]
-            #             adverse_event_id_disname = adverse_event_id.split('|')[0]
-            #         except:
-            #             adverse_event_id_pure = ''
-            #             adverse_event_id_form_field_instance = 'This field does not have any data'
-            #             adverse_event_id_disname = 'Empty'
+                    try:
+                        drug_name = row['Drug Name']
+                        drug_name_pure = drug_name.split('|')[0]
+                        drug_name_form_field_instance = drug_name.split('|')[1]
+                        drug_name_disname = drug_name.split('|')[0]
+                    except:
+                        drug_name_pure = ''
+                        drug_name_form_field_instance = 'This field does not have any data'
+                        drug_name_disname = 'Empty'
+                    
+                    try:
+                        adverse_event_id = row['Adverse Event ID']
+                        adverse_event_id_pure = adverse_event_id.split('|')[0]
+                        adverse_event_id_form_field_instance = adverse_event_id.split('|')[1]
+                        adverse_event_id_disname = adverse_event_id.split('|')[0]
+                    except:
+                        adverse_event_id_pure = ''
+                        adverse_event_id_form_field_instance = 'This field does not have any data'
+                        adverse_event_id_disname = 'Empty'
                         
-            #         try:
-            #             indication = row['Indication']
-            #             indication_pure = indication.split('|')[0]
-            #             indication_form_field_instance = indication.split('|')[1]
-            #             indication_disname = indication.split('|')[2]
-            #         except:
-            #             indication_pure = ''
-            #             indication_form_field_instance = 'This field does not have any data'
-            #             indication_disname = 'Empty'
+                    try:
+                        indication = row['Indication']
+                        indication_pure = indication.split('|')[0]
+                        indication_form_field_instance = indication.split('|')[1]
+                        indication_disname = indication.split('|')[2]
+                    except:
+                        indication_pure = ''
+                        indication_form_field_instance = 'This field does not have any data'
+                        indication_disname = 'Empty'
                     
-            #         try:
-            #             indication_category = row['Indication Category']
-            #             indication_category_pure = indication_category.split('|')[0]
-            #             indication_category_form_field_instance = indication_category.split('|')[1]
-            #             indication_category_disname = indication_category.split('|')[2]
-            #         except:
-            #             indication_category_pure = ''
-            #             indication_category_form_field_instance = 'This field does not have any data'
-            #             indication_category_disname = 'Empty'
+                    try:
+                        indication_category = row['Indication Category']
+                        indication_category_pure = indication_category.split('|')[0]
+                        indication_category_form_field_instance = indication_category.split('|')[1]
+                        indication_category_disname = indication_category.split('|')[2]
+                    except:
+                        indication_category_pure = ''
+                        indication_category_form_field_instance = 'This field does not have any data'
+                        indication_category_disname = 'Empty'
                     
-            #         try:
-            #             dose_per_administration = row['Dose per Administration']
-            #             dose_per_administration_pure = dose_per_administration.split('|')[0]
-            #             dose_per_administration_form_field_instance = dose_per_administration.split('|')[1]
-            #             dose_per_administration_disname = dose_per_administration.split('|')[0]
-            #         except:
-            #             dose_per_administration_pure = ''
-            #             dose_per_administration_form_field_instance = 'This field does not have any data'
-            #             dose_per_administration_disname = 'Empty'
+                    try:
+                        dose_per_administration = row['Dose per Administration']
+                        dose_per_administration_pure = dose_per_administration.split('|')[0]
+                        dose_per_administration_form_field_instance = dose_per_administration.split('|')[1]
+                        dose_per_administration_disname = dose_per_administration.split('|')[0]
+                    except:
+                        dose_per_administration_pure = ''
+                        dose_per_administration_form_field_instance = 'This field does not have any data'
+                        dose_per_administration_disname = 'Empty'
                     
-            #         try:
-            #             unit = row['Unit']
-            #             unit_pure = unit.split('|')[0]
-            #             unit_form_field_instance = unit.split('|')[1]
-            #             unit_disname = unit.split('|')[0]
-            #         except:
-            #             unit_pure = ''
-            #             unit_form_field_instance = 'This field does not have any data'
-            #             unit_disname = 'Empty'
+                    try:
+                        unit = row['Unit']
+                        unit_pure = unit.split('|')[0]
+                        unit_form_field_instance = unit.split('|')[1]
+                        unit_disname = unit.split('|')[0]
+                    except:
+                        unit_pure = ''
+                        unit_form_field_instance = 'This field does not have any data'
+                        unit_disname = 'Empty'
                     
-            #         try:
-            #             frequency = row['Frequency']
-            #             frequency_pure = frequency.split('|')[0]
-            #             frequency_form_field_instance = frequency.split('|')[1]
-            #             frequency_disname = frequency.split('|')[0]
-            #         except:
-            #             frequency_pure = ''
-            #             frequency_form_field_instance = 'This field does not have any data'
-            #             frequency_disname = 'Empty'
+                    try:
+                        frequency = row['Frequency']
+                        frequency_pure = frequency.split('|')[0]
+                        frequency_form_field_instance = frequency.split('|')[1]
+                        frequency_disname = frequency.split('|')[0]
+                    except:
+                        frequency_pure = ''
+                        frequency_form_field_instance = 'This field does not have any data'
+                        frequency_disname = 'Empty'
                     
-            #         try:
-            #             route = row['Route']
-            #             route_pure = route.split('|')[0]
-            #             route_form_field_instance = route.split('|')[1]
-            #             route_disname = route.split('|')[2]
-            #         except:
-            #             route_pure = ''
-            #             route_form_field_instance = 'This field does not have any data'
-            #             route_disname = 'Empty'
+                    try:
+                        route = row['Route']
+                        route_pure = route.split('|')[0]
+                        route_form_field_instance = route.split('|')[1]
+                        route_disname = route.split('|')[2]
+                    except:
+                        route_pure = ''
+                        route_form_field_instance = 'This field does not have any data'
+                        route_disname = 'Empty'
                     
-            #         try:
-            #             start_date = row['Start date']
-            #             start_date_pure = start_date.split('|')[0]
-            #             start_date_form_field_instance = start_date.split('|')[1]
-            #             start_date_disname = start_date.split('|')[0]
-            #         except:
-            #             start_date_pure = ''
-            #             start_date_form_field_instance = 'This field does not have any data'
-            #             start_date_disname = 'Empty'
+                    try:
+                        start_date = row['Start date']
+                        start_date_pure = start_date.split('|')[0]
+                        start_date_form_field_instance = start_date.split('|')[1]
+                        start_date_disname = start_date.split('|')[0]
+                    except:
+                        start_date_pure = ''
+                        start_date_form_field_instance = 'This field does not have any data'
+                        start_date_disname = 'Empty'
 
-            #         try:
-            #             end_date = row['End date']
-            #             end_date_pure = end_date.split('|')[0]
-            #             end_date_form_field_instance = end_date.split('|')[1]
-            #             end_date_disname = end_date.split('|')[0]
-            #         except:
-            #             end_date_pure = ''
-            #             end_date_form_field_instance = 'This field does not have any data'
-            #             end_date_disname = 'Empty'
+                    try:
+                        end_date = row['End date']
+                        end_date_pure = end_date.split('|')[0]
+                        end_date_form_field_instance = end_date.split('|')[1]
+                        end_date_disname = end_date.split('|')[0]
+                    except:
+                        end_date_pure = ''
+                        end_date_form_field_instance = 'This field does not have any data'
+                        end_date_disname = 'Empty'
 
-            #         try:
-            #             ongoing = row['Ongoing']
-            #             ongoing_pure = ongoing.split('|')[0]
-            #             ongoing_form_field_instance = ongoing.split('|')[1]
-            #             ongoing_disname = ongoing.split('|')[2]
-            #         except:
-            #             ongoing_pure = ''
-            #             ongoing_form_field_instance = 'This field does not have any data'
-            #             ongoing_disname = 'Empty'
+                    try:
+                        ongoing = row['Ongoing']
+                        ongoing_pure = ongoing.split('|')[0]
+                        ongoing_form_field_instance = ongoing.split('|')[1]
+                        ongoing_disname = ongoing.split('|')[2]
+                    except:
+                        ongoing_pure = ''
+                        ongoing_form_field_instance = 'This field does not have any data'
+                        ongoing_disname = 'Empty'
                     
-            #         try:
-            #             rescue_medication = row['Rescue Medication']
-            #             rescue_medication_pure = rescue_medication.split('|')[0]
-            #             rescue_medication_form_field_instance = rescue_medication.split('|')[1]
-            #             rescue_medication_disname = rescue_medication.split('|')[0]
-            #         except:
-            #             rescue_medication_pure = ''
-            #             rescue_medication_form_field_instance = 'This field does not have any data'
-            #             rescue_medication_disname = 'Empty'
+                    try:
+                        rescue_medication = row['Rescue Medication']
+                        rescue_medication_pure = rescue_medication.split('|')[0]
+                        rescue_medication_form_field_instance = rescue_medication.split('|')[1]
+                        rescue_medication_disname = rescue_medication.split('|')[0]
+                    except:
+                        rescue_medication_pure = ''
+                        rescue_medication_form_field_instance = 'This field does not have any data'
+                        rescue_medication_disname = 'Empty'
                     
-            #         try:
-            #             aditional_adverse_event = row['Aditional Adverse Event ID']
-            #             aditional_adverse_event_pure = aditional_adverse_event.split('|')[0]
-            #             aditional_adverse_event_form_field_instance = aditional_adverse_event.split('|')[1]
-            #             aditional_adverse_event_disname = aditional_adverse_event.split('|')[0]
-            #         except:
-            #             aditional_adverse_event_pure = ''
-            #             aditional_adverse_event_form_field_instance = 'This field does not have any data'
-            #             aditional_adverse_event_disname = 'Empty'
+                    try:
+                        aditional_adverse_event = row['Aditional Adverse Event ID']
+                        aditional_adverse_event_pure = aditional_adverse_event.split('|')[0]
+                        aditional_adverse_event_form_field_instance = aditional_adverse_event.split('|')[1]
+                        aditional_adverse_event_disname = aditional_adverse_event.split('|')[0]
+                    except:
+                        aditional_adverse_event_pure = ''
+                        aditional_adverse_event_form_field_instance = 'This field does not have any data'
+                        aditional_adverse_event_disname = 'Empty'
                     
-            #         # -------------------------------------------------------------------------------------------
+                    # -------------------------------------------------------------------------------------------
 
-            #         if start_date_pure == '':
-            #             pass
-            #         else:
-            #             try:
-            #                 # Primera  revision general de formato de fecha ->GE0020
-            #                 f = revision_fecha(start_date_pure)
-            #                 if f == None:
-            #                     pass
-            #                 else:
-            #                     error = [subject, visit, 'Start date', start_date_form_field_instance,\
-            #                             f , start_date_disname, 'GE0020']
-            #                     lista_revision.append(error)     
+                    if start_date_pure == '':
+                        pass
+                    else:
+                        try:
+                            # Primera  revision general de formato de fecha ->GE0020
+                            f = revision_fecha(start_date_pure)
+                            if f == None:
+                                pass
+                            else:
+                                error = [subject, visit, 'Start date', start_date_form_field_instance,\
+                                        f , start_date_disname, 'GE0020']
+                                lista_revision.append(error)     
 
-            #             except Exception as e:
-            #                 lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
+                        except Exception as e:
+                            lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
-            #         if end_date_pure == '':
-            #             pass
-            #         else:
-            #             try:
-            #                 # Primera  revision general de formato de fecha ->GE0020
-            #                 f = revision_fecha(end_date_pure)
-            #                 if f == None:
-            #                     pass
-            #                 else:
-            #                     error = [subject, visit, 'End date', end_date_form_field_instance,\
-            #                             f , end_date_disname, 'GE0020']
-            #                     lista_revision.append(error)     
-            #             except Exception as e:
-            #                 lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ') 
+                    if end_date_pure == '':
+                        pass
+                    else:
+                        try:
+                            # Primera  revision general de formato de fecha ->GE0020
+                            f = revision_fecha(end_date_pure)
+                            if f == None:
+                                pass
+                            else:
+                                error = [subject, visit, 'End date', end_date_form_field_instance,\
+                                        f , end_date_disname, 'GE0020']
+                                lista_revision.append(error)     
+                        except Exception as e:
+                            lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ') 
 
-            #         # Revision CM0010
-            #         try:
-            #             if concomitant_medication_id_pure not in concomitant_medication_id_review:
-            #                 concomitant_medication_id_review.append(concomitant_medication_id_pure)
-            #             else:
-            #                 # print(concomitant_medication_id)
-            #                 # print(concomitant_medication_id_review)
-            #                 # print('---------------------------------------------')
-            #                 error =  [subject, visit, 'Concomitant Medication ID', concomitant_medication_id_form_field_instance, \
-            #                             'This value should be unique, it can not be repeated', \
-            #                                 concomitant_medication_id_disname, 'CM0010']
-            #                 lista_revision.append(error)
+                    # Revision CM0010
+                    try:
+                        if concomitant_medication_id_pure not in concomitant_medication_id_review:
+                            concomitant_medication_id_review.append(concomitant_medication_id_pure)
+                        else:
+                            # print(concomitant_medication_id)
+                            # print(concomitant_medication_id_review)
+                            # print('---------------------------------------------')
+                            error =  [subject, visit, 'Concomitant Medication ID', concomitant_medication_id_form_field_instance, \
+                                        'This value should be unique, it can not be repeated', \
+                                            concomitant_medication_id_disname, 'CM0010']
+                            lista_revision.append(error)
 
-            #         except Exception as e:
-            #             lista_logs.append(f'Revision CM0010 --> {e} - Subject: {subject},  Visit: {visit} ')
+                    except Exception as e:
+                        lista_logs.append(f'Revision CM0010 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
-            #         # Revision CM0020
-            #         try:
-            #             drug_name_compare = drug_name_pure.lower().strip()
-            #             tuple_to_compare = (drug_name_compare, start_date_pure ,end_date_pure)
+                    # Revision CM0020
+                    try:
+                        drug_name_compare = drug_name_pure.lower().strip()
+                        tuple_to_compare = (drug_name_compare, start_date_pure ,end_date_pure)
 
-            #             if tuple_to_compare in list_of_tuples_name_medication_dates:
-            #                 error =  [subject, visit, 'Drug Name', drug_name_form_field_instance, \
-            #                             'This value should be unique, it can not be repeated', \
-            #                                 drug_name_disname, 'CM0020']
-            #                 lista_revision.append(error)
-            #             else:
-            #                 list_of_tuples_name_medication_dates.append(tuple_to_compare)
-            #         except Exception as e:
-            #             lista_logs.append(f'Revision CM0020 --> {e} - Subject: {subject},  Visit: {visit} ')
+                        if tuple_to_compare in list_of_tuples_name_medication_dates:
+                            error =  [subject, visit, 'Drug Name', drug_name_form_field_instance, \
+                                        'This value should be unique, it can not be repeated', \
+                                            drug_name_disname, 'CM0020']
+                            lista_revision.append(error)
+                        else:
+                            list_of_tuples_name_medication_dates.append(tuple_to_compare)
+                    except Exception as e:
+                        lista_logs.append(f'Revision CM0020 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
-            #         # Revision CM0040
-            #         if adverse_event_id_pure != '':
-            #             try:
-            #                 if adverse_event_id_from_table != '-' or adverse_event_id_from_table != np.nan or  \
-            #                     str(adverse_event_id_from_table) != 'nan' or float(adverse_event_id_from_table) !=0.0 or str(adverse_event_id_from_table) != '':
-            #                     pass
-            #                 else:
-            #                     error = [subject, visit, 'Adverse Event ID', adverse_event_id_form_field_instance, \
-            #                                 'The value should be an existing AE ID', \
-            #                                     adverse_event_id_disname, 'CM0040']
-            #                     lista_revision.append(error)
-            #             except Exception as e:
-            #                 lista_logs.append(f'Revision CM0040 --> {e} - Subject: {subject},  Visit: {visit} ')
-            #         else:
-            #             pass
+                    # Revision CM0040
+                    if adverse_event_id_pure != '':
+                        try:
+                            if adverse_event_id_from_table != '-' or adverse_event_id_from_table != np.nan or  \
+                                str(adverse_event_id_from_table) != 'nan' or float(adverse_event_id_from_table) !=0.0 or str(adverse_event_id_from_table) != '':
+                                pass
+                            else:
+                                error = [subject, visit, 'Adverse Event ID', adverse_event_id_form_field_instance, \
+                                            'The value should be an existing AE ID', \
+                                                adverse_event_id_disname, 'CM0040']
+                                lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision CM0040 --> {e} - Subject: {subject},  Visit: {visit} ')
+                    else:
+                        pass
 
-            #         # Este contador sirve para identificar cuando el dataset original tiene daverse event id, start date y end date creado
-            #         # Si en el dataset original no existe estos datos, el codigo no ejecuta la limpieza 
-            #         contador_para_validar = 0
-            #         if adverse_event_id_pure != '':
-            #             if start_date_pure != '':    
-            #                 contador_para_validar +=1
-            #             if end_date_pure != '':
-            #                 contador_para_validar +=1
+                    # Este contador sirve para identificar cuando el dataset original tiene daverse event id, start date y end date creado
+                    # Si en el dataset original no existe estos datos, el codigo no ejecuta la limpieza 
+                    contador_para_validar = 0
+                    if adverse_event_id_pure != '':
+                        if start_date_pure != '':    
+                            contador_para_validar +=1
+                        if end_date_pure != '':
+                            contador_para_validar +=1
 
-            #         # Revision CM0050
-            #         try:
-            #             if contador_para_validar ==0:
-            #                 pass
-            #             elif contador_para_validar == 1:
+                    # Revision CM0050
+                    try:
+                        if contador_para_validar ==0:
+                            pass
+                        elif contador_para_validar == 1:
 
-            #                 if adverse_event_start_date != '-' or adverse_event_start_date != np.nan \
-            #                     or str(adverse_event_start_date) != 'nan' or float(adverse_event_start_date) !=0.0 or str(adverse_event_start_date) != '':
-            #                     pass
-            #                 else:
-            #                     error = [subject, visit, 'Adverse Event ID', adverse_event_id_form_field_instance, 'The start and end dates of medication do not correspond to the Indication AE ID start and end date.', \
-            #                                 adverse_event_id_disname, 'CM0050']
-            #                     lista_revision.append(error)
+                            if adverse_event_start_date != '-' or adverse_event_start_date != np.nan \
+                                or str(adverse_event_start_date) != 'nan' or float(adverse_event_start_date) !=0.0 or str(adverse_event_start_date) != '':
+                                pass
+                            else:
+                                error = [subject, visit, 'Adverse Event ID', adverse_event_id_form_field_instance, 'The start and end dates of medication do not correspond to the Indication AE ID start and end date.', \
+                                            adverse_event_id_disname, 'CM0050']
+                                lista_revision.append(error)
 
-            #             elif contador_para_validar == 2:
-            #                 if adverse_event_start_date != '-' or adverse_event_start_date != np.nan \
-            #                     or str(adverse_event_start_date) != 'nan' or float(adverse_event_start_date) !=0.0 or str(adverse_event_start_date) != '':
+                        elif contador_para_validar == 2:
+                            if adverse_event_start_date != '-' or adverse_event_start_date != np.nan \
+                                or str(adverse_event_start_date) != 'nan' or float(adverse_event_start_date) !=0.0 or str(adverse_event_start_date) != '':
 
-            #                     if adverse_event_end_date != '-' or adverse_event_end_date != np.nan \
-            #                         or str(adverse_event_end_date) != 'nan' or float(adverse_event_end_date) !=0.0 or str(adverse_event_end_date) != '':
-            #                         pass
-            #                     else:
-            #                         error = [subject, visit, 'Adverse Event ID', adverse_event_id_form_field_instance, \
-            #                                  'The start and end dates of medication do not correspond to the Indication AE ID start and end date.', \
-            #                                    adverse_event_id_disname, 'CM0050']
-            #                         lista_revision.append(error)
-            #         except Exception as e:
-            #             lista_logs.append(f'Revision CM0050 --> {e} - Subject: {subject},  Visit: {visit} ')
+                                if adverse_event_end_date != '-' or adverse_event_end_date != np.nan \
+                                    or str(adverse_event_end_date) != 'nan' or float(adverse_event_end_date) !=0.0 or str(adverse_event_end_date) != '':
+                                    pass
+                                else:
+                                    error = [subject, visit, 'Adverse Event ID', adverse_event_id_form_field_instance, \
+                                             'The start and end dates of medication do not correspond to the Indication AE ID start and end date.', \
+                                               adverse_event_id_disname, 'CM0050']
+                                    lista_revision.append(error)
+                    except Exception as e:
+                        lista_logs.append(f'Revision CM0050 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
-            #         # Revision CM0080
-            #         if aditional_adverse_event_pure != '':
-            #             try:
-            #                 if adverse_event_id_from_table_aditional != '-' or adverse_event_id_from_table_aditional != np.nan or  \
-            #                     str(adverse_event_id_from_table_aditional) != 'nan' or float(adverse_event_id_from_table_aditional) !=0.0 or str(adverse_event_id_from_table_aditional) != '':
-            #                     pass
-            #                 else:
-            #                     error = [subject, visit, 'Aditional Adverse Event ID', aditional_adverse_event_form_field_instance, \
-            #                                 'The value should be an existing AE ID', \
-            #                                     aditional_adverse_event_disname, 'CM0080']
-            #                     lista_revision.append(error)
-            #             except Exception as e:
-            #                 lista_logs.append(f'Revision CM0080 --> {e} - Subject: {subject},  Visit: {visit} ')
-            #         else:
-            #             pass
+                    # Revision CM0080
+                    if aditional_adverse_event_pure != '':
+                        try:
+                            if adverse_event_id_from_table_aditional != '-' or adverse_event_id_from_table_aditional != np.nan or  \
+                                str(adverse_event_id_from_table_aditional) != 'nan' or float(adverse_event_id_from_table_aditional) !=0.0 or str(adverse_event_id_from_table_aditional) != '':
+                                pass
+                            else:
+                                error = [subject, visit, 'Aditional Adverse Event ID', aditional_adverse_event_form_field_instance, \
+                                            'The value should be an existing AE ID', \
+                                                aditional_adverse_event_disname, 'CM0080']
+                                lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision CM0080 --> {e} - Subject: {subject},  Visit: {visit} ')
+                    else:
+                        pass
 
-            #         # Revision -> CM0130
-            #         if str(end_study_date) != 'nan':
+                    # Revision -> CM0130
+                    if str(end_study_date) != 'nan':
                          
-            #             try:
-            #                 #print(date_format(start_date_pure))
-            #                 if datetime.strptime(str(date_format(start_date_pure)), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
-            #                     pass
-            #                 else: 
-            #                     error = [subject, visit, 'Start Date', start_date_form_field_instance,\
-            #                             'Start Date must be before the End of study/Early withdrawal date. ', start_date_form_field_instance, 'CM0130']
-            #                     lista_revision.append(error)
-            #             except Exception as e:
-            #                 lista_logs.append(f'Revision CM0130 --> {e} - Subject: {subject},  Visit: {visit}  ')
+                        try:
+                            #print(date_format(start_date_pure))
+                            if datetime.strptime(str(date_format(start_date_pure)), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
+                                pass
+                            else: 
+                                error = [subject, visit, 'Start Date', start_date_form_field_instance,\
+                                        'Start Date must be before the End of study/Early withdrawal date. ', start_date_form_field_instance, 'CM0130']
+                                lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision CM0130 --> {e} - Subject: {subject},  Visit: {visit}  ')
 
-            #         # Revision CM0140
-            #         if end_date_pure != '' and start_date_pure != '':
-            #             try:
-            #                 if datetime.strptime(str(end_date_pure), '%d-%b-%Y') >= datetime.strptime(str(start_date_pure), '%d-%b-%Y'):
-            #                     pass
-            #                 else: 
-            #                     error = [subject, visit, 'End date', end_date_form_field_instance, \
-            #                                 'The date should be equal or greater than the start date', end_date_disname, 'CM0140']
-            #                     lista_revision.append(error)
-            #             except Exception as e:
-            #                     lista_logs.append(f'Revision CM0140 --> {e} - Subject: {subject},  Visit: {visit} ')
+                    # Revision CM0140
+                    if end_date_pure != '' and start_date_pure != '':
+                        try:
+                            if datetime.strptime(str(end_date_pure), '%d-%b-%Y') >= datetime.strptime(str(start_date_pure), '%d-%b-%Y'):
+                                pass
+                            else: 
+                                error = [subject, visit, 'End date', end_date_form_field_instance, \
+                                            'The date should be equal or greater than the start date', end_date_disname, 'CM0140']
+                                lista_revision.append(error)
+                        except Exception as e:
+                                lista_logs.append(f'Revision CM0140 --> {e} - Subject: {subject},  Visit: {visit} ')
 
-            #         # Revision -> CM0150
-            #         if str(end_study_date) == '' and str(end_study_date) == 'nan':
-            #             if str(end_study_date) != 'nan':
-            #                 try:
-            #                     if datetime.strptime(str(end_date_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
-            #                         pass
-            #                     else: 
-            #                         error = [subject, visit, 'End Date', end_date_form_field_instance,\
-            #                                 'End Date must be before the End of study/Early withdrawal date. ', end_date_disname, 'CM0150']
-            #                         lista_revision.append(error)
-            #                 except Exception as e:
-            #                     lista_logs.append(f'Revision CM0150 --> {e}  - Subject: {subject},  Visit: {visit} ')
+                    # Revision -> CM0150
+                    if str(end_study_date) == '' and str(end_study_date) == 'nan':
+                        if str(end_study_date) != 'nan':
+                            try:
+                                if datetime.strptime(str(end_date_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
+                                    pass
+                                else: 
+                                    error = [subject, visit, 'End Date', end_date_form_field_instance,\
+                                            'End Date must be before the End of study/Early withdrawal date. ', end_date_disname, 'CM0150']
+                                    lista_revision.append(error)
+                            except Exception as e:
+                                lista_logs.append(f'Revision CM0150 --> {e}  - Subject: {subject},  Visit: {visit} ')
 
-            #         # Revision CM0160
-            #         if end_date_pure != '':
-            #             # print(end_date_pure) 
-            #             # print(inform_consent_date)
-            #             try:
-            #                 days_to_validate_raw = datetime.strptime(str(end_date_pure), '%d-%b-%Y') - datetime.strptime(str(inform_consent_date), '%d-%b-%Y')
-            #                 days_to_validate = float(days_to_validate_raw.days)
-            #                 if days_to_validate > 56.0 or days_to_validate < -56.0:
-            #                     error = [subject, visit, 'End date', end_date_form_field_instance, \
-            #                                 'The end date can not be more than 8 weeks before the inform consent date', end_date_disname, 'CM0160']
-            #                     lista_revision.append(error)
-            #             except Exception as e:
-            #                     lista_logs.append(f'Revision CM0160 --> {e} - Subject: {subject},  Visit: {visit} ')
+                    # Revision CM0160
+                    if end_date_pure != '':
+                        # print(end_date_pure) 
+                        # print(inform_consent_date)
+                        try:
+                            days_to_validate_raw = datetime.strptime(str(end_date_pure), '%d-%b-%Y') - datetime.strptime(str(inform_consent_date), '%d-%b-%Y')
+                            days_to_validate = float(days_to_validate_raw.days)
+                            if days_to_validate > 56.0 or days_to_validate < -56.0:
+                                error = [subject, visit, 'End date', end_date_form_field_instance, \
+                                            'The end date can not be more than 8 weeks before the inform consent date', end_date_disname, 'CM0160']
+                                lista_revision.append(error)
+                        except Exception as e:
+                                lista_logs.append(f'Revision CM0160 --> {e} - Subject: {subject},  Visit: {visit} ')
 
 
     

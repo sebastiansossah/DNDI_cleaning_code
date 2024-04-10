@@ -58,28 +58,55 @@ def end_of_study(df_root, path_excel_writer, lista_instancias_abiertas):
     df_CPG_administration = df_CPG_administration[['Participante', 'Valor']]
     df_CPG_administration = df_CPG_administration.rename(columns={'Participante':'Subject', 'Valor':'cpg_permanently_discontinued'})
 
+    # df_CPG_administration_max_date = df_root[df_root['name']== 'CpG ODN D35 Administration']
+    # df_CPG_administration_max_date = df_CPG_administration_max_date[['Visit','Participante', 'Campo', 'Valor', 'Variable' ]]
+    # df_CPG_administration_max_date = df_CPG_administration_max_date[df_CPG_administration_max_date['Variable'] == 'ECCPGDAT']
+    # df_CPG_administration_max_date['max_value_cpg_date'] = pd.to_datetime(df_CPG_administration_max_date['Valor'], format='%d-%b-%Y').max()
+    # df_CPG_administration_max_date = df_CPG_administration_max_date[['Participante', 'max_value_cpg_date']].drop_duplicates()
+    # df_CPG_administration_max_date = df_CPG_administration_max_date.rename(columns={'Participante':'Subject'})
+
     df_CPG_administration_max_date = df_root[df_root['name']== 'CpG ODN D35 Administration']
     df_CPG_administration_max_date = df_CPG_administration_max_date[['Visit','Participante', 'Campo', 'Valor', 'Variable' ]]
-    df_CPG_administration_max_date = df_CPG_administration_max_date[df_CPG_administration_max_date['Variable'] == 'ECCPGDAT']
-    df_CPG_administration_max_date['max_value_cpg_date'] = pd.to_datetime(df_CPG_administration_max_date['Valor'], format='%d-%b-%Y').max()
-    df_CPG_administration_max_date = df_CPG_administration_max_date[['Participante', 'max_value_cpg_date']].drop_duplicates()
-    df_CPG_administration_max_date = df_CPG_administration_max_date.rename(columns={'Participante':'Subject'})
+    df_CPG_administration_max_date = df_CPG_administration_max_date[df_CPG_administration_max_date['Campo'] == 'Date of dosing']
+    df_CPG_administration_max_date['Valor'] = pd.to_datetime(df_CPG_administration_max_date['Valor'])
+    max_per_participante = df_CPG_administration_max_date.groupby('Participante')['Valor'].transform('max')
+    df_CPG_administration_max_date = df_CPG_administration_max_date[df_CPG_administration_max_date['Valor'] == max_per_participante]
+    df_CPG_administration_max_date['Valor'] = pd.to_datetime(df_CPG_administration_max_date['Valor']).dt.strftime('%d-%b-%Y').str.upper()
+    df_CPG_administration_max_date = df_CPG_administration_max_date[['Participante','Valor']].drop_duplicates()
+    df_CPG_administration_max_date = df_CPG_administration_max_date.rename(columns={'Participante':'Subject', 'Valor': 'max_value_cpg_date' })
 
+    # df_CPG_administration_max_date_visit = df_root[df_root['name']== 'CpG ODN D35 Administration']
+    # df_CPG_administration_max_date_visit = df_CPG_administration_max_date_visit[['Visit','Participante', 'Campo', 'Valor', 'Variable' ]]
+    # df_CPG_administration_max_date_visit = df_CPG_administration_max_date_visit[df_CPG_administration_max_date_visit['Variable'] == 'ECCPGDAT']
+    # df_CPG_administration_max_date_extract = df_CPG_administration_max_date_visit[df_CPG_administration_max_date_visit['Campo'] == 'Date of dosing']
+    # df_CPG_administration_max_date_visit['max_date'] = pd.to_datetime(df_CPG_administration_max_date_visit['Valor'], format='%d-%b-%Y').max()
+    # df_CPG_administration_max_date_visit = df_CPG_administration_max_date_visit[['Participante', 'max_date']].drop_duplicates()
+    # df_CPG_administration_max_date_visit = df_CPG_administration_max_date_visit.rename(columns={'max_date':'Valor'})
+    # df_visit_date = df_root[df_root['name']== 'Date of visit']
+    # df_visit_date = df_visit_date[['Participante', 'Campo', 'Valor', 'Visit' ]]
+    # df_visit_date = df_visit_date[df_visit_date['Campo'] == 'Visit Date']
+    # df_visit_date['Valor']  = pd.to_datetime(df_visit_date['Valor'], format='%d-%b-%Y')
+    # df_CPG_administration_max_date_visit = df_CPG_administration_max_date_visit.merge(df_visit_date, on=['Participante', 'Valor'])
+    # df_CPG_administration_max_date_visit = df_CPG_administration_max_date_visit[['Participante', 'Visit']]
+    # df_CPG_administration_max_date_visit = df_CPG_administration_max_date_visit.rename(columns={'Participante':'Subject', 'Visit':'Visita_maxima_fecha_cpg'})
 
+    # Codigo para saber la visita de ultima aplicacion CPG
     df_CPG_administration_max_date_visit = df_root[df_root['name']== 'CpG ODN D35 Administration']
     df_CPG_administration_max_date_visit = df_CPG_administration_max_date_visit[['Visit','Participante', 'Campo', 'Valor', 'Variable' ]]
-    df_CPG_administration_max_date_visit = df_CPG_administration_max_date_visit[df_CPG_administration_max_date_visit['Variable'] == 'ECCPGDAT']
-    df_CPG_administration_max_date_extract = df_CPG_administration_max_date_visit[df_CPG_administration_max_date_visit['Campo'] == 'Date of dosing']
-    df_CPG_administration_max_date_visit['max_date'] = pd.to_datetime(df_CPG_administration_max_date_visit['Valor'], format='%d-%b-%Y').max()
-    df_CPG_administration_max_date_visit = df_CPG_administration_max_date_visit[['Participante', 'max_date']].drop_duplicates()
-    df_CPG_administration_max_date_visit = df_CPG_administration_max_date_visit.rename(columns={'max_date':'Valor'})
+    df_CPG_administration_max_date_visit = df_CPG_administration_max_date_visit[df_CPG_administration_max_date_visit['Campo'] == 'Date of dosing']
+    df_CPG_administration_max_date_visit['Valor'] = pd.to_datetime(df_CPG_administration_max_date_visit['Valor'])
+    max_per_participante = df_CPG_administration_max_date_visit.groupby('Participante')['Valor'].transform('max')
+    df_CPG_administration_max_date_visit = df_CPG_administration_max_date_visit[df_CPG_administration_max_date_visit['Valor'] == max_per_participante]
+    df_CPG_administration_max_date_visit['Valor'] = pd.to_datetime(df_CPG_administration_max_date_visit['Valor']).dt.strftime('%d-%b-%Y').str.upper()
+    df_CPG_administration_max_date_visit = df_CPG_administration_max_date_visit[['Participante', 'Valor']].drop_duplicates()
     df_visit_date = df_root[df_root['name']== 'Date of visit']
     df_visit_date = df_visit_date[['Participante', 'Campo', 'Valor', 'Visit' ]]
     df_visit_date = df_visit_date[df_visit_date['Campo'] == 'Visit Date']
-    df_visit_date['Valor']  = pd.to_datetime(df_visit_date['Valor'], format='%d-%b-%Y')
     df_CPG_administration_max_date_visit = df_CPG_administration_max_date_visit.merge(df_visit_date, on=['Participante', 'Valor'])
     df_CPG_administration_max_date_visit = df_CPG_administration_max_date_visit[['Participante', 'Visit']]
     df_CPG_administration_max_date_visit = df_CPG_administration_max_date_visit.rename(columns={'Participante':'Subject', 'Visit':'Visita_maxima_fecha_cpg'})
+
+
 
     lista_revision = []
     lista_logs = ['End of Study Treatment']
@@ -105,6 +132,12 @@ def end_of_study(df_root, path_excel_writer, lista_instancias_abiertas):
         # print('--------------------')
         
         for index, row in pru.iterrows():
+            
+            # Valida si el cruce de la data genera filas duplicadas
+            if index != 0:
+                lista_logs.append('Duplicados en la data, revisar subdataset')
+                    
+
             status = row['status']
             subject = row['Subject']
             visit = row['Visit']
@@ -303,11 +336,11 @@ def end_of_study(df_root, path_excel_writer, lista_instancias_abiertas):
             # Revision ES0150
             if date_last_treatment_administration_CPG_pure != '':
                 try:
-                    if datetime.strptime(str(date_last_treatment_administration_CPG_pure), '%d-%b-%Y') != datetime.strptime(str(max_value_cpg_date).split(' ')[0],'%Y-%m-%d'):
+                    if datetime.strptime(str(date_last_treatment_administration_CPG_pure), '%d-%b-%Y') != datetime.strptime(str(max_value_cpg_date).split(' ')[0],'%d-%b-%Y'):
                         error = [subject, visit, 'Date of last study treatment administration (CpG ODN D35)', \
                                 date_last_treatment_administration_CPG_form_field_instance, \
                                 'The date must be equal to the greatest date in the CpG ODN D35 administration forms where the dose is different from 0', \
-                                    f"{max_value_cpg_date} - {date_last_treatment_administration_CPG_pure}", 'ES0150']
+                                    f"Last treatment administration: {datetime.strptime(str(date_last_treatment_administration_CPG_pure), '%d-%b-%Y')} - greatest date in the CpG ODN D35: {datetime.strptime(str(max_value_cpg_date).split(' ')[0],'%Y-%m-%d')}", 'ES0150']
                         lista_revision.append(error)
                 except Exception as e:
 
@@ -330,7 +363,7 @@ def end_of_study(df_root, path_excel_writer, lista_instancias_abiertas):
                     if Visita_maxima_fecha_cpg != 'D29':
                         error = [subject, visit, 'Was the study treatment completed per protocol? (CpG ODN D35)', was_study_treatment_complited_protocol_CPG_form_field_instance, \
                             'If "Was the study treatment completed per protocol? (CpG ODN D35)" is Yes , the last CpG ODN D35 study treatment administration date with dose different from 0 should be on D29. ', \
-                            was_study_treatment_complited_protocol_CPG_pure, 'ES0170']
+                            f"was completed per protocol: {was_study_treatment_complited_protocol_CPG_pure} - Visit of last administration CPG: {Visita_maxima_fecha_cpg} ", 'ES0170']
                         lista_revision.append(error)
             except Exception as e:
                 lista_logs.append(f'Revision ES0170 --> {e} - Subject: {subject},  Visit: {visit} ')

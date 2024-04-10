@@ -98,6 +98,10 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer, 
             
             
             for index, row in pru.iterrows():
+
+                if index != 0:
+                    lista_logs.append('Duplicados en la data, revisar subdataset')
+                    
                 status = row['status']
                 subject = row['Subject']
                 visit = row['Visit']

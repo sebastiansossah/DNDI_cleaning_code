@@ -30,6 +30,7 @@ def urine_microscopic_examination(df_root, path_excel_writer, lista_instancias_a
         sujeto_principal = df[df['Participante']==sujeto]
 
         for visita in sujeto_principal.Visit.unique():
+
             pru_1 = sujeto_principal[sujeto_principal['Visit']==visita]
             pru = pru_1
             pru = pru[['Campo', 'Value_id']].T
@@ -38,8 +39,15 @@ def urine_microscopic_examination(df_root, path_excel_writer, lista_instancias_a
             pru['Subject'] = sujeto
             pru['Visit'] = visita
             pru['status'] = pru_1['activityState'].unique()
+            # print(pru)
+            # print('--------------------------------------------')
 
             for index, row in pru.iterrows():
+                
+                # No necesita revision de duplicados por que no cruza la tabla con nigun otro formulario
+                # if index != 0:
+                #     lista_logs.append('Duplicados en la data, revisar subdataset')
+                    
                 status = row['status']
                 subject = row['Subject']
                 visit = row['Visit']

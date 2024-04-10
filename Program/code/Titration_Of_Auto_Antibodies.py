@@ -69,6 +69,10 @@ def titration_of_auto_antibodies(df_root, path_excel_writer, lista_instancias_ab
             pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
 
             for index, row in pru.iterrows():
+
+                if index != 0:
+                    lista_logs.append('Duplicados en la data, revisar subdataset')
+                    
                 status = row['status']
                 subject = row['Subject']
                 visit = row['Visit']

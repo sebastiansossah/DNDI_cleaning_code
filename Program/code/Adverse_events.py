@@ -48,10 +48,20 @@ def adverse_events(df_root, path_excel_writer, lista_instancias_abiertas):
     df_medical_eligibility_date = df_medical_eligibility_date[['Participante','Valor']]
     df_medical_eligibility_date = df_medical_eligibility_date.rename(columns={'Participante':'Subject', 'Valor':'date_decision_not_randomize'})
 
-    df_administration_CPG = df_root[df_root['name']== 'CpG ODN D35 Administration']
+    # df_administration_CPG = df_root[df_root['name']== 'CpG ODN D35 Administration']
+    # df_administration_CPG = df_administration_CPG[['Visit','Participante', 'Campo', 'Valor']]
+    # df_administration_CPG = df_administration_CPG[df_administration_CPG['Campo'] == 'Date of dosing']
+    # df_administration_CPG = df_administration_CPG[['Participante','Valor']]
+    # df_administration_CPG = df_administration_CPG.rename(columns={'Participante':'Subject', 'Valor':'date_dosing_CPG'})
+
+    df_administration_CPG = df_root[df_root['name']=='CpG ODN D35 Administration']
     df_administration_CPG = df_administration_CPG[['Visit','Participante', 'Campo', 'Valor']]
     df_administration_CPG = df_administration_CPG[df_administration_CPG['Campo'] == 'Date of dosing']
-    df_administration_CPG = df_administration_CPG[['Participante','Valor']]
+    df_administration_CPG['Valor'] = pd.to_datetime(df_administration_CPG['Valor'], format='%d-%b-%Y')
+    max_per_participante = df_administration_CPG.groupby('Participante')['Valor'].transform('min')
+    df_administration_CPG = df_administration_CPG[df_administration_CPG['Valor'] == max_per_participante]
+    df_administration_CPG['Valor'] = pd.to_datetime(df_administration_CPG['Valor']).dt.strftime('%d-%b-%Y').str.upper()
+    df_administration_CPG = df_administration_CPG[['Participante','Valor']].drop_duplicates()
     df_administration_CPG = df_administration_CPG.rename(columns={'Participante':'Subject', 'Valor':'date_dosing_CPG'})
 
     df_administration_miltefosine = df_root[df_root['name']==  'Miltefosine Administration']
@@ -101,12 +111,19 @@ def adverse_events(df_root, path_excel_writer, lista_instancias_abiertas):
     df_cpg_dosing_event_temporarily = df_cpg_dosing_event_temporarily[['Participante', 'Valor']]
     df_cpg_dosing_event_temporarily = df_cpg_dosing_event_temporarily.rename(columns={'Participante':'Subject', 'Valor':'cpg_dosing_event_temporarily'})
 
-    df_cpg_dose_mg = df_root[df_root['name']=='CpG ODN D35 Administration']
-    df_cpg_dose_mg = df_cpg_dose_mg[['Visit','Participante', 'Campo', 'Valor', 'Variable' ]]
-    df_cpg_dose_mg = df_cpg_dose_mg[df_cpg_dose_mg['Variable'] == 'ECCPGDOS']
-    df_cpg_dose_mg = df_cpg_dose_mg[df_cpg_dose_mg['Valor'].astype('float') != 0.0]
-    df_cpg_dose_mg = df_cpg_dose_mg[['Participante', 'Valor']]
-    df_cpg_dose_mg = df_cpg_dose_mg.rename(columns={'Participante':'Subject', 'Valor':'cpg_dose_mg'})
+    # df_cpg_dose_mg = df_root[df_root['name']=='CpG ODN D35 Administration']
+    # df_cpg_dose_mg = df_cpg_dose_mg[['Visit','Participante', 'Campo', 'Valor', 'Variable' ]]
+    # df_cpg_dose_mg = df_cpg_dose_mg[(df_cpg_dose_mg['Variable'] == 'ECCPGDOS')]
+    # df_cpg_dose_mg = df_cpg_dose_mg[df_cpg_dose_mg['Valor'].astype('float') != 0.0]
+    # df_cpg_dose_mg = df_cpg_dose_mg[['Participante', 'Valor']]
+    # df_cpg_dose_mg = df_cpg_dose_mg.rename(columns={'Participante':'Subject', 'Valor':'cpg_dose_mg'})
+
+    df_cpg_dose_mg1 = df_root[df_root['name']== 'CpG ODN D35 Administration'].sort_values(by='FormFieldInstance Id')
+    df_cpg_dose_mg1 = df_cpg_dose_mg1[(df_cpg_dose_mg1['Campo']=='Date of dosing') | (df_cpg_dose_mg1['Campo']=='Dose (mg)')]
+    df_cpg_dose_mg = df_cpg_dose_mg1[df_cpg_dose_mg1['Campo']=='Date of dosing']
+    df_cpg_dose_mg['cpg_dose_mg'] =  df_cpg_dose_mg1[df_cpg_dose_mg1['FormFieldInstance Id'].isin(df_cpg_dose_mg['FormFieldInstance Id'] + 2) & (df_cpg_dose_mg1['Campo'] == 'Dose (mg)')]['Valor'].values
+    df_cpg_dose_mg =df_cpg_dose_mg[['Participante','Valor', 'cpg_dose_mg']]
+    df_cpg_dose_mg = df_cpg_dose_mg.rename(columns={'Participante':'Subject', 'Valor':'date_dosing_CPG'})
 
     df_was_completed_miltefosine = df_root[df_root['name']=='End of Study Treatment (Miltefosine)']
     df_was_completed_miltefosine = df_was_completed_miltefosine[['Visit','Participante', 'Campo', 'Valor', 'Variable' ]]
@@ -218,7 +235,7 @@ def adverse_events(df_root, path_excel_writer, lista_instancias_abiertas):
             pru = pru.merge(df_was_completed_cpg_reason, on=['Subject'], how='left')
             pru = pru.merge(df_cpg_dosing_event_permanentely, on=['Subject'], how='left')
             pru = pru.merge(df_cpg_dosing_event_temporarily, on=['Subject'], how='left')
-            pru = pru.merge(df_cpg_dose_mg, on=['Subject'], how='left')
+            pru = pru.merge(df_cpg_dose_mg, on=['Subject', 'date_dosing_CPG'], how='left')
             pru = pru.merge(df_was_completed_miltefosine, on=['Subject'], how='left') 
             pru = pru.merge(df_was_completed_miltefosine_reason, on=['Subject'], how='left')
             pru = pru.merge(df_miltefosine_dosing_event_permanentely, on=['Subject'], how='left')
@@ -235,6 +252,10 @@ def adverse_events(df_root, path_excel_writer, lista_instancias_abiertas):
         
 
             for index, row in pru.iterrows():
+
+                if index != 0:
+                    lista_logs.append('Duplicados en la data, revisar subdataset')
+                    
                 status = row['status']
                 subject = row['Subject']
                 visit = row['Visit']
@@ -492,7 +513,7 @@ def adverse_events(df_root, path_excel_writer, lista_instancias_abiertas):
                         if tuple_to_compare in list_of_tuples_adverse_id:
                             error =  [subject, visit, 'Adverse Event Reported Term', adverse_events_reported_term_form_field_instance, \
                                         'There are two adverse events that have the same term, and the dates overlap', \
-                                            adverse_events_reported_term_disname, 'AE0020']
+                                            adverse_events_reported_term_pure, 'AE0020']
                             lista_revision.append(error)
                         else:
                             list_of_tuples_adverse_id.append(tuple_to_compare)
@@ -562,7 +583,9 @@ def adverse_events(df_root, path_excel_writer, lista_instancias_abiertas):
                             lista_logs.append(f'Revision AE0100 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision AE0120
-                    if str(date_dosing_CPG) != 'nan' and str(date_dosing_CPG) != '':       
+                    if str(date_dosing_CPG) == 'nan' or str(date_dosing_CPG) == '':
+                        pass
+                    else:       
                         try:
                             if datetime.strptime(str(start_date_pure), '%d-%b-%Y') <= datetime.strptime(str(date_dosing_CPG), '%d-%b-%Y'):
                                 if float(causal_relation_cpg_pure) != 1.0:
@@ -585,8 +608,8 @@ def adverse_events(df_root, path_excel_writer, lista_instancias_abiertas):
                                 
                                 if float(causal_realation_miltefosine_pure) != 1.0:
                                     error = [subject, visit, 'Causal relationship with study treatment (Miltefosine)', causal_realation_miltefosine_form_field_instance, \
-                                        'The AE started before the first administration of CpG ODN D35, therefore the causal relationship can not be different from "Not Related"', \
-                                            causal_realation_miltefosine_disname, 'AE0130']
+                                        'The AE started before the first administration of Miltefosine, therefore the causal relationship cant be different from "Not Related"', \
+                                            f"date start: {start_date_pure}, date dosing Miltefosine - {causal_realation_miltefosine_disname}", 'AE0130']
                                     lista_revision.append(error) 
                                 else:
                                     pass

@@ -57,6 +57,10 @@ def demographic(df_root, path_excel_writer, lista_instancias_abiertas):
             # print(pru)
             # print('---------------------')
             for index, row in pru.iterrows():
+
+                if index != 0:
+                    lista_logs.append('Duplicados en la data, revisar subdataset')
+                    
                 status = row['status']
 
                 was_DV_performed = row['was_DV_performed']

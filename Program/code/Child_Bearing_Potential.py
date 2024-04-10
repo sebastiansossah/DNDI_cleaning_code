@@ -109,8 +109,11 @@ def child_bearing_potential(df_root, path_excel_writer, lista_instancias_abierta
             # print('------------------------------')
 
             for index, row in pru.iterrows():
-                status = row['status']
 
+                if index != 0:
+                    lista_logs.append('Duplicados en la data, revisar subdataset')
+                    
+                status = row['status']
                 was_DV_performed = row['was_DV_performed']
                 was_DV_performed_pure = was_DV_performed.split('|')[0]
                 was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]

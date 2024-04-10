@@ -117,6 +117,10 @@ def prior_concomitant_procedures(df_root, path_excel_writer, lista_instancias_ab
 
 
             for index, row in pru.iterrows():
+
+                if index != 0:
+                    lista_logs.append('Duplicados en la data, revisar subdataset')
+                    
                 status = row['status']
                 subject = row['Subject']
                 visit = row['Visit']

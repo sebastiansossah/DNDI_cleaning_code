@@ -109,6 +109,10 @@ def Medical_or_surgical_history(df_root, path_excel_writer, lista_instancias_abi
                             # print('------------------')
 
                             for index_ulti, row_ulti in pru_sec.iterrows():
+
+                                if index_ulti != 0:
+                                    lista_logs.append('Duplicados en la data, revisar subdataset')
+                                    
                                 
                                 try:
                                     
