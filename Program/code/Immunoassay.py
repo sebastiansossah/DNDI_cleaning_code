@@ -229,7 +229,8 @@ def immunoassay(df_root, path_excel_writer, lista_instancias_abiertas):
                             if datetime.strptime(str(date_collected_pure), '%d-%b-%Y') <= datetime.strptime(str(end_study_date), '%d-%b-%Y'):
                                 pass
                             else: 
-                                error = [subject, visit, 'Date Sample Collected', date_collected_form_field_instance ,'Date Sample Collected must be before the End of study/Early withdrawal date. ', date_collected_disname, 'IM0030']
+                                error = [subject, visit, 'Date Sample Collected', date_collected_form_field_instance,\
+                                         'Date Sample Collected must be before the End of study/Early withdrawal date. ', date_collected_disname, 'IM0030']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision IM0030 --> {e} - Subject: {subject},  Visit: {visit}  ')
@@ -239,7 +240,7 @@ def immunoassay(df_root, path_excel_writer, lista_instancias_abiertas):
                         if float(blood_sample_collected_pure) == 1.0 and float(TSH_pure) == 0.0:
                             error = [subject, visit, 'TSH', TSH_form_field_instance, \
                                      'It does not seem right that the TSH was not done but the sample was collected, please review', \
-                                        f'{blood_sample_collected_disname} - {TSH_disname}', 'IM0050']
+                                        f'Blood sample collected: {blood_sample_collected_disname} - TSH: {TSH_disname}', 'IM0050']
                             lista_revision.append(error)
                         else:
                             pass
@@ -252,7 +253,8 @@ def immunoassay(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(TSH_result_pure) > float(df_normal_ranges[df_normal_ranges['field']=="TSH, Result (uIU/mL)"]['min'].iloc[0]) \
                                 and float(TSH_result_pure) < float(df_normal_ranges[df_normal_ranges['field']=="TSH, Result (uIU/mL)"]['max'].iloc[0]) :
                                 error = [subject, visit, 'TSH, Out of normal range?', TSH_out_normal_form_field_instance,\
-                                         'According to the result, the value is not out of range, please review.', TSH_result_disname, 'IM0060']
+                                         'According to the result, the value is not out of range, please review.', \
+                                            f"TSH Result: {TSH_result_disname} - TSH Out of Normal: {TSH_out_normal_pure}", 'IM0060']
                                 lista_revision.append(error)
 
                         # Revision IM0070
@@ -262,7 +264,7 @@ def immunoassay(df_root, path_excel_writer, lista_instancias_abiertas):
                                 or float(TSH_result_pure) > float(df_normal_ranges[df_normal_ranges['field']=="TSH, Result (uIU/mL)"]['max'].iloc[0]) :
                                 error = [subject, visit, 'TSH, Out of normal range?', TSH_out_normal_disname,\
                                          'According to the result, the value is out of range, please review.', \
-                                            TSH_result_disname, 'IM0070']
+                                            f"TSH Result: {TSH_result_disname} - TSH Out of Normal: {TSH_out_normal_pure}", 'IM0070']
                                 lista_revision.append(error)   
                     except Exception as e:
                         lista_logs.append(f'Revision IM0060--> {e} - Subject: {subject},  Visit: {visit} ')

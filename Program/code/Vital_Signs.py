@@ -1236,7 +1236,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             else:
                                 error = [subject, visit, 'Undefined, Diastolic Blood Pressure', Undefined_Diastolic_Blood_Pressure_value_form_field_instance,\
                                          'The Diastolic Blood Pressure is not within expected range (50 to 90), therefore the Interpretation can not be Normal.', \
-                                            Undefined_Diastolic_Blood_Pressure_value_disname, 'VS0080']
+                                            f"Undefined, Diastolic Blood Pressure: {Undefined_Diastolic_Blood_Pressure_disname} - Undefined, Diastolic Blood Pressure Result: {Undefined_Diastolic_Blood_Pressure_value_disname}", 'VS0080']
                                 lista_revision.append(error)
 
                         # Revision VS0170
@@ -1244,7 +1244,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(Undefined_Diastolic_Blood_Pressure_value_pure) <=  50.0 or float(Undefined_Diastolic_Blood_Pressure_value_pure) >= 90.0  :
                                 error = [subject, visit, 'Undefined, Diastolic Blood Pressure', Undefined_Diastolic_Blood_Pressure_value_form_field_instance,\
                                          'The Diastolic Blood Pressure is within expected range (50 to 90), the Interpretation should not be Abnormal.', \
-                                            Undefined_Diastolic_Blood_Pressure_value_disname, 'VS0170']
+                                            f"Undefined, Diastolic Blood Pressure interpretation: {Undefined_Diastolic_Blood_Pressure_disname} - Undefined, Diastolic Blood Pressure Result: {Undefined_Diastolic_Blood_Pressure_value_disname}", 'VS0170']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0080--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1256,14 +1256,16 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                 pass
                             else:
                                 error = [subject, visit, 'Pre dose, Diastolic Blood Pressure', Pre_dose_Diastolic_Blood_Pressure_value_form_field_instance ,\
-                                         'The Diastolic Blood Pressure is not within expected range (50 to 90), therefore the Interpretation can not be Normal.', Pre_dose_Diastolic_Blood_Pressure_value_disname, 'VS0090']
+                                         'The Diastolic Blood Pressure is not within expected range (50 to 90), therefore the Interpretation can not be Normal.', 
+                                         f"Pre dose, Diastolic Blood Pressure interpretation: {Pre_dose_Diastolic_Blood_Pressure_disname} - Pre dose, Diastolic Blood Pressure Result: {Pre_dose_Diastolic_Blood_Pressure_value_disname}", 'VS0090']
                                 lista_revision.append(error)
 
                         # Revision VS0180
                         elif float(Pre_dose_Diastolic_Blood_Pressure_pure) == 2.0:
                             if float(Pre_dose_Diastolic_Blood_Pressure_value_pure) <=  50.0 or float(Pre_dose_Diastolic_Blood_Pressure_value_pure) >= 90.0  :
                                 error = [subject, visit, 'Pre dose, Diastolic Blood Pressure', Pre_dose_Diastolic_Blood_Pressure_value_form_field_instance ,\
-                                         'The Diastolic Blood Pressure is within expected range (50 to 90), the Interpretation should not be Abnormal.', Pre_dose_Diastolic_Blood_Pressure_value_disname, 'VS0180']
+                                         'The Diastolic Blood Pressure is within expected range (50 to 90), the Interpretation should not be Abnormal.', 
+                                         f"Pre dose, Diastolic Blood Pressure interpretation: {Pre_dose_Diastolic_Blood_Pressure_disname} - Pre dose, Diastolic Blood Pressure Result: {Pre_dose_Diastolic_Blood_Pressure_value_disname}", 'VS0180']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0090--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1276,7 +1278,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             else:
                                 error = [subject, visit, '15-mins post dose, Diastolic Blood Pressure', mins_15_post_dose_Diastolic_Blood_Pressure_value_form_field_instance,\
                                          'The Diastolic Blood Pressure is not within expected range (50 to 90), therefore the Interpretation can not be Normal.', \
-                                            mins_15_post_dose_Diastolic_Blood_Pressure_value_disname, 'VS0100']
+                                            f"15-mins post dose, Diastolic Blood Pressure Interpretation: {mins_15_post_dose_Diastolic_Blood_Pressure_disname} - 15-mins post dose, Diastolic Blood Pressure Result: {mins_15_post_dose_Diastolic_Blood_Pressure_value_disname}", 'VS0100']
                                 lista_revision.append(error)
 
                         # Revision VS0190
@@ -1284,7 +1286,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(mins_15_post_dose_Diastolic_Blood_Pressure_value_pure) <=  50.0 or float(mins_15_post_dose_Diastolic_Blood_Pressure_value_pure) >= 90.0  :
                                 error = [subject, visit, '15-mins post dose, Diastolic Blood Pressure', mins_15_post_dose_Diastolic_Blood_Pressure_value_form_field_instance,\
                                          'The Diastolic Blood Pressure is within expected range (50 to 90), the Interpretation should not be Abnormal.', \
-                                            mins_15_post_dose_Diastolic_Blood_Pressure_value_disname, 'VS0190']
+                                            f"15-mins post dose, Diastolic Blood Pressure Interpretation: {mins_15_post_dose_Diastolic_Blood_Pressure_disname} - 15-mins post dose, Diastolic Blood Pressure Result: {mins_15_post_dose_Diastolic_Blood_Pressure_value_disname}", 'VS0190']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0100--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1297,7 +1299,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             else:
                                 error = [subject, visit, '30-mins post dose, Diastolic Blood Pressure', mins_30_post_dose_Diastolic_Blood_Pressure_value_form_field_instance,\
                                          'The Diastolic Blood Pressure is not within expected range (50 to 90), therefore the Interpretation can not be Normal.', \
-                                            mins_30_post_dose_Diastolic_Blood_Pressure_value_disname, 'VS0110']
+                                            f"30-mins post dose, Diastolic Blood Pressure interpretation: {mins_30_post_dose_Diastolic_Blood_Pressure_disname} - 30-mins post dose, Diastolic Blood Pressure Result: {mins_30_post_dose_Diastolic_Blood_Pressure_value_disname}", 'VS0110']
                                 lista_revision.append(error)
 
                         # Revision VS0200
@@ -1305,7 +1307,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(mins_30_post_dose_Diastolic_Blood_Pressure_value_pure) <=  50.0 or float(mins_30_post_dose_Diastolic_Blood_Pressure_value_pure) >= 90.0  :
                                 error = [subject, visit, '30-mins post dose, Diastolic Blood Pressure', mins_30_post_dose_Diastolic_Blood_Pressure_value_form_field_instance ,\
                                          'The Diastolic Blood Pressure is within expected range (50 to 90), the Interpretation should not be Abnormal.', \
-                                            mins_30_post_dose_Diastolic_Blood_Pressure_value_disname, 'VS0200']
+                                            f"30-mins post dose, Diastolic Blood Pressure interpretation: {mins_30_post_dose_Diastolic_Blood_Pressure_disname} - 30-mins post dose, Diastolic Blood Pressure Result: {mins_30_post_dose_Diastolic_Blood_Pressure_value_disname}", 'VS0200']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0110--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1316,17 +1318,17 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(mins_60_post_dose_Diastolic_Blood_Pressure_value_pure) >= 50.0 and float(mins_60_post_dose_Diastolic_Blood_Pressure_value_pure) <= 90.0 :
                                 pass
                             else:
-                                error = [subject, visit, '30-mins post dose, Diastolic Blood Pressure', mins_60_post_dose_Diastolic_Blood_Pressure_value_form_field_instance ,\
+                                error = [subject, visit, '60-mins post dose, Diastolic Blood Pressure', mins_60_post_dose_Diastolic_Blood_Pressure_value_form_field_instance ,\
                                          'The Diastolic Blood Pressure is not within expected range (50 to 90), therefore the Interpretation can not be Normal.', \
-                                            mins_60_post_dose_Diastolic_Blood_Pressure_value_disname, 'VS0120']
+                                            f"60-mins post dose, Diastolic Blood Pressure Interpretation: {mins_60_post_dose_Diastolic_Blood_Pressure_disname} - 60-mins post dose, Diastolic Blood Pressure Result: {mins_60_post_dose_Diastolic_Blood_Pressure_value_disname}", 'VS0120']
                                 lista_revision.append(error)
 
                         # Revision VS0210
                         elif float(mins_60_post_dose_Diastolic_Blood_Pressure_pure) == 2.0:
                             if float(mins_60_post_dose_Diastolic_Blood_Pressure_value_pure) <=  50.0 or float(mins_60_post_dose_Diastolic_Blood_Pressure_value_pure) >= 90.0  :
-                                error = [subject, visit, '30-mins post dose, Diastolic Blood Pressure', mins_60_post_dose_Diastolic_Blood_Pressure_value_form_field_instance,\
+                                error = [subject, visit, '60-mins post dose, Diastolic Blood Pressure', mins_60_post_dose_Diastolic_Blood_Pressure_value_form_field_instance,\
                                          'The Diastolic Blood Pressure is within expected range (50 to 90), the Interpretation should not be Abnormal.', \
-                                            mins_60_post_dose_Diastolic_Blood_Pressure_value_disname, 'VS0210']
+                                            f"60-mins post dose, Diastolic Blood Pressure Interpretation: {mins_60_post_dose_Diastolic_Blood_Pressure_disname} - 60-mins post dose, Diastolic Blood Pressure Result: {mins_60_post_dose_Diastolic_Blood_Pressure_value_disname}", 'VS0210']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0120--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1339,7 +1341,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             else:
                                 error = [subject, visit, '2-hours post dose, Diastolic Blood Pressure', hours_2_post_dose_Diastolic_Blood_Pressure_value_form_field_instance ,\
                                          'The Diastolic Blood Pressure is not within expected range (50 to 90), therefore the Interpretation can not be Normal.', \
-                                            hours_2_post_dose_Diastolic_Blood_Pressure_value_disname, 'VS0130']
+                                            f"2-hours post dose, Diastolic Blood Pressure Interpretation: {hours_2_post_dose_Diastolic_Blood_Pressure_disname} - 2-hours post dose, Diastolic Blood Pressure Result: {hours_2_post_dose_Diastolic_Blood_Pressure_value_disname}", 'VS0130']
                                 lista_revision.append(error)
 
                         # Revision VS0220
@@ -1347,7 +1349,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(hours_2_post_dose_Diastolic_Blood_Pressure_value_pure) <=  50.0 or float(hours_2_post_dose_Diastolic_Blood_Pressure_value_pure) >= 90.0  :
                                 error = [subject, visit, '2-hours post dose, Diastolic Blood Pressure', hours_2_post_dose_Diastolic_Blood_Pressure_value_form_field_instance,\
                                          'The Diastolic Blood Pressure is within expected range (50 to 90), the Interpretation should not be Abnormal.', \
-                                            hours_2_post_dose_Diastolic_Blood_Pressure_value_disname, 'VS0220']
+                                            f"2-hours post dose, Diastolic Blood Pressure Interpretation: {hours_2_post_dose_Diastolic_Blood_Pressure_disname} - 2-hours post dose, Diastolic Blood Pressure Result: {hours_2_post_dose_Diastolic_Blood_Pressure_value_disname}", 'VS0220']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0130--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1360,7 +1362,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             else:
                                 error = [subject, visit, '4-hours post dose, Diastolic Blood Pressure', hours_4_post_dose_Diastolic_Blood_Pressure_value_form_field_instance,\
                                          'The Diastolic Blood Pressure is not within expected range (50 to 90), therefore the Interpretation can not be Normal.', \
-                                            hours_4_post_dose_Diastolic_Blood_Pressure_value_disname, 'VS0140']
+                                            f"4-hours post dose, Diastolic Blood Pressure Interpretation: {hours_4_post_dose_Diastolic_Blood_Pressure_disname} - 4-hours post dose, Diastolic Blood Pressure Result: {hours_4_post_dose_Diastolic_Blood_Pressure_value_disname}", 'VS0140']
                                 lista_revision.append(error)
 
                         # Revision VS0230
@@ -1368,7 +1370,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(hours_4_post_dose_Diastolic_Blood_Pressure_value_pure) <=  50.0 or float(hours_4_post_dose_Diastolic_Blood_Pressure_value_pure) >= 90.0  :
                                 error = [subject, visit, '4-hours post dose, Diastolic Blood Pressure', hours_4_post_dose_Diastolic_Blood_Pressure_value_form_field_instance ,\
                                          'The Diastolic Blood Pressure is within expected range (50 to 90), the Interpretation should not be Abnormal.', \
-                                            hours_4_post_dose_Diastolic_Blood_Pressure_value_disname, 'VS0230']
+                                            f"4-hours post dose, Diastolic Blood Pressure Interpretation: {hours_4_post_dose_Diastolic_Blood_Pressure_disname} - 4-hours post dose, Diastolic Blood Pressure Result: {hours_4_post_dose_Diastolic_Blood_Pressure_value_disname}", 'VS0230']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0140--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1381,7 +1383,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             else:
                                 error = [subject, visit, '8-hours post dose, Diastolic Blood Pressure', hours_8_post_dose_Diastolic_Blood_Pressure_value_form_field_instance ,\
                                          'The Diastolic Blood Pressure is not within expected range (50 to 90), therefore the Interpretation can not be Normal.', \
-                                            hours_8_post_dose_Diastolic_Blood_Pressure_value_disname, 'VS0150']
+                                            f"8-hours post dose, Diastolic Blood Pressure Interpretation: {hours_8_post_dose_Diastolic_Blood_Pressure_disname} - 8-hours post dose, Diastolic Blood Pressure Result: {hours_8_post_dose_Diastolic_Blood_Pressure_value_disname}", 'VS0150']
                                 lista_revision.append(error)
 
                         # Revision VS0240
@@ -1389,7 +1391,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(hours_8_post_dose_Diastolic_Blood_Pressure_value_pure) <=  50.0 or float(hours_8_post_dose_Diastolic_Blood_Pressure_value_pure) >= 90.0  :
                                 error = [subject, visit, '8-hours post dose, Diastolic Blood Pressure', hours_8_post_dose_Diastolic_Blood_Pressure_value_form_field_instance ,\
                                          'The Diastolic Blood Pressure is within expected range (50 to 90), the Interpretation should not be Abnormal.', \
-                                            hours_8_post_dose_Diastolic_Blood_Pressure_value_disname, 'VS0240']
+                                            f"8-hours post dose, Diastolic Blood Pressure Interpretation: {hours_8_post_dose_Diastolic_Blood_Pressure_disname} - 8-hours post dose, Diastolic Blood Pressure Result: {hours_8_post_dose_Diastolic_Blood_Pressure_value_disname}", 'VS0240']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0150--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1402,7 +1404,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             else:
                                 error = [subject, visit, '12-hours post dose, Diastolic Blood Pressure', hours_12_post_dose_Diastolic_Blood_Pressure_value_form_field_instance ,\
                                          'The Diastolic Blood Pressure is not within expected range (50 to 90), therefore the Interpretation can not be Normal.', \
-                                            hours_12_post_dose_Diastolic_Blood_Pressure_value_disname, 'VS0160']
+                                            f"12-hours post dose, Diastolic Blood Pressure Interpretation: {hours_12_post_dose_Diastolic_Blood_Pressure_disname} - 12-hours post dose, Diastolic Blood Pressure Result: {hours_12_post_dose_Diastolic_Blood_Pressure_value_disname}", 'VS0160']
                                 lista_revision.append(error)
 
                         # Revision VS0250
@@ -1410,7 +1412,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(hours_12_post_dose_Diastolic_Blood_Pressure_value_pure) <=  50.0 or float(hours_12_post_dose_Diastolic_Blood_Pressure_value_pure) >= 90.0  :
                                 error = [subject, visit, '12-hours post dose, Diastolic Blood Pressure', hours_12_post_dose_Diastolic_Blood_Pressure_value_form_field_instance ,\
                                          'The Diastolic Blood Pressure is within expected range (50 to 90), the Interpretation should not be Abnormal.', \
-                                            hours_12_post_dose_Diastolic_Blood_Pressure_value_disname, 'VS0250']
+                                            f"12-hours post dose, Diastolic Blood Pressure Interpretation: {hours_12_post_dose_Diastolic_Blood_Pressure_disname} - 12-hours post dose, Diastolic Blood Pressure Result: {hours_12_post_dose_Diastolic_Blood_Pressure_value_disname}", 'VS0250']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0160--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1428,14 +1430,16 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                 pass
                             else:
                                 error = [subject, visit, 'Undefined, Oral Temperature', Undefined_Oral_Temperature_value_form_field_instance ,\
-                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', Undefined_Oral_Temperature_value_disname, 'VS0260']
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', 
+                                         f"Undefined, Oral Temperature Interpretation: {Undefined_Oral_Temperature_disname} - Undefined, Oral Temperature Result: {Undefined_Oral_Temperature_value_disname}", 'VS0260']
                                 lista_revision.append(error)
 
                         # Revision VS0350
                         elif float(Undefined_Oral_Temperature_pure) == 2.0:
                             if float(Undefined_Oral_Temperature_value_pure) <=  35.0 or float(Undefined_Oral_Temperature_value_pure) >= 37.5 :
                                 error = [subject, visit, 'Undefined, Oral Temperature', Undefined_Oral_Temperature_value_form_field_instance ,\
-                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', Undefined_Oral_Temperature_value_disname, 'VS0350']
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', 
+                                         f"Undefined, Oral Temperature Interpretation: {Undefined_Oral_Temperature_disname} - Undefined, Oral Temperature Result: {Undefined_Oral_Temperature_value_disname}", 'VS0350']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0260--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1447,14 +1451,16 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                 pass
                             else:
                                 error = [subject, visit, '15-mins post dose, Body Temperature', mins_15_post_dose_Oral_Temperature_value_form_field_instance ,\
-                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', mins_15_post_dose_Oral_Temperature_value_disname, 'VS0280']
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', 
+                                         f"15-mins post dose, Body Temperature Interpretation: {mins_15_post_dose_Oral_Temperature_disname} - 15-mins post dose, Body Temperature Result: {mins_15_post_dose_Oral_Temperature_value_disname}", 'VS0280']
                                 lista_revision.append(error)
 
                         # Revision VS0370
                         elif float(mins_15_post_dose_Oral_Temperature_pure) == 2.0:
                             if float(mins_15_post_dose_Oral_Temperature_value_pure) <=  35.0 or float(mins_15_post_dose_Oral_Temperature_value_pure) >= 37.5  :
                                 error = [subject, visit, '15-mins post dose, Body Temperature', mins_15_post_dose_Oral_Temperature_value_form_field_instance,\
-                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', mins_15_post_dose_Oral_Temperature_value_disname, 'VS0370']
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', 
+                                         f"15-mins post dose, Body Temperature Interpretation: {mins_15_post_dose_Oral_Temperature_disname} - 15-mins post dose, Body Temperature Result: {mins_15_post_dose_Oral_Temperature_value_disname}", 'VS0370']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0280--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1466,14 +1472,16 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                 pass
                             else:
                                 error = [subject, visit, 'Pre dose, Body Temperature', Pre_dose_Oral_Temperature_value_form_field_instance ,\
-                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', Pre_dose_Oral_Temperature_value_disname, 'VS0270']
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', 
+                                         f"Pre dose, Body Temperature Interpretation: {Pre_dose_Oral_Temperature_disname} - Pre dose, Body Temperature Result: {Pre_dose_Oral_Temperature_value_disname}", 'VS0270']
                                 lista_revision.append(error)
 
                         # Revision VS0360
                         elif float(Pre_dose_Oral_Temperature_pure) == 2.0:
                             if float(Pre_dose_Oral_Temperature_value_pure) <=  35.0 or float(Pre_dose_Oral_Temperature_value_pure) >= 37.5 :
                                 error = [subject, visit, 'Pre dose, Body Temperature', Pre_dose_Oral_Temperature_value_form_field_instance ,\
-                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', Pre_dose_Oral_Temperature_value_disname, 'VS0360']
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', 
+                                         f"Pre dose, Body Temperature Interpretation: {Pre_dose_Oral_Temperature_disname} - Pre dose, Body Temperature Result: {Pre_dose_Oral_Temperature_value_disname}", 'VS0360']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0270--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1485,14 +1493,16 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                 pass
                             else:
                                 error = [subject, visit, '30-mins post dose, Body Temperature', mins_30_post_dose_Oral_Temperature_value_form_field_instance ,\
-                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', mins_30_post_dose_Oral_Temperature_value_disname, 'VS0290']
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', 
+                                         f"30-mins post dose, Body Temperature Interpretation: {mins_30_post_dose_Oral_Temperature_disname} - 30-mins post dose, Body Temperature Result: {mins_30_post_dose_Oral_Temperature_value_disname}", 'VS0290']
                                 lista_revision.append(error)
 
                         # Revision VS0380
                         elif float(mins_30_post_dose_Oral_Temperature_pure) == 2.0:
                             if float(mins_30_post_dose_Oral_Temperature_value_pure) <=  35.0 or float(mins_30_post_dose_Oral_Temperature_value_pure) >= 37.5  :
                                 error = [subject, visit, '30-mins post dose, Body Temperature', mins_30_post_dose_Oral_Temperature_value_form_field_instance ,\
-                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', mins_30_post_dose_Oral_Temperature_value_disname, 'VS0380']
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', 
+                                         f"30-mins post dose, Body Temperature Interpretation: {mins_30_post_dose_Oral_Temperature_disname} - 30-mins post dose, Body Temperature Result: {mins_30_post_dose_Oral_Temperature_value_disname}", 'VS0380']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0290--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1504,14 +1514,16 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                 pass
                             else:
                                 error = [subject, visit, '60-mins post dose, Oral Temperature', mins_60_post_dose_Oral_Temperature_value_form_field_instance ,\
-                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', mins_60_post_dose_Oral_Temperature_value_disname, 'VS0300']
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', 
+                                         f"60-mins post dose, Oral Temperature Interpretation: {mins_60_post_dose_Oral_Temperature_disname} - 60-mins post dose, Oral Temperature Result: {mins_60_post_dose_Oral_Temperature_value_disname}", 'VS0300']
                                 lista_revision.append(error)
 
                         # Revision VS0390
                         elif float(mins_60_post_dose_Oral_Temperature_pure) == 2.0:
                             if float(mins_60_post_dose_Oral_Temperature_value_pure) <=  35.0 or float(mins_60_post_dose_Oral_Temperature_value_pure) >= 37.5  :
                                 error = [subject, visit, '60-mins post dose, Oral Temperature', mins_60_post_dose_Oral_Temperature_value_form_field_instance ,\
-                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', mins_60_post_dose_Oral_Temperature_value_disname, 'VS0390']
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', 
+                                         f"60-mins post dose, Oral Temperature Interpretation: {mins_60_post_dose_Oral_Temperature_disname} - 60-mins post dose, Oral Temperature Result: {mins_60_post_dose_Oral_Temperature_value_disname}", 'VS0390']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0300--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1523,14 +1535,16 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                 pass
                             else:
                                 error = [subject, visit, '2-hours post dose, Oral Temperature', hours_2_post_dose_Oral_Temperature_value_form_field_instance ,\
-                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', hours_2_post_dose_Oral_Temperature_value_disname, 'VS0310']
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', 
+                                         f"2-hours post dose, Oral Temperature Interpretation: {hours_2_post_dose_Oral_Temperature_disname} - 2-hours post dose, Oral Temperature Result: {hours_2_post_dose_Oral_Temperature_value_disname}", 'VS0310']
                                 lista_revision.append(error)
 
                         # Revision VS0400
                         elif float(hours_2_post_dose_Oral_Temperature_pure) == 2.0:
                             if float(hours_2_post_dose_Oral_Temperature_value_pure) <=  35.0 or float(hours_2_post_dose_Oral_Temperature_value_pure) >= 37.5  :
                                 error = [subject, visit, '2-hours post dose, Oral Temperature', hours_2_post_dose_Oral_Temperature_value_form_field_instance ,\
-                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', hours_2_post_dose_Oral_Temperature_value_disname, 'VS0400']
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', 
+                                         f"2-hours post dose, Oral Temperature Interpretation: {hours_2_post_dose_Oral_Temperature_disname} - 2-hours post dose, Oral Temperature Result: {hours_2_post_dose_Oral_Temperature_value_disname}", 'VS0400']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0310--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1542,14 +1556,16 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                 pass
                             else:
                                 error = [subject, visit, '8-hours post dose, Oral Temperature', hours_8_post_dose_Oral_Temperature_value_form_field_instance ,\
-                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', hours_8_post_dose_Oral_Temperature_value_disname, 'VS0330']
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', 
+                                         f"8-hours post dose, Oral Temperature Interpretation: {hours_8_post_dose_Oral_Temperature_disname} - 8-hours post dose, Oral Temperature Result: {hours_8_post_dose_Oral_Temperature_value_disname}", 'VS0330']
                                 lista_revision.append(error)
 
                         # Revision VS0420
                         elif float(hours_8_post_dose_Oral_Temperature_pure) == 2.0:
                             if float(hours_8_post_dose_Oral_Temperature_value_pure) <=  35.0 or float(hours_8_post_dose_Oral_Temperature_value_pure) >= 37.5  :
                                 error = [subject, visit, '8-hours post dose, Oral Temperature', hours_8_post_dose_Oral_Temperature_value_form_field_instance ,\
-                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', hours_8_post_dose_Oral_Temperature_value_disname, 'VS0420']
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', 
+                                         f"8-hours post dose, Oral Temperature Interpretation: {hours_8_post_dose_Oral_Temperature_disname} - 8-hours post dose, Oral Temperature Result: {hours_8_post_dose_Oral_Temperature_value_disname}", 'VS0420']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0330--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1561,14 +1577,16 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                 pass
                             else:
                                 error = [subject, visit, '4-hours post dose, Oral Temperature', hours_4_post_dose_Oral_Temperature_value_form_field_instance,\
-                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', hours_4_post_dose_Oral_Temperature_value_disname, 'VS0320']
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', 
+                                         f"4-hours post dose, Oral Temperature interpretation: {hours_4_post_dose_Oral_Temperature_disname} - 4-hours post dose, Oral Temperature Result: {hours_4_post_dose_Oral_Temperature_value_disname}", 'VS0320']
                                 lista_revision.append(error)
 
                         # Revision VS0410
                         elif float(hours_4_post_dose_Oral_Temperature_pure) == 2.0:
                             if float(hours_4_post_dose_Oral_Temperature_value_pure) <=  35.0 or float(hours_4_post_dose_Oral_Temperature_value_pure) >= 37.5  :
                                 error = [subject, visit, '4-hours post dose, Oral Temperature', hours_4_post_dose_Oral_Temperature_value_form_field_instance,\
-                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', hours_4_post_dose_Oral_Temperature_value_disname, 'VS0410']
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', 
+                                         f"4-hours post dose, Oral Temperature interpretation: {hours_4_post_dose_Oral_Temperature_disname} - 4-hours post dose, Oral Temperature Result: {hours_4_post_dose_Oral_Temperature_value_disname}", 'VS0410']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0320--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1580,14 +1598,16 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                 pass
                             else:
                                 error = [subject, visit, '12-hours post dose, Oral Temperature', hours_12_post_dose_Oral_Temperature_value_form_field_instance,\
-                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', hours_12_post_dose_Oral_Temperature_value_disname, 'VS0340']
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', 
+                                         f"12-hours post dose, Oral Temperature Interpretation: {hours_12_post_dose_Oral_Temperature_disname} - 12-hours post dose, Oral Temperature Result: {hours_12_post_dose_Oral_Temperature_value_disname}", 'VS0340']
                                 lista_revision.append(error)
 
                         # Revision VS0430
                         elif float(hours_12_post_dose_Oral_Temperature_pure) == 2.0:
                             if float(hours_12_post_dose_Oral_Temperature_value_pure) <=  35.0 or float(hours_12_post_dose_Oral_Temperature_value_pure) >= 37.5  :
                                 error = [subject, visit, '12-hours post dose, Oral Temperature', hours_12_post_dose_Oral_Temperature_value_form_field_instance ,\
-                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', hours_12_post_dose_Oral_Temperature_value_disname, 'VS0430']
+                                         'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', 
+                                         f"12-hours post dose, Oral Temperature Interpretation: {hours_12_post_dose_Oral_Temperature_disname} - 12-hours post dose, Oral Temperature Result: {hours_12_post_dose_Oral_Temperature_value_disname}", 'VS0430']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0340--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1600,14 +1620,16 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                 pass
                             else:
                                 error = [subject, visit, 'Undefined, Pulse rate', Undefined_Pulse_rate_value_form_field_instance ,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', Undefined_Pulse_rate_value_disname, 'VS0440']
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                         f"Undefined, Pulse rate Interpretation: {Undefined_Pulse_rate_disname} - Undefined, Pulse rate Result: {Undefined_Pulse_rate_value_disname}", 'VS0440']
                                 lista_revision.append(error)
 
                         # Revision VS0530
                         elif float(Undefined_Pulse_rate_pure) == 2.0:
                             if float(Undefined_Pulse_rate_value_pure) <=  45.0 or float(Undefined_Pulse_rate_value_pure) >= 100.5  :
                                 error = [subject, visit, 'Undefined, Pulse rate', Undefined_Pulse_rate_value_form_field_instance,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', Undefined_Pulse_rate_value_disname, 'VS0530']
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                         f"Undefined, Pulse rate Interpretation: {Undefined_Pulse_rate_disname} - Undefined, Pulse rate Result: {Undefined_Pulse_rate_value_disname}", 'VS0530']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0440--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1619,14 +1641,16 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                 pass
                             else:
                                 error = [subject, visit, 'Pre dose, Pulse rate', Pre_dose_Pulse_rate_value_form_field_instance ,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', Pre_dose_Pulse_rate_value_disname, 'VS0450']
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                         f"Pre dose, Pulse rate interpretation: {Pre_dose_Pulse_rate_disname} - Pre dose, Pulse rate Result: {Pre_dose_Pulse_rate_value_disname}", 'VS0450']
                                 lista_revision.append(error)
 
                         # Revision VS0540
                         elif float(Pre_dose_Pulse_rate_pure) == 2.0:
                             if float(Pre_dose_Pulse_rate_value_pure) <=  45.0 or float(Pre_dose_Pulse_rate_value_pure) >= 100.5  :
                                 error = [subject, visit, 'Pre dose, Pulse rate', Pre_dose_Pulse_rate_value_form_field_instance,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', Pre_dose_Pulse_rate_value_disname, 'VS0540']
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                          f"Pre dose, Pulse rate interpretation: {Pre_dose_Pulse_rate_disname} - Pre dose, Pulse rate Result: {Pre_dose_Pulse_rate_value_disname}", 'VS0540']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0450--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1637,15 +1661,17 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(mins_15_post_dose_Pulse_rate_value_pure) >= 45.0 and float(mins_15_post_dose_Pulse_rate_value_pure) <= 100.5 :
                                 pass
                             else:
-                                error = [subject, visit, '15-mins post dose, Pulse rate', mins_15_post_dose_Pulse_rate_value_form_field_instance ,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', mins_15_post_dose_Pulse_rate_value_disname, 'VS0460']
+                                error = [subject, visit, '15-mins post dose, Pulse rate', mins_15_post_dose_Pulse_rate_value_form_field_instance ,
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                         f"15-mins post dose, Pulse rate Interpretation: {mins_15_post_dose_Pulse_rate_disname} - 15-mins post dose, Pulse rate Result: {mins_15_post_dose_Pulse_rate_value_disname}", 'VS0460']
                                 lista_revision.append(error)
 
                         # Revision VS0550
                         elif float(mins_15_post_dose_Pulse_rate_pure) == 2.0:
                             if float(mins_15_post_dose_Pulse_rate_value_pure) <=  45.0 or float(mins_15_post_dose_Pulse_rate_value_pure) >= 100.5  :
-                                error = [subject, visit, '15-mins post dose, Pulse rate', mins_15_post_dose_Pulse_rate_value_form_field_instance ,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', mins_15_post_dose_Pulse_rate_value_disname, 'VS0550']
+                                error = [subject, visit, '15-mins post dose, Pulse rate', mins_15_post_dose_Pulse_rate_value_form_field_instance ,
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                         f"15-mins post dose, Pulse rate Interpretation: {mins_15_post_dose_Pulse_rate_disname} - 15-mins post dose, Pulse rate Result: {mins_15_post_dose_Pulse_rate_value_disname}", 'VS0550']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0460--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1656,15 +1682,17 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(mins_30_post_dose_Pulse_rate_value_pure) >= 45.0 and float(mins_30_post_dose_Pulse_rate_value_pure) <= 100.5 :
                                 pass
                             else:
-                                error = [subject, visit, '15-mins post dose, Pulse rate', mins_30_post_dose_Pulse_rate_value_form_field_instance,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', mins_30_post_dose_Pulse_rate_value_disname, 'VS0470']
+                                error = [subject, visit, '15-mins post dose, Pulse rate', mins_30_post_dose_Pulse_rate_value_form_field_instance,
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                         f"15-mins post dose, Pulse rate Interpretation: {mins_30_post_dose_Pulse_rate_disname} - 15-mins post dose, Pulse rate Result: {mins_30_post_dose_Pulse_rate_value_disname}", 'VS0470']
                                 lista_revision.append(error)
 
                         # Revision VS0560
                         elif float(mins_30_post_dose_Pulse_rate_pure) == 2.0:
                             if float(mins_30_post_dose_Pulse_rate_value_pure) <=  45.0 or float(mins_30_post_dose_Pulse_rate_value_pure) >= 100.5  :
-                                error = [subject, visit, '15-mins post dose, Pulse rate', mins_30_post_dose_Pulse_rate_value_form_field_instance ,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', mins_30_post_dose_Pulse_rate_value_disname, 'VS0560']
+                                error = [subject, visit, '15-mins post dose, Pulse rate', mins_30_post_dose_Pulse_rate_value_form_field_instance ,
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                         f"15-mins post dose, Pulse rate Interpretation: {mins_30_post_dose_Pulse_rate_disname} - 15-mins post dose, Pulse rate Result: {mins_30_post_dose_Pulse_rate_value_disname}", 'VS0560']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0470--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1675,15 +1703,17 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(mins_60_post_dose_Pulse_rate_value_pure) >= 45.0 and float(mins_60_post_dose_Pulse_rate_value_pure) <= 100.5 :
                                 pass
                             else:
-                                error = [subject, visit, '60-mins post dose, Pulse rate', mins_60_post_dose_Pulse_rate_value_form_field_instance ,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', mins_60_post_dose_Pulse_rate_value_disname, 'VS0480']
+                                error = [subject, visit, '60-mins post dose, Pulse rate', mins_60_post_dose_Pulse_rate_value_form_field_instance ,
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                         f"60-mins post dose, Pulse rate Interpretation: {mins_60_post_dose_Pulse_rate_disname} - 60-mins post dose, Pulse rate Result: {mins_60_post_dose_Pulse_rate_value_disname}", 'VS0480']
                                 lista_revision.append(error)
 
                         # Revision VS0570
                         elif float(mins_60_post_dose_Pulse_rate_pure) == 2.0:
                             if float(mins_60_post_dose_Pulse_rate_value_pure) <=  45.0 or float(mins_60_post_dose_Pulse_rate_value_pure) >= 100.5  :
-                                error = [subject, visit, '60-mins post dose, Pulse rate', mins_60_post_dose_Pulse_rate_value_form_field_instance,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', mins_60_post_dose_Pulse_rate_value_disname, 'VS0570']
+                                error = [subject, visit, '60-mins post dose, Pulse rate', mins_60_post_dose_Pulse_rate_value_form_field_instance,
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                         f"60-mins post dose, Pulse rate Interpretation: {mins_60_post_dose_Pulse_rate_disname} - 60-mins post dose, Pulse rate Result: {mins_60_post_dose_Pulse_rate_value_disname}", 'VS0570']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0480--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1695,14 +1725,16 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                 pass
                             else:
                                 error = [subject, visit, '2-hours post dose, Pulse rate', hours_2_post_dose_Pulse_rate_value_form_field_instance ,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', hours_2_post_dose_Pulse_rate_value_disname, 'VS0490']
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                         f"2-hours post dose, Pulse rate Interpretation: {hours_2_post_dose_Pulse_rate_disname} - 2-hours post dose, Pulse rate Result: {hours_2_post_dose_Pulse_rate_value_disname}", 'VS0490']
                                 lista_revision.append(error)
 
                         # Revision VS0580
                         elif float(hours_2_post_dose_Pulse_rate_pure) == 2.0:
                             if float(hours_2_post_dose_Pulse_rate_value_pure) <=  45.0 or float(hours_2_post_dose_Pulse_rate_value_pure) >= 100.5  :
-                                error = [subject, visit, '2-hours post dose, Pulse rate', hours_2_post_dose_Pulse_rate_value_form_field_instance ,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', hours_2_post_dose_Pulse_rate_value_disname, 'VS0580']
+                                error = [subject, visit, '2-hours post dose, Pulse rate', hours_2_post_dose_Pulse_rate_value_form_field_instance ,
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                         f"2-hours post dose, Pulse rate Interpretation: {hours_2_post_dose_Pulse_rate_disname} - 2-hours post dose, Pulse rate Result: {hours_2_post_dose_Pulse_rate_value_disname}", 'VS0580']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0490--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1713,15 +1745,17 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(hours_2_post_dose_Pulse_rate_value_pure) >= 45.0 and float(hours_2_post_dose_Pulse_rate_value_pure) <= 100.5 :
                                 pass
                             else:
-                                error = [subject, visit, '2-hours post dose, Pulse rate', hours_2_post_dose_Pulse_rate_value_form_field_instance ,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', hours_2_post_dose_Pulse_rate_value_disname, 'VS0490']
+                                error = [subject, visit, '2-hours post dose, Pulse rate', hours_2_post_dose_Pulse_rate_value_form_field_instance ,
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                         f"2-hours post dose, Pulse rate Interpretation: {hours_2_post_dose_Pulse_rate_disname} - 2-hours post dose, Pulse rate Result: {hours_2_post_dose_Pulse_rate_value_disname}", 'VS0490']
                                 lista_revision.append(error)
 
                         # Revision VS0580
                         elif float(hours_2_post_dose_Pulse_rate_pure) == 2.0:
                             if float(hours_2_post_dose_Pulse_rate_value_pure) <=  45.0 or float(hours_2_post_dose_Pulse_rate_value_pure) >= 100.5  :
-                                error = [subject, visit, '2-hours post dose, Pulse rate', hours_2_post_dose_Pulse_rate_value_form_field_instance ,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', hours_2_post_dose_Pulse_rate_value_disname, 'VS0580']
+                                error = [subject, visit, '2-hours post dose, Pulse rate', hours_2_post_dose_Pulse_rate_value_form_field_instance ,
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                         f"2-hours post dose, Pulse rate Interpretation: {hours_2_post_dose_Pulse_rate_disname} - 2-hours post dose, Pulse rate Result: {hours_2_post_dose_Pulse_rate_value_disname}", 'VS0580']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0490--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1732,15 +1766,17 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(hours_4_post_dose_Pulse_rate_value_pure) >= 45.0 and float(hours_4_post_dose_Pulse_rate_value_pure) <= 100.5 :
                                 pass
                             else:
-                                error = [subject, visit, '4-hours post dose, Pulse rate', hours_4_post_dose_Pulse_rate_value_form_field_instance ,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', hours_4_post_dose_Pulse_rate_value_disname, 'VS0500']
+                                error = [subject, visit, '4-hours post dose, Pulse rate', hours_4_post_dose_Pulse_rate_value_form_field_instance ,
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                         f"4-hours post dose, Pulse rate Interpretation: {hours_4_post_dose_Pulse_rate_disname} - 4-hours post dose, Pulse rate Result: {hours_4_post_dose_Pulse_rate_value_disname}", 'VS0500']
                                 lista_revision.append(error)
 
                         # Revision VS0590
                         elif float(hours_4_post_dose_Pulse_rate_pure) == 2.0:
                             if float(hours_4_post_dose_Pulse_rate_value_pure) <=  45.0 or float(hours_4_post_dose_Pulse_rate_value_pure) >= 100.5  :
-                                error = [subject, visit, '4-hours post dose, Pulse rate', hours_4_post_dose_Pulse_rate_value_form_field_instance ,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', hours_4_post_dose_Pulse_rate_value_disname, 'VS0590']
+                                error = [subject, visit, '4-hours post dose, Pulse rate', hours_4_post_dose_Pulse_rate_value_form_field_instance ,
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                         f"4-hours post dose, Pulse rate Interpretation: {hours_4_post_dose_Pulse_rate_disname} - 4-hours post dose, Pulse rate Result: {hours_4_post_dose_Pulse_rate_value_disname}", 'VS0590']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0500--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1751,15 +1787,17 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(hours_8_post_dose_Pulse_rate_value_pure) >= 45.0 and float(hours_8_post_dose_Pulse_rate_value_pure) <= 100.5 :
                                 pass
                             else:
-                                error = [subject, visit, '8-hours post dose, Pulse rate', hours_8_post_dose_Pulse_rate_value_form_field_instance ,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', hours_8_post_dose_Pulse_rate_value_disname, 'VS0510']
+                                error = [subject, visit, '8-hours post dose, Pulse rate', hours_8_post_dose_Pulse_rate_value_form_field_instance ,
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                         f"8-hours post dose, Pulse rate Interpretation: {hours_8_post_dose_Pulse_rate_disname} - 8-hours post dose, Pulse rate Result: {hours_8_post_dose_Pulse_rate_value_disname}", 'VS0510']
                                 lista_revision.append(error)
 
                         # Revision VS0600
                         elif float(hours_8_post_dose_Pulse_rate_pure) == 2.0:
                             if float(hours_8_post_dose_Pulse_rate_value_pure) <=  45.0 or float(hours_8_post_dose_Pulse_rate_value_pure) >= 100.5  :
-                                error = [subject, visit, '8-hours post dose, Pulse rate', hours_8_post_dose_Pulse_rate_value_form_field_instance ,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', hours_8_post_dose_Pulse_rate_value_disname, 'VS0600']
+                                error = [subject, visit, '8-hours post dose, Pulse rate', hours_8_post_dose_Pulse_rate_value_form_field_instance ,
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                         f"8-hours post dose, Pulse rate Interpretation: {hours_8_post_dose_Pulse_rate_disname} - 8-hours post dose, Pulse rate Result: {hours_8_post_dose_Pulse_rate_value_disname}", 'VS0600']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0510--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1770,15 +1808,17 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(hours_12_post_dose_Pulse_rate_value_pure) >= 45.0 and float(hours_12_post_dose_Pulse_rate_value_pure) <= 100.5 :
                                 pass
                             else:
-                                error = [subject, visit, '12-hours post dose, Pulse rate', hours_12_post_dose_Pulse_rate_value_form_field_instance ,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', hours_12_post_dose_Pulse_rate_value_disname, 'VS0520']
+                                error = [subject, visit, '12-hours post dose, Pulse rate', hours_12_post_dose_Pulse_rate_value_form_field_instance ,
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                         f"12-hours post dose, Pulse rate Interpretation: {hours_12_post_dose_Pulse_rate_disname} - 12-hours post dose, Pulse rate Result: {hours_12_post_dose_Pulse_rate_value_disname}", 'VS0520']
                                 lista_revision.append(error)
 
                         # Revision VS0610
                         elif float(hours_12_post_dose_Pulse_rate_pure) == 2.0:
                             if float(hours_12_post_dose_Pulse_rate_value_pure) <=  45.0 or float(hours_12_post_dose_Pulse_rate_value_pure) >= 100.5  :
-                                error = [subject, visit, '12-hours post dose, Pulse rate', hours_12_post_dose_Pulse_rate_value_form_field_instance ,\
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', hours_12_post_dose_Pulse_rate_value_disname, 'VS0610']
+                                error = [subject, visit, '12-hours post dose, Pulse rate', hours_12_post_dose_Pulse_rate_value_form_field_instance ,
+                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                         f"12-hours post dose, Pulse rate Interpretation: {hours_12_post_dose_Pulse_rate_disname} - 12-hours post dose, Pulse rate Result: {hours_12_post_dose_Pulse_rate_value_disname}", 'VS0610']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0520--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1790,16 +1830,17 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(Undefined_Respiratory_rate_value_pure) >= 12.0 and float(Undefined_Respiratory_rate_value_pure) <= 18.0 :
                                 pass
                             else:
-                                error = [subject, visit, 'Undefined, Respiratory rate', Undefined_Respiratory_rate_value_form_field_instance ,\
-                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', \
-                                            Undefined_Respiratory_rate_value_disname, 'VS0620']
+                                error = [subject, visit, 'Undefined, Respiratory rate', Undefined_Respiratory_rate_value_form_field_instance ,
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', 
+                                            f"Undefined, Respiratory rate Interpretation: {Undefined_Respiratory_rate_disname} - Undefined, Respiratory rate Result: {Undefined_Respiratory_rate_value_disname}", 'VS0620']
                                 lista_revision.append(error)
 
                         # Revision VS0710
                         elif float(Undefined_Respiratory_rate_pure) == 2.0:
                             if float(Undefined_Respiratory_rate_value_pure) <=  12.0 or float(Undefined_Respiratory_rate_value_pure) >= 18.0  :
-                                error = [subject, visit, 'Undefined, Respiratory rate', Undefined_Respiratory_rate_value_form_field_instance ,\
-                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', Undefined_Respiratory_rate_value_disname, 'VS0710']
+                                error = [subject, visit, 'Undefined, Respiratory rate', Undefined_Respiratory_rate_value_form_field_instance ,
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', 
+                                         f"Undefined, Respiratory rate Interpretation: {Undefined_Respiratory_rate_disname} - Undefined, Respiratory rate Result: {Undefined_Respiratory_rate_value_disname}", 'VS0710']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0620--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1810,15 +1851,17 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(Pre_dose_Respiratory_rate_value_pure) >= 12.0 and float(Pre_dose_Respiratory_rate_value_pure) <= 18.0 :
                                 pass
                             else:
-                                error = [subject, visit, 'Pre dose, Respiratory rate', Pre_dose_Respiratory_rate_value_form_field_instance ,\
-                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', Pre_dose_Respiratory_rate_value_disname, 'VS0630']
+                                error = [subject, visit, 'Pre dose, Respiratory rate', Pre_dose_Respiratory_rate_value_form_field_instance ,
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', 
+                                         f"Pre dose, Respiratory rate Interpretation: {Pre_dose_Respiratory_rate_pure} - Pre dose, Respiratory rate Result: {Pre_dose_Respiratory_rate_value_disname}", 'VS0630']
                                 lista_revision.append(error)
 
                         # Revision VS0720
                         elif float(Pre_dose_Respiratory_rate_pure) == 2.0:
                             if float(Pre_dose_Respiratory_rate_value_pure) <=  12.0 or float(Pre_dose_Respiratory_rate_value_pure) >= 18.0  :
                                 error = [subject, visit, 'Pre dose, Respiratory rate', Pre_dose_Respiratory_rate_value_form_field_instance ,\
-                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', Pre_dose_Respiratory_rate_value_disname, 'VS0720']
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', 
+                                         f"Pre dose, Respiratory rate Interpretation: {Pre_dose_Respiratory_rate_pure} - Pre dose, Respiratory rate Result: {Pre_dose_Respiratory_rate_value_disname}", 'VS0720']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0630--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1829,15 +1872,17 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(mins_15_post_dose_Respiratory_rate_value_pure) >= 12.0 and float(mins_15_post_dose_Respiratory_rate_value_pure) <= 18.0 :
                                 pass
                             else:
-                                error = [subject, visit, '15-mins post dose, Respiratory rate', mins_15_post_dose_Respiratory_rate_value_form_field_instance ,\
-                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', mins_15_post_dose_Respiratory_rate_value_disname, 'VS0640']
+                                error = [subject, visit, '15-mins post dose, Respiratory rate', mins_15_post_dose_Respiratory_rate_value_form_field_instance ,
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', 
+                                         f"15-mins post dose, Respiratory rate Interpretation: {mins_15_post_dose_Respiratory_rate_disname} - 15-mins post dose, Respiratory rate Result: {mins_15_post_dose_Respiratory_rate_value_disname}", 'VS0640']
                                 lista_revision.append(error)
 
                         # Revision VS0730
                         elif float(mins_15_post_dose_Respiratory_rate_pure) == 2.0:
                             if float(mins_15_post_dose_Respiratory_rate_value_pure) <=  12.0 or float(mins_15_post_dose_Respiratory_rate_value_pure) >= 18.0  :
-                                error = [subject, visit, '15-mins post dose, Respiratory rate', mins_15_post_dose_Respiratory_rate_value_form_field_instance ,\
-                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', mins_15_post_dose_Respiratory_rate_value_disname, 'VS0730']
+                                error = [subject, visit, '15-mins post dose, Respiratory rate', mins_15_post_dose_Respiratory_rate_value_form_field_instance ,
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', 
+                                         f"15-mins post dose, Respiratory rate Interpretation: {mins_15_post_dose_Respiratory_rate_disname} - 15-mins post dose, Respiratory rate Result: {mins_15_post_dose_Respiratory_rate_value_disname}", 'VS0730']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0640--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1849,14 +1894,16 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                 pass
                             else:
                                 error = [subject, visit, '30-mins post dose, Respiratory rate', mins_30_post_dose_Respiratory_rate_value_form_field_instance ,\
-                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', mins_30_post_dose_Respiratory_rate_value_disname, 'VS0650']
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', 
+                                         f"30-mins post dose, Respiratory rate Interpretation: {mins_30_post_dose_Respiratory_rate_disname} - 30-mins post dose, Respiratory rate Result: {mins_30_post_dose_Respiratory_rate_value_disname}", 'VS0650']
                                 lista_revision.append(error)
 
                         # Revision VS0740
                         elif float(mins_30_post_dose_Respiratory_rate_pure) == 2.0:
                             if float(mins_30_post_dose_Respiratory_rate_value_pure) <=  12.0 or float(mins_30_post_dose_Respiratory_rate_value_pure) >= 18.0  :
-                                error = [subject, visit, '30-mins post dose, Respiratory rate', mins_30_post_dose_Respiratory_rate_value_form_field_instance ,\
-                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', mins_30_post_dose_Respiratory_rate_value_disname, 'VS0740']
+                                error = [subject, visit, '30-mins post dose, Respiratory rate', mins_30_post_dose_Respiratory_rate_value_form_field_instance ,
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', 
+                                         f"30-mins post dose, Respiratory rate Interpretation: {mins_30_post_dose_Respiratory_rate_disname} - 30-mins post dose, Respiratory rate Result: {mins_30_post_dose_Respiratory_rate_value_disname}", 'VS0740']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0650--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1868,14 +1915,16 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                 pass
                             else:
                                 error = [subject, visit, '60-mins post dose, Respiratory rate', mins_60_post_dose_Respiratory_rate_value_form_field_instance ,\
-                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', mins_60_post_dose_Respiratory_rate_value_disname, 'VS0660']
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', 
+                                         f"60-mins post dose, Respiratory rate Interpretation: {mins_60_post_dose_Respiratory_rate_disname} - 60-mins post dose, Respiratory rate Result: {mins_60_post_dose_Respiratory_rate_value_disname}", 'VS0660']
                                 lista_revision.append(error)
 
                         # Revision VS0750
                         elif float(mins_60_post_dose_Respiratory_rate_pure) == 2.0:
                             if float(mins_60_post_dose_Respiratory_rate_value_pure) <=  12.0 or float(mins_60_post_dose_Respiratory_rate_value_pure) >= 18.0  :
-                                error = [subject, visit, '60-mins post dose, Respiratory rate', mins_60_post_dose_Respiratory_rate_value_form_field_instance ,\
-                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', mins_60_post_dose_Respiratory_rate_value_disname, 'VS0750']
+                                error = [subject, visit, '60-mins post dose, Respiratory rate', mins_60_post_dose_Respiratory_rate_value_form_field_instance ,
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', 
+                                         f"60-mins post dose, Respiratory rate Interpretation: {mins_60_post_dose_Respiratory_rate_disname} - 60-mins post dose, Respiratory rate Result: {mins_60_post_dose_Respiratory_rate_value_disname}", 'VS0750']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0660--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1886,15 +1935,17 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(hours_2_post_dose_Respiratory_rate_value_pure) >= 12.0 and float(hours_2_post_dose_Respiratory_rate_value_pure) <= 18.0 :
                                 pass
                             else:
-                                error = [subject, visit, '2-hours post dose, Respiratory rate', hours_2_post_dose_Respiratory_rate_value_form_field_instance ,\
-                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', hours_2_post_dose_Respiratory_rate_value_disname, 'VS0670']
+                                error = [subject, visit, '2-hours post dose, Respiratory rate', hours_2_post_dose_Respiratory_rate_value_form_field_instance ,
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', 
+                                         f"2-hours post dose, Respiratory rate Interpretation: {hours_2_post_dose_Respiratory_rate_disname} - 2-hours post dose, Respiratory rate Result: {hours_2_post_dose_Respiratory_rate_value_disname}", 'VS0670']
                                 lista_revision.append(error)
 
                         # Revision VS0760
                         elif float(hours_2_post_dose_Respiratory_rate_pure) == 2.0:
                             if float(hours_2_post_dose_Respiratory_rate_value_pure) <=  12.0 or float(hours_2_post_dose_Respiratory_rate_value_pure) >= 18.0  :
                                 error = [subject, visit, '2-hours post dose, Respiratory rate', hours_2_post_dose_Respiratory_rate_value_form_field_instance ,\
-                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', hours_2_post_dose_Respiratory_rate_value_disname, 'VS0760']
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', 
+                                         f"2-hours post dose, Respiratory rate Interpretation: {hours_2_post_dose_Respiratory_rate_disname} - 2-hours post dose, Respiratory rate Result: {hours_2_post_dose_Respiratory_rate_value_disname}", 'VS0760']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0670--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1906,14 +1957,16 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                 pass
                             else:
                                 error = [subject, visit, '4-hours post dose, Respiratory rate', hours_4_post_dose_Respiratory_rate_value_form_field_instance ,\
-                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', hours_4_post_dose_Respiratory_rate_value_disname, 'VS0680']
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', 
+                                         f"4-hours post dose, Respiratory rate Interpretation: {hours_4_post_dose_Respiratory_rate_disname} - 4-hours post dose, Respiratory rate Result: {hours_4_post_dose_Respiratory_rate_value_disname}", 'VS0680']
                                 lista_revision.append(error)
 
                         # Revision VS0770
                         elif float(hours_4_post_dose_Respiratory_rate_pure) == 2.0:
                             if float(hours_4_post_dose_Respiratory_rate_value_pure) <=  12.0 or float(hours_4_post_dose_Respiratory_rate_value_pure) >= 18.0  :
                                 error = [subject, visit, '4-hours post dose, Respiratory rate', hours_4_post_dose_Respiratory_rate_value_form_field_instance ,\
-                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', hours_4_post_dose_Respiratory_rate_value_disname, 'VS0770']
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', 
+                                         f"4-hours post dose, Respiratory rate Interpretation: {hours_4_post_dose_Respiratory_rate_disname} - 4-hours post dose, Respiratory rate Result: {hours_4_post_dose_Respiratory_rate_value_disname}", 'VS0770']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0680--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1925,14 +1978,16 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                 pass
                             else:
                                 error = [subject, visit, '8-hours post dose, Respiratory rate', hours_8_post_dose_Respiratory_rate_value_form_field_instance ,\
-                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', hours_8_post_dose_Respiratory_rate_value_disname, 'VS0690']
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', 
+                                         f"8-hours post dose, Respiratory rate Interpretation: {hours_8_post_dose_Respiratory_rate_disname} - 8-hours post dose, Respiratory rate Result: {hours_8_post_dose_Respiratory_rate_value_disname}", 'VS0690']
                                 lista_revision.append(error)
 
                         # Revision VS0780
                         elif float(hours_8_post_dose_Respiratory_rate_pure) == 2.0:
                             if float(hours_8_post_dose_Respiratory_rate_value_pure) <=  12.0 or float(hours_8_post_dose_Respiratory_rate_value_pure) >= 18.0  :
                                 error = [subject, visit, '8-hours post dose, Respiratory rate', hours_8_post_dose_Respiratory_rate_value_form_field_instance ,\
-                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', hours_8_post_dose_Respiratory_rate_value_disname, 'VS0780']
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', 
+                                         f"8-hours post dose, Respiratory rate Interpretation: {hours_8_post_dose_Respiratory_rate_disname} - 8-hours post dose, Respiratory rate Result: {hours_8_post_dose_Respiratory_rate_value_disname}", 'VS0780']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0690--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1943,15 +1998,17 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(hours_12_post_dose_Respiratory_rate_value_pure) >= 12.0 and float(hours_12_post_dose_Respiratory_rate_value_pure) <= 18.0 :
                                 pass
                             else:
-                                error = [subject, visit, '12-hours post dose, Respiratory rate', hours_12_post_dose_Respiratory_rate_value_form_field_instance ,\
-                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', hours_12_post_dose_Respiratory_rate_value_disname, 'VS0700']
+                                error = [subject, visit, '12-hours post dose, Respiratory rate', hours_12_post_dose_Respiratory_rate_value_form_field_instance ,
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', 
+                                         f"12-hours post dose, Respiratory rate Interpretation: {hours_12_post_dose_Respiratory_rate_disname} - 12-hours post dose, Respiratory rate Result: {hours_12_post_dose_Respiratory_rate_value_disname}", 'VS0700']
                                 lista_revision.append(error)
 
                         # Revision VS0790
                         elif float(hours_12_post_dose_Respiratory_rate_pure) == 2.0:
                             if float(hours_12_post_dose_Respiratory_rate_value_pure) <=  12.0 or float(hours_12_post_dose_Respiratory_rate_value_pure) >= 18.0  :
-                                error = [subject, visit, '12-hours post dose, Respiratory rate', hours_12_post_dose_Respiratory_rate_value_form_field_instance ,\
-                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', hours_12_post_dose_Respiratory_rate_value_disname, 'VS0790']
+                                error = [subject, visit, '12-hours post dose, Respiratory rate', hours_12_post_dose_Respiratory_rate_value_form_field_instance ,
+                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', 
+                                         f"12-hours post dose, Respiratory rate Interpretation: {hours_12_post_dose_Respiratory_rate_disname} - 12-hours post dose, Respiratory rate Result: {hours_12_post_dose_Respiratory_rate_value_disname}", 'VS0790']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0700--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1964,14 +2021,16 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                 pass
                             else:
                                 error = [subject, visit, 'Undefined, Systolic Blood Pressure', Undefined_Systolic_Blood_Pressure_value_form_field_instance ,\
-                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.' , Undefined_Systolic_Blood_Pressure_value_disname, 'VS0800']
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.' , 
+                                         f"Undefined, Systolic Blood Pressure Interpretation: {Undefined_Systolic_Blood_Pressure_disname} - Undefined, Systolic Blood Pressure Result: {Undefined_Systolic_Blood_Pressure_value_disname}", 'VS0800']
                                 lista_revision.append(error)
 
                         # Revision VS0890
                         elif float(Undefined_Systolic_Blood_Pressure_pure) == 2.0:
                             if float(Undefined_Systolic_Blood_Pressure_value_pure) <=  100.0 or float(Undefined_Systolic_Blood_Pressure_value_pure) >= 140.0  :
                                 error = [subject, visit, 'Undefined, Systolic Blood Pressure', Undefined_Systolic_Blood_Pressure_value_form_field_instance ,\
-                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', Undefined_Systolic_Blood_Pressure_value_disname, 'VS0890']
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', 
+                                         f"Undefined, Systolic Blood Pressure Interpretation: {Undefined_Systolic_Blood_Pressure_disname} - Undefined, Systolic Blood Pressure Result: {Undefined_Systolic_Blood_Pressure_value_disname}", 'VS0890']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0800--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1986,8 +2045,9 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                         # Revision VS0890
                         if float(Pre_dose_Systolic_Blood_Pressure_pure) == 2.0:
                             if float(Pre_dose_Systolic_Blood_Pressure_value_pure) <=  12.0 or float(Pre_dose_Systolic_Blood_Pressure_value_pure) >= 18.0  :
-                                error = [subject, visit, 'Pre dose, Systolic Blood Pressure', Pre_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
-                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', Pre_dose_Systolic_Blood_Pressure_value_disname, 'VS0890']
+                                error = [subject, visit, 'Pre dose, Systolic Blood Pressure', Pre_dose_Systolic_Blood_Pressure_value_form_field_instance ,
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', 
+                                         f"Pre dose, Systolic Blood Pressure Interpretation: {Pre_dose_Systolic_Blood_Pressure_disname} - Pre dose, Systolic Blood Pressure Result: {Pre_dose_Systolic_Blood_Pressure_value_disname}", 'VS0890']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0890--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1998,17 +2058,17 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(mins_15_post_dose_Systolic_Blood_Pressure_value_pure) >= 100.0 and float(mins_15_post_dose_Systolic_Blood_Pressure_value_pure) <= 140.0 :
                                 pass
                             else:
-                                error = [subject, visit, '15-mins post dose, Systolic Blood Pressure', mins_15_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
-                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.',\
-                                              mins_15_post_dose_Systolic_Blood_Pressure_value_disname, 'VS0820']
+                                error = [subject, visit, '15-mins post dose, Systolic Blood Pressure', mins_15_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.',
+                                              f"15-mins post dose, Systolic Blood Pressure Interpretation: {mins_15_post_dose_Systolic_Blood_Pressure_disname} - 15-mins post dose, Systolic Blood Pressure Result: {mins_15_post_dose_Systolic_Blood_Pressure_value_disname}", 'VS0820']
                                 lista_revision.append(error)
 
                         # Revision VS0910
                         elif float(mins_15_post_dose_Systolic_Blood_Pressure_pure) == 2.0:
                             if float(mins_15_post_dose_Systolic_Blood_Pressure_value_pure) <=  100.0 or float(mins_15_post_dose_Systolic_Blood_Pressure_value_pure) >= 140.0  :
-                                error = [subject, visit, '15-mins post dose, Systolic Blood Pressure', mins_15_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
-                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', \
-                                            mins_15_post_dose_Systolic_Blood_Pressure_value_disname, 'VS0910']
+                                error = [subject, visit, '15-mins post dose, Systolic Blood Pressure', mins_15_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,
+                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', 
+                                             f"15-mins post dose, Systolic Blood Pressure Interpretation: {mins_15_post_dose_Systolic_Blood_Pressure_disname} - 15-mins post dose, Systolic Blood Pressure Result: {mins_15_post_dose_Systolic_Blood_Pressure_value_disname}", 'VS0910']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0820--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -2021,7 +2081,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             else:
                                 error = [subject, visit, '30-mins post dose, Systolic Blood Pressure', mins_30_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
                                          'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', \
-                                            mins_30_post_dose_Systolic_Blood_Pressure_value_disname, 'VS0830']
+                                            f"30-mins post dose, Systolic Blood Pressure Interpretation: {mins_30_post_dose_Systolic_Blood_Pressure_disname} - 30-mins post dose, Systolic Blood Pressure Result: {mins_30_post_dose_Systolic_Blood_Pressure_value_disname}", 'VS0830']
                                 lista_revision.append(error)
 
                         # Revision VS0920
@@ -2029,7 +2089,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(mins_30_post_dose_Systolic_Blood_Pressure_value_pure) <=  100.0 or float(mins_30_post_dose_Systolic_Blood_Pressure_value_pure) >= 140.0  :
                                 error = [subject, visit, '30-mins post dose, Systolic Blood Pressure', mins_30_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
                                          'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', \
-                                            mins_30_post_dose_Systolic_Blood_Pressure_value_disname, 'VS0920']
+                                            f"30-mins post dose, Systolic Blood Pressure Interpretation: {mins_30_post_dose_Systolic_Blood_Pressure_disname} - 30-mins post dose, Systolic Blood Pressure Result: {mins_30_post_dose_Systolic_Blood_Pressure_value_disname}", 'VS0920']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0830--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -2042,7 +2102,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             else:
                                 error = [subject, visit, '60-mins post dose, Systolic Blood Pressure', mins_60_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
                                          'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', \
-                                            mins_60_post_dose_Systolic_Blood_Pressure_value_disname, 'VS0840']
+                                            f"60-mins post dose, Systolic Blood Pressure Interpretation: {mins_60_post_dose_Systolic_Blood_Pressure_disname} - 60-mins post dose, Systolic Blood Pressure Result: {mins_60_post_dose_Systolic_Blood_Pressure_value_disname}", 'VS0840']
                                 lista_revision.append(error)
 
                         # Revision VS0930
@@ -2050,7 +2110,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(mins_60_post_dose_Systolic_Blood_Pressure_value_pure) <=  100.0 or float(mins_60_post_dose_Systolic_Blood_Pressure_value_pure) >= 140.0  :
                                 error = [subject, visit, '60-mins post dose, Systolic Blood Pressure', mins_60_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
                                          'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', \
-                                            mins_60_post_dose_Systolic_Blood_Pressure_value_disname, 'VS0930']
+                                            f"60-mins post dose, Systolic Blood Pressure Interpretation: {mins_60_post_dose_Systolic_Blood_Pressure_disname} - 60-mins post dose, Systolic Blood Pressure Result: {mins_60_post_dose_Systolic_Blood_Pressure_value_disname}", 'VS0930']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0840--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -2063,7 +2123,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             else:
                                 error = [subject, visit, '2-hours post dose, Systolic Blood Pressure', hours_2_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
                                          'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', \
-                                            hours_2_post_dose_Systolic_Blood_Pressure_value_empty, 'VS0850']
+                                            f"2-hours post dose, Systolic Blood Pressure Interpretation: {hours_2_post_dose_Systolic_Blood_Pressure_disname} - 2-hours post dose, Systolic Blood Pressure Result: {hours_2_post_dose_Systolic_Blood_Pressure_value_empty}", 'VS0850']
                                 lista_revision.append(error)
 
                         # Revision VS0940
@@ -2071,7 +2131,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(hours_2_post_dose_Systolic_Blood_Pressure_value_pure) <=  100.0 or float(hours_2_post_dose_Systolic_Blood_Pressure_value_pure) >= 140.0  :
                                 error = [subject, visit, '2-hours post dose, Systolic Blood Pressure', hours_2_post_dose_Systolic_Blood_Pressure_value_form_field_instance,\
                                          'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', \
-                                            hours_2_post_dose_Systolic_Blood_Pressure_value_empty, 'VS0940']
+                                             f"2-hours post dose, Systolic Blood Pressure Interpretation: {hours_2_post_dose_Systolic_Blood_Pressure_disname} - 2-hours post dose, Systolic Blood Pressure Result: {hours_2_post_dose_Systolic_Blood_Pressure_value_empty}", 'VS0940']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0850--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -2084,7 +2144,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             else:
                                 error = [subject, visit, '4-hours post dose, Systolic Blood Pressure', hours_4_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
                                          'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', \
-                                            hours_4_post_dose_Systolic_Blood_Pressure_value_disname, 'VS0860']
+                                            f"4-hours post dose, Systolic Blood Pressure Interpretation: {hours_4_post_dose_Systolic_Blood_Pressure_disname} - 4-hours post dose, Systolic Blood Pressure Result: {hours_4_post_dose_Systolic_Blood_Pressure_value_disname}", 'VS0860']
                                 lista_revision.append(error)
 
                         # Revision VS0950
@@ -2092,7 +2152,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(hours_4_post_dose_Systolic_Blood_Pressure_value_pure) <=  100.0 or float(hours_4_post_dose_Systolic_Blood_Pressure_value_pure) >= 140.0  :
                                 error = [subject, visit, '4-hours post dose, Systolic Blood Pressure', hours_4_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
                                          'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', \
-                                            hours_4_post_dose_Systolic_Blood_Pressure_value_disname, 'VS0950']
+                                            f"4-hours post dose, Systolic Blood Pressure Interpretation: {hours_4_post_dose_Systolic_Blood_Pressure_disname} - 4-hours post dose, Systolic Blood Pressure Result: {hours_4_post_dose_Systolic_Blood_Pressure_value_disname}", 'VS0950']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0860--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -2105,7 +2165,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             else:
                                 error = [subject, visit, '8-hours post dose, Systolic Blood Pressure', hours_8_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
                                          'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', \
-                                            hours_8_post_dose_Systolic_Blood_Pressure_value_disname, 'VS0870']
+                                            f"8-hours post dose, Systolic Blood Pressure Interpretation: {hours_8_post_dose_Systolic_Blood_Pressure_disname} - 8-hours post dose, Systolic Blood Pressure Result: {hours_8_post_dose_Systolic_Blood_Pressure_value_disname}", 'VS0870']
                                 lista_revision.append(error)
 
                         # Revision VS0960
@@ -2113,7 +2173,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(hours_8_post_dose_Systolic_Blood_Pressure_value_pure) <=  100.0 or float(hours_8_post_dose_Systolic_Blood_Pressure_value_pure) >= 140.0  :
                                 error = [subject, visit, '8-hours post dose, Systolic Blood Pressure', hours_8_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
                                          'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', \
-                                            hours_8_post_dose_Systolic_Blood_Pressure_value_disname, 'VS0960']
+                                            f"8-hours post dose, Systolic Blood Pressure Interpretation: {hours_8_post_dose_Systolic_Blood_Pressure_disname} - 8-hours post dose, Systolic Blood Pressure Result: {hours_8_post_dose_Systolic_Blood_Pressure_value_disname}", 'VS0960']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0870--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -2126,7 +2186,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             else:
                                 error = [subject, visit, '12-hours post dose, Systolic Blood Pressure', hours_12_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
                                          'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', \
-                                            hours_12_post_dose_Systolic_Blood_Pressure_value_disname, 'VS0880']
+                                            f"12-hours post dose, Systolic Blood Pressure Interpretation: {hours_12_post_dose_Systolic_Blood_Pressure_disname} 12-hours post dose, Systolic Blood Pressure Result: {hours_12_post_dose_Systolic_Blood_Pressure_value_disname}", 'VS0880']
                                 lista_revision.append(error)
 
                         # Revision VS0970
@@ -2134,7 +2194,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(hours_12_post_dose_Systolic_Blood_Pressure_value_pure) <=  100.0 or float(hours_12_post_dose_Systolic_Blood_Pressure_value_pure) >= 140.0  :
                                 error = [subject, visit, '12-hours post dose, Systolic Blood Pressure', hours_12_post_dose_Systolic_Blood_Pressure_value_form_field_instance ,\
                                          'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', \
-                                            hours_12_post_dose_Systolic_Blood_Pressure_value_disname, 'VS0970']
+                                            f"12-hours post dose, Systolic Blood Pressure Interpretation: {hours_12_post_dose_Systolic_Blood_Pressure_disname} 12-hours post dose, Systolic Blood Pressure Result: {hours_12_post_dose_Systolic_Blood_Pressure_value_disname}", 'VS0970']
                                 lista_revision.append(error)                     
                     except Exception as e:
                         lista_logs.append(f'Revision VS0880--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -2162,7 +2222,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                     
                                 error = [subject, visit, 'Pre dose, Time', predose_time_form_field_definition,\
                                              'The time selected should be less than 60 min before the study treatment administration', \
-                                                f'Pre dose, Time: {predose_time_pure} - dose time administration{time_dosing_cpg_administration}', 'VS0990']
+                                                f'Pre dose, Time: {predose_time_pure} - dose time administration: {time_dosing_cpg_administration}', 'VS0990']
                                 lista_revision.append(error)
 
                         except Exception as e:
@@ -2178,7 +2238,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                     
                                     error = [subject, visit, '15-mins post dose, Time', post_dose_15_form_field_instance,\
                                              'The time selected should be less than 23min and greater than 7 min after the study treatment administration', \
-                                                f'15-mins post dose, Time: {post_dose_15_pure} - dose time administration{time_dosing_cpg_administration}', 'VS1000']
+                                                f'15-mins post dose, Time: {post_dose_15_pure} - dose time administration: {time_dosing_cpg_administration}', 'VS1000']
                                     lista_revision.append(error)
 
                             except Exception as e:
@@ -2194,7 +2254,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                     
                                     error = [subject, visit, '30-mins post dose, Time', post_dose_30_form_field_instance,\
                                              'The time selected should be less than 38 min and greater than 22 min after the study treatment administration', \
-                                                f'30-mins post dose, Time: {post_dose_30_pure} - dose time administration{time_dosing_cpg_administration}', 'VS1010']
+                                                f'30-mins post dose, Time: {post_dose_30_pure} - dose time administration: {time_dosing_cpg_administration}', 'VS1010']
                                     lista_revision.append(error)
 
                             except Exception as e:
@@ -2210,7 +2270,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                     
                                     error = [subject, visit, '60-mins post dose, Time', post_dose_60_form_field_instance,\
                                              'The time selected should be less than 68 min and greater than 52 min after the study treatment administration', \
-                                                f'60-mins post dose, Time: {post_dose_60_pure} - dose time administration{time_dosing_cpg_administration}', 'VS1020']
+                                                f'60-mins post dose, Time: {post_dose_60_pure} - dose time administration: {time_dosing_cpg_administration}', 'VS1020']
                                     lista_revision.append(error)
 
                             except Exception as e:
@@ -2226,7 +2286,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                     
                                     error = [subject, visit, '2-hours post dose, Time', post_dose_2H_form_field_instance,\
                                              'The time selected should be less than 2h15 and greater than 1h45 after the study treatment administration', \
-                                                f'2-hours post dose, Time: {post_dose_2H_pure} - dose time administration{time_dosing_cpg_administration}', 'VS1030']
+                                                f'2-hours post dose, Time: {post_dose_2H_pure} - dose time administration: {time_dosing_cpg_administration}', 'VS1030']
                                     lista_revision.append(error)
 
                             except Exception as e:
@@ -2242,7 +2302,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                     
                                     error = [subject, visit, '4-hours post dose, Time', post_dose_4H_form_field_instance,\
                                              'The time selected should be less than 4h15 and greater than 3h45 after the study treatment administration', \
-                                                f'4-hours post dose, Time: {post_dose_4H_pure} - dose time administration{time_dosing_cpg_administration}', 'VS1040']
+                                                f'4-hours post dose, Time: {post_dose_4H_pure} - dose time administration: {time_dosing_cpg_administration}', 'VS1040']
                                     lista_revision.append(error)
 
                             except Exception as e:
@@ -2258,7 +2318,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                     
                                     error = [subject, visit, '8-hours post dose, Time', post_dose_8H_form_field_instance,\
                                              'The time selected should be less than 8h15 and greater than 7h45 after the study treatment administration', \
-                                                f'8-hours post dose, Time: {post_dose_8H_pure} - dose time administration{time_dosing_cpg_administration}', 'VS1050']
+                                                f'8-hours post dose, Time: {post_dose_8H_pure} - dose time administration: {time_dosing_cpg_administration}', 'VS1050']
                                     lista_revision.append(error)
 
                             except Exception as e:
@@ -2274,7 +2334,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                     
                                     error = [subject, visit, '12-hours post dose, Time', post_dose_12H_form_field_instance,\
                                              'The time selected should be less than 12h15 and greater than 11h45 after the study treatment administration', \
-                                                f'12-hours post dose, Time: {post_dose_8H_pure} - dose time administration{time_dosing_cpg_administration}', 'VS1060']
+                                                f'12-hours post dose, Time: {post_dose_8H_pure} - dose time administration: {time_dosing_cpg_administration}', 'VS1060']
                                     lista_revision.append(error)
 
                             except Exception as e:
@@ -2291,7 +2351,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                 
                                 error = [subject, visit, 'Pre dose, Time', predose_time_form_field_definition,\
                                              'The time selected should be less than 60 min before the study treatment administration', \
-                                                f'Pre dose, Time: {predose_time_pure} - dose time administration{time_dosing_miltefosine_administration}', 'VS0990']
+                                                f'Pre dose, Time: {predose_time_pure} - dose time administration: {time_dosing_miltefosine_administration}', 'VS0990']
                                 lista_revision.append(error)
 
                         except Exception as e:
@@ -2308,7 +2368,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                     
                                     error = [subject, visit, '15-mins post dose, Time', post_dose_15_form_field_instance,\
                                              'The time selected should be less than 23min and greater than 7 min after the study treatment administration', \
-                                                f'15-mins post dose, Time: {post_dose_15_pure} - dose time administration{time_dosing_miltefosine_administration}', 'VS1000']
+                                                f'15-mins post dose, Time: {post_dose_15_pure} - dose time administration: {time_dosing_miltefosine_administration}', 'VS1000']
                                     lista_revision.append(error)
 
                             except Exception as e:
@@ -2324,7 +2384,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                           
                                     error = [subject, visit, '30-mins post dose, Time', post_dose_30_form_field_instance,\
                                              'The time selected should be less than 38 min and greater than 22 min after the study treatment administration', \
-                                                f'30-mins post dose, Time: {post_dose_30_pure} - dose time administration{time_dosing_miltefosine_administration}', 'VS1010']
+                                                f'30-mins post dose, Time: {post_dose_30_pure} - dose time administration: {time_dosing_miltefosine_administration}', 'VS1010']
                                     lista_revision.append(error)
 
                             except Exception as e:
@@ -2341,7 +2401,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                     
                                     error = [subject, visit, '60-mins post dose, Time', post_dose_60_form_field_instance,\
                                              'The time selected should be less than 68 min and greater than 52 min after the study treatment administration', \
-                                                f'60-mins post dose, Time: {post_dose_60_pure} - dose time administration{time_dosing_miltefosine_administration}', 'VS1020']
+                                                f'60-mins post dose, Time: {post_dose_60_pure} - dose time administration: {time_dosing_miltefosine_administration}', 'VS1020']
                                     lista_revision.append(error)
 
                             except Exception as e:
@@ -2358,7 +2418,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                     
                                     error = [subject, visit, '2-hours post dose, Time', post_dose_2H_form_field_instance,\
                                              'The time selected should be less than 2h15 and greater than 1h45 after the study treatment administration', \
-                                                f'2-hours post dose, Time: {post_dose_2H_pure} - dose time administration{time_dosing_miltefosine_administration}', 'VS1030']
+                                                f'2-hours post dose, Time: {post_dose_2H_pure} - dose time administration: {time_dosing_miltefosine_administration}', 'VS1030']
                                     lista_revision.append(error)
 
                             except Exception as e:
@@ -2375,7 +2435,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                     
                                     error = [subject, visit, '4-hours post dose, Time', post_dose_4H_form_field_instance,\
                                              'The time selected should be less than 4h15 and greater than 3h45 after the study treatment administration', \
-                                                f'4-hours post dose, Time: {post_dose_4H_pure} - dose time administration{time_dosing_miltefosine_administration}', 'VS1040']
+                                                f'4-hours post dose, Time: {post_dose_4H_pure} - dose time administration: {time_dosing_miltefosine_administration}', 'VS1040']
                                     lista_revision.append(error)
 
                             except Exception as e:
@@ -2392,7 +2452,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                     
                                     error = [subject, visit, '8-hours post dose, Time', post_dose_8H_form_field_instance,\
                                              'The time selected should be less than 8h15 and greater than 7h45 after the study treatment administration', \
-                                                f'8-hours post dose, Time: {post_dose_8H_pure} - dose time administration{time_dosing_miltefosine_administration}', 'VS1050']
+                                                f'8-hours post dose, Time: {post_dose_8H_pure} - dose time administration: {time_dosing_miltefosine_administration}', 'VS1050']
                                     lista_revision.append(error)
 
                             except Exception as e:
@@ -2409,7 +2469,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                     
                                     error = [subject, visit, '12-hours post dose, Time', post_dose_12H_form_field_instance,\
                                              'The time selected should be less than 12h15 and greater than 11h45 after the study treatment administration', \
-                                                f'12-hours post dose, Time: {post_dose_8H_pure} - dose time administration{time_dosing_miltefosine_administration}', 'VS1060']
+                                                f'12-hours post dose, Time: {post_dose_8H_pure} - dose time administration: {time_dosing_miltefosine_administration}', 'VS1060']
                                     lista_revision.append(error)
 
                             except Exception as e:

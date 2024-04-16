@@ -1,6 +1,7 @@
 import pandas as pd
 import os
 from datetime import datetime
+from email_sender import send_email
 
 # Importing forms from screening visit--------------------------------------------------------------------------------
 from Date_of_visit import date_of_visit

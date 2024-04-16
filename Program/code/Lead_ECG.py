@@ -848,7 +848,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                             
                             if float(Undefined_HR_bpm_pure) < 45.0 or float(Undefined_HR_bpm_pure) > 90.0 :
                                 error = [subject, visit, 'Undefined, HR (bpm)', Undefined_HR_bpm_form_field_instance ,\
-                                         'The HR is not within expected range (45 to 90), therefore the Interpretation can not be Normal.', Undefined_HR_bpm_disname, 'LE0070']
+                                         'The HR is not within expected range (45 to 90), therefore the Interpretation can not be Normal.', 
+                                         f"Undefined HR Interpretation: {Undefined_Interpretation_disname}  - Undefined HR: {Undefined_HR_bpm_disname}", 'LE0070']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -859,7 +860,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         if float(Undefined_Interpretation_pure) == 1.0:
                             if float(Undefined_RR_msec_pure) < 654.6 or float(Undefined_RR_msec_pure) > 1141.4 :
                                 error = [subject, visit, 'Undefined, RR (msec)', Undefined_RR_msec_form_field_instance ,\
-                                         'The RR is not within expected range (654.6 to 1141.4), therefore the Interpretation can not be Normal.', Undefined_RR_msec_disname, 'LE0140']
+                                         'The RR is not within expected range (654.6 to 1141.4), therefore the Interpretation can not be Normal.',
+                                           f"Undefined RR Interpretation: {Undefined_Interpretation_disname} - Undefined RR Result: {Undefined_RR_msec_disname}", 'LE0140']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -870,7 +872,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         if float(Undefined_Interpretation_pure) == 1.0:
                             if float(Undefined_PR_msec_pure) < 120.0 or float(Undefined_PR_msec_pure) > 200.0 :
                                 error = [subject, visit, 'Undefined, PR (msec)', Undefined_PR_msec_form_field_instance,\
-                                         'The PR is not within expected range (120 to 200), therefore the Interpretation can not be Normal.', Undefined_PR_msec_disname, 'LE0210']
+                                         'The PR is not within expected range (120 to 200), therefore the Interpretation can not be Normal.', 
+                                         f"Undefined PR Interpretation: {Undefined_Interpretation_disname} - Undefinede PR Result: {Undefined_PR_msec_disname}", 'LE0210']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision LE0210--> {e} - Subject: {subject},  Visit: {visit} ') 
@@ -880,7 +883,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         if float(Undefined_Interpretation_pure) == 1.0:
                             if float(Undefined_QRS_msec_pure) < 70.0 or float(Undefined_QRS_msec_pure) > 120.0 :
                                 error = [subject, visit, 'Undefined, QRS (msec)', Undefined_RR_msec_form_field_instance ,\
-                                         'The QRS  is not within expected range (70 to 120), therefore the Interpretation can not be Normal.', Undefined_QRS_msec_disname, 'LE0280']
+                                         'The QRS  is not within expected range (70 to 120), therefore the Interpretation can not be Normal.',
+                                           f"Undefined QRS Interpretation: {Undefined_Interpretation_disname} - Undefined QRS result: {Undefined_QRS_msec_disname}", 'LE0280']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -891,7 +895,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         if float(Undefined_Interpretation_pure) == 1.0:
                             if float(Undefined_QT_msec_pure) > 500.0 :
                                 error = [subject, visit, 'Undefined, QT (msec)', Undefined_QT_msec_form_field_instance ,\
-                                         'The QT is not within expected range (below or equal to 500 msec), therefore the Interpretation can not be Normal.', Undefined_QT_msec_disname, 'LE0350']
+                                         'The QT is not within expected range (below or equal to 500 msec), therefore the Interpretation can not be Normal.',
+                                           f"Undefined QT Interpretation: {Undefined_Interpretation_disname}  - Undefined QT Result: {Undefined_QT_msec_disname}", 'LE0350']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision LE0350--> {e} - Subject: {subject},  Visit: {visit} ')     
@@ -903,7 +908,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                                 pass
                             else:
                                 error = [subject, visit, 'Undefined, QTcF (msec)', Undefined_QTcF_msec_form_field_instance ,\
-                                        'The QTcF is not within expected range (350 to 450), therefore the Interpretation can not be Normal.', Undefined_QTcF_msec_disname, 'LE0420']
+                                        'The QTcF is not within expected range (350 to 450), therefore the Interpretation can not be Normal.', 
+                                        f"Undefined QTcF Result: {Undefined_QTcF_msec_disname}", 'LE0420']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision LE0420--> {e} - Subject: {subject},  Visit: {visit} ')  
@@ -914,7 +920,7 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(Undefined_QTcF_msec_pure) > 500.0:
                                 error = [subject, visit, 'Undefined, QTcF (msec)',  Undefined_QTcF_msec_form_field_instance ,\
                                          'The value is above 500 msec, therefore the Interpretation should be abnormal / clinically significan not. Please consider reporting an adverse event',\
-                                              Undefined_QTcF_msec_disname, 'LE0430']
+                                              f"Undefined QTcF interpretation: {Undefined_Interpretation_disname} - Undefined QTcF Result: {Undefined_QTcF_msec_disname}", 'LE0430']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision LE0430--> {e} - Subject: {subject},  Visit: {visit} ')   
@@ -980,7 +986,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         if float(Undefined_Interpretation_pure) == 2.0:
                             if cuenta_validacion_abnormal_undefined == 0:
                                 error = [subject, visit, 'Undefined, interpretation', Undefined_Interpretation_form_field_instance,\
-                                         'None of the measurements are out of range, the interpretation can not be abnormal', Undefined_Interpretation_disname, 'LE0620']
+                                         'None of the measurements are out of range, the interpretation can not be abnormal', 
+                                         f"Undefined Interpretation: {Undefined_Interpretation_disname}", 'LE0620']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -995,7 +1002,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                             
                             if float(Pre_dose_triplicate_1_HR_bpm_pure) < 45.0 or float(Pre_dose_triplicate_1_HR_bpm_pure) > 90.0 :
                                 error = [subject, visit, 'Pre dose triplicate 1, HR (bpm)', Pre_dose_triplicate_1_HR_bpm_form_field_instance,\
-                                         'If the Interpretation is Normal, the range must be between 45 and 90', Pre_dose_triplicate_1_HR_bpm_disname, 'LE0080']
+                                         'If the Interpretation is Normal, the range must be between 45 and 90', 
+                                         f"Pre dose triplicate 1, HR Interpretation: {Pre_dose_triplicate_1_Interpretation_disname} - Pre dose triplicate 1, HR Result: {Pre_dose_triplicate_1_HR_bpm_disname}", 'LE0080']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1006,7 +1014,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         if float(Pre_dose_triplicate_1_Interpretation_pure) == 1.0:
                             if float(Pre_dose_triplicate_1__RR_msec_pure) < 654.6 or float(Pre_dose_triplicate_1__RR_msec_pure) > 1141.4 :
                                 error = [subject, visit, 'Pre dose triplicate 1, RR (msec)', Pre_dose_triplicate_1__RR_msec_form_field_instance,\
-                                         'The RR is not within expected range (654.6 to 1141.4), therefore the Interpretation can not be Normal.', Pre_dose_triplicate_1__RR_msec_disname, 'LE0150']
+                                         'The RR is not within expected range (654.6 to 1141.4), therefore the Interpretation can not be Normal.', 
+                                         f"Pre dose triplicate 1, RR Interpretation: {Pre_dose_triplicate_1_Interpretation_disname} - Pre dose triplicate 1, RR Result: {Pre_dose_triplicate_1__RR_msec_disname}", 'LE0150']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1017,7 +1026,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         if float(Pre_dose_triplicate_1_Interpretation_pure) == 1.0:
                             if float(Pre_dose_triplicate_1_QRS_msec_pure) < 70.0 or float(Pre_dose_triplicate_1_QRS_msec_pure) > 120.0 :
                                 error = [subject, visit, 'Pre dose triplicate 1, QRS (msec)', Pre_dose_triplicate_1_QRS_msec_form_field_instance ,\
-                                         'The QRS  is not within expected range (70 to 120), therefore the Interpretation can not be Normal.', Pre_dose_triplicate_1_QRS_msec_disname, 'LE0290']
+                                         'The QRS  is not within expected range (70 to 120), therefore the Interpretation can not be Normal.', 
+                                         f"Pre dose triplicate 1, QRS Interpretation: {Pre_dose_triplicate_1_Interpretation_disname} - Pre dose triplicate 1, QRS Result: {Pre_dose_triplicate_1_QRS_msec_disname}", 'LE0290']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1027,8 +1037,9 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                     try: 
                         if float(Pre_dose_triplicate_1_Interpretation_pure) == 1.0:
                             if float(Pre_dose_triplicate_1_QT_msec_pure) > 500.0 :
-                                error = [subject, visit, 'Pre dose triplicate 1, QT (msec)', Pre_dose_triplicate_1_QRS_msec_form_field_instance,\
-                                         'The QT is not within expected range (below or equal to 500 msec), therefore the Interpretation can not be Normal.', Pre_dose_triplicate_1_QT_msec_disname, 'LE0360']
+                                error = [subject, visit, 'Pre dose triplicate 1, QT (msec)', Pre_dose_triplicate_1_QT_msec_form_field_instance,\
+                                         'The QT is not within expected range (below or equal to 500 msec), therefore the Interpretation can not be Normal.', 
+                                         f"Pre dose triplicate 1, QT Interpretation: {Pre_dose_triplicate_1_Interpretation_disname} - Pre dose triplicate 1, QT Result: {Pre_dose_triplicate_1_QT_msec_disname}", 'LE0360']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision LE0360--> {e} - Subject: {subject},  Visit: {visit} ')     
@@ -1040,7 +1051,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                                 pass
                             else:
                                 error = [subject, visit, 'Pre dose triplicate 1, QTcF (msec)', Pre_dose_triplicate_1_QTcF_msec_form_field_instance ,\
-                                        'The QTcF is not within expected range (350 to 450), therefore the Interpretation can not be Normal.', Pre_dose_triplicate_1_QTcF_msec_disname, 'LE0440']
+                                        'The QTcF is not within expected range (350 to 450), therefore the Interpretation can not be Normal.', 
+                                        f"Pre dose triplicate 1, QTcF Result: {Pre_dose_triplicate_1_QTcF_msec_disname}", 'LE0440']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision LE0440--> {e} - Subject: {subject},  Visit: {visit} ')  
@@ -1090,7 +1102,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         if float(Pre_dose_triplicate_1_Interpretation_pure) == 2.0:
                             if cuenta_validacion_abnormal_predose_1 == 0:
                                 error = [subject, visit, 'Pre dose triplicate 1, interpretation', Pre_dose_triplicate_1_Interpretation_form_field_instance ,\
-                                         'None of the measurements are out of range, the interpretation can not be abnormal', Pre_dose_triplicate_1_Interpretation_disname, 'LE0630']
+                                         'None of the measurements are out of range, the interpretation can not be abnormal', 
+                                         f"{Pre_dose_triplicate_1_Interpretation_disname}", 'LE0630']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1106,7 +1119,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                             
                             if float(Pre_dose_triplicate_2_HR_bpm_pure) < 45.0 or float(Pre_dose_triplicate_2_HR_bpm_pure) > 90.0 :
                                 error = [subject, visit, 'Pre dose triplicate 2, HR (bpm)', Pre_dose_triplicate_2_HR_bpm_form_field_instance ,\
-                                         'If the Interpretation is Normal, the range must be between 45 and 90', Pre_dose_triplicate_2_HR_bpm_disname, 'LE0090']
+                                         'If the Interpretation is Normal, the range must be between 45 and 90', 
+                                         f"Pre dose triplicate 2, HR Interpretation: {Pre_dose_triplicate_2_Interpretation_disname} - Pre dose triplicate 2, HR Result: {Pre_dose_triplicate_2_HR_bpm_disname}", 'LE0090']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1117,7 +1131,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         if float(Pre_dose_triplicate_2_Interpretation_pure) == 1.0:
                             if float(Pre_dose_triplicate_2_RR_msec_pure) < 654.6 or float(Pre_dose_triplicate_2_RR_msec_pure) > 1141.4 :
                                 error = [subject, visit, 'Pre dose triplicate 2, RR (msec)', Pre_dose_triplicate_2_RR_msec_form_field_instance ,\
-                                         'The RR is not within expected range (654.6 to 1141.4), therefore the Interpretation can not be Normal.', Pre_dose_triplicate_2_RR_msec_disname, 'LE0160']
+                                         'The RR is not within expected range (654.6 to 1141.4), therefore the Interpretation can not be Normal.',
+                                           f"Pre dose triplicate 2, RR Interpretation: {Pre_dose_triplicate_2_Interpretation_disname} - Pre dose triplicate 2, RR Result: {Pre_dose_triplicate_2_RR_msec_disname}", 'LE0160']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1129,7 +1144,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         if float(Pre_dose_triplicate_2_Interpretation_pure) == 1.0:
                             if float(Pre_dose_triplicate_2_PR_msec_pure) < 120.0 or float(Pre_dose_triplicate_2_PR_msec_pure) > 200.0 :
                                 error = [subject, visit, 'Pre dose triplicate 2, PR (msec)', Pre_dose_triplicate_2_Interpretation_form_field_instance ,\
-                                         'The PR is not within expected range (120 to 200), therefore the Interpretation can not be Normal.', Pre_dose_triplicate_2_Interpretation_disname, 'LE0230']
+                                         'The PR is not within expected range (120 to 200), therefore the Interpretation can not be Normal.', 
+                                         f"Pre dose triplicate 2, PR Interpretation: {Pre_dose_triplicate_2_Interpretation_disname} - Pre dose triplicate 2, PR Result: {Pre_dose_triplicate_2_PR_msec_pure}", 'LE0230']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1140,7 +1156,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         if float(Pre_dose_triplicate_2_Interpretation_pure) == 1.0:
                             if float(Pre_dose_triplicate_2_QRS_msec_pure) < 70.0 or float(Pre_dose_triplicate_2_QRS_msec_pure) > 120.0 :
                                 error = [subject, visit, 'Pre dose triplicate 2, QRS (msec)', Pre_dose_triplicate_2_QRS_msec_form_field_instance ,\
-                                         'The QRS  is not within expected range (70 to 120), therefore the Interpretation can not be Normal.', Pre_dose_triplicate_2_QRS_msec_disname, 'LE0300']
+                                         'The QRS  is not within expected range (70 to 120), therefore the Interpretation can not be Normal.', 
+                                         f"Pre dose triplicate 2, QRS: {Pre_dose_triplicate_2_Interpretation_disname} - Pre dose triplicate 2, QRS Result: {Pre_dose_triplicate_2_QRS_msec_disname}", 'LE0300']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1151,7 +1168,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         if float(Pre_dose_triplicate_2_Interpretation_pure) == 1.0:
                             if float(Pre_dose_triplicate_2_QT_msec_pure) > 500.0 :
                                 error = [subject, visit, 'Pre dose triplicate 2, QT (msec)', Pre_dose_triplicate_2_QT_msec_form_field_instance ,\
-                                         'The QT is not within expected range (below or equal to 500 msec), therefore the Interpretation can not be Normal.', Pre_dose_triplicate_2_QT_msec_disname, 'LE0370']
+                                         'The QT is not within expected range (below or equal to 500 msec), therefore the Interpretation can not be Normal.', 
+                                         f"Pre dose triplicate 2, QT Interpretation: {Pre_dose_triplicate_2_Interpretation_disname} - Pre dose triplicate 2, QT Result: {Pre_dose_triplicate_2_QT_msec_disname}", 'LE0370']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1164,7 +1182,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                                 pass
                             else:
                                 error = [subject, visit, 'Pre dose triplicate 2, QTcF (msec)', Pre_dose_triplicate_2_QTcF_msec_form_field_instance ,\
-                                        'The QTcF is not within expected range (350 to 450), therefore the Interpretation can not be Normal.', Pre_dose_triplicate_2_QTcF_msec_disname, 'LE0460']
+                                        'The QTcF is not within expected range (350 to 450), therefore the Interpretation can not be Normal.', 
+                                        f"Pre dose triplicate 2, QTcF Result: {Pre_dose_triplicate_2_QTcF_msec_disname}", 'LE0460']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision LE0460--> {e} - Subject: {subject},  Visit: {visit} ')  
@@ -1230,7 +1249,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                             
                             if float(Pre_dose_triplicate_3_HR_bpm_pure) < 45.0 or float(Pre_dose_triplicate_3_HR_bpm_pure) > 90.0 :
                                 error = [subject, visit, 'Pre dose triplicate 3, HR (bpm)', Pre_dose_triplicate_3_HR_bpm_form_field_instance ,\
-                                         'If the Interpretation is Normal, the range must be between 45 and 90', Pre_dose_triplicate_3_HR_bpm_disname, 'LE00100']
+                                         'If the Interpretation is Normal, the range must be between 45 and 90', 
+                                         f"Pre dose triplicate 3, HR Interpretation: {Pre_dose_triplicate_3_Interpretation_disname} - Pre dose triplicate 3, HR Result: {Pre_dose_triplicate_3_HR_bpm_disname}", 'LE00100']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1241,7 +1261,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         if float(Pre_dose_triplicate_3_Interpretation_pure) == 1.0:
                             if float(Pre_dose_triplicate_3_RR_msec_pure) < 654.6 or float(Pre_dose_triplicate_3_RR_msec_pure) > 1141.4 :
                                 error = [subject, visit, 'Pre dose triplicate 3, RR (msec)', Pre_dose_triplicate_3_RR_msec_form_field_instance ,\
-                                         'The RR is not within expected range (654.6 to 1141.4), therefore the Interpretation can not be Normal.', Pre_dose_triplicate_3_RR_msec_disname, 'LE0170']
+                                         'The RR is not within expected range (654.6 to 1141.4), therefore the Interpretation can not be Normal.', 
+                                         f"Pre dose triplicate 3, RR Interpretation: {Pre_dose_triplicate_3_Interpretation_disname} - Pre dose triplicate 3, RR Result: {Pre_dose_triplicate_3_RR_msec_disname}", 'LE0170']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1253,7 +1274,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         if float(Pre_dose_triplicate_3_Interpretation_pure) == 1.0:
                             if float(Pre_dose_triplicate_3_PR_msec_pure) < 120.0 or float(Pre_dose_triplicate_3_PR_msec_pure) > 200.0 :
                                 error = [subject, visit, 'Pre dose triplicate 3, PR (msec)', Pre_dose_triplicate_3_PR_msec_form_field_instance,\
-                                         'The PR is not within expected range (120 to 200), therefore the Interpretation can not be Normal.', Pre_dose_triplicate_3_PR_msec_disname, 'LE0240']
+                                         'The PR is not within expected range (120 to 200), therefore the Interpretation can not be Normal.', 
+                                         f"Pre dose triplicate 3, PR Interpreation: {Pre_dose_triplicate_3_Interpretation_disname} - Pre dose triplicate 3, PR Result: {Pre_dose_triplicate_3_PR_msec_disname}", 'LE0240']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1264,7 +1286,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         if float(Pre_dose_triplicate_3_Interpretation_pure) == 1.0:
                             if float(Pre_dose_triplicate_3_QRS_msec_pure) < 70.0 or float(Pre_dose_triplicate_3_QRS_msec_pure) > 120.0 :
                                 error = [subject, visit, 'Pre dose triplicate 3, QRS (msec)', Pre_dose_triplicate_3_QRS_msec_form_field_instance ,\
-                                         'The QRS  is not within expected range (70 to 120), therefore the Interpretation can not be Normal.', Pre_dose_triplicate_3_QRS_msec_disname, 'LE0310']
+                                         'The QRS  is not within expected range (70 to 120), therefore the Interpretation can not be Normal.', 
+                                         f"Pre dose triplicate 3, QRS Interpretation: {Pre_dose_triplicate_3_Interpretation_disname} - Pre dose triplicate 3, QRS Result: {Pre_dose_triplicate_3_QRS_msec_disname}", 'LE0310']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1275,7 +1298,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         if float(Pre_dose_triplicate_3_Interpretation_pure) == 1.0:
                             if float(Pre_dose_triplicate_3_QT_msec_pure) > 500.0 :
                                 error = [subject, visit, 'Pre dose triplicate 3, QT (msec)', Pre_dose_triplicate_3_QT_msec_form_field_instance ,\
-                                         'The QT is not within expected range (below or equal to 500 msec), therefore the Interpretation can not be Normal.', Pre_dose_triplicate_3_QT_msec_disname, 'LE0380']
+                                         'The QT is not within expected range (below or equal to 500 msec), therefore the Interpretation can not be Normal.', 
+                                         f"Pre dose triplicate 3, QT Interpretation: {Pre_dose_triplicate_3_Interpretation_disname} - Pre dose triplicate 3, QT Result: {Pre_dose_triplicate_3_QT_msec_disname}", 'LE0380']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1354,7 +1378,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                             
                             if float(min_15_post_dose_HR_bpm_pure) < 45.0 or float(min_15_post_dose_HR_bpm_pure) > 90.0 :
                                 error = [subject, visit, '15-min post dose, HR (bpm)', min_15_post_dose_HR_bpm_form_field_instance ,\
-                                         'If the Interpretation is Normal, the range must be between 45 and 90', min_15_post_dose_HR_bpm_disname, 'LE00110']
+                                         'If the Interpretation is Normal, the range must be between 45 and 90', 
+                                         f"15-min post dose, HR Interpretation: {min_15_post_dose_Interpretation_disname} - 15-min post dose, HR Result:  {min_15_post_dose_HR_bpm_disname}", 'LE00110']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1365,7 +1390,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         if float(min_15_post_dose_Interpretation_pure) == 1.0:
                             if float(min_15_post_dose_RR_msec_pure) < 654.6 or float(min_15_post_dose_RR_msec_pure) > 1141.4 :
                                 error = [subject, visit, '15-min post dose, RR (msec)', min_15_post_dose_RR_msec_form_field_instance ,\
-                                         'The RR is not within expected range (654.6 to 1141.4), therefore the Interpretation can not be Normal.', min_15_post_dose_RR_msec_disname, 'LE0180']
+                                         'The RR is not within expected range (654.6 to 1141.4), therefore the Interpretation can not be Normal.', 
+                                         f"15-min post dose, RR Interpretation: {min_15_post_dose_Interpretation_disname} - 15-min post dose, RR Result: {min_15_post_dose_RR_msec_disname}", 'LE0180']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1377,7 +1403,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         if float(min_15_post_dose_Interpretation_pure) == 1.0:
                             if float(min_15_post_dose_PR_msec_pure) < 120.0 or float(min_15_post_dose_PR_msec_pure) > 200.0 :
                                 error = [subject, visit, '15-min post dose, PR (msec)', min_15_post_dose_PR_msec_form_field_instance ,\
-                                         'The PR is not within expected range (120 to 200), therefore the Interpretation can not be Normal.', min_15_post_dose_PR_msec_disname, 'LE0250']
+                                         'The PR is not within expected range (120 to 200), therefore the Interpretation can not be Normal.', 
+                                         f"15-min post dose, PR Interpretation: {min_15_post_dose_Interpretation_disname} - 15-min post dose, PR Result: {min_15_post_dose_PR_msec_disname}", 'LE0250']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1388,7 +1415,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         if float(min_15_post_dose_Interpretation_pure) == 1.0:
                             if float(min_15_post_dose_QRS_msec_pure) < 70.0 or float(min_15_post_dose_QRS_msec_pure) > 120.0 :
                                 error = [subject, visit, '15-min post dose, QRS (msec)', min_15_post_dose_QRS_msec_form_field_instance ,\
-                                         'The QRS  is not within expected range (70 to 120), therefore the Interpretation can not be Normal.', min_15_post_dose_QRS_msec_disname, 'LE0320']
+                                         'The QRS  is not within expected range (70 to 120), therefore the Interpretation can not be Normal.', 
+                                         f"15-min post dose, QRS Interpretation: {min_15_post_dose_Interpretation_disname} - 15-min post dose, QRS Result: {min_15_post_dose_QRS_msec_disname}", 'LE0320']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1399,7 +1427,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         if float(min_15_post_dose_Interpretation_pure) == 1.0:
                             if float(min_15_post_dose_QT_msec_pure) > 500.0 :
                                 error = [subject, visit, '15-min post dose, QRS (msec)', min_15_post_dose_QT_msec_form_field_instance ,\
-                                         'The QT is not within expected range (below or equal to 500 msec), therefore the Interpretation can not be Normal.', min_15_post_dose_QT_msec_disname, 'LE0390']
+                                         'The QT is not within expected range (below or equal to 500 msec), therefore the Interpretation can not be Normal.', 
+                                         f"15-min post dose, QRS interpretation: {min_15_post_dose_Interpretation_disname} - 15-min post dose, QRS Result: {min_15_post_dose_QT_msec_disname}", 'LE0390']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1478,7 +1507,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                             
                             if float(min_30_post_dose_HR_bpm_pure) < 45.0 or float(min_30_post_dose_HR_bpm_pure) > 90.0 :
                                 error = [subject, visit, '30-min post dose, HR (bpm)', min_30_post_dose_HR_bpm_form_field_instance,\
-                                         'If the Interpretation is Normal, the range must be between 45 and 90', min_30_post_dose_HR_bpm_disname, 'LE00120']
+                                         'If the Interpretation is Normal, the range must be between 45 and 90', 
+                                         f"30-min post dose, HR Interpretation: {min_30_post_dose_Interpretation_disname} - 30-min post dose, HR Result: {min_30_post_dose_HR_bpm_disname}", 'LE00120']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision LE00120--> {e} - Subject: {subject},  Visit: {visit} ') 
@@ -1488,7 +1518,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         if float(min_30_post_dose_Interpretation_pure) == 1.0:
                             if float(min_30_post_dose_RR_msec_pure) < 654.6 or float(min_30_post_dose_RR_msec_pure) > 1141.4 :
                                 error = [subject, visit, '30-min post dose, RR (msec)', min_30_post_dose_RR_msec_form_field_instance ,\
-                                         'The RR is not within expected range (654.6 to 1141.4), therefore the Interpretation can not be Normal.', min_30_post_dose_RR_msec_disname, 'LE0190']
+                                         'The RR is not within expected range (654.6 to 1141.4), therefore the Interpretation can not be Normal.', 
+                                         f"30-min post dose, RR Interpretation: {min_30_post_dose_Interpretation_disname} - 30-min post dose, RR Result: {min_30_post_dose_RR_msec_disname}", 'LE0190']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1500,7 +1531,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         if float(min_30_post_dose_Interpretation_pure) == 1.0:
                             if float(min_30_post_dose_PR_msec_pure) < 120.0 or float(min_30_post_dose_PR_msec_pure) > 200.0 :
                                 error = [subject, visit, '30-min post dose, PR (msec)', min_30_post_dose_PR_msec_form_field_instance,\
-                                         'The PR is not within expected range (120 to 200), therefore the Interpretation can not be Normal.', min_30_post_dose_PR_msec_disname, 'LE0260']
+                                         'The PR is not within expected range (120 to 200), therefore the Interpretation can not be Normal.', 
+                                         f"30-min post dose, PR Interpretation: {min_30_post_dose_Interpretation_disname} - 30-min post dose, PR Result: {min_30_post_dose_PR_msec_disname}", 'LE0260']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1511,7 +1543,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         if float(min_30_post_dose_Interpretation_pure) == 1.0:
                             if float(min_30_post_dose_QRS_msec_pure) < 70.0 or float(min_30_post_dose_QRS_msec_pure) > 120.0 :
                                 error = [subject, visit, '30-min post dose, QRS (msec)', min_30_post_dose_QRS_msec_form_field_instance ,\
-                                         'The QRS  is not within expected range (70 to 120), therefore the Interpretation can not be Normal.', min_30_post_dose_QRS_msec_disname, 'LE0330']
+                                         'The QRS  is not within expected range (70 to 120), therefore the Interpretation can not be Normal.', 
+                                         f"30-min post dose, QRS Interpretation: {min_30_post_dose_Interpretation_disname} - 30-min post dose, QRS Result: {min_30_post_dose_QRS_msec_disname}", 'LE0330']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1522,7 +1555,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         if float(min_30_post_dose_Interpretation_pure) == 1.0:
                             if float(min_30_post_dose_QT_msec_pure) > 500.0 :
                                 error = [subject, visit, '30-min post dose, QRS (msec)', min_30_post_dose_QT_msec_form_field_instance ,\
-                                         'The QT is not within expected range (below or equal to 500 msec), therefore the Interpretation can not be Normal.', min_30_post_dose_QT_msec_disname, 'LE0400']
+                                         'The QT is not within expected range (below or equal to 500 msec), therefore the Interpretation can not be Normal.', 
+                                         f"30-min post dose, QRS Interpretation: {min_30_post_dose_Interpretation_disname} - 30-min post dose, QRS Result: {min_30_post_dose_QT_msec_disname}", 'LE0400']
                                 lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision LE0400--> {e} - Subject: {subject},  Visit: {visit} ')     
@@ -1533,8 +1567,9 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(min_30_post_dose_QTcF_msec_pure) >= 350.0 and float(min_30_post_dose_QTcF_msec_pure) <= 450.0 :
                                 pass
                             else:
-                                error = [subject, visit, '30-min post dose, QTcF (msec)', min_30_post_dose_QTcF_msec_form_field_instance ,\
-                                        'The QTcF is not within expected range (350 to 450), therefore the Interpretation can not be Normal.', min_30_post_dose_QTcF_msec_disname, 'LE0520']
+                                error = [subject, visit, '30-min post dose, QTcF (msec)', min_30_post_dose_QTcF_msec_form_field_instance ,
+                                        'The QTcF is not within expected range (350 to 450), therefore the Interpretation can not be Normal.', 
+                                        f"30-min post dose, QTcF Result: {min_30_post_dose_QTcF_msec_disname}", 'LE0520']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision LE0520--> {e} - Subject: {subject},  Visit: {visit} ')  
@@ -1601,7 +1636,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                             
                             if float(min_60_post_dose_HR_bpm_pure) < 45.0 or float(min_60_post_dose_HR_bpm_pure) > 90.0 :
                                 error = [subject, visit, '60-min post dose, HR (bpm)', min_60_post_dose_HR_bpm_form_field_instance,\
-                                         'If the Interpretation is Normal, the range must be between 45 and 90', min_60_post_dose_HR_bpm_disname, 'LE00130']
+                                         'If the Interpretation is Normal, the range must be between 45 and 90', 
+                                         f"60-min post dose, HR Interpretation: {min_60_post_dose_Interpretation_disname} - 60-min post dose, HR Result: {min_60_post_dose_HR_bpm_disname}", 'LE00130']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1612,7 +1648,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         if float(min_60_post_dose_Interpretation_pure) == 1.0:
                             if float(min_60_post_dose_RR_msec_pure) < 654.6 or float(min_60_post_dose_RR_msec_pure) > 1141.4 :
                                 error = [subject, visit, '60-min post dose, RR (msec)', min_60_post_dose_RR_msec_form_field_instance,\
-                                         'The RR is not within expected range (654.6 to 1141.4), therefore the Interpretation can not be Normal.', min_60_post_dose_RR_msec_disname, 'LE0200']
+                                         'The RR is not within expected range (654.6 to 1141.4), therefore the Interpretation can not be Normal.', 
+                                         f"60-min post dose, RR Interpretation: {min_60_post_dose_Interpretation_disname} - 60-min post dose, RR Result: {min_60_post_dose_RR_msec_disname}", 'LE0200']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1624,7 +1661,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         if float(min_60_post_dose_Interpretation_pure) == 1.0:
                             if float(min_60_post_dose_PR_msec_pure) < 120.0 or float(min_60_post_dose_PR_msec_pure) > 200.0 :
                                 error = [subject, visit, '60-min post dose, PR (msec)', min_60_post_dose_PR_msec_form_field_instance ,\
-                                         'The PR is not within expected range (120 to 200), therefore the Interpretation can not be Normal.', min_60_post_dose_PR_msec_disname, 'LE0270']
+                                         'The PR is not within expected range (120 to 200), therefore the Interpretation can not be Normal.', 
+                                         f"60-min post dose, PR interpretation: {min_60_post_dose_Interpretation_disname} - 60-min post dose, PR Result: {min_60_post_dose_PR_msec_disname}", 'LE0270']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1635,7 +1673,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         if float(min_60_post_dose_Interpretation_pure) == 1.0:
                             if float(min_60_post_dose_QRS_msec_pure) < 70.0 or float(min_60_post_dose_QRS_msec_pure) > 120.0 :
                                 error = [subject, visit, '60-min post dose, QRS (msec)', min_60_post_dose_QRS_msec_form_field_instance ,\
-                                         'The QRS  is not within expected range (70 to 120), therefore the Interpretation can not be Normal.', min_60_post_dose_QRS_msec_disname, 'LE0340']
+                                         'The QRS  is not within expected range (70 to 120), therefore the Interpretation can not be Normal.', 
+                                         f"60-min post dose, QRS Interpretation: {min_60_post_dose_Interpretation_disname} - 60-min post dose, QRS Result: {min_60_post_dose_QRS_msec_disname}", 'LE0340']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1646,7 +1685,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         if float(min_60_post_dose_Interpretation_pure) == 1.0:
                             if float(min_60_post_dose_QT_msec_pure) > 500.0 :
                                 error = [subject, visit, '60-min post dose, QRS (msec)', min_60_post_dose_QT_msec_form_field_instance,\
-                                         'The QT is not within expected range (below or equal to 500 msec), therefore the Interpretation can not be Normal.', min_60_post_dose_QT_msec_disname, 'LE0410']
+                                         'The QT is not within expected range (below or equal to 500 msec), therefore the Interpretation can not be Normal.', 
+                                         f"60-min post dose, QRS Interpretation: {min_60_post_dose_Interpretation_disname} - 60-min post dose, QRS Result: {min_60_post_dose_QT_msec_disname}", 'LE0410']
                                 lista_revision.append(error)
 
                     except Exception as e:
@@ -1726,7 +1766,7 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                                     
                                 error = [subject, visit, 'Pre dose triplicate 1, Time 24 hrs', predose_triplicate_1_time_form_field_instance,\
                                              'The time selected should be less than 60 min before the study treatment administration', \
-                                                f'Pre dose triplicate 1, Time 24 hrs: {predose_triplicate_1_time_pure} - dose time administration{time_dosing_cpg_administration}', 'LE0560']
+                                                f'Pre dose triplicate 1, Time 24 hrs: {predose_triplicate_1_time_disname} - dose time administration{time_dosing_cpg_administration}', 'LE0560']
                                 lista_revision.append(error)
 
                         except Exception as e:
@@ -1738,7 +1778,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                             dif_predose_2 = float((predose_triplicate_2_time_formated - predose_triplicate_1_time_formated).total_seconds()/60) 
                             if  dif_predose_2 < 1.0:
                                 error = [subject, visit, 'Pre dose triplicate 2, Time 24 hrs', predose_triplicate_2_time_form_field_instance,\
-                                            'Pre dose triplicate 2 Time is not at least 1 minute after Pre dose triplicate 1, Time', f'{predose_triplicate_1_time_disname} - {predose_triplicate_2_time_disname}', 'LE0570']
+                                            'Pre dose triplicate 2 Time is not at least 1 minute after Pre dose triplicate 1, Time', 
+                                            f'Pre dose triplicate 1, Time 24 hrs: {predose_triplicate_1_time_disname} - Pre dose triplicate 2, Time 24 hrs: {predose_triplicate_2_time_disname}', 'LE0570']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision LE0570--> {e} - Subject: {subject},  Visit: {visit} ')  
@@ -1749,7 +1790,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                             dif_3 = float((predose_triplicate_3_time_formated - predose_triplicate_2_time_formated).total_seconds()/60)
                             if dif_3 < 1.0:
                                 error = [subject, visit, 'Pre dose triplicate 3, Time 24 hrs', predose_triplicate_3_time_form_field_instance,\
-                                            'Pre dose triplicate 3 Time is not at least 1 minute after Pre dose triplicate 2, Time', f'{predose_triplicate_2_time_disname} - {predose_triplicate_3_time_disname}', 'LE0580']
+                                            'Pre dose triplicate 3 Time is not at least 1 minute after Pre dose triplicate 2, Time', 
+                                            f'Pre dose triplicate 2, Time 24 hrs: {predose_triplicate_2_time_disname} - Pre dose triplicate 3, Time 24 hrs: {predose_triplicate_3_time_disname}', 'LE0580']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision LE0580--> {e} - Subject: {subject},  Visit: {visit} ')  
@@ -1765,7 +1807,7 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                                     
                                 error = [subject, visit, '15-min post dose, Time 24 hrs', min_15_time_form_field_instance,\
                                              'The time selected should be less than 23min and greater than 7 min after the study treatment administration', \
-                                                f'15-min post dose, Time 24 hrs: {min_15_time_pure} - dose time administration{time_dosing_cpg_administration}', 'LE0590']
+                                                f'15-min post dose, Time 24 hrs: {min_15_time_pure} - dose time administration: {time_dosing_cpg_administration}', 'LE0590']
                                 lista_revision.append(error)
 
                         except Exception as e:
@@ -1781,7 +1823,7 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                                     
                                 error = [subject, visit, '30-min post dose, Time 24 hrs', min_30_time_form_field_instance,\
                                              'The time selected should be less than 38 min and greater than 22 min after the study treatment administration', \
-                                                f'30-min post dose, Time 24 hrs: {min_30_time_pure} - dose time administration{time_dosing_cpg_administration}', 'LE0600']
+                                                f'30-min post dose, Time 24 hrs: {min_30_time_pure} - dose time administration: {time_dosing_cpg_administration}', 'LE0600']
                                 lista_revision.append(error)
 
                         except Exception as e:
@@ -1829,7 +1871,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                    
                             if dif_predose_2_M <  1.0:
                                 error = [subject, visit, 'Pre dose triplicate 2, Time 24 hrs', predose_triplicate_2_time_form_field_instance,\
-                                            'Pre dose triplicate 2 Time is not at least 1 minute after Pre dose triplicate 1, Time', f'{predose_triplicate_1_time_disname} - {predose_triplicate_2_time_disname}', 'LE0570']
+                                            'Pre dose triplicate 2 Time is not at least 1 minute after Pre dose triplicate 1, Time', 
+                                            f'Pre dose triplicate 1, Time 24 hrs: {predose_triplicate_1_time_disname} - Pre dose triplicate 2, Time 24 hrs: {predose_triplicate_2_time_disname}', 'LE0570']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision LE0570--> {e} - Subject: {subject},  Visit: {visit} ')  
@@ -1841,7 +1884,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
 
                             if dif_3_M < 1.0:
                                 error = [subject, visit, 'Pre dose triplicate 3, Time 24 hrs', predose_triplicate_3_time_form_field_instance,\
-                                            'Pre dose triplicate 3 Time is not at least 1 minute after Pre dose triplicate 2, Time', f'{predose_triplicate_2_time_disname} - {predose_triplicate_3_time_disname}', 'LE0580']
+                                            'Pre dose triplicate 3 Time is not at least 1 minute after Pre dose triplicate 2, Time', 
+                                            f'Pre dose triplicate 2, Time 24 hrs: {predose_triplicate_2_time_disname} - Pre dose triplicate 3, Time 24 hrs: {predose_triplicate_3_time_disname}', 'LE0580']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision LE0580--> {e} - Subject: {subject},  Visit: {visit} ')  
@@ -1853,7 +1897,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
 
                             if dif_3_M_1 < 0.0 or dif_3_M_1 > 6.0:
                                 error = [subject, visit, 'Pre dose triplicate 3, Time 24 hrs', predose_triplicate_3_time_form_field_instance,\
-                                            'Pre dose triplicate 3 Time is not within 6 minutes after Pre dose triplicate 1, Time', f'{predose_triplicate_1_time_disname} - {predose_triplicate_3_time_disname}', 'LE0581']
+                                            'Pre dose triplicate 3 Time is not within 6 minutes after Pre dose triplicate 1, Time', 
+                                            f'Pre dose triplicate 1, Time 24 hrs: {predose_triplicate_1_time_disname} - Pre dose triplicate 3, Time 24 hrs: {predose_triplicate_3_time_disname}', 'LE0581']
                                 lista_revision.append(error)
                         except Exception as e:
                             lista_logs.append(f'Revision LE0581--> {e} - Subject: {subject},  Visit: {visit} ')  
@@ -1868,7 +1913,7 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                                     
                                 error = [subject, visit, '15-min post dose, Time 24 hrs', min_15_time_form_field_instance,\
                                              'The time selected should be less than 23min and greater than 7 min after the study treatment administration', \
-                                                f'15-min post dose, Time 24 hrs: {min_15_time_pure} - dose time administration{time_dosing_miltefosine_administration}', 'LE0590']
+                                                f'15-min post dose, Time 24 hrs: {min_15_time_pure} - dose time administration: {time_dosing_miltefosine_administration}', 'LE0590']
                                 lista_revision.append(error)
 
                         except Exception as e:
@@ -1885,7 +1930,7 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                                     
                                 error = [subject, visit, '30-min post dose, Time 24 hrs', min_30_time_form_field_instance,\
                                              'The time selected should be less than 38 min and greater than 22 min after the study treatment administration', \
-                                                f'30-min post dose, Time 24 hrs: {min_30_time_pure} - dose time administration{time_dosing_miltefosine_administration}', 'LE0600']
+                                                f'30-min post dose, Time 24 hrs: {min_30_time_pure} - dose time administration: {time_dosing_miltefosine_administration}', 'LE0600']
                                 lista_revision.append(error)
 
                         except Exception as e:
@@ -1902,7 +1947,7 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                                     
                                 error = [subject, visit, '60-min post dose, Time 24 hrs', min_60_time_form_field_instance,\
                                              'The time selected should be less than 68 min and greater than 52 min after the study treatment administration', \
-                                                f'60-min post dose, Time 24 hrs: {min_60_time_pure} - dose time administration{time_dosing_miltefosine_administration}', 'LE0610']
+                                                f'60-min post dose, Time 24 hrs: {min_60_time_pure} - dose time administration: {time_dosing_miltefosine_administration}', 'LE0610']
                                 lista_revision.append(error)
 
                         except Exception as e:
@@ -1926,6 +1971,7 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
     return lead_ECG_output[['Form Field Instance ID' ,'Standard Error Message']].replace({',': '', ';': ''}, regex=True)
 
 if __name__ == '__main__':
+
     path_excel = r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\Program\output\prueba.xlsx"
     df_root = pd.read_excel(r'C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\data\newDNDI_v2.xlsx')
     lead_ECG(df_root, path_excel ) 
