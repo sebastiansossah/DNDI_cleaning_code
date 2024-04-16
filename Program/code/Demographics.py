@@ -102,17 +102,18 @@ def demographic(df_root, path_excel_writer, lista_instancias_abiertas):
                         año_visita = ''
                     
                     # Revision for DM0030
-                    try:
-                        año_calculado = int(año_visita) - int(birth_year_pure)
+                    if age_at_consent_pure != '':
+                        try:
+                            año_calculado = int(año_visita) - int(birth_year_pure)
 
-                        if age_at_consent_pure >= año_calculado -1 and age_at_consent_pure <= año_calculado + 1:
-                            pass
-                        else:
-                            error = [subject, visit, 'Age at consent', age_at_consent_form_field_instance ,'The subject AGE at consent does not match the AGE according to the month and year of birth' ,\
-                                      f'{age_at_consent_disname} - {año_calculado}', 'DM0030']
-                            lista_revision.append(error)
-                    except Exception as e:
-                        lista_logs.append(f'Revision DM0030 --> {e} - Subject: {subject},  Visit: {visit} ')
+                            if age_at_consent_pure >= año_calculado -1 and age_at_consent_pure <= año_calculado + 1:
+                                pass
+                            else:
+                                error = [subject, visit, 'Age at consent', age_at_consent_form_field_instance ,'The subject AGE at consent does not match the AGE according to the month and year of birth' ,\
+                                        f'{age_at_consent_disname} - {año_calculado}', 'DM0030']
+                                lista_revision.append(error)
+                        except Exception as e:
+                            lista_logs.append(f'Revision DM0030 --> {e} - Subject: {subject},  Visit: {visit}')
 
     excel_writer = load_workbook(path_excel_writer)
     column_names = ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']
