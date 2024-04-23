@@ -1,5 +1,6 @@
 from datetime import datetime
 import math
+import os
 from log_writer import log_writer
 import numpy as np
 from revision_fechas import revision_fecha
@@ -14,6 +15,13 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer, list
     Esta funcion tiene como finalidad la revision de cada uno de los puntos 
     del edit check para el formulario de Clinical Laboratory Test - Clinical Chemistry
     '''
+    # Normals ranges file
+    script_directory = os.path.dirname(os.path.abspath(__file__)) if '__file__' in locals() else os.getcwd()
+    relative_folder_path = r"data\rangos_normales"
+    folder_path = os.path.join(script_directory.replace('\code', ''), relative_folder_path)
+    file = os.listdir(folder_path)
+    path = f"{folder_path}\{[x for x in file if 'chemestry.' in x][0]}" 
+    df_normal_ranges = pd.read_csv(path, sep=';')
 
     df= df_root[df_root['name']== 'Clinical Laboratory Test - Clinical Chemistry']
     lista_sujetos = df['Participante'].unique()
@@ -625,16 +633,18 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer, list
                     try:
                         # Revision  LBC0260
                         if float(Alkaline_out_normal_pure) == 1.0:
-                            if float(Alkaline_result_pure) > 40.0 and float(Alkaline_result_pure) < 150.0:
-                                error = [subject, visit, 'Alkaline Phosphatase, Out of normal range?', Alkaline_result_form_field_instance,\
+                            if float(Alkaline_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Alkaline Phosphatase")]['min'].iloc[0]) and \
+                                float(Alkaline_result_pure) <  float(df_normal_ranges[(df_normal_ranges['field']== "Alkaline Phosphatase")]['max'].iloc[0]):
+                                error = [subject, visit, 'Alkaline Phosphatase, Out of normal range?', Alkaline_out_normal_form_field_instance,
                                          'According to the result, the value is not out of range, please review. (40.0 - 150.0)',
                                            f"Alkaline Out of Normal: {Alkaline_out_normal_disname} - Alkaline Result: {Alkaline_result_pure}", 'LBC0260']
                                 lista_revision.append(error)
 
                         # Revision LBC0060
                         elif float(Alkaline_out_normal_pure) == 0.0:
-                            if float(Alkaline_result_pure) < 40.0 or float(Alkaline_result_pure) > 150.0:
-                                error = [subject, visit, 'Alkaline Phosphatase, Out of normal range?', Alkaline_result_form_field_instance,\
+                            if float(Alkaline_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Alkaline Phosphatase")]['min'].iloc[0]) or\
+                                  float(Alkaline_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Alkaline Phosphatase")]['max'].iloc[0]):
+                                error = [subject, visit, 'Alkaline Phosphatase, Out of normal range?', Alkaline_out_normal_form_field_instance,
                                          'According to the result, the value is out of range, please review. (40.0 - 150.0)', 
                                          f"Alkaline Out of Normal: {Alkaline_out_normal_disname} - Alkaline Result: {Alkaline_result_pure}", 'LBC0060']
                                 lista_revision.append(error)
@@ -646,15 +656,17 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer, list
                         # Revision LBC0270
                         if float(GGT_out_normal_pure) == 1.0:
                             if float(genero) == 1.0:
-                                if float(GGT_result_pure) > 12.0 and float(GGT_result_pure) < 64.0 :
-                                    error = [subject, visit, 'Gamma Glutamyl Transferase (GGT), Out of normal range? ', GGT_result_form_instance  ,\
+                                if float(GGT_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Gamma Glutamyl Transferase (GGT)") & (df_normal_ranges['gender']== 1)]['min'].iloc[0]) and\
+                                      float(GGT_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Gamma Glutamyl Transferase (GGT)") & (df_normal_ranges['gender']== 1)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Gamma Glutamyl Transferase (GGT), Out of normal range? ', GGT_out_normal_form_field_instance  ,
                                              'According to the result, the value is not out of range, please review. (12.0 - 64.0)' , 
                                              f'GGT Out of Normal: {GGT_out_normal_disname} - GGT Result: {GGT_result_pure}', 'LBC0270']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(GGT_result_pure) > 9.0 and float(GGT_result_pure) < 36.0:
-                                    error = [subject, visit, 'Gamma Glutamyl Transferase (GGT), Out of normal range? ',GGT_result_form_instance,\
+                                if float(GGT_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Gamma Glutamyl Transferase (GGT)") & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) and\
+                                      float(GGT_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Gamma Glutamyl Transferase (GGT)") & (df_normal_ranges['gender']== 2)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Gamma Glutamyl Transferase (GGT), Out of normal range? ',GGT_out_normal_form_field_instance,\
                                              'According to the result, the value is not out of range, please review. (9.0 - 36.0)' ,  
                                              f'GGT Out of Normal: {GGT_out_normal_disname} - GGT Result: {GGT_result_pure}', 'LBC0270']
                                     lista_revision.append(error)
@@ -662,15 +674,17 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer, list
                         # Revision LBC0070
                         elif float(GGT_out_normal_pure) == 0.0:
                             if float(genero) == 1.0:
-                                if float(GGT_result_pure) < 12.0 or float(GGT_result_pure) > 64.0 :
-                                    error = [subject, visit, 'Gamma Glutamyl Transferase (GGT), Out of normal range? ', GGT_result_form_instance ,\
+                                if float(GGT_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Gamma Glutamyl Transferase (GGT)") & (df_normal_ranges['gender']== 1)]['min'].iloc[0]) or\
+                                      float(GGT_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Gamma Glutamyl Transferase (GGT)") & (df_normal_ranges['gender']== 1)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Gamma Glutamyl Transferase (GGT), Out of normal range? ', GGT_out_normal_form_field_instance ,\
                                              'According to the result, the value is out of range, please review. (12.0 - 64.0)' , 
                                              f'GGT Out of Normal: {GGT_out_normal_disname} - GGT Result: {GGT_result_pure}', 'LBC0070']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(GGT_result_pure) < 9.0 or float(GGT_result_pure) > 36.0:
-                                    error = [subject, visit, 'Gamma Glutamyl Transferase (GGT), Out of normal range? ', GGT_result_form_instance ,\
+                                if float(GGT_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Gamma Glutamyl Transferase (GGT)") & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) or\
+                                      float(GGT_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Gamma Glutamyl Transferase (GGT)") & (df_normal_ranges['gender']== 2)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Gamma Glutamyl Transferase (GGT), Out of normal range? ', GGT_out_normal_form_field_instance ,\
                                              'According to the result, the value is out of range, please review. (9.0 - 36.0)' ,  
                                              f'GGT Out of Normal: {GGT_out_normal_disname} - GGT Result: {GGT_result_pure}', 'LBC0070']
                                     lista_revision.append(error)
@@ -680,15 +694,17 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer, list
                     try:
                         # Revision LBC0280
                         if float(Bilirubin_out_normal_pure) == 1.0:
-                            if float(Bilirubin_result_pure) > 0.3 and float(Bilirubin_result_pure) < 1.2:
-                                error = [subject, visit, 'Bilirubin (Total), Out of normal range?', Bilirubin_result_form_field_instance ,\
+                            if float(Bilirubin_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Bilirubin (Total)")]['min'].iloc[0]) and\
+                                  float(Bilirubin_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Bilirubin (Total)")]['max'].iloc[0]):
+                                error = [subject, visit, 'Bilirubin (Total), Out of normal range?', Bilirubin_out_normal_form_field_instance ,\
                                          'According to the result, the value is not out of range, please review. (0.3 - 1.2)',  
                                          f'Biliburrin{Bilirubin_out_normal_disname} - {Bilirubin_result_pure}', 'LBC0280']
                                 lista_revision.append(error)
 
                         # Revision LBC0080
                         elif float(Bilirubin_out_normal_pure) == 0.0:
-                            if float(Bilirubin_result_pure) < 0.3 or float(Bilirubin_result_pure) > 1.2:
+                            if float(Bilirubin_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Bilirubin (Total)")]['min'].iloc[0]) or\
+                                  float(Bilirubin_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Bilirubin (Total)")]['max'].iloc[0]):
                                 error = [subject, visit, 'Bilirubin (Total), Out of normal range?', Bilirubin_result_form_field_instance ,\
                                          'According to the result, the value is out of range, please review. (0.3 - 1.2)' ,  
                                          f'Biliburrin{Bilirubin_out_normal_disname} - {Bilirubin_result_pure}', 'LBC0080']
@@ -700,20 +716,21 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer, list
                     try:
                         # Revision LBC0290
                         if float(Bilirubin_direct_out_normal_pure) == 1.0:
-                            if float(Bilirubin_direct_result_pure) > 0.0 and float(Bilirubin_direct_result_pure) < 0.5:
-                                error = [subject, visit, \
-                                         'Bilirubin (Direct) (only if Total is elevated), Out of normal range?'\
-                                            , Bilirubin_direct_result_form_field_instance,\
-                                                'According to the result, the value is not out of range, please review. (0.0 - 0.5)', \
+                            if float(Bilirubin_direct_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Bilirubin (Direct)")]['min'].iloc[0]) and\
+                                  float(Bilirubin_direct_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Bilirubin (Direct)")]['max'].iloc[0]):
+                                error = [subject, visit, 'Bilirubin (Direct) (only if Total is elevated), Out of normal range?', 
+                                         Bilirubin_direct_out_normal_form_field_instance,
+                                                'According to the result, the value is not out of range, please review. (0.0 - 0.5)', 
                                                     f'Bilirrubin Out Normal: {Bilirubin_direct_out_normal_disname} - Bilirrubin Result: {Bilirubin_direct_result_pure}', 'LBC0290']
                                 lista_revision.append(error)
 
                         # Revision LBC0090
                         elif float(Bilirubin_direct_out_normal_pure) == 0.0:
-                            if float(Bilirubin_direct_result_pure) < 0.0 or float(Bilirubin_direct_result_pure) > 0.5:
-                                error = [subject, visit, 'Bilirubin (Direct) (only if Total is elevated), Out of normal range?e?',\
-                                           Bilirubin_direct_result_form_field_instance,\
-                                            'According to the result, the value is out of range, please review.(0.0 - 0.5)', \
+                            if float(Bilirubin_direct_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Bilirubin (Direct)")]['min'].iloc[0]) or\
+                                  float(Bilirubin_direct_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Bilirubin (Direct)")]['max'].iloc[0]):
+                                error = [subject, visit, 'Bilirubin (Direct) (only if Total is elevated), Out of normal range?e?',
+                                           Bilirubin_direct_out_normal_form_field_instance,
+                                            'According to the result, the value is out of range, please review.(0.0 - 0.5)', 
                                                     f'Bilirrubin Out Normal: {Bilirubin_direct_out_normal_disname} - Bilirrubin Result: {Bilirubin_direct_result_pure}', 'LBC0090']
                                 lista_revision.append(error)
                                           
@@ -723,17 +740,19 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer, list
                     try:
                         # Revision LBC0300
                         if float(Albumin_out_normal_pure) == 1.0:
-                            if float(Albumin_result_pure) > 3.5 and float(Albumin_result_pure) < 5.0:
-                                error = [subject, visit, 'Albumin, Out of normal range?', Albumin_result_form_field_instance ,\
-                                         'According to the result, the value is not out of range, please review. (3.5 - 5.0)', \
+                            if float(Albumin_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Albumin")]['min'].iloc[0]) and\
+                                  float(Albumin_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Albumin")]['max'].iloc[0]):
+                                error = [subject, visit, 'Albumin, Out of normal range?', Albumin_out_normal_form_field_isntance ,
+                                         'According to the result, the value is not out of range, please review. (3.5 - 5.0)', 
                                             f'Albumin Out Normal: {Albumin_out_normal_disname} - Albumin Result: {Albumin_result_pure}', 'LBC0300']
                                 lista_revision.append(error)
 
                         # Revision LBC0100
                         elif float(Albumin_out_normal_pure) == 0.0:
-                            if float(Albumin_result_pure) < 3.5 or float(Albumin_result_pure) > 56.0:
-                                error = [subject, visit, 'Albumin, Out of normal range?', Albumin_result_form_field_instance ,\
-                                         'According to the result, the value is out of range, please review. (3.5 - 5.0)', \
+                            if float(Albumin_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Albumin")]['min'].iloc[0]) or\
+                                  float(Albumin_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Albumin")]['max'].iloc[0]):
+                                error = [subject, visit, 'Albumin, Out of normal range?', Albumin_out_normal_form_field_isntance ,
+                                         'According to the result, the value is out of range, please review. (3.5 - 5.0)', 
                                             f'Albumin Out Normal: {Albumin_out_normal_disname} - Albumin Result: {Albumin_result_pure}', 'LBC0100']
                                 lista_revision.append(error)
                                             
@@ -743,16 +762,18 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer, list
                     try:
                         # Revision LBC0310
                         if float(Aspartate_out_normal_pure) == 1.0:
-                            if float(Aspartate_result_pure) > 11.0 and float(Aspartate_result_pure) < 34.0:
-                                error = [subject, visit, 'Aspartate Aminotransferase (AST), Out of normal range?', Aspartate_result_form_field_instance ,\
+                            if float(Aspartate_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Aspartate Aminotransferase (AST)")]['min'].iloc[0]) and\
+                                  float(Aspartate_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Aspartate Aminotransferase (AST)")]['max'].iloc[0]):
+                                error = [subject, visit, 'Aspartate Aminotransferase (AST), Out of normal range?', Aspartate_out_normal_form_field_instance ,
                                          'According to the result, the value is not out of range, please review. (11.0 - 34.0)' , 
                                          f'Aspartate Out Normal: {Aspartate_out_normal_disname} - Aspartate Result: {Aspartate_result_pure}', 'LBC0310']
                                 lista_revision.append(error)
 
                         # Revision LBC0110
                         elif float(Aspartate_out_normal_pure) == 0.0:
-                            if float(Aspartate_result_pure) < 11.0 or float(Aspartate_result_pure) > 34.0:
-                                error = [subject, visit, 'Aspartate Aminotransferase (AST), Out of normal range?', Aspartate_result_form_field_instance ,\
+                            if float(Aspartate_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Aspartate Aminotransferase (AST)")]['min'].iloc[0]) or\
+                                  float(Aspartate_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Aspartate Aminotransferase (AST)")]['max'].iloc[0]):
+                                error = [subject, visit, 'Aspartate Aminotransferase (AST), Out of normal range?', Aspartate_out_normal_form_field_instance ,
                                          'According to the result, the value is out of range, please review. (11.0 - 34.0)' , 
                                          f'Aspartate Out Normal: {Aspartate_out_normal_disname} - Aspartate Result: {Aspartate_result_pure}', 'LBC0110']
                                 lista_revision.append(error)
@@ -763,22 +784,21 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer, list
                     # Revision LBC0320
                     try:
                         if float(Alanine_out_normal_pure) == 1.0:
-
                             if genero == 1.0:
-                                if float(Alanine_result_pure) > 0.0 and \
-                                float(Alanine_result_pure) < 45.0:
+                                if float(Alanine_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Alanine Aminotransferase (ALT)")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0]) and \
+                                float(Alanine_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Alanine Aminotransferase (ALT)")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0]) :
                                     
-                                    error = [subject, visit, 'Alanine Aminotransferase (ALT), Out of normal range?', Alanine_result_form_field_isntance ,\
-                                            'If Out of range="No"and Alanine Aminotransferase (ALT), Result (U/L) is not between 0 and 34 (Female) or is not between 0 and 45 (Male)' , \
+                                    error = [subject, visit, 'Alanine Aminotransferase (ALT), Out of normal range?', Alanine_out_normal_form_field_instance ,
+                                            'If Out of range="No"and Alanine Aminotransferase (ALT), Result (U/L) is not between 0 and 34 (Female) or is not between 0 and 45 (Male)' , 
                                                 f"Alanine Out Normal: {Alanine_out_normal_disname} - Alanine Result: {Alanine_result_pure}", 'LBC0320']
                                     lista_revision.append(error)
 
                             elif genero == 2.0:
-                                if float(Alanine_result_pure) > 0.0 and \
-                                float(Alanine_result_pure) < 34.0:
+                                if float(Alanine_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Alanine Aminotransferase (ALT)")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) and \
+                                float(Alanine_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Alanine Aminotransferase (ALT)")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0]):
                                     
-                                    error = [subject, visit, 'Alanine Aminotransferase (ALT), Out of normal range?', Alanine_result_form_field_isntance ,\
-                                            'If Out of range="No"and Alanine Aminotransferase (ALT), Result (U/L) is not between 0 and 34 (Female) or is not between 0 and 45 (Male)' , \
+                                    error = [subject, visit, 'Alanine Aminotransferase (ALT), Out of normal range?', Alanine_out_normal_form_field_instance ,
+                                            'If Out of range="No"and Alanine Aminotransferase (ALT), Result (U/L) is not between 0 and 34 (Female) or is not between 0 and 45 (Male)' , 
                                                 f"Alanine Out Normal: {Alanine_out_normal_disname} - Alanine Result: {Alanine_result_pure}", 'LBC0320']
                                     lista_revision.append(error)
                         
@@ -786,18 +806,18 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer, list
                         elif float(Alanine_out_normal_pure) == 0.0:
 
                             if genero == 1.0:
-                                if float(Alanine_result_pure) < 0.0 or \
-                                float(Alanine_result_pure) > 45.0:
-                                    error = [subject, visit, 'Alanine Aminotransferase (ALT), Out of normal range?', Alanine_result_form_field_isntance ,\
-                                            'If Out of range="No"and Alanine Aminotransferase (ALT), Result (U/L) is not between 0 and 34 (Female) or is not between 0 and 45 (Male)' , \
+                                if float(Alanine_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Alanine Aminotransferase (ALT)")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0]) or \
+                                float(Alanine_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Alanine Aminotransferase (ALT)")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0]):
+                                    error = [subject, visit, 'Alanine Aminotransferase (ALT), Out of normal range?', Alanine_out_normal_form_field_instance ,
+                                            'If Out of range="No"and Alanine Aminotransferase (ALT), Result (U/L) is not between 0 and 34 (Female) or is not between 0 and 45 (Male)' , 
                                                 f"Alanine Out Normal: {Alanine_out_normal_disname} - Alanine Result: {Alanine_result_pure}", 'LBC0120']
                                     lista_revision.append(error)       
 
                             elif genero == 1.0:
-                                if float(Alanine_result_pure) < 0.0 or \
-                                float(Alanine_result_pure) > 34.0:
-                                    error = [subject, visit, 'Alanine Aminotransferase (ALT), Out of normal range?', Alanine_result_form_field_isntance ,\
-                                            'If Out of range="No"and Alanine Aminotransferase (ALT), Result (U/L) is not between 0 and 34 (Female) or is not between 0 and 45 (Male)' , \
+                                if float(Alanine_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Alanine Aminotransferase (ALT)")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) or \
+                                float(Alanine_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Alanine Aminotransferase (ALT)")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0]):
+                                    error = [subject, visit, 'Alanine Aminotransferase (ALT), Out of normal range?', Alanine_out_normal_form_field_instance ,
+                                            'If Out of range="No"and Alanine Aminotransferase (ALT), Result (U/L) is not between 0 and 34 (Female) or is not between 0 and 45 (Male)' , 
                                                 f"Alanine Out Normal: {Alanine_out_normal_disname} - Alanine Result: {Alanine_result_pure}", 'LBC0120']
                                     lista_revision.append(error)              
 
@@ -808,17 +828,19 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer, list
                     try:
                         # Revision LBC0330
                         if float(Protein_out_normal_pure) == 1.0:
-                            if float(Protein_total_result_pure) > 6.4 and float(Protein_total_result_pure) < 8.3:
-                                error = [subject, visit, 'Protein (Total), Out of normal range?', Protein_total_result_form_field_instance ,\
-                                         'According to the result, the value is not out of range, please review. (6.4 - 8.3)', \
+                            if float(Protein_total_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Protein (Total)")]['min'].iloc[0]) and \
+                                float(Protein_total_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Protein (Total)")]['max'].iloc[0]):
+                                error = [subject, visit, 'Protein (Total), Out of normal range?', Protein_out_normal_form_field_instance ,
+                                         'According to the result, the value is not out of range, please review. (6.4 - 8.3)', 
                                             f'Protein Out Normal: {Protein_out_normal_disname} - Protein Result: {Protein_total_result_pure}', 'LBC0330']
                                 lista_revision.append(error)
 
                         # Revision LBC0130
                         elif float(Protein_out_normal_pure) == 0.0:
-                            if float(Protein_total_result_pure) < 6.4 or float(Protein_total_result_pure) > 8.3:
-                                error = [subject, visit, 'Protein (Total), Out of normal range?', Protein_total_result_form_field_instance,\
-                                         'According to the result, the value is out of range, please review. (6.4 - 8.3)', \
+                            if float(Protein_total_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Protein (Total)")]['min'].iloc[0]) or\
+                                  float(Protein_total_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Protein (Total)")]['max'].iloc[0]):
+                                error = [subject, visit, 'Protein (Total), Out of normal range?', Protein_out_normal_form_field_instance,
+                                         'According to the result, the value is out of range, please review. (6.4 - 8.3)', 
                                             f'Protein Out Normal: {Protein_out_normal_disname} - Protein Result: {Protein_total_result_pure}', 'LBC0130']
                                 lista_revision.append(error)
                                             
@@ -829,32 +851,36 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer, list
                         # Revision LBC0340
                         if float(Creatine_out_normal_pure) == 1.0:
                             if float(genero) == 1.0:
-                                if float(Creatine_result_pure) > 30.0 and float(Creatine_result_pure) < 200.0 :
-                                    error = [subject, visit, 'Creatine Kinase (CK), Out of normal range?', Creatine_result_form_field_instance,\
-                                             'According to the result, the value is not out of range, please review. (30.0 - 200.0)', \
+                                if float(Creatine_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Creatine Kinase (CK)")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0])  and\
+                                      float(Creatine_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Creatine Kinase (CK)")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0])  :
+                                    error = [subject, visit, 'Creatine Kinase (CK), Out of normal range?', Creatine_out_normal_form_field_instance,
+                                             'According to the result, the value is not out of range, please review. (30.0 - 200.0)', 
                                                 f'Creatin Out Normal: {Creatine_out_normal_disname} - Creatine Result: {Creatine_result_pure}', 'LBC0340']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(Creatine_result_pure) > 29.0 and float(Creatine_result_pure) < 168.0:
-                                    error = [subject, visit, 'Creatine Kinase (CK), Out of normal range?', Creatine_result_form_field_instance ,\
-                                             'According to the result, the value is not out of range, please review. (29.0 - 168.0)', \
+                                if float(Creatine_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Creatine Kinase (CK)")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0])  and\
+                                      float(Creatine_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Creatine Kinase (CK)")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0])  :
+                                    error = [subject, visit, 'Creatine Kinase (CK), Out of normal range?', Creatine_out_normal_form_field_instance ,
+                                             'According to the result, the value is not out of range, please review. (29.0 - 168.0)', 
                                                 f'Creatin Out Normal: {Creatine_out_normal_disname} - Creatine Result: {Creatine_result_pure}', 'LBC0340']
                                     lista_revision.append(error)
 
                         # Revision LBC0140
                         elif float(Creatine_out_normal_pure) == 0.0:
                             if float(genero) == 1.0:
-                                if float(Creatine_result_pure) < 30.0 or float(Creatine_result_pure) > 200.0 :
-                                    error = [subject, visit, 'Creatine Kinase (CK), Out of normal range?', Creatine_result_form_field_instance ,\
-                                             'According to the result, the value is out of range, please review. (30.0 - 200.0)', \
+                                if float(Creatine_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Creatine Kinase (CK)")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0]) or\
+                                      float(Creatine_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Creatine Kinase (CK)")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Creatine Kinase (CK), Out of normal range?', Creatine_out_normal_form_field_instance ,
+                                             'According to the result, the value is out of range, please review. (30.0 - 200.0)', 
                                                 f'Creatin Out Normal: {Creatine_out_normal_disname} - Creatine Result: {Creatine_result_pure}', 'LBC0140']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(Creatine_result_pure) < 29.0 or float(Creatine_result_pure) > 168.0:
-                                    error = [subject, visit, 'Creatine Kinase (CK), Out of normal range?', Creatine_result_form_field_instance ,\
-                                             'According to the result, the value is out of range, please review. (29.0 - 168.0)', \
+                                if float(Creatine_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Creatine Kinase (CK)")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) or\
+                                      float(Creatine_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Creatine Kinase (CK)")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0]):
+                                    error = [subject, visit, 'Creatine Kinase (CK), Out of normal range?', Creatine_out_normal_form_field_instance ,
+                                             'According to the result, the value is out of range, please review. (29.0 - 168.0)', 
                                                 f'Creatin Out Normal: {Creatine_out_normal_disname} - Creatine Result: {Creatine_result_pure}', 'LBC0140']
                                     lista_revision.append(error)
 
@@ -864,16 +890,18 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer, list
                     try:
                         # Revision LBC0350
                         if float(Sodium_out_normal_pure) == 1.0:
-                            if float(Sodium_result_pure) > 136.0 and float(Sodium_result_pure) < 145.0:
-                                error = [subject, visit, 'Sodium, Out of normal range?', Sodium_result_form_field_instance ,\
+                            if float(Sodium_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Sodium")]['min'].iloc[0]) and\
+                                  float(Sodium_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Sodium")]['max'].iloc[0]):
+                                error = [subject, visit, 'Sodium, Out of normal range?', Sodium_out_normal_form_field_instance ,
                                          'According to the result, the value is not out of range, please review. (136.0 - 145.0)', 
                                          f'Sodium Out Normal: {Sodium_out_normal_disname} - Sodium Result: {Sodium_result_pure}', 'LBC0350']
                                 lista_revision.append(error)
 
                         # Revision LBC0150
                         elif float(Sodium_out_normal_pure) == 0.0:
-                            if float(Sodium_result_pure) < 136.0 or float(Sodium_result_pure) > 145.0:
-                                error = [subject, visit, 'Sodium, Out of normal range?', Sodium_result_form_field_instance ,\
+                            if float(Sodium_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Sodium")]['min'].iloc[0]) or\
+                                  float(Sodium_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Sodium")]['max'].iloc[0]):
+                                error = [subject, visit, 'Sodium, Out of normal range?', Sodium_out_normal_form_field_instance ,
                                          'According to the result, the value is out of range, please review. (136.0 - 145.0)',  
                                          f'Sodium Out Normal: {Sodium_out_normal_disname} - Sodium Result: {Sodium_result_pure}', 'LBC0150']
                                 lista_revision.append(error)
@@ -884,16 +912,18 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer, list
                     try:
                         # Revision LBC0360
                         if float(Potassium_out_normal_pure) == 1.0:
-                            if float(Potassium_result_pure) > 3.5 and float(Potassium_result_pure) < 5.1 :
-                                error = [subject, visit, 'Potassium, Out of normal range?', Potassium_result_form_field_instance ,\
+                            if float(Potassium_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Potassium")]['min'].iloc[0]) and\
+                                  float(Potassium_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Potassium")]['max'].iloc[0]) :
+                                error = [subject, visit, 'Potassium, Out of normal range?', Potassium_out_normal_form_field_instance ,
                                          'According to the result, the value is not out of range, please review. (3.5 - 5.1)', 
                                          f'Potassium Out Normal: {Potassium_out_normal_disname} - Potassium Result: {Potassium_result_pure}', 'LBC0360']
                                 lista_revision.append(error)
 
                         # Revision LBC0160
                         elif float(Potassium_out_normal_pure) == 0.0:
-                            if float(Potassium_result_pure) <  3.5  or float(Potassium_result_pure) > 5.1 :
-                                error = [subject, visit, 'Potassium, Out of normal range?', Potassium_result_form_field_instance ,\
+                            if float(Potassium_result_pure) <  float(df_normal_ranges[(df_normal_ranges['field']== "Potassium")]['min'].iloc[0]) or\
+                                  float(Potassium_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Potassium")]['max'].iloc[0]) :
+                                error = [subject, visit, 'Potassium, Out of normal range?', Potassium_out_normal_form_field_instance ,
                                          'According to the result, the value is out of range, please review. (3.5 - 5.1)', 
                                          f'Potassium Out Normal: {Potassium_out_normal_disname} - Potassium Result: {Potassium_result_pure}', 'LBC0160']
                                 lista_revision.append(error)
@@ -905,17 +935,19 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer, list
                         # Revision LBC0370
                         if float(Calcium_out_normal_pure) == 1.0:
 
-                            if float(Calcium_result_pure) > 8.4 and float(Calcium_result_pure) < 10.2:
-                                error = [subject, visit, 'Calcium, Out of normal range?', Calcium_result_form_field_instance ,\
-                                             'According to the result, the value is not out of range, please review. (8.4 - 10.2)', \
+                            if float(Calcium_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Calcium")]['min'].iloc[0]) and\
+                                  float(Calcium_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Calcium")]['max'].iloc[0]):
+                                error = [subject, visit, 'Calcium, Out of normal range?', Calcium_out_normal_form_field_instance ,
+                                             'According to the result, the value is not out of range, please review. (8.4 - 10.2)', 
                                                 f'Calcium Out Normal: {Calcium_out_normal_disname} - Calcium Result: {Calcium_result_pure}', 'LBC0370']
                                 lista_revision.append(error)
 
                         # Revision LBC0170
                         elif float(Calcium_out_normal_pure) == 0.0:
 
-                            if float(Calcium_result_pure) < 8.4 or float(Calcium_result_pure) > 10.2 :
-                                error = [subject, visit, 'Calcium, Out of normal range?', Calcium_result_form_field_instance,\
+                            if float(Calcium_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Calcium")]['min'].iloc[0]) or\
+                                  float(Calcium_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Calcium")]['max'].iloc[0]):
+                                error = [subject, visit, 'Calcium, Out of normal range?', Calcium_out_normal_form_field_instance,
                                              'According to the result, the value is out of range, please review. (8.4 - 10.2)', 
                                              f'Calcium Out Normal: {Calcium_out_normal_disname} - Calcium Result: {Calcium_result_pure}', 'LBC0170']
                                 lista_revision.append(error)
@@ -927,17 +959,19 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer, list
                     try:
                         # Revision LBC0380
                         if float(Bicarbonate_out_normal_pure) == 1.0:
-                            if float(Bicarbonate_result_pure) > 22.0 and float(Bicarbonate_result_pure) < 31.0 :
-                                error = [subject, visit, 'Bicarbonate, Out of normal range?', Bicarbonate_result_form_field_instance,\
-                                         'According to the result, the value is not out of range, please review. (22.0 - 31.0)', \
+                            if float(Bicarbonate_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Bicarbonate")]['min'].iloc[0]) and\
+                                  float(Bicarbonate_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Bicarbonate")]['max'].iloc[0]) :
+                                error = [subject, visit, 'Bicarbonate, Out of normal range?', Bicarbonate_out_normal_form_field_instance,
+                                         'According to the result, the value is not out of range, please review. (22.0 - 31.0)', 
                                             f'Bicarbonate Out Normal: {Bicarbonate_out_normal_disname} - Bicarbonate Result: {Bicarbonate_result_pure}', 'LBC0380']
                                 lista_revision.append(error)
 
                         # Revision LBC0180
                         elif float(Bicarbonate_out_normal_pure) == 0.0:
-                            if float(Bicarbonate_result_pure) <  22.0  or float(Bicarbonate_result_pure) > 31.0 :
-                                error = [subject, visit, 'Bicarbonate, Out of normal range?', Bicarbonate_result_form_field_instance ,\
-                                         'According to the result, the value is out of range, please review. (22.0 - 31.0)', \
+                            if float(Bicarbonate_result_pure) <  float(df_normal_ranges[(df_normal_ranges['field']== "Bicarbonate")]['min'].iloc[0])  or\
+                                  float(Bicarbonate_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Bicarbonate")]['max'].iloc[0]):
+                                error = [subject, visit, 'Bicarbonate, Out of normal range?', Bicarbonate_out_normal_form_field_instance ,
+                                         'According to the result, the value is out of range, please review. (22.0 - 31.0)', 
                                             f'Bicarbonate Out Normal: {Bicarbonate_out_normal_disname} - Bicarbonate Result: {Bicarbonate_result_pure}', 'LBC0180']
                                 lista_revision.append(error)
                                             
@@ -947,16 +981,18 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer, list
                     try:
                         # Revision LBC0390
                         if float(Chloride_out_normal_pure) == 1.0:
-                            if float(Chloride_result_pure) > 98.0 and float(Chloride_result_pure) < 107.0 :
-                                error = [subject, visit, 'Chloride, Out of normal range?', Chloride_result_form_field_instacnce ,\
+                            if float(Chloride_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Chloride")]['min'].iloc[0]) and\
+                                  float(Chloride_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Chloride")]['max'].iloc[0]):
+                                error = [subject, visit, 'Chloride, Out of normal range?', Chloride_out_normal_form_field_instance ,
                                          'According to the result, the value is not out of range, please review. (98.0 - 107.0)', 
                                          f'Chloride Out Normal: {Chloride_out_normal_disname} - Chloride Result: {Chloride_result_pure}', 'LBC0390']
                                 lista_revision.append(error)
 
                         # Revision LBC0190
                         elif float(Chloride_out_normal_pure) == 0.0:
-                            if float(Chloride_result_pure) <  98.0  or float(Chloride_result_pure) > 107.0 :
-                                error = [subject, visit, 'Chloride, Out of normal range?', Chloride_result_form_field_instacnce ,\
+                            if float(Chloride_result_pure) <  float(df_normal_ranges[(df_normal_ranges['field']== "Chloride")]['min'].iloc[0]) or\
+                                  float(Chloride_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Chloride")]['max'].iloc[0]) :
+                                error = [subject, visit, 'Chloride, Out of normal range?', Chloride_out_normal_form_field_instance ,
                                          'According to the result, the value is out of range, please review. (98.0 - 107.0)', 
                                          f'Chloride Out Normal: {Chloride_out_normal_disname} - Chloride Result: {Chloride_result_pure}', 'LBC0190']
                                 lista_revision.append(error)
@@ -968,15 +1004,17 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer, list
                         # Revision LBC0400
                         if float(Serum_out_normal_pure) == 1.0:
                             if float(genero) == 1.0:
-                                if float(Serum_result_pure) >  0.73 and float(Serum_result_pure) < 1.18 :
-                                    error = [subject, visit, 'Serum Creatinine, Out of normal range?', Serum_result_form_field_instance ,\
+                                if float(Serum_result_pure) >  float(df_normal_ranges[(df_normal_ranges['field']== "Serum Creatinine") & (df_normal_ranges['gender']== 1)]['min'].iloc[0]) and\
+                                      float(Serum_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Serum Creatinine")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Serum Creatinine, Out of normal range?', Serum_out_normal_form_field_instance ,
                                              'According to the result, the value is not out of range, please review. (0.73 - 1.18)', 
                                              f'Serum Out Normal: {Serum_out_normal_disname} - Serum Result: {Serum_result_pure}', 'LBC0400']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(Serum_result_pure) > 0.55 and float(Serum_result_pure) <  1.02:
-                                    error = [subject, visit, 'Serum Creatinine, Out of normal range?', Serum_result_form_field_instance ,\
+                                if float(Serum_result_pure) >  float(df_normal_ranges[(df_normal_ranges['field']== "Serum Creatinine") & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) and\
+                                      float(Serum_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Serum Creatinine")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0]):
+                                    error = [subject, visit, 'Serum Creatinine, Out of normal range?', Serum_out_normal_form_field_instance ,
                                              'According to the result, the value is not out of range, please review. (0.55 - 1.02)', 
                                              f'Serum Out Normal: {Serum_out_normal_disname} - Serum Result: {Serum_result_pure}', 'LBC0400']
                                     lista_revision.append(error)
@@ -984,15 +1022,17 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer, list
                         # Revision LBC0200
                         elif float(Serum_out_normal_pure) == 0.0:
                             if float(genero) == 1.0:
-                                if float(Serum_result_pure) < 0.73 or float(Serum_result_pure) > 1.18 :
-                                    error = [subject, visit, 'Serum Creatinine, Out of normal range?', Serum_result_form_field_instance,\
+                                if float(Serum_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Serum Creatinine") & (df_normal_ranges['gender']== 1)]['min'].iloc[0]) or\
+                                      float(Serum_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Serum Creatinine") & (df_normal_ranges['gender']== 1)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Serum Creatinine, Out of normal range?', Serum_out_normal_form_field_instance,
                                              'According to the result, the value is out of range, please review. (0.73 - 1.18)', 
                                              f'Serum Out Normal: {Serum_out_normal_disname} - Serum Result: {Serum_result_pure}', 'LBC0200']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(Serum_result_pure) < 0.55 or float(Serum_result_pure) > 1.02:
-                                    error = [subject, visit, 'Serum Creatinine, Out of normal range?', Serum_result_form_field_instance ,\
+                                if float(Serum_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Serum Creatinine") & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) or\
+                                      float(Serum_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Serum Creatinine") & (df_normal_ranges['gender']== 2)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Serum Creatinine, Out of normal range?', Serum_out_normal_form_field_instance ,
                                              'According to the result, the value is out of range, please review. (0.55 - 1.02)', 
                                              f'Serum Out Normal: {Serum_out_normal_disname} - Serum Result: {Serum_result_pure}', 'LBC0200']
                                     lista_revision.append(error)
@@ -1003,8 +1043,9 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer, list
                     try:
                         # Revision LBC0410
                         if float(Urea_BUN_out_normal_pure) == 1.0:
-                            if float(Urea_BUN_result_pure) >  18.84 and float(Urea_BUN_result_pure) < 42.80:
-                                error = [subject, visit, 'Urea (BUN), Out of normal range?', Urea_BUN_result_form_field_instance ,\
+                            if float(Urea_BUN_result_pure) >  float(df_normal_ranges[(df_normal_ranges['field']== "Urea (BUN)")]['min'].iloc[0]) and\
+                                  float(Urea_BUN_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Urea (BUN)")]['max'].iloc[0]):
+                                error = [subject, visit, 'Urea (BUN), Out of normal range?', Urea_BUN_out_normal_form_field_instance ,
                                              'According to the result, the value is not out of range, please review. (18.84 - 42.80)', 
                                              f'Urea BUN Out Normal: {Urea_BUN_out_normal_disname} - Urea BUN Result: {Urea_BUN_result_pure}', 'LBC0410']
                                 lista_revision.append(error)
@@ -1012,12 +1053,12 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer, list
                         # Revision LBC0210
                         elif float(Urea_BUN_out_normal_pure) == 0.0:
      
-                            if float(Urea_BUN_result_pure) < 18.84 or float(Urea_BUN_result_pure) > 42.80:
-                                error = [subject, visit, 'Urea (BUN), Out of normal range?', Urea_BUN_result_form_field_instance ,\
+                            if float(Urea_BUN_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Urea (BUN)")]['min'].iloc[0]) or\
+                                  float(Urea_BUN_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Urea (BUN)")]['max'].iloc[0]):
+                                error = [subject, visit, 'Urea (BUN), Out of normal range?', Urea_BUN_out_normal_form_field_instance ,
                                              'According to the result, the value is out of range, please review. (18.84 - 42.80)', 
                                              f'Urea BUN Out Normal: {Urea_BUN_out_normal_disname} - Urea BUN Result: {Urea_BUN_result_pure}', 'LBC0210']
                                 lista_revision.append(error)
-
 
                     except Exception as e:
                         lista_logs.append(f'Revision LBC0410--> {e} - Subject: {subject},  Visit: {visit} ')
@@ -1026,15 +1067,17 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer, list
                         # Revision LBC0420
                         if float(Uric_Acid_out_normal_pure) == 1.0:
                             if float(genero) == 1.0:
-                                if float(Uric_Acid_result_pure) >  3.7 and float(Uric_Acid_result_pure) < 7.7 :
-                                    error = [subject, visit, 'Uric Acid, Out of normal range?', Uric_Acid_result_form_field_instance ,\
+                                if float(Uric_Acid_result_pure) >  float(df_normal_ranges[(df_normal_ranges['field']== "Uric Acid")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0]) and\
+                                      float(Uric_Acid_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Uric Acid")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Uric Acid, Out of normal range?', Uric_Acid_out_normal_form_field_instance ,
                                              'According to the result, the value is not out of range, please review. (3.7 - 7.7)', 
                                              f'Uric Acid Out Normal: {Uric_Acid_out_normal_disname} - Uric Acid Result: {Uric_Acid_result_pure}', 'LBC0420']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(Uric_Acid_result_pure) > 2.5 and float(Uric_Acid_result_pure) <  6.2:
-                                    error = [subject, visit, 'Uric Acid, Out of normal range?', Uric_Acid_result_form_field_instance ,\
+                                if float(Uric_Acid_result_pure) >  float(df_normal_ranges[(df_normal_ranges['field']== "Uric Acid")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) and\
+                                      float(Uric_Acid_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Uric Acid")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Uric Acid, Out of normal range?', Uric_Acid_out_normal_form_field_instance ,
                                              'According to the result, the value is not out of range, please review. (2.5 - 6.2)', 
                                              f'Uric Acid Out Normal: {Uric_Acid_out_normal_disname} - Uric Acid Result: {Uric_Acid_result_pure}', 'LBC0420']
                                     lista_revision.append(error)
@@ -1042,15 +1085,17 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer, list
                         # Revision LBC0220
                         elif float(Uric_Acid_out_normal_pure) == 0.0:
                             if float(genero) == 1.0:
-                                if float(Uric_Acid_result_pure) < 3.7 or float(Uric_Acid_result_pure) > 7.7 :
-                                    error = [subject, visit, 'Uric Acid, Out of normal range?', Uric_Acid_result_form_field_instance,\
+                                if float(Uric_Acid_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Uric Acid")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0]) or\
+                                      float(Uric_Acid_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Uric Acid")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0]):
+                                    error = [subject, visit, 'Uric Acid, Out of normal range?', Uric_Acid_out_normal_form_field_instance,
                                              'According to the result, the value is out of range, please review. (3.7 - 7.7)', 
                                              f'Uric Acid Out Normal: {Uric_Acid_out_normal_disname} - Uric Acid Result: {Uric_Acid_result_pure}', 'LBC0220']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(Uric_Acid_result_pure) < 2.5 or float(Uric_Acid_result_pure) > 6.5:
-                                    error = [subject, visit, 'Uric Acid, Out of normal range?', Uric_Acid_result_form_field_instance ,\
+                                if float(Uric_Acid_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Uric Acid")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) or\
+                                      float(Uric_Acid_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Uric Acid")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0]):
+                                    error = [subject, visit, 'Uric Acid, Out of normal range?', Uric_Acid_out_normal_form_field_instance ,
                                              'According to the result, the value is out of range, please review. (2.5 - 6.2)', 
                                              f'Uric Acid Out Normal: {Uric_Acid_out_normal_disname} - Uric Acid Result: {Uric_Acid_result_pure}', 'LBC0220']
                                     lista_revision.append(error)
@@ -1061,16 +1106,16 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer, list
                     try:
                         # Revision LBC0430
                         if float(Cholesterol_out_normal_pure) == 1.0:
-                            if float(Cholesterol_result_pure) <=  200.0 :
-                                error = [subject, visit, 'Cholesterol (Total), Out of normal range?', Cholesterol_result_form_field_instance ,\
+                            if float(Cholesterol_result_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Cholesterol (Total)")]['max'].iloc[0]) :
+                                error = [subject, visit, 'Cholesterol (Total), Out of normal range?', Cholesterol_out_normal_form_field_instance ,
                                          'According to the result, the value is not out of range, please review. (< 200.0)', 
                                          f'Cholesterol Out Normal: {Cholesterol_out_normal_disname} - Cholesterol Result: {Cholesterol_result_pure}', 'LBC0430']
                                 lista_revision.append(error)
 
                         # Revision LBC0230
                         elif float(Cholesterol_out_normal_pure) == 0.0:
-                            if float(Cholesterol_result_pure) >=  200.0  :
-                                error = [subject, visit, 'Cholesterol (Total), Out of normal range?', Cholesterol_result_form_field_instance ,\
+                            if float(Cholesterol_result_pure) >=  float(df_normal_ranges[(df_normal_ranges['field']== "Cholesterol (Total)")]['max'].iloc[0])  :
+                                error = [subject, visit, 'Cholesterol (Total), Out of normal range?', Cholesterol_out_normal_form_field_instance ,
                                          'According to the result, the value is out of range, please review. (< 200.0)', 
                                          f'Cholesterol Out Normal: {Cholesterol_out_normal_disname} - Cholesterol Result: {Cholesterol_result_pure}', 'LBC0230']
                                 lista_revision.append(error)
@@ -1081,16 +1126,16 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer, list
                     try:
                         # Revision LBC0440
                         if float(Triglycerides_out_normal_pure) == 1.0:
-                            if float(Triglycerides_result_pure) <= 150.0 :
-                                error = [subject, visit, 'Triglycerides, Out of normal range?', Triglycerides_result_form_field_instance ,\
+                            if float(Triglycerides_result_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Triglycerides")]['max'].iloc[0]) :
+                                error = [subject, visit, 'Triglycerides, Out of normal range?', Triglycerides_out_normal_form_field_instance ,
                                          'According to the result, the value is not out of range, please review. (< 150.0)', 
                                          f'Triglycerides Out Normal: {Triglycerides_out_normal_disname} - Triglycerides Result: {Triglycerides_result_pure}', 'LBC0440']
                                 lista_revision.append(error)
 
                         # Revision LBC0240
                         elif float(Triglycerides_out_normal_pure) == 0.0:
-                            if float(Triglycerides_result_pure) >= 150.0 :
-                                error = [subject, visit, 'Triglycerides, Out of normal range?', Triglycerides_result_form_field_instance,\
+                            if float(Triglycerides_result_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Triglycerides")]['max'].iloc[0]) :
+                                error = [subject, visit, 'Triglycerides, Out of normal range?', Triglycerides_out_normal_form_field_instance,
                                          'According to the result, the value is out of range, please review. (50.0 - 150.0)', 
                                          f'Triglycerides Out Normal: {Triglycerides_out_normal_disname} - Triglycerides Result: {Triglycerides_result_pure}', 'LBC0240']
                                 lista_revision.append(error)
@@ -1101,16 +1146,16 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer, list
                     try:
                         # Revision LBC0450
                         if float(C_Reactive_out_normal_pure) == 1.0:
-                            if float(C_Reactive_result_pure) <= 0.5 :
-                                error = [subject, visit, 'C-Reactive Protein, Out of normal range?', C_Reactive_result_form_field_instance ,\
+                            if float(C_Reactive_result_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "C-Reactive Protein")]['max'].iloc[0]) :
+                                error = [subject, visit, 'C-Reactive Protein, Out of normal range?', C_Reactive_out_normal_form_field_instance ,
                                          'According to the result, the value is not out of range, please review. (< 0.5)', 
                                          f'C-Reactive Protein Out Normal: {C_Reactive_out_normal_disname} - C-Reactive Result: {C_Reactive_result_pure}', 'LBC0450']
                                 lista_revision.append(error)
 
                         # Revision LBC0250
                         elif float(C_Reactive_out_normal_pure) == 0.0:
-                            if  float(C_Reactive_result_pure) >= 0.5 :
-                                error = [subject, visit, 'C-Reactive Protein, Out of normal range?', C_Reactive_result_form_field_instance ,\
+                            if  float(C_Reactive_result_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "C-Reactive Protein")]['max'].iloc[0]) :
+                                error = [subject, visit, 'C-Reactive Protein, Out of normal range?', C_Reactive_out_normal_form_field_instance ,
                                          'According to the result, the value is out of range, please review. (< 0.5)', 
                                          f'C-Reactive Protein Out Normal: {C_Reactive_out_normal_disname} - C-Reactive Result: {C_Reactive_result_pure}', 'LBC0250']
                                 lista_revision.append(error)
@@ -1123,15 +1168,17 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer, list
                         # Revision LBC0470
                         if float(ferretin_out_normal_pure) == 1.0:
                             if float(genero) == 1.0:
-                                if float(ferretin_result_pure) >  21.81 and float(ferretin_result_pure) < 274.66 :
-                                    error = [subject, visit, 'Ferritin, Out of normal range?', ferretin_out_normal_form_field_instance ,\
+                                if float(ferretin_result_pure) >  float(df_normal_ranges[(df_normal_ranges['field']== "Ferritin") & (df_normal_ranges['gender']== 1)]['min'].iloc[0]) and\
+                                      float(ferretin_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Ferritin") & (df_normal_ranges['gender']== 1)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Ferritin, Out of normal range?', ferretin_out_normal_form_field_instance ,
                                              'According to the result, the value is not out of range, please review. (21.81 - 274.66)', 
                                              f"Ferretin Out Normal: {ferretin_result_disname} - Ferretin Result: {ferretin_result_pure}", 'LBC0470']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(ferretin_result_pure) > 4.63 and float(ferretin_result_pure) < 204.0 :
-                                    error = [subject, visit, 'Ferritin, Out of normal range?', ferretin_out_normal_form_field_instance ,\
+                                if float(ferretin_result_pure) >  float(df_normal_ranges[(df_normal_ranges['field']== "Ferritin") & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) and\
+                                      float(ferretin_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Ferritin") & (df_normal_ranges['gender']== 2)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Ferritin, Out of normal range?', ferretin_out_normal_form_field_instance ,
                                              'According to the result, the value is not out of range, please review. (4.63 - 204.0)', 
                                              f"Ferretin Out Normal: {ferretin_result_disname} - Ferretin Result: {ferretin_result_pure}", 'LBC0470']
                                     lista_revision.append(error)
@@ -1139,14 +1186,16 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer, list
                         # Revision LBC0480
                         elif float(ferretin_out_normal_pure) == 0.0:
                             if float(genero) == 1.0:
-                                if float(ferretin_result_pure) < 21.81 or float(ferretin_result_pure) > 274.66 :
+                                if float(ferretin_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Ferritin") & (df_normal_ranges['gender']== 1)]['min'].iloc[0]) or\
+                                      float(ferretin_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Ferritin") & (df_normal_ranges['gender']== 1)]['max'].iloc[0]) :
                                     error = [subject, visit, 'Ferritin, Out of normal range?', ferretin_out_normal_form_field_instance,\
                                              'According to the result, the value is out of range, please review. (21.81 - 274.66)', 
                                              f"Ferretin Out Normal: {ferretin_result_disname} - Ferretin Result: {ferretin_result_pure}", 'LBC0480']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(ferretin_result_pure) < 4.63 or float(ferretin_result_pure) > 204.0:
+                                if float(ferretin_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Ferritin") & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) or\
+                                      float(ferretin_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Ferritin") & (df_normal_ranges['gender']== 2)]['max'].iloc[0]) :
                                     error = [subject, visit, 'Ferritin, Out of normal range?', ferretin_out_normal_form_field_instance ,\
                                              'According to the result, the value is out of range, please review. (4.63 - 204.0)', 
                                              f"Ferretin Out Normal: {ferretin_result_disname} - Ferretin Result: {ferretin_result_pure}", 'LBC0480']

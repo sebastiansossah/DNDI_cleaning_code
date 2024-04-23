@@ -360,7 +360,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer, lista_insta
                             #if float(aPTT_result_pure) > 23.6 and float(aPTT_result_pure) < 34.8 :
                             if float(aPTT_result_pure) > float(df_normal_ranges[df_normal_ranges['field']=="aPTT, Result (Seconds)"]['min'].iloc[0]) \
                                 and float(aPTT_result_pure) < float(df_normal_ranges[df_normal_ranges['field']=="aPTT, Result (Seconds)"]['max'].iloc[0]) :
-                                error = [subject, visit, 'aPTT, Out of normal range?', aPTT_result_form_field_instance ,\
+                                error = [subject, visit, 'aPTT, Out of normal range?', aPTT_out_normal_range_form_field_instance ,\
                                          'According to the result, the value is not out of range, please review.',\
                                               f"aPPT Out Of Normal: {aPTT_result_disname} - aPPT Result: {aPTT_result_pure}", 'LBO0080']
                                 lista_revision.append(error)
@@ -370,7 +370,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer, lista_insta
                             #if float(aPTT_result_pure) <  23.6  or float(aPTT_result_pure) > 34.8 :
                             if float(aPTT_result_pure) < float(df_normal_ranges[df_normal_ranges['field']=="aPTT, Result (Seconds)"]['min'].iloc[0]) \
                                 or float(aPTT_result_pure) > float(df_normal_ranges[df_normal_ranges['field']=="aPTT, Result (Seconds)"]['max'].iloc[0]) :
-                                error = [subject, visit, 'aPTT, Out of normal range?', aPTT_result_form_field_instance,\
+                                error = [subject, visit, 'aPTT, Out of normal range?', aPTT_out_normal_range_form_field_instance,\
                                          'According to the result, the value is out of range, please review.',\
                                               f"aPPT Out Of Normal: {aPTT_result_disname} - aPPT Result: {aPTT_result_pure}", 'LBO0100']
                                 lista_revision.append(error)
@@ -384,7 +384,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer, lista_insta
                             #if float(PT_result_pure) > 11.7 and float(PT_result_pure) < 15.3 :
                             if float(PT_result_pure) > float(df_normal_ranges[df_normal_ranges['field']=="PT, Result (Seconds)"]['min'].iloc[0]) \
                                 and float(PT_result_pure) < float(df_normal_ranges[df_normal_ranges['field']=="PT, Result (Seconds)"]['max'].iloc[0]) :
-                                error = [subject, visit, 'PT, Out of normal range?', PT_result_form_field_instance ,\
+                                error = [subject, visit, 'PT, Out of normal range?', PT_out_normal_range_form_field_instance ,\
                                          'According to the result, the value is not out of range, please review.',\
                                              f"PT Out Of Normal: {PT_result_disname} - PT Result: {PT_result_pure}", 'LBO0090']
                                               
@@ -395,7 +395,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer, lista_insta
                             #if float(PT_result_pure) <  11.7  or float(PT_result_pure) > 15.3 :
                             if float(PT_result_pure) < float(df_normal_ranges[df_normal_ranges['field']=="PT, Result (Seconds)"]['min'].iloc[0]) \
                                 or float(PT_result_pure) > float(df_normal_ranges[df_normal_ranges['field']=="PT, Result (Seconds)"]['max'].iloc[0]) :
-                                error = [subject, visit, 'PT, Out of normal range? ', PT_result_form_field_instance ,\
+                                error = [subject, visit, 'PT, Out of normal range? ', PT_out_normal_range_form_field_instance ,\
                                          'According to the result, the value is out of range, please review.',\
                                               f"PT Out Of Normal: {PT_result_disname} - PT Result: {PT_result_pure}", 'LBO0110']
                                 lista_revision.append(error)
@@ -409,7 +409,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer, lista_insta
                             #if  float(INR_result_pure) <= 1.1 :
                             if float(INR_result_pure) > float(df_normal_ranges[df_normal_ranges['field']=="INR, Result"]['min'].iloc[0]) \
                                 and float(INR_result_pure) < float(df_normal_ranges[df_normal_ranges['field']=="INR, Result"]['max'].iloc[0]) :
-                                error = [subject, visit, 'INR, Out of normal range?', INR_result_form_field_instance ,\
+                                error = [subject, visit, 'INR, Out of normal range?', INR_out_normal_range_form_field_instance ,\
                                          'According to the result, the value is not out of range, please review.',\
                                              f"INR Out Of Normal: {INR_result_disname} - INR Result: {INR_result_pure}", 'LBO0120']
                                 lista_revision.append(error)
@@ -419,7 +419,7 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer, lista_insta
                             #if float(INR_result_pure) >= 1.1 :
                             if float(INR_result_pure) < float(df_normal_ranges[df_normal_ranges['field']=="INR, Result"]['min'].iloc[0]) \
                                 or float(INR_result_pure) > float(df_normal_ranges[df_normal_ranges['field']=="INR, Result"]['max'].iloc[0]) :
-                                error = [subject, visit, 'INR, Out of normal range?', INR_result_form_field_instance ,\
+                                error = [subject, visit, 'INR, Out of normal range?', INR_out_normal_range_form_field_instance ,\
                                          'According to the result, the value is out of range, please review.',\
                                              f"INR Out Of Normal: {INR_result_disname} - INR Result: {INR_result_pure}", 'LBO0130']
                                 lista_revision.append(error)

@@ -634,9 +634,9 @@ def eligibility(df_root, path_excel_writer, lista_instancias_abiertas):
                                 if float(cuenta_lesiones) > float(df_normal_ranges[df_normal_ranges['field']=="cuenta_lesiones"]['max'].iloc[0]) or \
                                     float(diametro_lesiones) > float(df_normal_ranges[df_normal_ranges['field']=="diametro_lesiones"]['max'].iloc[0]):
 
-                                    error = [subject, visit, 'Is the participant eligible to randomization?', \
-                                            participant_randomization_form_field_instance,\
-                                                'The participant has more than 4 lesions, or lesions over 4cm long in diameter or lesions with mucosal involvement in the Lesion Measurement form, he/she should not be eligible for randomization', \
+                                    error = [subject, visit, 'Is the participant eligible to randomization?', 
+                                            participant_randomization_form_field_instance,
+                                                'The participant has more than 4 lesions, or lesions over 4cm long in diameter or lesions with mucosal involvement in the Lesion Measurement form, he/she should not be eligible for randomization', 
                                                     f"Participant Randomization: {participant_randomization_disname} - Number of lesions: {cuenta_lesiones} - Diameter of lesion: {diametro_lesiones}", 'IE0446']
                                     lista_revision.append(error)
                         except Exception as e:

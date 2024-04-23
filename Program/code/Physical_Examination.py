@@ -553,7 +553,7 @@ def physical_examination(df_root, path_excel_writer, lista_instancias_abiertas):
                         
                         #--------------------------------------------------------------------- Medicamento Miltefosine  ------------------------------    
 
-                        #Revision PE0050
+                        #Revision PE0120
                         if str(time_dosing_miltefosine_administration) != 'nan':
                             try:
                                 dif_M = float((datetime.strptime(time_dosing_miltefosine_administration, '%H:%M') - datetime.strptime(predose_clinical_time_pure, '%H:%M')).total_seconds() / 60)
@@ -561,12 +561,12 @@ def physical_examination(df_root, path_excel_writer, lista_instancias_abiertas):
                                 if dif_M < 0.0 or dif_M > 60.0:
                                     error = [subject, visit, 'Pre dose, Time', predose_clinical_time_form_field_instnance,\
                                              'The time selected should be less than 60 min before the study treatment administration', \
-                                                f'Pre dose, Time: {predose_clinical_time_pure} - dose time administration: {time_dosing_miltefosine_administration}', 'PE0050']
+                                                f'Pre dose, Time: {predose_clinical_time_pure} - dose time administration: {time_dosing_miltefosine_administration}', 'PE0120']
                                     lista_revision.append(error)
                             except Exception as e:
-                                lista_logs.append(f'Revision PE0050 --> {e} - Subject: {subject},  Visit: {visit} ')
+                                lista_logs.append(f'Revision PE0120 --> {e} - Subject: {subject},  Visit: {visit} ')
                         
-                        # Revision PE0060
+                        # Revision PE0130
                         if str(time_dosing_miltefosine_administration) != 'nan':
 
                             try:
@@ -575,13 +575,13 @@ def physical_examination(df_root, path_excel_writer, lista_instancias_abiertas):
                                 if  dif_two_M > 135.0 or dif_two_M < 105.0:
                                     error = [subject, visit, '2-hours post dose, Time', two_hours_time_fomr_field_instance,\
                                              'The time selected should be less than 2h15 and greater than 1h45 after the study treatment administration', \
-                                                f'2-hours post dose,Time: {two_hours_time_pure} - dose time administration: {time_dosing_miltefosine_administration}', 'PE0060']
+                                                f'2-hours post dose,Time: {two_hours_time_pure} - dose time administration: {time_dosing_miltefosine_administration}', 'PE0130']
                                     lista_revision.append(error)
 
                             except Exception as e:
-                                lista_logs.append(f'Revision PE0060 --> {e} - Subject: {subject},  Visit: {visit} ')
+                                lista_logs.append(f'Revision PE0130 --> {e} - Subject: {subject},  Visit: {visit} ')
                         
-                        # Revision PE0070
+                        # Revision PE0140
                         if str(time_dosing_miltefosine_administration) != 'nan':
 
                             try:
@@ -591,24 +591,24 @@ def physical_examination(df_root, path_excel_writer, lista_instancias_abiertas):
                                     
                                     error = [subject, visit, '4-hours post dose, Time', four_hours_time_form_field_isntance,\
                                              'The time selected should be less than 4h15 and greater than 3h45 after the study treatment administration', \
-                                                f'4-hours post dose,Time: {four_hours_time_pure} - dose time administration: {time_dosing_miltefosine_administration}', 'PE0070']
+                                                f'4-hours post dose,Time: {four_hours_time_pure} - dose time administration: {time_dosing_miltefosine_administration}', 'PE0140']
                                     lista_revision.append(error)
 
                             except Exception as e:
-                                lista_logs.append(f'Revision PE0070 --> {e} - Subject: {subject},  Visit: {visit} ')
+                                lista_logs.append(f'Revision PE0140 --> {e} - Subject: {subject},  Visit: {visit} ')
                         
-                        # Revision PE0080
+                        # Revision PE0150
                         if str(time_dosing_miltefosine_administration) != 'nan':
                             try:
                                 dif_eight_M = float((datetime.strptime(eight_hours_time_pure, '%H:%M') - datetime.strptime(time_dosing_miltefosine_administration, '%H:%M')).total_seconds() / 60)
                                 if dif_eight_M > 495.0 or dif_eight_M < 465.0:
                                     error = [subject, visit, '8-hours post dose, Time', eight_hours_time_form_field_instance,\
                                              'The time selected should be less than 4h15 and greater than 3h45 after the study treatment administration', \
-                                                f'8-hours post dose,Time: {eight_hours_time_pure} - dose time administration: {time_dosing_miltefosine_administration}', 'PE0080']
+                                                f'8-hours post dose,Time: {eight_hours_time_pure} - dose time administration: {time_dosing_miltefosine_administration}', 'PE0150']
                                     lista_revision.append(error)
 
                             except Exception as e:
-                                lista_logs.append(f'Revision PE0080 --> {e} - Subject: {subject},  Visit: {visit} ')  
+                                lista_logs.append(f'Revision PE0150 --> {e} - Subject: {subject},  Visit: {visit} ')  
 
 
     excel_writer = load_workbook(path_excel_writer)

@@ -7,12 +7,21 @@ import warnings
 import pandas as pd
 from openpyxl import load_workbook
 from openpyxl.utils.dataframe import dataframe_to_rows
+import os
 
 def clinical_laboratory_test_hematology(df_root, path_excel_writer, lista_instancias_abiertas):
     '''
     Esta funcion tiene como finalidad la revision de cada uno de los puntos 
     del edit check para el formulario de Clinical Laboratory - Test Hematology
     '''
+
+    # Normals ranges file
+    script_directory = os.path.dirname(os.path.abspath(__file__)) if '__file__' in locals() else os.getcwd()
+    relative_folder_path = r"data\rangos_normales"
+    folder_path = os.path.join(script_directory.replace('\code', ''), relative_folder_path)
+    file = os.listdir(folder_path)
+    path = f"{folder_path}\{[x for x in file if 'hematology.' in x][0]}" 
+    df_normal_ranges = pd.read_csv(path, sep=';')
 
     df= df_root[df_root['name']== 'Clinical Laboratory - Test Hematology']
     lista_sujetos = df['Participante'].unique()
@@ -550,8 +559,8 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer, lista_instan
                             date_of_visit_f = datetime.strptime(date_of_visit, date_format)
 
                             if date_collected_f != date_of_visit_f:
-                                error = [subject, visit, 'Date Collected', date_collected_form_field_instance, \
-                                        'The date should be the same as the visit date in the "Date of Visit" Form',  \
+                                error = [subject, visit, 'Date Collected', date_collected_form_field_instance, 
+                                        'The date should be the same as the visit date in the "Date of Visit" Form',  
                                             f'{date_collected_disname} - {date_of_visit}', 'LBT0010']
                                 lista_revision.append(error)
                             else:
@@ -567,8 +576,8 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer, lista_instan
                             date_inform_consent_f = datetime.strptime(date_inform_consent, date_format)
 
                             if date_collected_f < date_inform_consent_f:
-                                error = [subject, visit, 'Date Collected', date_collected_form_field_instance, \
-                                        'The date/time of test performed can not be before the informed consent date/time', \
+                                error = [subject, visit, 'Date Collected', date_collected_form_field_instance, 
+                                        'The date/time of test performed can not be before the informed consent date/time', 
                                             f'{date_collected_disname} - {date_inform_consent}', 'LBT0030']
                                 lista_revision.append(error)
                             else:
@@ -595,8 +604,8 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer, lista_instan
                             if visita == 'D-1':
                                 pass
                             else:
-                                error = [subject, visit, 'Blood Sample Collected', blood_sample_collected_form_field_instance,\
-                                         'The "Not Required" option can only be selected if visit is D-1 and the D-1 visit date =Screening visit date or normal and done in the previous 10 days', \
+                                error = [subject, visit, 'Blood Sample Collected', blood_sample_collected_form_field_instance,
+                                         'The "Not Required" option can only be selected if visit is D-1 and the D-1 visit date =Screening visit date or normal and done in the previous 10 days', 
                                             blood_sample_collected_disname, 'LBT0050']
                                 lista_revision.append(error)
                     except Exception as e:
@@ -606,16 +615,18 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer, lista_instan
                         # Revision LBT0060
                         if float(Erythrocyte_out_normal_pure) == 1.0:
                             if float(genero) == 1.0:
-                                if float(Erythrocyte_result_pure) > 0.0 and float(Erythrocyte_result_pure) < 15.8:
-                                    error = [subject, visit, 'Erythrocyte sedimentation rate (ESR), Out of normal range?', \
-                                             Erythrocyte_result_form_field_instance, 'According to the result, the value is not out of range, please review.  (0.0 - 15.0)', \
+                                if float(Erythrocyte_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Erythrocyte sedimentation rate (ESR)")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0])  and\
+                                      float(Erythrocyte_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Erythrocyte sedimentation rate (ESR)")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Erythrocyte sedimentation rate (ESR), Out of normal range?', 
+                                             Erythrocyte_out_normal_form_field_instance, 'According to the result, the value is not out of range, please review.  (0.0 - 15.0)', 
                                                 f"Erythrocyte sedimentation rate (ESR) Out Of Normal: {Erythrocyte_out_normal_disname} - Erythrocyte sedimentation rate (ESR) Result: {Erythrocyte_result_disname}", 'LBT0060']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(Erythrocyte_result_pure) > 0.0 and float(Erythrocyte_result_pure) < 20.0:
-                                    error = [subject, visit, 'Erythrocyte sedimentation rate (ESR), Out of normal range?', \
-                                             Erythrocyte_result_form_field_instance, \
+                                if float(Erythrocyte_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Erythrocyte sedimentation rate (ESR)")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0])  and\
+                                      float(Erythrocyte_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Erythrocyte sedimentation rate (ESR)")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Erythrocyte sedimentation rate (ESR), Out of normal range?', 
+                                             Erythrocyte_out_normal_form_field_instance, 
                                                 'According to the result, the value is not out of range, please review. (0.0 - 20.0)' , 
                                                 f"Erythrocyte sedimentation rate (ESR) Out Of Normal: {Erythrocyte_out_normal_disname} - Erythrocyte sedimentation rate (ESR) Result: {Erythrocyte_result_disname}", 'LBT0060']
                                     lista_revision.append(error)
@@ -623,16 +634,18 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer, lista_instan
                         # Revision LBT0270
                         elif float(Erythrocyte_out_normal_pure) == 0.0:
                             if float(genero) == 1.0:
-                                if float(Erythrocyte_result_pure) < 0.0 or float(Erythrocyte_result_pure) > 15.0:
-                                    error = [subject, visit, 'Erythrocyte sedimentation rate (ESR), Out of normal range?', \
-                                             Erythrocyte_result_form_field_instance,'According to the result, the value is out of range, please review. (0.0 - 15.0)', \
+                                if float(Erythrocyte_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Erythrocyte sedimentation rate (ESR)")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0]) or\
+                                      float(Erythrocyte_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Erythrocyte sedimentation rate (ESR)")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0]):
+                                    error = [subject, visit, 'Erythrocyte sedimentation rate (ESR), Out of normal range?', 
+                                             Erythrocyte_out_normal_form_field_instance,'According to the result, the value is out of range, please review. (0.0 - 15.0)', 
                                                 f"Erythrocyte sedimentation rate (ESR) Out Of Normal: {Erythrocyte_out_normal_disname} - Erythrocyte sedimentation rate (ESR) Result: {Erythrocyte_result_disname}", 'LBT0270']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(Erythrocyte_result_pure) < 0.0 or float(Erythrocyte_result_pure) > 20.0:
-                                    error = [subject, visit, 'Erythrocyte sedimentation rate (ESR), Out of normal range?', \
-                                             Erythrocyte_result_form_field_instance, 
+                                if float(Erythrocyte_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Erythrocyte sedimentation rate (ESR)")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) or\
+                                      float(Erythrocyte_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Erythrocyte sedimentation rate (ESR)")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0]):
+                                    error = [subject, visit, 'Erythrocyte sedimentation rate (ESR), Out of normal range?', 
+                                             Erythrocyte_out_normal_form_field_instance, 
                                                 'According to the result, the value is out of range, please review. (0.0 - 20.0)' , 
                                                 f"Erythrocyte sedimentation rate (ESR) Out Of Normal: {Erythrocyte_out_normal_disname} - Erythrocyte sedimentation rate (ESR) Result: {Erythrocyte_result_disname}", 'LBT0270']
                                     lista_revision.append(error)
@@ -642,18 +655,20 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer, lista_instan
                     try:
                         # Revision LBT0070
                         if float(WBC_out_normal_pure) == 1.0:
-                            if float(WBC_result_pure) > 4.50 and float(WBC_result_pure) < 11.0:
-                                error = [subject, visit, 'White blood Cell count (WBC), Out of normal range?', \
-                                         WBC_result_form_field_instance,
+                            if float(WBC_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "White blood Cell count (WBC)")]['min'].iloc[0]) and\
+                                  float(WBC_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "White blood Cell count (WBC)")]['max'].iloc[0]):
+                                error = [subject, visit, 'White blood Cell count (WBC), Out of normal range?', 
+                                         WBC_out_normal_form_field_isntance,
                                             'According to the result, the value is not out of range, please review. (4.50 - 11.0)' , 
                                             f"White blood Cell count (WBC) Out Normal: {WBC_out_normal_disname} - White blood Cell count (WBC) Result: {WBC_result_disname}", 'LBT0070']
                                 lista_revision.append(error)
 
                         # Revision LBT0280
                         elif float(WBC_out_normal_pure) == 0.0:
-                            if float(WBC_result_pure) < 4.50  or float(WBC_result_pure) > 11.0:
-                                error = [subject, visit, 'White blood Cell count (WBC), Out of normal range?', \
-                                         WBC_result_form_field_instance,\
+                            if float(WBC_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "White blood Cell count (WBC)")]['min'].iloc[0])  or\
+                                  float(WBC_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "White blood Cell count (WBC)")]['max'].iloc[0]):
+                                error = [subject, visit, 'White blood Cell count (WBC), Out of normal range?', 
+                                         WBC_out_normal_form_field_isntance,
                                             'According to the result, the value is out of range, please review.  (4.50 - 11.0)' , 
                                             f"White blood Cell count (WBC) Out Normal: {WBC_out_normal_disname} - White blood Cell count (WBC) Result: {WBC_result_disname}", 'LBT0280']
                                 lista_revision.append(error)
@@ -665,32 +680,36 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer, lista_instan
                         # Revision LBT0080
                         if float(Neutrophil_out_normal_pure) == 1.0:
                             if float(genero) == 1.0:
-                                if float(Neutrophil_result_pure) > 40.3 and float(Neutrophil_result_pure) < 74.8:
-                                    error = [subject, visit, 'Neutrophil, Out of normal range?', Neutrophil_result_form_field_instance, \
-                                             'According to the result, the value is not out of range, please review. (40.3 - 74.8)' , \
+                                if float(Neutrophil_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Neutrophil")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0])  and\
+                                      float(Neutrophil_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Neutrophil")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Neutrophil, Out of normal range?', Neutrophil_out_normal_form_field_isntance, 
+                                             'According to the result, the value is not out of range, please review. (40.3 - 74.8)' , 
                                                 f"Neutrophin Out Normal: {Neutrophil_out_normal_disname} - Neutrophil Result: {Neutrophil_result_disname}", 'LBT0080']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(Neutrophil_result_pure) > 42.5 and float(Neutrophil_result_pure) < 73.2:
-                                    error = [subject, visit, 'Neutrophil, Out of normal range?', Neutrophil_result_form_field_instance, \
-                                             'According to the result, the value is not out of range, please review. (42.5 - 73.2)', \
+                                if float(Neutrophil_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Neutrophil")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0])  and\
+                                      float(Neutrophil_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Neutrophil")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Neutrophil, Out of normal range?', Neutrophil_out_normal_form_field_isntance, 
+                                             'According to the result, the value is not out of range, please review. (42.5 - 73.2)', 
                                                 f"Neutrophin Out Normal: {Neutrophil_out_normal_disname} - Neutrophil Result: {Neutrophil_result_disname}", 'LBT0080']
                                     lista_revision.append(error)
 
                         # Revision LBT0290
                         elif float(Neutrophil_out_normal_pure) == 0.0:
                             if float(genero) == 1.0:
-                                if float(Neutrophil_result_pure) < 40.3 or float(Neutrophil_result_pure) > 74.8:
-                                    error = [subject, visit, 'Neutrophil, Out of normal range?', Neutrophil_result_form_field_instance, \
-                                             'According to the result, the value is out of range, please review. (40.3 - 74.8)', \
+                                if float(Neutrophil_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Neutrophil")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0]) or\
+                                      float(Neutrophil_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Neutrophil")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0]):
+                                    error = [subject, visit, 'Neutrophil, Out of normal range?', Neutrophil_out_normal_form_field_isntance, 
+                                             'According to the result, the value is out of range, please review. (40.3 - 74.8)', 
                                                 f"Neutrophin Out Normal: {Neutrophil_out_normal_disname} - Neutrophil Result: {Neutrophil_result_disname}", 'LBT0290']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(Neutrophil_result_pure) < 42.5 or float(Neutrophil_result_pure) > 73.2:
-                                    error = [subject, visit, 'Neutrophil, Out of normal range?', Neutrophil_result_form_field_instance, \
-                                             'According to the result, the value is out of range, please review.( 42.5 - 73.2)',  \
+                                if float(Neutrophil_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Neutrophil")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) or\
+                                      float(Neutrophil_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Neutrophil")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0]):
+                                    error = [subject, visit, 'Neutrophil, Out of normal range?', Neutrophil_out_normal_form_field_isntance, 
+                                             'According to the result, the value is out of range, please review.( 42.5 - 73.2)',  
                                                 f"Neutrophin Out Normal: {Neutrophil_out_normal_disname} - Neutrophil Result: {Neutrophil_result_disname}", 'LBT0290']
                                     lista_revision.append(error)
                     except Exception as e:
@@ -700,34 +719,38 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer, lista_instan
                         # Revision LBT0090
                         if float(Lymphocyte_out_normal_pure) == 1.0:
                             if float(genero) == 1.0:
-                                if float(Lymphocyte_result_pure) > 12.2 and float(Lymphocyte_result_pure) < 47.1:
-                                    error = [subject, visit, 'Lymphocyte, Out of normal range?', Lymphocyte_result_form_field_instance,\
-                                             'According to the result, the value is not out of range, please review. (12.2 - 47.1)', \
+                                if float(Lymphocyte_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Lymphocyte")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0]) and\
+                                      float(Lymphocyte_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Lymphocyte")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0]):
+                                    error = [subject, visit, 'Lymphocyte, Out of normal range?', Lymphocyte_out_normal_form_field_instance,
+                                             'According to the result, the value is not out of range, please review. (12.2 - 47.1)', 
                                                 f"Lymphocyte Out Normal: {Lymphocyte_out_normal_disname} - Lymphocyte Result: {Lymphocyte_result_disname}", 'LBT0090']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(Lymphocyte_result_pure) > 18.2 and float(Lymphocyte_result_pure) < 47.4:
-                                    error = [subject, visit, 'Lymphocyte, Out of normal range?', Lymphocyte_result_form_field_instance,\
-                                             'According to the result, the value is not out of range, please review. (18.2 - 47.4)', \
+                                if float(Lymphocyte_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Lymphocyte")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) and\
+                                      float(Lymphocyte_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Lymphocyte")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0]):
+                                    error = [subject, visit, 'Lymphocyte, Out of normal range?', Lymphocyte_out_normal_form_field_instance,
+                                             'According to the result, the value is not out of range, please review. (18.2 - 47.4)', 
                                                 f"Lymphocyte Out Normal: {Lymphocyte_out_normal_disname} - Lymphocyte Result: {Lymphocyte_result_disname}", 'LBT0090']
                                     lista_revision.append(error)
 
                         # Revision LBT0300
                         elif float(Lymphocyte_out_normal_pure) == 0.0:
                             if float(genero) == 1.0:
-                                if float(Lymphocyte_result_pure) < 12.2 or float(Lymphocyte_result_pure) > 47.1:
-                                    error = [subject, visit, 'Lymphocyte, Out of normal range?', \
-                                             Lymphocyte_result_form_field_instance,\
-                                                'According to the result, the value is out of range, please review. (12.2 - 47.1)', \
+                                if float(Lymphocyte_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Lymphocyte")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0]) or\
+                                      float(Lymphocyte_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Lymphocyte")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0]):
+                                    error = [subject, visit, 'Lymphocyte, Out of normal range?', 
+                                             Lymphocyte_out_normal_form_field_instance,
+                                                'According to the result, the value is out of range, please review. (12.2 - 47.1)', 
                                                     f"Lymphocyte Out Normal: {Lymphocyte_out_normal_disname} - Lymphocyte Result: {Lymphocyte_result_disname}", 'LBT0300']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(Lymphocyte_result_pure) < 18.2 or float(Lymphocyte_result_pure) > 47.4:
-                                    error = [subject, visit, 'Lymphocyte, Out of normal range?', \
-                                             Lymphocyte_result_form_field_instance,\
-                                                'According to the result, the value is out of range, please review. (18.2 - 47.4)', \
+                                if float(Lymphocyte_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Lymphocyte")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) or\
+                                      float(Lymphocyte_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Lymphocyte")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0]):
+                                    error = [subject, visit, 'Lymphocyte, Out of normal range?', 
+                                             Lymphocyte_out_normal_form_field_instance,
+                                                'According to the result, the value is out of range, please review. (18.2 - 47.4)', 
                                                     f"Lymphocyte Out Normal: {Lymphocyte_out_normal_disname} - Lymphocyte Result: {Lymphocyte_result_disname}", 'LBT0300']
                                     lista_revision.append(error)
                     except Exception as e:
@@ -737,32 +760,36 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer, lista_instan
                         # Revision LBT0100
                         if float(Monocytes_out_normal_pure) == 1.0:
                             if float(genero) == 1.0:
-                                if float(Monocytes_result_pure) > 4.4 and float(Monocytes_result_pure) < 12.3:
-                                    error = [subject, visit, 'Monocytes, Out of normal range?', Monocytes_result_form_field_instance,\
-                                             'According to the result, the value is not out of range, please review. (4.4 - 12.3)', \
+                                if float(Monocytes_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Monocytes")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0]) and\
+                                      float(Monocytes_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Monocytes")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Monocytes, Out of normal range?', Monocytes_out_normal_form_field_instance,
+                                             'According to the result, the value is not out of range, please review. (4.4 - 12.3)', 
                                                 f"Monocytes Out Normal: {Monocytes_out_normal_disname} - Monocytes Result: {Monocytes_result_disname}", 'LBT0100']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(Monocytes_result_pure) > 4.3 and float(Monocytes_result_pure) < 11.0:
-                                    error = [subject, visit, 'Monocytes, Out of normal range?', Monocytes_result_form_field_instance,\
-                                             'According to the result, the value is not out of range, please review. (4.3 - 11.0)', \
+                                if float(Monocytes_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Monocytes")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) and\
+                                      float(Monocytes_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Monocytes")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Monocytes, Out of normal range?', Monocytes_out_normal_form_field_instance,
+                                             'According to the result, the value is not out of range, please review. (4.3 - 11.0)', 
                                                 f"Monocytes Out Normal: {Monocytes_out_normal_disname} - Monocytes Result: {Monocytes_result_disname}", 'LBT0100']
                                     lista_revision.append(error)
 
                         # Revision LBT0310
                         elif float(Monocytes_out_normal_pure) == 0.0:
                             if float(genero) == 1.0:
-                                if float(Monocytes_result_pure) < 4.4 or float(Monocytes_result_pure) > 12.3:
-                                    error = [subject, visit, 'Monocytes, Out of normal range?', Monocytes_result_form_field_instance,\
-                                             'According to the result, the value is out of range, please review. (4.4 - 12.3)', \
+                                if float(Monocytes_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Monocytes")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0]) or\
+                                      float(Monocytes_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Monocytes")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0]):
+                                    error = [subject, visit, 'Monocytes, Out of normal range?', Monocytes_out_normal_form_field_instance,
+                                             'According to the result, the value is out of range, please review. (4.4 - 12.3)', 
                                                 f"Monocytes Out Normal: {Monocytes_out_normal_disname} - Monocytes Result: {Monocytes_result_disname}", 'LBT0310']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(Monocytes_result_pure) < 4.3 or float(Monocytes_result_pure) > 11.0:
-                                    error = [subject, visit, 'Monocytes, Out of normal range?', Monocytes_result_form_field_instance,\
-                                             'According to the result, the value is out of range, please review. (4.3 - 11.0)', \
+                                if float(Monocytes_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Monocytes")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) or\
+                                      float(Monocytes_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Monocytes")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0]):
+                                    error = [subject, visit, 'Monocytes, Out of normal range?', Monocytes_out_normal_form_field_instance,
+                                             'According to the result, the value is out of range, please review. (4.3 - 11.0)', 
                                                 f"Monocytes Out Normal: {Monocytes_out_normal_disname} - Monocytes Result: {Monocytes_result_disname}", 'LBT0310']
                                     lista_revision.append(error)
                     except Exception as e:
@@ -772,32 +799,36 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer, lista_instan
                         # Revision LBT0110
                         if float(Eosinophil_out_normal_pure) == 1.0:
                             if float(genero) == 1.0:
-                                if float(Eosinophil_result_pure) > 0.0 and float(Eosinophil_result_pure) < 4.4 :
-                                    error = [subject, visit, 'Eosinophil, Out of normal range?', Eosinophil_result_form_field_instance,\
-                                             'According to the result, the value is not out of range, please review. (0.0 - 4.4)', \
+                                if float(Eosinophil_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Eosinophil")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0]) and\
+                                      float(Eosinophil_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Eosinophil")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0])  :
+                                    error = [subject, visit, 'Eosinophil, Out of normal range?', Eosinophil_out_normal_form_field_instance,
+                                             'According to the result, the value is not out of range, please review. (0.0 - 4.4)', 
                                                 f"Eosinophil Out Normal: {Eosinophil_out_normal_disname} - Eosinophil Resul: {Eosinophil_result_disname}", 'LBT0110']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(Eosinophil_result_pure) > 0.0 and float(Eosinophil_result_pure) < 3.0:
-                                    error = [subject, visit, 'Eosinophil, Out of normal range?', Eosinophil_result_form_field_instance,\
-                                             'According to the result, the value is not out of range, please review. (0.0 - 3.0)', \
+                                if float(Eosinophil_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Eosinophil")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) and\
+                                      float(Eosinophil_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Eosinophil")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0])  :
+                                    error = [subject, visit, 'Eosinophil, Out of normal range?', Eosinophil_out_normal_form_field_instance,
+                                             'According to the result, the value is not out of range, please review. (0.0 - 3.0)', 
                                                 f"Eosinophil Out Normal: {Eosinophil_out_normal_disname} - Eosinophil Resul: {Eosinophil_result_disname}", 'LBT0110']
                                     lista_revision.append(error)
                     
                         # Revision LBT0320
                         elif float(Eosinophil_out_normal_pure) == 0.0:
                             if float(genero) == 1.0:
-                                if float(Eosinophil_result_pure) < 0.0 or float(Eosinophil_result_pure) > 4.4 :
-                                    error = [subject, visit, 'Eosinophil, Out of normal range?',Eosinophil_result_form_field_instance,\
-                                             'According to the result, the value is out of range, please review. (0.0 - 4.4)', \
+                                if float(Eosinophil_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Eosinophil")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0]) or\
+                                      float(Eosinophil_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Eosinophil")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Eosinophil, Out of normal range?',Eosinophil_out_normal_form_field_instance,
+                                             'According to the result, the value is out of range, please review. (0.0 - 4.4)', 
                                                 f"Eosinophil Out Normal: {Eosinophil_out_normal_disname} - Eosinophil Resul: {Eosinophil_result_disname}", 'LBT0320']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(Eosinophil_result_pure) < 0.0 or float(Eosinophil_result_pure) > 3.0:
-                                    error = [subject, visit, 'Eosinophil, Out of normal range?', Eosinophil_result_form_field_instance,\
-                                             'According to the result, the value is out of range, please review. (0.0 - 3.0)', \
+                                if float(Eosinophil_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Eosinophil")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) or\
+                                      float(Eosinophil_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Eosinophil")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Eosinophil, Out of normal range?', Eosinophil_out_normal_form_field_instance,
+                                             'According to the result, the value is out of range, please review. (0.0 - 3.0)', 
                                                 f"Eosinophil Out Normal: {Eosinophil_out_normal_disname} - Eosinophil Resul: {Eosinophil_result_disname}", 'LBT0320']
                                     lista_revision.append(error)
                     except Exception as e:
@@ -806,16 +837,18 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer, lista_instan
                     try:
                         # Revision LBT0120
                         if float(Basophil_out_normal_pure) == 1.0:
-                            if float(Basophil_result_pure) > 0.0 and float(Basophil_result_pure) < 0.7:
-                                error = [subject, visit, 'Basophil, Out of normal range?', Basophil_result_form_field_instance,\
+                            if float(Basophil_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Basophil")]['min'].iloc[0]) and\
+                                  float(Basophil_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Basophil")]['max'].iloc[0]):
+                                error = [subject, visit, 'Basophil, Out of normal range?', Basophil_out_normal_form_field_instance,
                                          'According to the result, the value is not out of range, please review. (0.0 - 0.7)', 
                                          f"Basophil Out Normal: {Basophil_out_normal_disname} - Basophil Result: {Basophil_result_disname}", 'LBT0120']
                                 lista_revision.append(error)
 
                         # Revision LBT0330
                         elif float(Basophil_out_normal_pure) == 0.0:
-                            if float(Basophil_result_pure) < 0.0 or float(Basophil_result_pure) > 0.7:
-                                error = [subject, visit, 'Basophil, Out of normal range?', Basophil_result_form_field_instance,\
+                            if float(Basophil_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Basophil")]['min'].iloc[0]) or\
+                                  float(Basophil_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Basophil")]['max'].iloc[0]):
+                                error = [subject, visit, 'Basophil, Out of normal range?', Basophil_out_normal_form_field_instance,
                                          'According to the result, the value is out of range, please review. (0.0 - 0.7)', 
                                          f"Basophil Out Normal: {Basophil_out_normal_disname} - Basophil Result: {Basophil_result_disname}", 'LBT0330']
                                 lista_revision.append(error)
@@ -826,36 +859,40 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer, lista_instan
                         # Revision LBT0130
                         if float(absolute_Neutrophil_pure) == 1.0:
                             if float(genero) == 1.0:
-                                if float(absolute_Neutrophil_result_pure) > 1.82 and float(absolute_Neutrophil_result_pure) < 7.42 :
-                                    error = [subject, visit, 'Absolute Neutrophil count, Out of normal range? ', \
-                                             absolute_Neutrophil_result_form_field_instance, \
-                                                'According to the result, the value is not out of range, please review. (1820.0 - 7150.0)', \
+                                if float(absolute_Neutrophil_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Absolute Neutrophil count")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0])  and\
+                                      float(absolute_Neutrophil_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Absolute Neutrophil count")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0])  :
+                                    error = [subject, visit, 'Absolute Neutrophil count, Out of normal range? ', 
+                                             absolute_Neutrophil_form_field_instance, 
+                                                'According to the result, the value is not out of range, please review. (1820.0 - 7150.0)', 
                                                     f"Absolute Neutrphil Out Normal: {absolute_Neutrophil_disname} - Absolute Neutrphil Result: {absolute_Neutrophil_result_disname}", 'LBT0130']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(absolute_Neutrophil_result_pure) > 2.0 and float(absolute_Neutrophil_result_pure) <  7.15:
-                                    error = [subject, visit, 'Absolute Neutrophil count, Out of normal range?', \
-                                             absolute_Neutrophil_result_form_field_instance,\
-                                                'According to the result, the value is not out of range, please review. (2000.0 - 7150.0)', \
+                                if float(absolute_Neutrophil_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Absolute Neutrophil count")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0])  and\
+                                      float(absolute_Neutrophil_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Absolute Neutrophil count")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0])  :
+                                    error = [subject, visit, 'Absolute Neutrophil count, Out of normal range?', 
+                                             absolute_Neutrophil_form_field_instance,
+                                                'According to the result, the value is not out of range, please review. (2000.0 - 7150.0)', 
                                                     f"Absolute Neutrphil Out Normal: {absolute_Neutrophil_disname} - Absolute Neutrphil Result: {absolute_Neutrophil_result_disname}", 'LBT0130']
                                     lista_revision.append(error)
 
                         # Revision LBT0340
                         elif float(absolute_Neutrophil_pure) == 0.0:
                             if float(genero) == 1.0:
-                                if float(absolute_Neutrophil_result_pure) < 1.82 or float(absolute_Neutrophil_result_pure) > 7.42 :
-                                    error = [subject, visit, 'Absolute Neutrophil count, Out of normal range?',  \
-                                             absolute_Neutrophil_result_form_field_instance, \
-                                                'According to the result, the value is out of range, please review. (1820.0 - 7150.0)', \
+                                if float(absolute_Neutrophil_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Absolute Neutrophil count")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0]) or\
+                                      float(absolute_Neutrophil_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Absolute Neutrophil count")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Absolute Neutrophil count, Out of normal range?',  
+                                             absolute_Neutrophil_form_field_instance, 
+                                                'According to the result, the value is out of range, please review. (1820.0 - 7150.0)', 
                                                     f"Absolute Neutrphil Out Normal: {absolute_Neutrophil_disname} - Absolute Neutrphil Result: {absolute_Neutrophil_result_disname}", 'LBT0340']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(absolute_Neutrophil_result_pure) < 2.0 or float(absolute_Neutrophil_result_pure) > 7.15:
-                                    error = [subject, visit, 'Absolute Neutrophil count, Out of normal range?', \
-                                             absolute_Neutrophil_result_form_field_instance, \
-                                                'According to the result, the value is out of range, please review. (2000.0 - 7150.0)', \
+                                if float(absolute_Neutrophil_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Absolute Neutrophil count")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) or\
+                                      float(absolute_Neutrophil_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Absolute Neutrophil count")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Absolute Neutrophil count, Out of normal range?', 
+                                             absolute_Neutrophil_form_field_instance, 
+                                                'According to the result, the value is out of range, please review. (2000.0 - 7150.0)', 
                                                     f"Absolute Neutrphil Out Normal: {absolute_Neutrophil_disname} - Absolute Neutrphil Result: {absolute_Neutrophil_result_disname}", 'LBT0340']
                                     lista_revision.append(error)
                     except Exception as e:
@@ -865,36 +902,40 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer, lista_instan
                         # Revision LBT0140
                         if float(absolute_lymphocyte_pure) == 1.0:
                             if float(genero) == 1.0:
-                                if float(absolute_lymphocyte_result_pure) > 0.85 and float(absolute_lymphocyte_result_pure) < 3.00 :
-                                    error = [subject, visit, 'Absolute lymphocyte count, Out of normal range?', \
-                                             absolute_lymphocyte_result_form_field_isntance,\
-                                                'According to the result, the value is not out of range, please review. (0.85 - 3.00)', \
+                                if float(absolute_lymphocyte_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Absolute lymphocyte count")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0])  and\
+                                      float(absolute_lymphocyte_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Absolute lymphocyte count")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0])  :
+                                    error = [subject, visit, 'Absolute lymphocyte count, Out of normal range?', 
+                                             absolute_lymphocyte_form_field_instance,
+                                                'According to the result, the value is not out of range, please review. (0.85 - 3.00)', 
                                                     f"Absolute Lymphocyte Out Normal: {absolute_lymphocyte_disname} - Absolute Lymphocyte Result: {absolute_lymphocyte_result_disname}", 'LBT0140']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(absolute_lymphocyte_result_pure) > 1.16 and float(absolute_lymphocyte_result_pure) < 3.18:
-                                    error = [subject, visit, 'Absolute lymphocyte count, Out of normal range?', \
-                                             absolute_lymphocyte_result_form_field_isntance,\
-                                                'According to the result, the value is not out of range, please review. (1.16  - 3.18)', \
+                                if float(absolute_lymphocyte_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Absolute lymphocyte count")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0])  and\
+                                      float(absolute_lymphocyte_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Absolute lymphocyte count")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0])  :
+                                    error = [subject, visit, 'Absolute lymphocyte count, Out of normal range?', 
+                                             absolute_lymphocyte_form_field_instance,
+                                                'According to the result, the value is not out of range, please review. (1.16  - 3.18)', 
                                                     f"Absolute Lymphocyte Out Normal: {absolute_lymphocyte_disname} - Absolute Lymphocyte Result: {absolute_lymphocyte_result_disname}", 'LBT0140']
                                     lista_revision.append(error)
 
                         # Revision LBT0350
                         elif float(absolute_lymphocyte_pure) == 0.0:
                             if float(genero) == 1.0:
-                                if float(absolute_lymphocyte_result_pure) < 0.85 or float(absolute_lymphocyte_result_pure) > 3.00 :
-                                    error = [subject, visit, 'Absolute lymphocyte count, Out of normal range?', \
-                                             absolute_lymphocyte_result_form_field_isntance, \
-                                                'According to the result, the value is out of range, please review. (0.85 - 3.00)', \
+                                if float(absolute_lymphocyte_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Absolute lymphocyte count")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0]) or\
+                                      float(absolute_lymphocyte_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Absolute lymphocyte count")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Absolute lymphocyte count, Out of normal range?', 
+                                             absolute_lymphocyte_form_field_instance, 
+                                                'According to the result, the value is out of range, please review. (0.85 - 3.00)', 
                                                     f"Absolute Lymphocyte Out Normal: {absolute_lymphocyte_disname} - Absolute Lymphocyte Result: {absolute_lymphocyte_result_disname}", 'LBT0350']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(absolute_lymphocyte_result_pure) < 1.16 or float(absolute_lymphocyte_result_pure) > 3.18:
-                                    error = [subject, visit, 'Absolute lymphocyte count, Out of normal range?', \
-                                             absolute_lymphocyte_result_form_field_isntance, \
-                                                'According to the result, the value is out of range, please review. (1.16  - 3.18)', \
+                                if float(absolute_lymphocyte_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Absolute lymphocyte count")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) or\
+                                      float(absolute_lymphocyte_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Absolute lymphocyte count")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Absolute lymphocyte count, Out of normal range?', 
+                                             absolute_lymphocyte_form_field_instance, 
+                                                'According to the result, the value is out of range, please review. (1.16  - 3.18)', 
                                                     f"Absolute Lymphocyte Out Normal: {absolute_lymphocyte_disname} - Absolute Lymphocyte Result: {absolute_lymphocyte_result_disname}", 'LBT0350']
                                     lista_revision.append(error)
 
@@ -905,36 +946,40 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer, lista_instan
                         # Revision LBT0150
                         if float(absolute_monocyte_pure) == 1.0:
                             if float(genero) == 1.0:
-                                if float(absolute_monocyte_result_pure) > 0.19 and float(absolute_monocyte_result_pure) < 0.77 :
-                                    error = [subject, visit, 'Absolute monocyte count, Out of normal range?', \
-                                             absolute_monocyte_result_form_field_instance,\
-                                                'According to the result, the value is not out of range, please review. (0.19 - 0.77)', \
+                                if float(absolute_monocyte_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Absolute monocyte count")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0])  and\
+                                      float(absolute_monocyte_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Absolute monocyte count")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0])  :
+                                    error = [subject, visit, 'Absolute monocyte count, Out of normal range?', 
+                                             absolute_monocyte_form_field_instance,
+                                                'According to the result, the value is not out of range, please review. (0.19 - 0.77)', 
                                                     f"Absolute Monocyte Out Normal: - Absolute Monocyte Result: {absolute_monocyte_result_disname}", 'LBT0150']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(absolute_monocyte_result_pure) > 0.29 and float(absolute_monocyte_result_pure) < 0.71:
-                                    error = [subject, visit, 'Absolute monocyte count, Out of normal range?', \
-                                             absolute_monocyte_result_form_field_instance, \
-                                                'According to the result, the value is not out of range, please review. (0.29 - 0.71)', \
+                                if float(absolute_monocyte_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Absolute monocyte count")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0])  and\
+                                      float(absolute_monocyte_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Absolute monocyte count")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0])  :
+                                    error = [subject, visit, 'Absolute monocyte count, Out of normal range?', 
+                                             absolute_monocyte_form_field_instance, 
+                                                'According to the result, the value is not out of range, please review. (0.29 - 0.71)', 
                                                     f"Absolute Monocyte Out Normal: - Absolute Monocyte Result: {absolute_monocyte_result_disname}", 'LBT0150']
                                     lista_revision.append(error)
 
                         # Revision LBT0360
                         elif float(absolute_monocyte_pure) == 0.0:
                             if float(genero) == 1.0:
-                                if float(absolute_monocyte_result_pure) < 0.19 or float(absolute_monocyte_result_pure) > 0.77 :
-                                    error = [subject, visit, 'Absolute monocyte count, Out of normal range?', \
-                                             absolute_monocyte_result_form_field_instance,\
-                                                'According to the result, the value is out of range, please review. (0.19 - 0.77)', \
+                                if float(absolute_monocyte_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Absolute monocyte count")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0]) or\
+                                      float(absolute_monocyte_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Absolute monocyte count")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Absolute monocyte count, Out of normal range?', 
+                                             absolute_monocyte_form_field_instance,
+                                                'According to the result, the value is out of range, please review. (0.19 - 0.77)', 
                                                     f"Absolute Monocyte Out Normal: - Absolute Monocyte Result: {absolute_monocyte_result_disname}", 'LBT0360']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(absolute_monocyte_result_pure) < 0.29 or float(absolute_monocyte_result_pure) > 0.71:
-                                    error = [subject, visit, 'Absolute monocyte count, Out of normal range?', \
-                                             absolute_monocyte_result_form_field_instance,\
-                                                'According to the result, the value is out of range, please review. (0.29 - 0.71)', \
+                                if float(absolute_monocyte_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Absolute monocyte count")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) or\
+                                      float(absolute_monocyte_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Absolute monocyte count")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Absolute monocyte count, Out of normal range?', 
+                                             absolute_monocyte_form_field_instance,
+                                                'According to the result, the value is out of range, please review. (0.29 - 0.71)', 
                                                     f"Absolute Monocyte Out Normal: - Absolute Monocyte Result: {absolute_monocyte_result_disname}", 'LBT0360']
                                     lista_revision.append(error)
                     except Exception as e:
@@ -944,36 +989,40 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer, lista_instan
                         # Revision LBT0160 
                         if float(absolute_eosinophil_pure) == 1.0:
                             if float(genero) == 1.0:
-                                if float(absolute_eosinophil_result_pure) > 0.03 and float(absolute_eosinophil_result_pure) < 0.44 :
-                                    error = [subject, visit, 'Absolute eosinophil count, Out of normal range?',\
-                                             absolute_eosinophil_result_form_field_instance,\
-                                                'According to the result, the value is not out of range, please review. (0.03 - 0.44)', \
+                                if float(absolute_eosinophil_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Absolute eosinophil count")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0])  and\
+                                      float(absolute_eosinophil_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Absolute eosinophil count")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0]):
+                                    error = [subject, visit, 'Absolute eosinophil count, Out of normal range?',
+                                             absolute_eosinophil_form_field_instance, 
+                                                'According to the result, the value is not out of range, please review. (0.03 - 0.44)', 
                                                     f"Absolulte Eosinophil Out Normal: {absolute_eosinophil_disname} - Absolute Eosinophil Result: {absolute_eosinophil_result_disname}", 'LBT0160']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(absolute_eosinophil_result_pure) > 0.03 and float(absolute_eosinophil_result_pure) < 0.27:
-                                    error = [subject, visit, 'Absolute eosinophil count, Out of normal range?'.\
-                                             absolute_eosinophil_result_form_field_instance,\
-                                                'According to the result, the value is not out of range, please review. (0.03 - 0.27 )', \
+                                if float(absolute_eosinophil_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Absolute eosinophil count")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0])  and\
+                                      float(absolute_eosinophil_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Absolute eosinophil count")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0]):
+                                    error = [subject, visit, 'Absolute eosinophil count, Out of normal range?'.
+                                             absolute_eosinophil_form_field_instance,
+                                                'According to the result, the value is not out of range, please review. (0.03 - 0.27 )', 
                                                     f"Absolulte Eosinophil Out Normal: {absolute_eosinophil_disname} - Absolute Eosinophil Result: {absolute_eosinophil_result_disname}", 'LBT0160']
                                     lista_revision.append(error)
 
                         # Revision LBT0370
                         elif float(absolute_eosinophil_pure) == 0.0:
                             if float(genero) == 1.0:
-                                if float(absolute_eosinophil_result_pure) < 0.03 or float(absolute_eosinophil_result_pure) >  0.44:
+                                if float(absolute_eosinophil_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Absolute eosinophil count")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0]) or\
+                                      float(absolute_eosinophil_result_pure) >  float(df_normal_ranges[(df_normal_ranges['field']== "Absolute eosinophil count")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0]):
                                     error = [subject, visit, 'Absolute eosinophil count, Out of normal range?',
-                                             absolute_eosinophil_result_form_field_instance,
+                                             absolute_eosinophil_form_field_instance,
                                                 'According to the result, the value is out of range, please review. (0.03 - 0.44)', 
                                                     f"Absolulte Eosinophil Out Normal: {absolute_eosinophil_disname} - Absolute Eosinophil Result: {absolute_eosinophil_result_disname}", 'LBT0370']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(absolute_eosinophil_result_pure) < 0.03 or float(absolute_eosinophil_result_pure) > 0.27:
-                                    error = [subject, visit, 'Absolute eosinophil count, Out of normal range?', \
-                                             absolute_eosinophil_result_form_field_instance,\
-                                                'According to the result, the value is out of range, please review. (0.03 - 0.27 )', \
+                                if float(absolute_eosinophil_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Absolute eosinophil count")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) or\
+                                      float(absolute_eosinophil_result_pure) >  float(df_normal_ranges[(df_normal_ranges['field']== "Absolute eosinophil count")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0]):
+                                    error = [subject, visit, 'Absolute eosinophil count, Out of normal range?', 
+                                             absolute_eosinophil_form_field_instance,
+                                                'According to the result, the value is out of range, please review. (0.03 - 0.27 )', 
                                                     f"Absolulte Eosinophil Out Normal: {absolute_eosinophil_disname} - Absolute Eosinophil Result: {absolute_eosinophil_result_disname}", 'LBT0370']
                                     lista_revision.append(error)
                     except Exception as e:
@@ -982,19 +1031,21 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer, lista_instan
                     try:
                         # Revision LBT0170
                         if float(absolute_basophil_pure) == 1.0:
-                            if float(absolute_basophil_result_pure) > 0.01 and float(absolute_basophil_result_pure) < 0.05:
-                                error = [subject, visit, 'Absolute basophil count, Out of normal range?',\
-                                         absolute_basophil_result_form_field_isntance,\
-                                            'According to the result, the value is out of range, please review. (0.01 - 0.05 )',\
+                            if float(absolute_basophil_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Absolute basophil count")]['min'].iloc[0]) and\
+                                  float(absolute_basophil_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Absolute basophil count")]['max'].iloc[0]):
+                                error = [subject, visit, 'Absolute basophil count, Out of normal range?',
+                                         absolute_basophil_form_field_isntance,
+                                            'According to the result, the value is out of range, please review. (0.01 - 0.05 )',
                                                   f"Absolute Basophil Out Normal: {absolute_basophil_disname} - Absolute Basophil Result: {absolute_basophil_result_disname}", 'LBT0170']
                                 lista_revision.append(error)
 
                         # Revision LBT0380
                         elif float(absolute_basophil_pure) == 0.0:
-                            if float(absolute_basophil_result_pure) < 0.01 or float(absolute_basophil_result_pure) > 0.05:
-                                error = [subject, visit, 'Absolute basophil count, Out of normal range?', \
-                                         absolute_basophil_result_form_field_isntance,\
-                                            'According to the result, the value is out of range, please review. (0.01 - 0.05 )', \
+                            if float(absolute_basophil_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Absolute basophil count")]['min'].iloc[0]) or\
+                                  float(absolute_basophil_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Absolute basophil count")]['max'].iloc[0]):
+                                error = [subject, visit, 'Absolute basophil count, Out of normal range?', 
+                                         absolute_basophil_form_field_isntance,
+                                            'According to the result, the value is out of range, please review. (0.01 - 0.05 )', 
                                                 f"Absolute Basophil Out Normal: {absolute_basophil_disname} - Absolute Basophil Result: {absolute_basophil_result_disname}", 'LBT0380']
                                 lista_revision.append(error)
                     except Exception as e:
@@ -1004,17 +1055,19 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer, lista_instan
                         # Revision LBT0180
                         if float(RBC_out_normal_pure) == 1.0:
                             if float(genero) == 1.0:
-                                if float(RBC__result_pure) > 4.6 and float(RBC__result_pure) < 6.2 :
+                                if float(RBC__result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Red Blood cell count (RBC)")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0])  and\
+                                      float(RBC__result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Red Blood cell count (RBC)")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0])  :
                                     error = [subject, visit, 'Red Blood cell count (RBC), Out of normal range?',
-                                             RBC__result_form_field_isntance,
+                                             RBC_out_normal_form_field_instance,
                                                 'According to the result, the value is not out of range, please review. (4.6 - 6.2)', 
                                                 f"RBC Out Normal: {RBC_out_normal_disname} - RBC Result: {RBC__result_disname}", 'LBT0180']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(RBC__result_pure) > 4.2 and float(RBC__result_pure) < 5.4:
+                                if float(RBC__result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Red Blood cell count (RBC)")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0])  and\
+                                      float(RBC__result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Red Blood cell count (RBC)")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0]):
                                     error = [subject, visit, 'Red Blood cell count (RBC), Out of normal range?',
-                                              RBC__result_form_field_isntance,
+                                              RBC_out_normal_form_field_instance,
                                                 'According to the result, the value is not out of range, please review. (4.2 - 5.4)' , 
                                                 f"RBC Out Normal: {RBC_out_normal_disname} - RBC Result: {RBC__result_disname}", 'LBT0180']
                                     lista_revision.append(error)
@@ -1022,17 +1075,19 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer, lista_instan
                         # Revision LBT0390
                         elif float(RBC_out_normal_pure) == 0.0:
                             if float(genero) == 1.0:
-                                if float(RBC__result_pure) < 4.6 or float(RBC__result_pure) > 6.2 :
+                                if float(RBC__result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Red Blood cell count (RBC)")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0]) or\
+                                      float(RBC__result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Red Blood cell count (RBC)")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0]):
                                     error = [subject, visit, 'Red Blood cell count (RBC), Out of normal range?',
-                                             RBC__result_form_field_isntance,
+                                             RBC_out_normal_form_field_instance,
                                                 'According to the result, the value is out of range, please review. (4.6 - 6.2)', 
                                                 f"RBC Out Normal: {RBC_out_normal_disname} - RBC Result: {RBC__result_disname}", 'LBT0390']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(RBC__result_pure) < 4.2 or float(RBC__result_pure) > 5.4:
+                                if float(RBC__result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Red Blood cell count (RBC)")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) or\
+                                      float(RBC__result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Red Blood cell count (RBC)")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0]):
                                     error = [subject, visit, 'Red Blood cell count (RBC), Out of normal range?',
-                                             RBC__result_form_field_isntance,
+                                             RBC_out_normal_form_field_instance,
                                                 'According to the result, the value is out of range, please review. (4.2 - 5.4)' , 
                                                 f"RBC Out Normal: {RBC_out_normal_disname} - RBC Result: {RBC__result_disname}", 'LBT0390']
                                     lista_revision.append(error)
@@ -1043,17 +1098,19 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer, lista_instan
                         # Revision LBT0190 
                         if float(Haemoglobin_out_normal_pure) == 1.0:
                             if float(genero) == 1.0:
-                                if float(Haemoglobin_result_pure) > 13.5 and float(Haemoglobin_result_pure) < 18.0 :
+                                if float(Haemoglobin_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Haemoglobin (Hgb)")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0])  and\
+                                      float(Haemoglobin_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Haemoglobin (Hgb)")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0]):
                                     error = [subject, visit, 'Haemoglobin (Hgb), Out of normal range?', 
-                                             Haemoglobin_result_form_field_instance,
+                                             Haemoglobin_out_normal_form_field_isntance,
                                                 'According to the result, the value is not out of range, please review. (13.5 - 18.0)', 
                                                     f"Haemoglobin Out Normal: {Haemoglobin_out_normal_disname} - Haemoglobin Result: {Haemoglobin_result_disname}", 'LBT0190']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(Haemoglobin_result_pure) > 12.0 and float(Haemoglobin_result_pure) < 16.0:
+                                if float(Haemoglobin_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Haemoglobin (Hgb)")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0])  and\
+                                      float(Haemoglobin_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Haemoglobin (Hgb)")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0]):
                                     error = [subject, visit, 'Haemoglobin (Hgb), Out of normal range?', 
-                                             Haemoglobin_result_form_field_instance,
+                                             Haemoglobin_out_normal_form_field_isntance,
                                                 'According to the result, the value is not out of range, please review. (12.0 - 16.0 )', 
                                                     f"Haemoglobin Out Normal: {Haemoglobin_out_normal_disname} - Haemoglobin Result: {Haemoglobin_result_disname}", 'LBT0190']
                                     lista_revision.append(error)
@@ -1061,17 +1118,19 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer, lista_instan
                         # Revision LBT0400
                         elif float(Haemoglobin_out_normal_pure) == 0.0:
                             if float(genero) == 1.0:
-                                if float(Haemoglobin_result_pure) < 13.5 or float(Haemoglobin_result_pure) > 18.0 :
+                                if float(Haemoglobin_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Haemoglobin (Hgb)")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0]) or\
+                                      float(Haemoglobin_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Haemoglobin (Hgb)")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0]) :
                                     error = [subject, visit, 'Haemoglobin (Hgb), Out of normal range?', 
-                                             Haemoglobin_result_form_field_instance,
-                                             'According to the result, the value is out of range, please review. (13.5 - 18.0 )', \
+                                             Haemoglobin_out_normal_form_field_isntance,
+                                             'According to the result, the value is out of range, please review. (13.5 - 18.0 )', 
                                                 f"Haemoglobin Out Normal: {Haemoglobin_out_normal_disname} - Haemoglobin Result: {Haemoglobin_result_disname}", 'LBT0400']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(Haemoglobin_result_pure) < 12.0 or float(Haemoglobin_result_pure) > 16.0:
-                                    error = [subject, visit, 'Haemoglobin (Hgb), Out of normal range?', \
-                                             Haemoglobin_result_form_field_instance,\
+                                if float(Haemoglobin_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Haemoglobin (Hgb)")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) or\
+                                      float(Haemoglobin_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Haemoglobin (Hgb)")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Haemoglobin (Hgb), Out of normal range?', 
+                                             Haemoglobin_out_normal_form_field_isntance,
                                                 'According to the result, the value is out of range, please review. (12.0 - 16.0)', 
                                                 f"Haemoglobin Out Normal: {Haemoglobin_out_normal_disname} - Haemoglobin Result: {Haemoglobin_result_disname}", 'LBT0400']
                                     lista_revision.append(error)
@@ -1082,36 +1141,40 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer, lista_instan
                         # Revision LBT0200 
                         if float(Hematocrit_out_normal_pure) == 1.0:
                             if float(genero) == 1.0:
-                                if float(Hematocrit_result_pure) > 40.0 and float(Hematocrit_result_pure) < 54.0 :
-                                    error = [subject, visit, 'Hematocrit, Out of normal range?',\
-                                             Hematocrit_result_form_field_isntance,\
-                                                'According to the result, the value is not out of range, please review. (40.0 - 54.0)', \
+                                if float(Hematocrit_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Hematocrit")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0])  and\
+                                      float(Hematocrit_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Hematocrit")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0])  :
+                                    error = [subject, visit, 'Hematocrit, Out of normal range?',
+                                             Hematocrit_out_normal_form_field_isntance,
+                                                'According to the result, the value is not out of range, please review. (40.0 - 54.0)', 
                                                     f"Hematocrit Out Normal: {Hematocrit_out_normal_disname} - Hematocrit Result: {Hematocrit_result_disname}", 'LBT0200']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(Hematocrit_result_pure) > 38.0 and float(Hematocrit_result_pure) < 48.0:
-                                    error = [subject, visit, 'Hematocrit, Out of normal range?', \
-                                             Hematocrit_result_form_field_isntance,\
-                                                'According to the result, the value is not out of range, please review. (38.0 - 48.0)', \
+                                if float(Hematocrit_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Hematocrit")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0])  and\
+                                      float(Hematocrit_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Hematocrit")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0])  :
+                                    error = [subject, visit, 'Hematocrit, Out of normal range?', 
+                                             Hematocrit_out_normal_form_field_isntance,
+                                                'According to the result, the value is not out of range, please review. (38.0 - 48.0)', 
                                                     f"Hematocrit Out Normal: {Hematocrit_out_normal_disname} - Hematocrit Result: {Hematocrit_result_disname}", 'LBT0200']
                                     lista_revision.append(error)
 
                         # Revision LBT0410
                         elif float(Hematocrit_out_normal_pure) == 0.0:
                             if float(genero) == 1.0:
-                                if float(Hematocrit_result_pure) < 40.0 or float(Hematocrit_result_pure) > 54.0 :
-                                    error = [subject, visit, 'Hematocrit, Out of normal range?', \
-                                             Hematocrit_result_form_field_isntance,\
-                                                'According to the result, the value is out of range, please review. (40.0 - 54.0)', \
+                                if float(Hematocrit_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Hematocrit")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0]) or\
+                                      float(Hematocrit_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Hematocrit")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Hematocrit, Out of normal range?', 
+                                             Hematocrit_out_normal_form_field_isntance,
+                                                'According to the result, the value is out of range, please review. (40.0 - 54.0)', 
                                                     f"Hematocrit Out Normal: {Hematocrit_out_normal_disname} - Hematocrit Result: {Hematocrit_result_disname}", 'LBT0410']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(Hematocrit_result_pure) < 38.0 or float(Hematocrit_result_pure) > 48.0:
-                                    error = [subject, visit, 'Hematocrit, Out of normal range?', \
-                                             Hematocrit_result_form_field_isntance,\
-                                                'According to the result, the value is out of range, please review. (38.0 - 48.0 )', \
+                                if float(Hematocrit_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Hematocrit")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) or\
+                                      float(Hematocrit_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Hematocrit")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Hematocrit, Out of normal range?', 
+                                             Hematocrit_out_normal_form_field_isntance,
+                                                'According to the result, the value is out of range, please review. (38.0 - 48.0 )', 
                                                     f"Hematocrit Out Normal: {Hematocrit_out_normal_disname} - Hematocrit Result: {Hematocrit_result_disname}", 'LBT0410']
                                     lista_revision.append(error)
                     except Exception as e:
@@ -1121,35 +1184,39 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer, lista_instan
                         # Revision LBT0210 
                         if float(MCV_out_normal_pure) == 1.0:
                             if float(genero) == 1.0:
-                                if float(MCV_result_pure) > 86.0 and float(MCV_result_pure) < 96.0 :
-                                    error = [subject, visit, 'Mean Corpuscular Volume (MCV), Out of normal range?', \
-                                             MCV_result_form_field_instance,\
-                                                'According to the result, the value is not out of range, please review. (86.0 - 96.0)', \
+                                if float(MCV_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Mean Corpuscular Volume (MCV)")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0])  and\
+                                      float(MCV_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Mean Corpuscular Volume (MCV)")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0]):
+                                    error = [subject, visit, 'Mean Corpuscular Volume (MCV), Out of normal range?', 
+                                             MCV_out_normal_form_field_instance,
+                                                'According to the result, the value is not out of range, please review. (86.0 - 96.0)', 
                                                     f"Mean Corpuscular Volume Out Normal: {MCV_out_normal_disname} - Mean Corpuscular Volume Result: {MCV_result_disname}", 'LBT0210']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(MCV_result_pure) > 86.0 and float(MCV_result_pure) < 96.0:
-                                    error = [subject, visit, 'Mean Corpuscular Volume (MCV), Out of normal range?',\
-                                             MCV_result_form_field_instance,\
-                                                'According to the result, the value is not out of range, please review. (86.0 - 96.0)', \
+                                if float(MCV_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Mean Corpuscular Volume (MCV)")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0])  and\
+                                      float(MCV_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Mean Corpuscular Volume (MCV)")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0]):
+                                    error = [subject, visit, 'Mean Corpuscular Volume (MCV), Out of normal range?',
+                                             MCV_out_normal_form_field_instance,
+                                                'According to the result, the value is not out of range, please review. (86.0 - 96.0)', 
                                                     f"Mean Corpuscular Volume Out Normal: {MCV_out_normal_disname} - Mean Corpuscular Volume Result: {MCV_result_disname}", 'LBT0210']
                                     lista_revision.append(error)
 
                         # Revision LBT0420
                         elif float(MCV_out_normal_pure) == 0.0:
                             if float(genero) == 1.0:
-                                if float(MCV_result_pure) < 86.0 or float(MCV_result_pure) > 96.0 :
-                                    error = [subject, visit, 'Mean Corpuscular Volume (MCV), Out of normal range?', \
-                                             MCV_result_form_field_instance,\
-                                                'According to the result, the value is out of range, please review. (86.0 - 96.0 )', \
+                                if float(MCV_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Mean Corpuscular Volume (MCV)")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0]) or\
+                                      float(MCV_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Mean Corpuscular Volume (MCV)")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Mean Corpuscular Volume (MCV), Out of normal range?', 
+                                             MCV_out_normal_form_field_instance,
+                                                'According to the result, the value is out of range, please review. (86.0 - 96.0 )', 
                                                     f"Mean Corpuscular Volume Out Normal: {MCV_out_normal_disname} - Mean Corpuscular Volume Result: {MCV_result_disname}", 'LBT0420']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(MCV_result_pure) < 86.0 or float(MCV_result_pure) > 96.0:
-                                    error = [subject, visit, 'Mean Corpuscular Volume (MCV), Out of normal range?',\
-                                             MCV_result_form_field_instance,\
+                                if float(MCV_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Mean Corpuscular Volume (MCV)")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) or\
+                                      float(MCV_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Mean Corpuscular Volume (MCV)")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Mean Corpuscular Volume (MCV), Out of normal range?',
+                                             MCV_out_normal_form_field_instance,
                                                 'According to the result, the value is out of range, please review. (86.0 - 96.0)' , 
                                                 f"Mean Corpuscular Volume Out Normal: {MCV_out_normal_disname} - Mean Corpuscular Volume Result: {MCV_result_disname}", 'LBT0420']
                                     lista_revision.append(error)
@@ -1160,36 +1227,40 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer, lista_instan
                         # Revision LBT0220 
                         if float(MCH_out_normal_pure) == 1.0:
                             if float(genero) == 1.0:
-                                if float(MCH_result_pure) > 25.0 and float(MCH_result_pure) < 31.0 :
+                                if float(MCH_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Mean Corpuscular Haemoglobin (MCH)")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0])  and\
+                                      float(MCH_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Mean Corpuscular Haemoglobin (MCH)")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0])  :
                                     error = [subject, visit, 'Mean Corpuscular Haemoglobin (MCH), Out of normal range?',
-                                             MCH_result_form_field_instance,\
-                                                'According to the result, the value is not out of range, please review. (86.0 - 96.0)', \
+                                             MCH_out_normal_form_field_instance,
+                                                'According to the result, the value is not out of range, please review. (86.0 - 96.0)', 
                                                     f"Mean Corpuscular Haemoglobin Out Normal: {MCH_out_normal_disname} - Mean Corpuscular Haemoglobin Result: {MCH_result_disname}", 'LBT0220']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(MCH_result_pure) > 25.0 and float(MCH_result_pure) < 31.0:
-                                    error = [subject, visit, 'Mean Corpuscular Haemoglobin (MCH), Out of normal range? ',\
-                                             MCH_result_form_field_instance,\
-                                                'According to the result, the value is not out of range, please review. (86.0 - 96.0)', \
+                                if float(MCH_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Mean Corpuscular Haemoglobin (MCH)")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0])  and\
+                                      float(MCH_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Mean Corpuscular Haemoglobin (MCH)")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0])  :
+                                    error = [subject, visit, 'Mean Corpuscular Haemoglobin (MCH), Out of normal range? ',
+                                             MCH_out_normal_form_field_instance,
+                                                'According to the result, the value is not out of range, please review. (86.0 - 96.0)', 
                                                     f"Mean Corpuscular Haemoglobin Out Normal: {MCH_out_normal_disname} - Mean Corpuscular Haemoglobin Result: {MCH_result_disname}", 'LBT0220']
                                     lista_revision.append(error)
 
                         # Revision LBT0430
                         elif float(MCH_out_normal_pure) == 0.0:
                             if float(genero) == 1.0:
-                                if float(MCH_result_pure) < 25.0 or float(MCH_result_pure) > 31.0 :
-                                    error = [subject, visit, 'Mean Corpuscular Haemoglobin (MCH), Out of normal range? ',\
-                                             MCH_result_form_field_instance,\
-                                                'According to the result, the value is out of range, please review. (86.0 - 96.0)', \
+                                if float(MCH_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Mean Corpuscular Haemoglobin (MCH)")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0]) or\
+                                      float(MCH_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Mean Corpuscular Haemoglobin (MCH)")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Mean Corpuscular Haemoglobin (MCH), Out of normal range? ',
+                                             MCH_out_normal_form_field_instance,
+                                                'According to the result, the value is out of range, please review. (86.0 - 96.0)', 
                                                     f"Mean Corpuscular Haemoglobin Out Normal: {MCH_out_normal_disname} - Mean Corpuscular Haemoglobin Result: {MCH_result_disname}", 'LBT0430']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(MCH_result_pure) < 25.0 or float(MCH_result_pure) > 31.0:
-                                    error = [subject, visit, 'Mean Corpuscular Haemoglobin (MCH), Out of normal range? ', \
-                                             MCH_result_form_field_instance,\
-                                                'According to the result, the value is out of range, please review. (86.0 - 96.0)' , \
+                                if float(MCH_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Mean Corpuscular Haemoglobin (MCH)")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) or\
+                                      float(MCH_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Mean Corpuscular Haemoglobin (MCH)")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Mean Corpuscular Haemoglobin (MCH), Out of normal range? ', 
+                                             MCH_out_normal_form_field_instance,
+                                                'According to the result, the value is out of range, please review. (86.0 - 96.0)' , 
                                                     f"Mean Corpuscular Haemoglobin Out Normal: {MCH_out_normal_disname} - Mean Corpuscular Haemoglobin Result: {MCH_result_disname}", 'LBT0430']
                                     lista_revision.append(error)
                     except Exception as e:
@@ -1199,36 +1270,40 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer, lista_instan
                         # Revision LBT0230
                         if float(MCHC_out_normal_pure) == 1.0:
                             if float(genero) == 1.0:
-                                if float(MCHC_result_pure) > 32.0 and float(MCHC_result_pure) < 38.0 :
-                                    error = [subject, visit, 'Mean Corpuscular Haemoglobin Concentration (MCHC), Out of normal range? ',\
-                                             MCHC_result_form_field_instance,\
-                                                'According to the result, the value is not out of range, please review. (32.0 - 38.0 )', \
+                                if float(MCHC_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Mean Corpuscular Haemoglobin Concentration (MCHC)")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0]) and\
+                                      float(MCHC_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Mean Corpuscular Haemoglobin Concentration (MCHC)")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Mean Corpuscular Haemoglobin Concentration (MCHC), Out of normal range? ',
+                                             MCH_out_normal_form_field_instance,
+                                                'According to the result, the value is not out of range, please review. (32.0 - 38.0 )', 
                                                     f"Mean Corpuscular Haemoglobin Concentration Out Normal: {MCHC_out_normal_disname} - Mean Corpuscular Haemoglobin Concentration Result: {MCHC_result_disname}", 'LBT0230']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(MCHC_result_pure) > 32.0 and float(MCHC_result_pure) < 38.0:
-                                    error = [subject, visit, 'Mean Corpuscular Haemoglobin Concentration (MCHC), Out of normal range?',\
-                                             MCHC_result_form_field_instance,\
-                                                'According to the result, the value is not out of range, please review. (32.0 - 38.0)', \
+                                if float(MCHC_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Mean Corpuscular Haemoglobin Concentration (MCHC)")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) and\
+                                      float(MCHC_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Mean Corpuscular Haemoglobin Concentration (MCHC)")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Mean Corpuscular Haemoglobin Concentration (MCHC), Out of normal range?',
+                                             MCH_out_normal_form_field_instance,
+                                                'According to the result, the value is not out of range, please review. (32.0 - 38.0)', 
                                                     f"Mean Corpuscular Haemoglobin Concentration Out Normal: {MCHC_out_normal_disname} - Mean Corpuscular Haemoglobin Concentration Result: {MCHC_result_disname}", 'LBT0230']
                                     lista_revision.append(error)
 
                         # Revision LBT0440
                         elif float(MCHC_out_normal_pure) == 0.0:
                             if float(genero) == 1.0:
-                                if float(MCHC_result_pure) < 32.0 or float(MCHC_result_pure) > 38.0 :
-                                    error = [subject, visit, 'Mean Corpuscular Haemoglobin Concentration (MCHC), Out of normal range? ',\
-                                             MCHC_result_form_field_instance,\
-                                                'According to the result, the value is out of range, please review. (32.0 - 38.0)', \
+                                if float(MCHC_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Mean Corpuscular Haemoglobin Concentration (MCHC)")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0]) or\
+                                      float(MCHC_result_pure) >  float(df_normal_ranges[(df_normal_ranges['field']== "Mean Corpuscular Haemoglobin Concentration (MCHC)")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Mean Corpuscular Haemoglobin Concentration (MCHC), Out of normal range? ',
+                                             MCH_out_normal_form_field_instance,
+                                                'According to the result, the value is out of range, please review. (32.0 - 38.0)', 
                                                     f"Mean Corpuscular Haemoglobin Concentration Out Normal: {MCHC_out_normal_disname} - Mean Corpuscular Haemoglobin Concentration Result: {MCHC_result_disname}", 'LBT0440']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(MCHC_result_pure) < 32.0 or float(MCHC_result_pure) > 38.0:
-                                    error = [subject, visit, 'Mean Corpuscular Haemoglobin Concentration (MCHC), Out of normal range?',\
-                                             MCHC_result_form_field_instance,\
-                                                'According to the result, the value is out of range, please review. (32.0 - 38.0)',\
+                                if float(MCHC_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Mean Corpuscular Haemoglobin Concentration (MCHC)")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) or\
+                                      float(MCHC_result_pure) >  float(df_normal_ranges[(df_normal_ranges['field']== "Mean Corpuscular Haemoglobin Concentration (MCHC)")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Mean Corpuscular Haemoglobin Concentration (MCHC), Out of normal range?',
+                                             MCH_out_normal_form_field_instance,
+                                                'According to the result, the value is out of range, please review. (32.0 - 38.0)',
                                                       f"Mean Corpuscular Haemoglobin Concentration Out Normal: {MCHC_out_normal_disname} - Mean Corpuscular Haemoglobin Concentration Result: {MCHC_result_disname}", 'LBT0440']
                                     lista_revision.append(error)
                     except Exception as e:
@@ -1238,36 +1313,40 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer, lista_instan
                         # Revision LBT0240 
                         if float(platelet_count_out_normal_pure) == 1.0:
                             if float(genero) == 1.0:
-                                if float(platelet_count_result_pure) > 150.0 and float(platelet_count_result_pure) < 400.0:
-                                    error = [subject, visit, 'Platelet Count, Out of normal range? ', \
-                                             platelet_count_result_form_field_instance,\
-                                                'According to the result, the value is not out of range, please review. (150.0 - 400.0)',\
+                                if float(platelet_count_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Platelet Count")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0])  and\
+                                      float(platelet_count_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Platelet Count")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Platelet Count, Out of normal range? ', 
+                                             platelet_count_out_normal_form_field_instance,
+                                                'According to the result, the value is not out of range, please review. (150.0 - 400.0)',
                                                       f"Platelet Count Out Normal: {platelet_count_out_normal_disname} - Platelet Count Result: {platelet_count_result_disname}", 'LBT0240']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(platelet_count_result_pure) > 186.0 and float(platelet_count_result_pure) < 353.0:
-                                    error = [subject, visit, 'Platelet Count, Out of normal range? ', \
-                                             platelet_count_result_form_field_instance,\
-                                                'According to the result, the value is not out of range, please review. (186.0 - 353.0)', \
+                                if float(platelet_count_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Platelet Count")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0])  and\
+                                      float(platelet_count_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Platelet Count")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Platelet Count, Out of normal range? ', 
+                                             platelet_count_out_normal_form_field_instance,
+                                                'According to the result, the value is not out of range, please review. (186.0 - 353.0)', 
                                                     f"Platelet Count Out Normal: {platelet_count_out_normal_disname} - Platelet Count Result: {platelet_count_result_disname}", 'LBT0240']
                                     lista_revision.append(error)
 
                         # Revision LBT0450 
                         elif float(platelet_count_out_normal_pure) == 0.0:
                             if float(genero) == 1.0:
-                                if float(platelet_count_result_pure) < 150.0 or float(platelet_count_result_pure) > 400.0:
-                                    error = [subject, visit, 'Platelet Count, Out of normal range? ', \
-                                             platelet_count_result_form_field_instance,\
-                                                'According to the result, the value is out of range, please review. (150.0 - 400.0)', \
+                                if float(platelet_count_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Platelet Count")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0]) or\
+                                      float(platelet_count_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Platelet Count")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0]):
+                                    error = [subject, visit, 'Platelet Count, Out of normal range? ', 
+                                             platelet_count_out_normal_form_field_instance,
+                                                'According to the result, the value is out of range, please review. (150.0 - 400.0)', 
                                                     f"Platelet Count Out Normal: {platelet_count_out_normal_disname} - Platelet Count Result: {platelet_count_result_disname}", 'LBT0450']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(platelet_count_result_pure) < 186.0 or float(platelet_count_result_pure) > 353.0:
-                                    error = [subject, visit, 'Platelet Count, Out of normal range? ', \
-                                             platelet_count_result_form_field_instance,\
-                                                'According to the result, the value is out of range, please review. (186.0 - 353.0)', \
+                                if float(platelet_count_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Platelet Count")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) or\
+                                      float(platelet_count_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Platelet Count")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0]):
+                                    error = [subject, visit, 'Platelet Count, Out of normal range? ', 
+                                             platelet_count_out_normal_form_field_instance,
+                                                'According to the result, the value is out of range, please review. (186.0 - 353.0)', 
                                                     f"Platelet Count Out Normal: {platelet_count_out_normal_disname} - Platelet Count Result: {platelet_count_result_disname}", 'LBT0450']
                                     lista_revision.append(error)
                     except Exception as e:
@@ -1277,36 +1356,40 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer, lista_instan
                         # Revision LBT0250
                         if float(MPV_out_normal_pure) == 1.0:
                             if float(genero) == 1.0:
-                                if float(MPV_result_pure) > 9.7 and float(MPV_result_pure) < 11.9:
-                                    error = [subject, visit, 'Mean Platelet volume (MPV), Out of normal range? ',\
-                                             MPV_result_form_field_instance,\
-                                                'According to the result, the value is not out of range, please review. (9.7 - 11.9)', \
+                                if float(MPV_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Mean Platelet volume (MPV)")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0]) and\
+                                      float(MPV_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Mean Platelet volume (MPV)")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Mean Platelet volume (MPV), Out of normal range? ',
+                                             MPV_out_normal_form_field_instance,
+                                                'According to the result, the value is not out of range, please review. (9.7 - 11.9)', 
                                                     f"Mean Platelet volume Out Normal: {MPV_out_normal_disname} - Mean Platelet volume Result: {MPV_result_disname}", 'LBT0250']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(MPV_result_pure) > 9.6 and float(MPV_result_pure) < 12.0:
-                                    error = [subject, visit, 'Mean Platelet volume (MPV), Out of normal range? ', \
-                                             MPV_result_form_field_instance,\
-                                                'According to the result, the value is not out of range, please review. (9.6 - 12.0)', \
+                                if float(MPV_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Mean Platelet volume (MPV)")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) and\
+                                      float(MPV_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Mean Platelet volume (MPV)")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0]) :
+                                    error = [subject, visit, 'Mean Platelet volume (MPV), Out of normal range? ', 
+                                             MPV_out_normal_form_field_instance,
+                                                'According to the result, the value is not out of range, please review. (9.6 - 12.0)', 
                                                     f"Mean Platelet volume Out Normal: {MPV_out_normal_disname} - Mean Platelet volume Result: {MPV_result_disname}", 'LBT0250']
                                     lista_revision.append(error)
 
                         # Revision LBT0460
                         elif float(MPV_out_normal_pure) == 0.0:
                             if float(genero) == 1.0:
-                                if float(MPV_result_pure) < 9.7 or float(MPV_result_pure) > 11.9:
-                                    error = [subject, visit, 'Mean Platelet volume (MPV), Out of normal range? ',\
-                                             MPV_result_form_field_instance,\
-                                                'According to the result, the value is out of range, please review. (9.7 - 11.9)', \
+                                if float(MPV_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Mean Platelet volume (MPV)")  & (df_normal_ranges['gender']== 1)]['min'].iloc[0]) or\
+                                      float(MPV_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Mean Platelet volume (MPV)")  & (df_normal_ranges['gender']== 1)]['max'].iloc[0]):
+                                    error = [subject, visit, 'Mean Platelet volume (MPV), Out of normal range? ',
+                                             MPV_out_normal_form_field_instance,
+                                                'According to the result, the value is out of range, please review. (9.7 - 11.9)', 
                                                     f"Mean Platelet volume Out Normal: {MPV_out_normal_disname} - Mean Platelet volume Result: {MPV_result_disname}", 'LBT0460']
                                     lista_revision.append(error)
                                 
                             elif float(genero) == 2.0:
-                                if float(MPV_result_pure) < 9.6 or float(MPV_result_pure) > 12.0:
-                                    error = [subject, visit, 'Mean Platelet volume (MPV), Out of normal range? ',\
-                                             MPV_result_form_field_instance,\
-                                                'According to the result, the value is out of range, please review. (9.6 - 12.0)',\
+                                if float(MPV_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Mean Platelet volume (MPV)")  & (df_normal_ranges['gender']== 2)]['min'].iloc[0]) or\
+                                      float(MPV_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Mean Platelet volume (MPV)")  & (df_normal_ranges['gender']== 2)]['max'].iloc[0]):
+                                    error = [subject, visit, 'Mean Platelet volume (MPV), Out of normal range? ',
+                                             MPV_out_normal_form_field_instance,
+                                                'According to the result, the value is out of range, please review. (9.6 - 12.0)',
                                                       f"Mean Platelet volume Out Normal: {MPV_out_normal_disname} - Mean Platelet volume Result: {MPV_result_disname}", 'LBT0460']
                                     lista_revision.append(error)
                     except Exception as e:
@@ -1384,9 +1467,9 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer, lista_instan
                             if mi_cuenta != 0:
                                 pass
                             else:
-                                error = [subject, visit, 'Blood Sample Collected', \
-                                         blood_sample_collected_form_field_instance,\
-                                            'If Blood Sample Collected is checked as "Yes", not all laboratory tests can be "not done"', \
+                                error = [subject, visit, 'Blood Sample Collected', 
+                                         blood_sample_collected_form_field_instance,
+                                            'If Blood Sample Collected is checked as "Yes", not all laboratory tests can be "not done"', 
                                                 blood_sample_collected_disname, 'LBT0260']
                                 lista_revision.append(error)
                     except Exception as e:
