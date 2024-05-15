@@ -297,11 +297,11 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer, lista_instancias_
                             
                         try:
                             dif = float((datetime.strptime(time_dosing_cpg_administration , '%H:%M') - datetime.strptime(Pre_dose_pure, '%H:%M')).total_seconds() / 60)
-                            if dif < 0.0 or dif > 60.0:
+                            if dif < 0.0 or dif > 90.0:
                                     
                                 error = [subject, visit, 'Pre dose, Time', Pre_dose_form_field_instance,\
-                                             'Pre dose Time is not within 60 minutes before the study treatment administration time.', \
-                                                f'Pre dose, Time: {Pre_dose_pure} - dose time administration{time_dosing_cpg_administration}', 'PD0060']
+                                             'Pre dose Time is not within 90 minutes before the study treatment administration time.', \
+                                                f'Pre dose, Time: {Pre_dose_pure} - dose time administration: {time_dosing_cpg_administration}', 'PD0060']
                                 lista_revision.append(error)
 
                         except Exception as e:
@@ -317,7 +317,7 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer, lista_instancias_
                                     
                                 error = [subject, visit, '8h, Time', H8_form_field_instance,\
                                              'The time selected should be less than 8h15 and greater than 7H45 min after the study treatment administration', \
-                                                f'8h, Time: {H8_pure} - dose time administration{time_dosing_cpg_administration}', 'PD0070']
+                                                f'8h, Time: {H8_pure} - dose time administration: {time_dosing_cpg_administration}', 'PD0070']
                                 lista_revision.append(error)
 
                         except Exception as e:
@@ -331,11 +331,11 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer, lista_instancias_
                         try:
                             dif_M = float((datetime.strptime(time_dosing_miltefosine_administration , '%H:%M') - datetime.strptime(Pre_dose_pure, '%H:%M')).total_seconds() / 60)
                            
-                            if dif_M < 0.0 or dif_M > 60.0:
+                            if dif_M < 0.0 or dif_M > 90.0:
                                     
                                 error = [subject, visit, 'Pre dose, Time', Pre_dose_form_field_instance,\
-                                             'Pre dose Time is not within 60 minutes before the study treatment administration time.', \
-                                                f'Pre dose, Time: {Pre_dose_pure} - dose time administration{time_dosing_miltefosine_administration}', 'PD0060']
+                                             'Pre dose Time is not within 90 minutes before the study treatment administration time.', \
+                                                f'Pre dose, Time: {Pre_dose_pure} - dose time administration: {time_dosing_miltefosine_administration}', 'PD0060']
                                 lista_revision.append(error)
 
                         except Exception as e:
@@ -353,7 +353,7 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer, lista_instancias_
                                     
                                 error = [subject, visit, '8h, Time', H8_form_field_instance,\
                                              'The time selected should be less than 8h15 and greater than 7H45 min after the study treatment administration', \
-                                                f'8h, Time: {H8_pure} - dose time administration{time_dosing_miltefosine_administration}', 'PD0070']
+                                                f'8h, Time: {H8_pure} - dose time administration: {time_dosing_miltefosine_administration}', 'PD0070']
                                 lista_revision.append(error)
 
                         except Exception as e:

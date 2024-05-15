@@ -317,11 +317,11 @@ def mRNA_markers(df_root, path_excel_writer, lista_instancias_abiertas):
                             
                         try:
                             dif = float((datetime.strptime(time_dosing_cpg_administration , '%H:%M') - datetime.strptime(Pre_dose_time_pure, '%H:%M')).total_seconds() / 60)
-                            if dif < 0.0 or dif > 60.0:
+                            if dif < 0.0 or dif > 90.0:
                                     
                                 error = [subject, visit, 'Pre dose, Time', Pre_dose_time_form_field_instance,\
-                                             'Pre dose Time is not within 60 minutes before the study treatment administration time.', \
-                                                f'Pre dose, Time: {Pre_dose_time_pure} - dose time administration{time_dosing_cpg_administration}', 'MR0060']
+                                             'Pre dose Time is not within 90 minutes before the study treatment administration time.', \
+                                                f'Pre dose, Time: {Pre_dose_time_pure} - dose time administration: {time_dosing_cpg_administration}', 'MR0060']
                                 lista_revision.append(error)
 
                         except Exception as e:
@@ -338,7 +338,7 @@ def mRNA_markers(df_root, path_excel_writer, lista_instancias_abiertas):
                                     
                                 error = [subject, visit, '04-hours post dose, Time', hours_04_post_dose_form_field_instance,\
                                              '4-hours post dose, Time  is not within 4 hours (+/- 15 minutes) minutes after the study treatment administration time.', \
-                                                f'4-hours post dose: {hours_04_post_dose_pure} - dose time administration{time_dosing_cpg_administration}', 'MR0070']
+                                                f'4-hours post dose: {hours_04_post_dose_pure} - dose time administration: {time_dosing_cpg_administration}', 'MR0070']
                                 lista_revision.append(error)
 
                         except Exception as e:
@@ -355,7 +355,7 @@ def mRNA_markers(df_root, path_excel_writer, lista_instancias_abiertas):
                                     
                                 error = [subject, visit, '12-hours post dose', hours_12_post_dose_form_field_instance,\
                                              '12-hours post dose, Time  is not within 12 hours (+/- 15 minutes) minutes after the study treatment administration time.', \
-                                                f'12-hours post dose: {hours_12_post_dose_pure} - dose time administration{time_dosing_cpg_administration}', 'MR0080']
+                                                f'12-hours post dose: {hours_12_post_dose_pure} - dose time administration: {time_dosing_cpg_administration}', 'MR0080']
                                 lista_revision.append(error)
 
                         except Exception as e:
@@ -369,11 +369,11 @@ def mRNA_markers(df_root, path_excel_writer, lista_instancias_abiertas):
                         try:
                             dif_M = float((datetime.strptime(time_dosing_miltefosine_administration , '%H:%M') - datetime.strptime(Pre_dose_time_pure, '%H:%M')).total_seconds() / 60)
         
-                            if dif_M < 0.0 or dif_M > 60.0:
+                            if dif_M < 0.0 or dif_M > 90.0:
                                     
                                 error = [subject, visit, 'Pre dose, Time', Pre_dose_time_form_field_instance,\
-                                             'Pre dose Time is not within 60 minutes before the study treatment administration time.', \
-                                                f'Pre dose, Time: {Pre_dose_time_pure} - dose time administration{time_dosing_miltefosine_administration}', 'MR0060']
+                                             'Pre dose Time is not within 90 minutes before the study treatment administration time.', \
+                                                f'Pre dose, Time: {Pre_dose_time_pure} - dose time administration: {time_dosing_miltefosine_administration}', 'MR0060']
                                 lista_revision.append(error)
 
                         except Exception as e:
@@ -391,7 +391,7 @@ def mRNA_markers(df_root, path_excel_writer, lista_instancias_abiertas):
                                     
                                 error = [subject, visit, '04-hours post dose, Time', hours_04_post_dose_form_field_instance,\
                                              '4-hours post dose, Time  is not within 4 hours (+/- 15 minutes) minutes after the study treatment administration time.', \
-                                                f'4-hours post dose: {hours_04_post_dose_pure} - dose time administration{time_dosing_miltefosine_administration}', 'MR0070']
+                                                f'4-hours post dose: {hours_04_post_dose_pure} - dose time administration: {time_dosing_miltefosine_administration}', 'MR0070']
                                 lista_revision.append(error)
 
                         except Exception as e:
@@ -409,7 +409,7 @@ def mRNA_markers(df_root, path_excel_writer, lista_instancias_abiertas):
                                     
                                 error = [subject, visit, '12-hours post dose', hours_12_post_dose_form_field_instance,\
                                              '12-hours post dose, Time  is not within 12 hours (+/- 15 minutes) minutes after the study treatment administration time.', \
-                                                f'12-hours post dose: {hours_12_post_dose_pure} - dose time administration{time_dosing_miltefosine_administration}', 'MR0080']
+                                                f'12-hours post dose: {hours_12_post_dose_pure} - dose time administration: {time_dosing_miltefosine_administration}', 'MR0080']
                                 lista_revision.append(error)
 
                         except Exception as e:

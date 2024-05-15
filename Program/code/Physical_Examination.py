@@ -498,9 +498,10 @@ def physical_examination(df_root, path_excel_writer, lista_instancias_abiertas):
                         if str(time_dosing_cpg_administration) != 'nan':
                             try:
                                 dif = float((datetime.strptime(time_dosing_cpg_administration, '%H:%M') - datetime.strptime(predose_clinical_time_pure, '%H:%M')).total_seconds() / 60)
-                                if dif < 0.0 or dif > 60.0:
+                                if dif < 0.0 or dif > 90.0:
+                                    print(dif)
                                     error = [subject, visit, 'Pre dose, Time', predose_clinical_time_form_field_instnance,\
-                                             'The time selected should be less than 60 min before the study treatment administration', \
+                                             'The time selected should be less than 90 min before the study treatment administration', \
                                                 f'Pre dose, Time: {predose_clinical_time_pure} - dose time administration: {time_dosing_cpg_administration}', 'PE0120']
                                     lista_revision.append(error)
                             except Exception as e:
@@ -515,7 +516,7 @@ def physical_examination(df_root, path_excel_writer, lista_instancias_abiertas):
                                 if  dif_two > 135.0 or dif_two < 105.0:
                                     error = [subject, visit, '2-hours post dose, Time', two_hours_time_fomr_field_instance,\
                                              'The time selected should be less than 2h15 and greater than 1h45 after the study treatment administration', \
-                                                f'2-hours post dose,Time: {two_hours_time_pure} - dose time administration: {time_dosing_cpg_administration}', 'PE0120']
+                                                f'2-hours post dose,Time: {two_hours_time_pure} - dose time administration: {time_dosing_cpg_administration}', 'PE0130']
                                     lista_revision.append(error)
 
                             except Exception as e:
@@ -558,7 +559,8 @@ def physical_examination(df_root, path_excel_writer, lista_instancias_abiertas):
                             try:
                                 dif_M = float((datetime.strptime(time_dosing_miltefosine_administration, '%H:%M') - datetime.strptime(predose_clinical_time_pure, '%H:%M')).total_seconds() / 60)
                                 
-                                if dif_M < 0.0 or dif_M > 60.0:
+                                if dif_M < 0.0 or dif_M > 90.0:
+                                    print(dif_M)
                                     error = [subject, visit, 'Pre dose, Time', predose_clinical_time_form_field_instnance,\
                                              'The time selected should be less than 60 min before the study treatment administration', \
                                                 f'Pre dose, Time: {predose_clinical_time_pure} - dose time administration: {time_dosing_miltefosine_administration}', 'PE0120']

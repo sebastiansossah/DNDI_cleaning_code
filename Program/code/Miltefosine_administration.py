@@ -84,7 +84,7 @@ def miltefosine_administration(df_root, path_excel_writer, lista_instancias_abie
     df_date_visit_d28 = df_root[df_root['name']== 'Date of visit']
     df_date_visit_d28 = df_date_visit_d28[['Visit','Participante', 'Campo', 'Valor']]
     df_date_visit_d28 = df_date_visit_d28[df_date_visit_d28['Campo']== 'Visit Date']
-    df_date_visit_d28 = df_date_visit_d28[df_date_visit_d28['Visit']== 'D28']
+    df_date_visit_d28 = df_date_visit_d28[df_date_visit_d28['Visit']== 'D29']
     df_date_visit_d28 = df_date_visit_d28[['Participante','Valor']]
     df_date_visit_d28 = df_date_visit_d28.rename(columns={'Participante':'Subject', 'Valor':'fecha_visita_d28'})
 
@@ -127,17 +127,19 @@ def miltefosine_administration(df_root, path_excel_writer, lista_instancias_abie
             dic_date_time[i] = []
         
         for i in range((df_date_time.shape[0])):
-            
-            if df_date_time.iloc[i]['Campo'] == 'Date of dosing':
-                fecha_fomato = datetime.strptime(df_date_time.iloc[i]['Valor'].split('|')[0], '%d-%b-%Y')
-                fecha_formato_anterior = fecha_fomato - timedelta(days=1) 
-
-                if datetime.strptime(str(df_date_time.iloc[i + 1 ]['Valor'].split('|')[0]), '%H:%M') > datetime.strptime('01:00', '%H:%M'):
-                        
-                    dic_date_time[fecha_fomato].append(df_date_time.iloc[i + 1 ]['Valor'])
-            
-                else:
-                    dic_date_time[fecha_formato_anterior].append(df_date_time.iloc[i + 1 ]['Valor'])
+            try:
+                if df_date_time.iloc[i]['Campo'] == 'Date of dosing':
+                    fecha_fomato = datetime.strptime(df_date_time.iloc[i]['Valor'].split('|')[0], '%d-%b-%Y')
+                    fecha_formato_anterior = fecha_fomato - timedelta(days=1) 
+                    
+                    if datetime.strptime(str(df_date_time.iloc[i + 1 ]['Valor'].split('|')[0]), '%H:%M') > datetime.strptime('01:00', '%H:%M'):
+                            
+                        dic_date_time[fecha_fomato].append(df_date_time.iloc[i + 1 ]['Valor'])
+                
+                    else:
+                        dic_date_time[fecha_formato_anterior].append(df_date_time.iloc[i + 1 ]['Valor'])
+            except:
+                pass
             
         miltefosine_administration_id_pure = sujeto_principal[sujeto_principal['Campo']== 'Miltefosine Administration ID']['Valor'][0]
         miltefosine_administration_id_form_field_instance = sujeto_principal[sujeto_principal['Campo']== 'Miltefosine Administration ID']['FormFieldInstance Id'][0]
@@ -360,8 +362,8 @@ def miltefosine_administration(df_root, path_excel_writer, lista_instancias_abie
                     if str(date_dosing_pure) != '' or date_dosing_disname != 'Empty':
 
                         if datetime.strptime(str(date_dosing_pure), '%d-%b-%Y') < datetime.strptime(str(fecha_visita_d1), '%d-%b-%Y') : 
-                                error = [subject, visit, 'Date of dosing', \
-                                        date_dosing_form_field_instance, \
+                                error = [subject, visit, 'Date of dosing', 
+                                        date_dosing_form_field_instance, 
                                             'The Miltefosine administration form should have daily dates starting on D1 until the date of last study treatment for miltefosine in the End of study Form', \
                                                 f'{date_dosing_disname}', 'ECML0060']
                                 lista_revision.append(error)
@@ -369,8 +371,8 @@ def miltefosine_administration(df_root, path_excel_writer, lista_instancias_abie
                         elif str(fecha_visita_d28) != 'nan':
 
                             if datetime.strptime(str(date_dosing_pure), '%d-%b-%Y') > datetime.strptime(str(fecha_visita_d28), '%d-%b-%Y'):
-                                    error = [subject, visit, 'Date of dosing', \
-                                            date_dosing_form_field_instance, \
+                                    error = [subject, visit, 'Date of dosing', 
+                                            date_dosing_form_field_instance, 
                                                 'The Miltefosine administration form should have daily dates starting on D1 until the date of last study treatment for miltefosine in the End of study Form', \
                                                     f'{date_dosing_disname}', 'ECML0060']
                                     lista_revision.append(error)
@@ -388,31 +390,38 @@ def miltefosine_administration(df_root, path_excel_writer, lista_instancias_abie
                                                             dosing_event_disname, 'ECML0060']
                                         lista_revision.append(error)
                     
-                    # Revision ECML0070   
-                    for fecha in dic_date_time.keys():
 
-                        for i in range(len(dic_date_time[fecha])):
-                            if i == 0:
-                                pass
+                    # Regla eliminada
+                    
+                    # |
+                    # |
+                    # v
 
-                            elif str(dic_date_time[fecha][i].split('|')[0]).split(':')[0] == '00':
-                                fecha_cero = fecha + timedelta(days=1)
-                                fecha_cero = fecha_cero.strftime('%d-%b-%Y')
-                                fecha_comp = fecha.strftime('%d-%b-%Y')
-                                timer_difference = float(abs(datetime.strptime(str(fecha_comp) +' '+ str(dic_date_time[fecha][i - 1].split('|')[0] ), '%d-%b-%Y %H:%M') - datetime.strptime(fecha_cero +' '+ str(dic_date_time[fecha][i].split('|')[0]), '%d-%b-%Y %H:%M')).total_seconds())
-                                if timer_difference > 28800.0:
-                                    error = [subject, visit, 'Time of dosing', dosing_event_form_field_instance,\
-                                                'Doses from the same day should have 8h difference between them', \
-                                                    f"{str(fecha).split(' ')[0]} former time: {(dic_date_time[fecha][i - 1].split('|')[0])}, time assessed: {(dic_date_time[fecha][i].split('|')[0])}, time difference: {int((timer_difference - 28800)/60)} minutes", 'ECML0070']
-                                    lista_revision.append(error)      
+                    # # Revision ECML0070   
+                    # for fecha in dic_date_time.keys():
 
-                            else:
-                                timer_difference = float(abs(datetime.strptime(str(dic_date_time[fecha][i].split('|')[0]), '%H:%M') - datetime.strptime(str(dic_date_time[fecha][i - 1].split('|')[0]), '%H:%M')).total_seconds())
-                                if timer_difference > 28800.0:
-                                    error = [subject, visit, 'Time of dosing', dosing_event_form_field_instance,\
-                                                'Doses from the same day should have 8h difference between them', \
-                                                    f"{str(fecha).split(' ')[0]} former time: {(dic_date_time[fecha][i - 1].split('|')[0])}, time assessed: {(dic_date_time[fecha][i].split('|')[0])}, time difference: {int((timer_difference - 28800)/60)} minutes", 'ECML0070']
-                                    lista_revision.append(error)   
+                    #     for i in range(len(dic_date_time[fecha])):
+                    #         if i == 0:
+                    #             pass
+
+                    #         elif str(dic_date_time[fecha][i].split('|')[0]).split(':')[0] == '00':
+                    #             fecha_cero = fecha + timedelta(days=1)
+                    #             fecha_cero = fecha_cero.strftime('%d-%b-%Y')
+                    #             fecha_comp = fecha.strftime('%d-%b-%Y')
+                    #             timer_difference = float(abs(datetime.strptime(str(fecha_comp) +' '+ str(dic_date_time[fecha][i - 1].split('|')[0] ), '%d-%b-%Y %H:%M') - datetime.strptime(fecha_cero +' '+ str(dic_date_time[fecha][i].split('|')[0]), '%d-%b-%Y %H:%M')).total_seconds())
+                    #             if timer_difference > 28800.0:
+                    #                 error = [subject, visit, 'Time of dosing', dosing_event_form_field_instance,\
+                    #                             'Doses from the same day should have 8h difference between them', \
+                    #                                 f"{str(fecha).split(' ')[0]} former time: {(dic_date_time[fecha][i - 1].split('|')[0])}, time assessed: {(dic_date_time[fecha][i].split('|')[0])}, time difference: {int((timer_difference - 28800)/60)} minutes", 'ECML0070']
+                    #                 lista_revision.append(error)      
+
+                    #         else:
+                    #             timer_difference = float(abs(datetime.strptime(str(dic_date_time[fecha][i].split('|')[0]), '%H:%M') - datetime.strptime(str(dic_date_time[fecha][i - 1].split('|')[0]), '%H:%M')).total_seconds())
+                    #             if timer_difference > 28800.0:
+                    #                 error = [subject, visit, 'Time of dosing', dosing_event_form_field_instance,\
+                    #                             'Doses from the same day should have 8h difference between them', \
+                    #                                 f"{str(fecha).split(' ')[0]} former time: {(dic_date_time[fecha][i - 1].split('|')[0])}, time assessed: {(dic_date_time[fecha][i].split('|')[0])}, time difference: {int((timer_difference - 28800)/60)} minutes", 'ECML0070']
+                    #                 lista_revision.append(error)   
     
                     # Revision ECML0080
                     if str(action_taken_miltefosine) == 'nan' and str(action_taken_miltefosine) == '':

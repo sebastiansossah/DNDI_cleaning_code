@@ -358,7 +358,7 @@ def injection_site_examination(df_root, path_excel_writer, lista_instancias_abie
                             validador = math.nan
 
                         
-                        if math.isnan(float(validador)) or validador != '-' or validador != np.nan or  str(validador) != 'nan' or float(validador) !=0.0 or str(validador) != '':
+                        if validador != '-' or validador != np.nan or  str(validador) != 'nan' or str(validador) != '':
                             mi_cuenta+=1
                         else:
                             pass
@@ -438,10 +438,10 @@ def injection_site_examination(df_root, path_excel_writer, lista_instancias_abie
                             
                         try:
                             dif = float((datetime.strptime(time_dosing_cpg_administration, '%H:%M') - datetime.strptime(predose_time_pure, '%H:%M')).total_seconds() / 60)
-                            if dif < 0.0  or  dif > 60.0:
+                            if dif < 0.0  or  dif > 90.0:
                                     
                                 error = [subject, visit, 'Pre dose, Time', predose_time_form_field_instance,\
-                                             'The time selected should be less than 60 min before the study treatment administration', \
+                                             'The time selected should be less than 90 min before the study treatment administration', \
                                                 f'Pre dose, Time: {predose_time_pure} - dose time administration{time_dosing_cpg_administration}', 'IS0060']
                                 lista_revision.append(error)
 

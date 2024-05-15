@@ -7,6 +7,7 @@ import warnings
 from log_writer import log_writer
 from openpyxl import load_workbook
 from openpyxl.utils.dataframe import dataframe_to_rows
+import os
 warnings.filterwarnings('ignore')
 
 
@@ -15,6 +16,14 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
     Esta funcion tiene como finalidad la revision de cada uno de los puntos 
     del edit check para el formulario de Vital Signs
     '''
+
+    # Normals ranges file
+    script_directory = os.path.dirname(os.path.abspath(__file__)) if '__file__' in locals() else os.getcwd()
+    relative_folder_path = r"data\rangos_normales"
+    folder_path = os.path.join(script_directory.replace('\code', ''), relative_folder_path)
+    file = os.listdir(folder_path)
+    path = f"{folder_path}\{[x for x in file if 'Vital_' in x][0]}" 
+    df_normal_ranges = pd.read_csv(path, sep=';')
 
     df= df_root[df_root['name']== 'Vital Signs']
     lista_sujetos = df['Participante'].unique()
@@ -1231,7 +1240,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0080
                         if float(Undefined_Diastolic_Blood_Pressure_pure) == 1.0:
-                            if float(Undefined_Diastolic_Blood_Pressure_value_pure) >= 50.0 and float(Undefined_Diastolic_Blood_Pressure_value_pure) <= 90.0 :
+                            if float(Undefined_Diastolic_Blood_Pressure_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Diastolic Blood Pressure")]['min'].iloc[0]) and \
+                                float(Undefined_Diastolic_Blood_Pressure_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Diastolic Blood Pressure")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, 'Undefined, Diastolic Blood Pressure', Undefined_Diastolic_Blood_Pressure_form_field_instance,
@@ -1241,7 +1251,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0170
                         elif float(Undefined_Diastolic_Blood_Pressure_pure) == 2.0:
-                            if float(Undefined_Diastolic_Blood_Pressure_value_pure) <=  50.0 or float(Undefined_Diastolic_Blood_Pressure_value_pure) >= 90.0  :
+                            if float(Undefined_Diastolic_Blood_Pressure_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Diastolic Blood Pressure")]['min'].iloc[0]) or \
+                                float(Undefined_Diastolic_Blood_Pressure_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Diastolic Blood Pressure")]['max'].iloc[0])  :
                                 error = [subject, visit, 'Undefined, Diastolic Blood Pressure', Undefined_Diastolic_Blood_Pressure_form_field_instance,
                                          'The Diastolic Blood Pressure is within expected range (50 to 90), the Interpretation should not be Abnormal.', 
                                             f"Undefined, Diastolic Blood Pressure interpretation: {Undefined_Diastolic_Blood_Pressure_disname} - Undefined, Diastolic Blood Pressure Result: {Undefined_Diastolic_Blood_Pressure_value_disname}", 'VS0170']
@@ -1252,7 +1263,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0090
                         if float(Pre_dose_Diastolic_Blood_Pressure_pure) == 1.0:
-                            if float(Pre_dose_Diastolic_Blood_Pressure_value_pure) >= 50.0 and float(Pre_dose_Diastolic_Blood_Pressure_value_pure) <= 90.0 :
+                            if float(Pre_dose_Diastolic_Blood_Pressure_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Diastolic Blood Pressure")]['min'].iloc[0]) and \
+                                float(Pre_dose_Diastolic_Blood_Pressure_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Diastolic Blood Pressure")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, 'Pre dose, Diastolic Blood Pressure', Pre_dose_Diastolic_Blood_Pressure_form_field_insntance ,
@@ -1262,7 +1274,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0180
                         elif float(Pre_dose_Diastolic_Blood_Pressure_pure) == 2.0:
-                            if float(Pre_dose_Diastolic_Blood_Pressure_value_pure) <=  50.0 or float(Pre_dose_Diastolic_Blood_Pressure_value_pure) >= 90.0  :
+                            if float(Pre_dose_Diastolic_Blood_Pressure_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Diastolic Blood Pressure")]['min'].iloc[0]) or\
+                                  float(Pre_dose_Diastolic_Blood_Pressure_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Diastolic Blood Pressure")]['max'].iloc[0])  :
                                 error = [subject, visit, 'Pre dose, Diastolic Blood Pressure', Pre_dose_Diastolic_Blood_Pressure_form_field_insntance ,
                                          'The Diastolic Blood Pressure is within expected range (50 to 90), the Interpretation should not be Abnormal.', 
                                          f"Pre dose, Diastolic Blood Pressure interpretation: {Pre_dose_Diastolic_Blood_Pressure_disname} - Pre dose, Diastolic Blood Pressure Result: {Pre_dose_Diastolic_Blood_Pressure_value_disname}", 'VS0180']
@@ -1273,7 +1286,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0100
                         if float(mins_15_post_dose_Diastolic_Blood_Pressure_pure) == 1.0:
-                            if float(mins_15_post_dose_Diastolic_Blood_Pressure_value_pure) >= 50.0 and float(mins_15_post_dose_Diastolic_Blood_Pressure_value_pure) <= 90.0 :
+                            if float(mins_15_post_dose_Diastolic_Blood_Pressure_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Diastolic Blood Pressure")]['min'].iloc[0]) and\
+                                  float(mins_15_post_dose_Diastolic_Blood_Pressure_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Diastolic Blood Pressure")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '15-mins post dose, Diastolic Blood Pressure', mins_15_post_dose_Diastolic_Blood_Pressure_form_field_instance,
@@ -1283,7 +1297,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0190
                         elif float(mins_15_post_dose_Diastolic_Blood_Pressure_pure) == 2.0:
-                            if float(mins_15_post_dose_Diastolic_Blood_Pressure_value_pure) <=  50.0 or float(mins_15_post_dose_Diastolic_Blood_Pressure_value_pure) >= 90.0  :
+                            if float(mins_15_post_dose_Diastolic_Blood_Pressure_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Diastolic Blood Pressure")]['min'].iloc[0]) or \
+                                float(mins_15_post_dose_Diastolic_Blood_Pressure_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Diastolic Blood Pressure")]['max'].iloc[0])  :
                                 error = [subject, visit, '15-mins post dose, Diastolic Blood Pressure', mins_15_post_dose_Diastolic_Blood_Pressure_form_field_instance,
                                          'The Diastolic Blood Pressure is within expected range (50 to 90), the Interpretation should not be Abnormal.', 
                                             f"15-mins post dose, Diastolic Blood Pressure Interpretation: {mins_15_post_dose_Diastolic_Blood_Pressure_disname} - 15-mins post dose, Diastolic Blood Pressure Result: {mins_15_post_dose_Diastolic_Blood_Pressure_value_disname}", 'VS0190']
@@ -1294,7 +1309,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0110
                         if float(mins_30_post_dose_Diastolic_Blood_Pressure_pure) == 1.0:
-                            if float(mins_30_post_dose_Diastolic_Blood_Pressure_value_pure) >= 50.0 and float(mins_30_post_dose_Diastolic_Blood_Pressure_value_pure) <= 90.0 :
+                            if float(mins_30_post_dose_Diastolic_Blood_Pressure_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Diastolic Blood Pressure")]['min'].iloc[0]) and \
+                                float(mins_30_post_dose_Diastolic_Blood_Pressure_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Diastolic Blood Pressure")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '30-mins post dose, Diastolic Blood Pressure', mins_30_post_dose_Diastolic_Blood_Pressure_form_field_instance,
@@ -1304,7 +1320,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0200
                         elif float(mins_30_post_dose_Diastolic_Blood_Pressure_pure) == 2.0:
-                            if float(mins_30_post_dose_Diastolic_Blood_Pressure_value_pure) <=  50.0 or float(mins_30_post_dose_Diastolic_Blood_Pressure_value_pure) >= 90.0  :
+                            if float(mins_30_post_dose_Diastolic_Blood_Pressure_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Diastolic Blood Pressure")]['min'].iloc[0]) or \
+                                float(mins_30_post_dose_Diastolic_Blood_Pressure_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Diastolic Blood Pressure")]['max'].iloc[0])  :
                                 error = [subject, visit, '30-mins post dose, Diastolic Blood Pressure', mins_30_post_dose_Diastolic_Blood_Pressure_form_field_instance ,
                                          'The Diastolic Blood Pressure is within expected range (50 to 90), the Interpretation should not be Abnormal.', 
                                             f"30-mins post dose, Diastolic Blood Pressure interpretation: {mins_30_post_dose_Diastolic_Blood_Pressure_disname} - 30-mins post dose, Diastolic Blood Pressure Result: {mins_30_post_dose_Diastolic_Blood_Pressure_value_disname}", 'VS0200']
@@ -1315,7 +1332,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0120
                         if float(mins_60_post_dose_Diastolic_Blood_Pressure_pure) == 1.0:
-                            if float(mins_60_post_dose_Diastolic_Blood_Pressure_value_pure) >= 50.0 and float(mins_60_post_dose_Diastolic_Blood_Pressure_value_pure) <= 90.0 :
+                            if float(mins_60_post_dose_Diastolic_Blood_Pressure_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Diastolic Blood Pressure")]['min'].iloc[0]) and \
+                                float(mins_60_post_dose_Diastolic_Blood_Pressure_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Diastolic Blood Pressure")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '60-mins post dose, Diastolic Blood Pressure', mins_60_post_dose_Diastolic_Blood_Pressure_form_field_instance ,
@@ -1325,7 +1343,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0210
                         elif float(mins_60_post_dose_Diastolic_Blood_Pressure_pure) == 2.0:
-                            if float(mins_60_post_dose_Diastolic_Blood_Pressure_value_pure) <=  50.0 or float(mins_60_post_dose_Diastolic_Blood_Pressure_value_pure) >= 90.0  :
+                            if float(mins_60_post_dose_Diastolic_Blood_Pressure_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Diastolic Blood Pressure")]['min'].iloc[0]) or \
+                                float(mins_60_post_dose_Diastolic_Blood_Pressure_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Diastolic Blood Pressure")]['max'].iloc[0])  :
                                 error = [subject, visit, '60-mins post dose, Diastolic Blood Pressure', mins_60_post_dose_Diastolic_Blood_Pressure_form_field_instance,
                                          'The Diastolic Blood Pressure is within expected range (50 to 90), the Interpretation should not be Abnormal.', 
                                             f"60-mins post dose, Diastolic Blood Pressure Interpretation: {mins_60_post_dose_Diastolic_Blood_Pressure_disname} - 60-mins post dose, Diastolic Blood Pressure Result: {mins_60_post_dose_Diastolic_Blood_Pressure_value_disname}", 'VS0210']
@@ -1336,7 +1355,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0130
                         if float(hours_2_post_dose_Diastolic_Blood_Pressure_pure) == 1.0:
-                            if float(hours_2_post_dose_Diastolic_Blood_Pressure_value_pure) >= 50.0 and float(hours_2_post_dose_Diastolic_Blood_Pressure_value_pure) <= 90.0 :
+                            if float(hours_2_post_dose_Diastolic_Blood_Pressure_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Diastolic Blood Pressure")]['min'].iloc[0]) and \
+                                float(hours_2_post_dose_Diastolic_Blood_Pressure_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Diastolic Blood Pressure")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '2-hours post dose, Diastolic Blood Pressure', hours_2_post_dose_Diastolic_Blood_Pressure_form_field_instance ,
@@ -1346,7 +1366,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0220
                         elif float(hours_2_post_dose_Diastolic_Blood_Pressure_pure) == 2.0:
-                            if float(hours_2_post_dose_Diastolic_Blood_Pressure_value_pure) <=  50.0 or float(hours_2_post_dose_Diastolic_Blood_Pressure_value_pure) >= 90.0  :
+                            if float(hours_2_post_dose_Diastolic_Blood_Pressure_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Diastolic Blood Pressure")]['min'].iloc[0]) or \
+                                float(hours_2_post_dose_Diastolic_Blood_Pressure_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Diastolic Blood Pressure")]['max'].iloc[0])  :
                                 error = [subject, visit, '2-hours post dose, Diastolic Blood Pressure', hours_2_post_dose_Diastolic_Blood_Pressure_form_field_instance,
                                          'The Diastolic Blood Pressure is within expected range (50 to 90), the Interpretation should not be Abnormal.', 
                                             f"2-hours post dose, Diastolic Blood Pressure Interpretation: {hours_2_post_dose_Diastolic_Blood_Pressure_disname} - 2-hours post dose, Diastolic Blood Pressure Result: {hours_2_post_dose_Diastolic_Blood_Pressure_value_disname}", 'VS0220']
@@ -1357,7 +1378,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0140
                         if float(hours_4_post_dose_Diastolic_Blood_Pressure_pure) == 1.0:
-                            if float(hours_4_post_dose_Diastolic_Blood_Pressure_value_pure) >= 50.0 and float(hours_4_post_dose_Diastolic_Blood_Pressure_value_pure) <= 90.0 :
+                            if float(hours_4_post_dose_Diastolic_Blood_Pressure_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Diastolic Blood Pressure")]['min'].iloc[0]) and \
+                                float(hours_4_post_dose_Diastolic_Blood_Pressure_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Diastolic Blood Pressure")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '4-hours post dose, Diastolic Blood Pressure', hours_4_post_dose_Diastolic_Blood_Pressure_form_field_instance,
@@ -1367,7 +1389,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0230
                         elif float(hours_4_post_dose_Diastolic_Blood_Pressure_pure) == 2.0:
-                            if float(hours_4_post_dose_Diastolic_Blood_Pressure_value_pure) <=  50.0 or float(hours_4_post_dose_Diastolic_Blood_Pressure_value_pure) >= 90.0  :
+                            if float(hours_4_post_dose_Diastolic_Blood_Pressure_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Diastolic Blood Pressure")]['min'].iloc[0]) or \
+                                float(hours_4_post_dose_Diastolic_Blood_Pressure_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Diastolic Blood Pressure")]['max'].iloc[0])  :
                                 error = [subject, visit, '4-hours post dose, Diastolic Blood Pressure', hours_4_post_dose_Diastolic_Blood_Pressure_form_field_instance ,
                                          'The Diastolic Blood Pressure is within expected range (50 to 90), the Interpretation should not be Abnormal.', 
                                             f"4-hours post dose, Diastolic Blood Pressure Interpretation: {hours_4_post_dose_Diastolic_Blood_Pressure_disname} - 4-hours post dose, Diastolic Blood Pressure Result: {hours_4_post_dose_Diastolic_Blood_Pressure_value_disname}", 'VS0230']
@@ -1378,7 +1401,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0150
                         if float(hours_8_post_dose_Diastolic_Blood_Pressure_pure) == 1.0:
-                            if float(hours_8_post_dose_Diastolic_Blood_Pressure_value_pure) >= 50.0 and float(hours_8_post_dose_Diastolic_Blood_Pressure_value_pure) <= 90.0 :
+                            if float(hours_8_post_dose_Diastolic_Blood_Pressure_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Diastolic Blood Pressure")]['min'].iloc[0]) and \
+                                float(hours_8_post_dose_Diastolic_Blood_Pressure_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Diastolic Blood Pressure")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '8-hours post dose, Diastolic Blood Pressure', hours_8_post_dose_Diastolic_Blood_Pressure_form_field_instance ,
@@ -1388,7 +1412,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0240
                         elif float(hours_8_post_dose_Diastolic_Blood_Pressure_pure) == 2.0:
-                            if float(hours_8_post_dose_Diastolic_Blood_Pressure_value_pure) <=  50.0 or float(hours_8_post_dose_Diastolic_Blood_Pressure_value_pure) >= 90.0  :
+                            if float(hours_8_post_dose_Diastolic_Blood_Pressure_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Diastolic Blood Pressure")]['min'].iloc[0]) or \
+                                float(hours_8_post_dose_Diastolic_Blood_Pressure_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Diastolic Blood Pressure")]['max'].iloc[0])  :
                                 error = [subject, visit, '8-hours post dose, Diastolic Blood Pressure', hours_8_post_dose_Diastolic_Blood_Pressure_form_field_instance ,
                                          'The Diastolic Blood Pressure is within expected range (50 to 90), the Interpretation should not be Abnormal.', 
                                             f"8-hours post dose, Diastolic Blood Pressure Interpretation: {hours_8_post_dose_Diastolic_Blood_Pressure_disname} - 8-hours post dose, Diastolic Blood Pressure Result: {hours_8_post_dose_Diastolic_Blood_Pressure_value_disname}", 'VS0240']
@@ -1399,7 +1424,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0160
                         if float(hours_12_post_dose_Diastolic_Blood_Pressure_pure) == 1.0:
-                            if float(hours_12_post_dose_Diastolic_Blood_Pressure_value_pure) >= 50.0 and float(hours_12_post_dose_Diastolic_Blood_Pressure_value_pure) <= 90.0 :
+                            if float(hours_12_post_dose_Diastolic_Blood_Pressure_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Diastolic Blood Pressure")]['min'].iloc[0]) and \
+                                float(hours_12_post_dose_Diastolic_Blood_Pressure_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Diastolic Blood Pressure")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '12-hours post dose, Diastolic Blood Pressure', hours_12_post_dose_Diastolic_Blood_Pressure_form_field_instance ,
@@ -1409,7 +1435,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0250
                         elif float(hours_12_post_dose_Diastolic_Blood_Pressure_pure) == 2.0:
-                            if float(hours_12_post_dose_Diastolic_Blood_Pressure_value_pure) <=  50.0 or float(hours_12_post_dose_Diastolic_Blood_Pressure_value_pure) >= 90.0  :
+                            if float(hours_12_post_dose_Diastolic_Blood_Pressure_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Diastolic Blood Pressure")]['min'].iloc[0]) or \
+                                float(hours_12_post_dose_Diastolic_Blood_Pressure_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Diastolic Blood Pressure")]['max'].iloc[0])  :
                                 error = [subject, visit, '12-hours post dose, Diastolic Blood Pressure', hours_12_post_dose_Diastolic_Blood_Pressure_form_field_instance ,
                                          'The Diastolic Blood Pressure is within expected range (50 to 90), the Interpretation should not be Abnormal.', 
                                             f"12-hours post dose, Diastolic Blood Pressure Interpretation: {hours_12_post_dose_Diastolic_Blood_Pressure_disname} - 12-hours post dose, Diastolic Blood Pressure Result: {hours_12_post_dose_Diastolic_Blood_Pressure_value_disname}", 'VS0250']
@@ -1426,7 +1453,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0260
                         if float(Undefined_Oral_Temperature_pure) == 1.0:
-                            if float(Undefined_Oral_Temperature_value_pure) >= 35.0 and float(Undefined_Oral_Temperature_value_pure) <= 37.5 :
+                            if float(Undefined_Oral_Temperature_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Oral Temperature")]['min'].iloc[0]) and \
+                                float(Undefined_Oral_Temperature_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Oral Temperature")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, 'Undefined, Oral Temperature', Undefined_Oral_Temperature_form_field_instance ,
@@ -1436,7 +1464,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0350
                         elif float(Undefined_Oral_Temperature_pure) == 2.0:
-                            if float(Undefined_Oral_Temperature_value_pure) <=  35.0 or float(Undefined_Oral_Temperature_value_pure) >= 37.5 :
+                            if float(Undefined_Oral_Temperature_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Oral Temperature")]['min'].iloc[0]) or \
+                                float(Undefined_Oral_Temperature_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Oral Temperature")]['max'].iloc[0]) :
                                 error = [subject, visit, 'Undefined, Oral Temperature', Undefined_Oral_Temperature_form_field_instance ,
                                          'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', 
                                          f"Undefined, Oral Temperature Interpretation: {Undefined_Oral_Temperature_disname} - Undefined, Oral Temperature Result: {Undefined_Oral_Temperature_value_disname}", 'VS0350']
@@ -1447,7 +1476,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0280
                         if float(mins_15_post_dose_Oral_Temperature_pure) == 1.0:
-                            if float(mins_15_post_dose_Oral_Temperature_value_pure) >= 35.0 and float(mins_15_post_dose_Oral_Temperature_value_pure) <= 37.5 :
+                            if float(mins_15_post_dose_Oral_Temperature_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Oral Temperature")]['min'].iloc[0]) and \
+                                float(mins_15_post_dose_Oral_Temperature_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Oral Temperature")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '15-mins post dose, Body Temperature', mins_15_post_dose_Oral_Temperature_form_field_instance ,
@@ -1457,7 +1487,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0370
                         elif float(mins_15_post_dose_Oral_Temperature_pure) == 2.0:
-                            if float(mins_15_post_dose_Oral_Temperature_value_pure) <=  35.0 or float(mins_15_post_dose_Oral_Temperature_value_pure) >= 37.5  :
+                            if float(mins_15_post_dose_Oral_Temperature_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Oral Temperature")]['min'].iloc[0]) or \
+                                float(mins_15_post_dose_Oral_Temperature_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Oral Temperature")]['max'].iloc[0])  :
                                 error = [subject, visit, '15-mins post dose, Body Temperature', mins_15_post_dose_Oral_Temperature_form_field_instance,
                                          'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', 
                                          f"15-mins post dose, Body Temperature Interpretation: {mins_15_post_dose_Oral_Temperature_disname} - 15-mins post dose, Body Temperature Result: {mins_15_post_dose_Oral_Temperature_value_disname}", 'VS0370']
@@ -1468,7 +1499,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0270
                         if float(Pre_dose_Oral_Temperature_pure) == 1.0:
-                            if float(Pre_dose_Oral_Temperature_value_pure) >= 35.0 and float(Pre_dose_Oral_Temperature_value_pure) <= 37.5 :
+                            if float(Pre_dose_Oral_Temperature_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Oral Temperature")]['min'].iloc[0]) and \
+                                float(Pre_dose_Oral_Temperature_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Oral Temperature")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, 'Pre dose, Body Temperature', Pre_dose_Oral_Temperature_form_field_instance ,
@@ -1478,7 +1510,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0360
                         elif float(Pre_dose_Oral_Temperature_pure) == 2.0:
-                            if float(Pre_dose_Oral_Temperature_value_pure) <=  35.0 or float(Pre_dose_Oral_Temperature_value_pure) >= 37.5 :
+                            if float(Pre_dose_Oral_Temperature_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Oral Temperature")]['min'].iloc[0]) or \
+                                float(Pre_dose_Oral_Temperature_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Oral Temperature")]['max'].iloc[0]) :
                                 error = [subject, visit, 'Pre dose, Body Temperature', Pre_dose_Oral_Temperature_form_field_instance ,
                                          'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', 
                                          f"Pre dose, Body Temperature Interpretation: {Pre_dose_Oral_Temperature_disname} - Pre dose, Body Temperature Result: {Pre_dose_Oral_Temperature_value_disname}", 'VS0360']
@@ -1489,7 +1522,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0290
                         if float(mins_30_post_dose_Oral_Temperature_pure) == 1.0:
-                            if float(mins_30_post_dose_Oral_Temperature_value_pure) >= 35.0 and float(mins_30_post_dose_Oral_Temperature_value_pure) <= 37.5 :
+                            if float(mins_30_post_dose_Oral_Temperature_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Oral Temperature")]['min'].iloc[0]) and \
+                                float(mins_30_post_dose_Oral_Temperature_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Oral Temperature")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '30-mins post dose, Body Temperature', mins_30_post_dose_Oral_Temperature_form_field_instance ,
@@ -1499,7 +1533,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0380
                         elif float(mins_30_post_dose_Oral_Temperature_pure) == 2.0:
-                            if float(mins_30_post_dose_Oral_Temperature_value_pure) <=  35.0 or float(mins_30_post_dose_Oral_Temperature_value_pure) >= 37.5  :
+                            if float(mins_30_post_dose_Oral_Temperature_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Oral Temperature")]['min'].iloc[0]) or \
+                                float(mins_30_post_dose_Oral_Temperature_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Oral Temperature")]['max'].iloc[0])  :
                                 error = [subject, visit, '30-mins post dose, Body Temperature', mins_30_post_dose_Oral_Temperature_form_field_instance ,
                                          'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', 
                                          f"30-mins post dose, Body Temperature Interpretation: {mins_30_post_dose_Oral_Temperature_disname} - 30-mins post dose, Body Temperature Result: {mins_30_post_dose_Oral_Temperature_value_disname}", 'VS0380']
@@ -1510,7 +1545,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0300
                         if float(mins_60_post_dose_Oral_Temperature_pure) == 1.0:
-                            if float(mins_60_post_dose_Oral_Temperature_value_pure) >= 35.0 and float(mins_60_post_dose_Oral_Temperature_value_pure) <= 37.5 :
+                            if float(mins_60_post_dose_Oral_Temperature_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Oral Temperature")]['min'].iloc[0]) and \
+                                float(mins_60_post_dose_Oral_Temperature_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Oral Temperature")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '60-mins post dose, Oral Temperature', mins_60_post_dose_Oral_Temperature_form_field_instance ,
@@ -1520,7 +1556,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0390
                         elif float(mins_60_post_dose_Oral_Temperature_pure) == 2.0:
-                            if float(mins_60_post_dose_Oral_Temperature_value_pure) <=  35.0 or float(mins_60_post_dose_Oral_Temperature_value_pure) >= 37.5  :
+                            if float(mins_60_post_dose_Oral_Temperature_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Oral Temperature")]['min'].iloc[0]) or \
+                                float(mins_60_post_dose_Oral_Temperature_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Oral Temperature")]['max'].iloc[0])  :
                                 error = [subject, visit, '60-mins post dose, Oral Temperature', mins_60_post_dose_Oral_Temperature_form_field_instance ,
                                          'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', 
                                          f"60-mins post dose, Oral Temperature Interpretation: {mins_60_post_dose_Oral_Temperature_disname} - 60-mins post dose, Oral Temperature Result: {mins_60_post_dose_Oral_Temperature_value_disname}", 'VS0390']
@@ -1531,7 +1568,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0310
                         if float(hours_2_post_dose_Oral_Temperature_pure) == 1.0:
-                            if float(hours_2_post_dose_Oral_Temperature_value_pure) >= 35.0 and float(hours_2_post_dose_Oral_Temperature_value_pure) <= 37.5 :
+                            if float(hours_2_post_dose_Oral_Temperature_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Oral Temperature")]['min'].iloc[0]) and \
+                                float(hours_2_post_dose_Oral_Temperature_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Oral Temperature")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '2-hours post dose, Oral Temperature', hours_2_post_dose_Oral_Temperature_form_field_instance ,
@@ -1541,7 +1579,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0400
                         elif float(hours_2_post_dose_Oral_Temperature_pure) == 2.0:
-                            if float(hours_2_post_dose_Oral_Temperature_value_pure) <=  35.0 or float(hours_2_post_dose_Oral_Temperature_value_pure) >= 37.5  :
+                            if float(hours_2_post_dose_Oral_Temperature_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Oral Temperature")]['min'].iloc[0]) or \
+                                float(hours_2_post_dose_Oral_Temperature_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Oral Temperature")]['max'].iloc[0])  :
                                 error = [subject, visit, '2-hours post dose, Oral Temperature', hours_2_post_dose_Oral_Temperature_form_field_instance ,
                                          'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', 
                                          f"2-hours post dose, Oral Temperature Interpretation: {hours_2_post_dose_Oral_Temperature_disname} - 2-hours post dose, Oral Temperature Result: {hours_2_post_dose_Oral_Temperature_value_disname}", 'VS0400']
@@ -1552,7 +1591,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0330
                         if float(hours_8_post_dose_Oral_Temperature_pure) == 1.0:
-                            if float(hours_8_post_dose_Oral_Temperature_value_pure) >= 35.0 and float(hours_8_post_dose_Oral_Temperature_value_pure) <= 37.5 :
+                            if float(hours_8_post_dose_Oral_Temperature_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Oral Temperature")]['min'].iloc[0]) and \
+                                float(hours_8_post_dose_Oral_Temperature_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Oral Temperature")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '8-hours post dose, Oral Temperature', hours_8_post_dose_Oral_Temperature_form_field_instance ,
@@ -1562,7 +1602,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0420
                         elif float(hours_8_post_dose_Oral_Temperature_pure) == 2.0:
-                            if float(hours_8_post_dose_Oral_Temperature_value_pure) <=  35.0 or float(hours_8_post_dose_Oral_Temperature_value_pure) >= 37.5  :
+                            if float(hours_8_post_dose_Oral_Temperature_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Oral Temperature")]['min'].iloc[0]) or \
+                                float(hours_8_post_dose_Oral_Temperature_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Oral Temperature")]['max'].iloc[0])  :
                                 error = [subject, visit, '8-hours post dose, Oral Temperature', hours_8_post_dose_Oral_Temperature_form_field_instance ,
                                          'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', 
                                          f"8-hours post dose, Oral Temperature Interpretation: {hours_8_post_dose_Oral_Temperature_disname} - 8-hours post dose, Oral Temperature Result: {hours_8_post_dose_Oral_Temperature_value_disname}", 'VS0420']
@@ -1573,7 +1614,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0320
                         if float(hours_4_post_dose_Oral_Temperature_pure) == 1.0:
-                            if float(hours_4_post_dose_Oral_Temperature_value_pure) >= 35.0 and float(hours_4_post_dose_Oral_Temperature_value_pure) <= 37.5 :
+                            if float(hours_4_post_dose_Oral_Temperature_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Oral Temperature")]['min'].iloc[0]) and \
+                                float(hours_4_post_dose_Oral_Temperature_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Oral Temperature")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '4-hours post dose, Oral Temperature', hours_4_post_dose_Oral_Temperature_form_field_instance,
@@ -1583,7 +1625,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0410
                         elif float(hours_4_post_dose_Oral_Temperature_pure) == 2.0:
-                            if float(hours_4_post_dose_Oral_Temperature_value_pure) <=  35.0 or float(hours_4_post_dose_Oral_Temperature_value_pure) >= 37.5  :
+                            if float(hours_4_post_dose_Oral_Temperature_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Oral Temperature")]['min'].iloc[0]) or \
+                                float(hours_4_post_dose_Oral_Temperature_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Oral Temperature")]['max'].iloc[0])  :
                                 error = [subject, visit, '4-hours post dose, Oral Temperature', hours_4_post_dose_Oral_Temperature_form_field_instance,
                                          'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', 
                                          f"4-hours post dose, Oral Temperature interpretation: {hours_4_post_dose_Oral_Temperature_disname} - 4-hours post dose, Oral Temperature Result: {hours_4_post_dose_Oral_Temperature_value_disname}", 'VS0410']
@@ -1594,7 +1637,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0340
                         if float(hours_12_post_dose_Oral_Temperature_pure) == 1.0:
-                            if float(hours_12_post_dose_Oral_Temperature_value_pure) >= 35.0 and float(hours_12_post_dose_Oral_Temperature_value_pure) <= 37.5 :
+                            if float(hours_12_post_dose_Oral_Temperature_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Oral Temperature")]['min'].iloc[0]) and \
+                                float(hours_12_post_dose_Oral_Temperature_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Oral Temperature")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '12-hours post dose, Oral Temperature', hours_12_post_dose_Oral_Temperature_form_field_instance,
@@ -1604,7 +1648,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0430
                         elif float(hours_12_post_dose_Oral_Temperature_pure) == 2.0:
-                            if float(hours_12_post_dose_Oral_Temperature_value_pure) <=  35.0 or float(hours_12_post_dose_Oral_Temperature_value_pure) >= 37.5  :
+                            if float(hours_12_post_dose_Oral_Temperature_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Oral Temperature")]['min'].iloc[0]) or \
+                                float(hours_12_post_dose_Oral_Temperature_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Oral Temperature")]['max'].iloc[0])  :
                                 error = [subject, visit, '12-hours post dose, Oral Temperature', hours_12_post_dose_Oral_Temperature_form_field_instance ,
                                          'The Oral Temperature is not within expected range (35 to 37.5) , therefore the Interpretation can not be Normal.', 
                                          f"12-hours post dose, Oral Temperature Interpretation: {hours_12_post_dose_Oral_Temperature_disname} - 12-hours post dose, Oral Temperature Result: {hours_12_post_dose_Oral_Temperature_value_disname}", 'VS0430']
@@ -1616,7 +1661,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0440
                         if float(Undefined_Pulse_rate_pure) == 1.0:
-                            if float(Undefined_Pulse_rate_value_pure) >= 45.0 and float(Undefined_Pulse_rate_value_pure) <= 100.5 :
+                            if float(Undefined_Pulse_rate_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['min'].iloc[0]) and \
+                                float(Undefined_Pulse_rate_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, 'Undefined, Pulse rate', Undefined_Pulse_rate_form_field_instance ,
@@ -1626,7 +1672,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0530
                         elif float(Undefined_Pulse_rate_pure) == 2.0:
-                            if float(Undefined_Pulse_rate_value_pure) <=  45.0 or float(Undefined_Pulse_rate_value_pure) >= 100.5  :
+                            if float(Undefined_Pulse_rate_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['min'].iloc[0]) or \
+                                float(Undefined_Pulse_rate_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['max'].iloc[0])  :
                                 error = [subject, visit, 'Undefined, Pulse rate', Undefined_Pulse_rate_form_field_instance,
                                          'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
                                          f"Undefined, Pulse rate Interpretation: {Undefined_Pulse_rate_disname} - Undefined, Pulse rate Result: {Undefined_Pulse_rate_value_disname}", 'VS0530']
@@ -1637,7 +1684,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0450
                         if float(Pre_dose_Pulse_rate_pure) == 1.0:
-                            if float(Pre_dose_Pulse_rate_value_pure) >= 45.0 and float(Pre_dose_Pulse_rate_value_pure) <= 100.5 :
+                            if float(Pre_dose_Pulse_rate_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['min'].iloc[0]) and \
+                                float(Pre_dose_Pulse_rate_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, 'Pre dose, Pulse rate', Pre_dose_Pulse_rate_form_field_instance ,
@@ -1647,7 +1695,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0540
                         elif float(Pre_dose_Pulse_rate_pure) == 2.0:
-                            if float(Pre_dose_Pulse_rate_value_pure) <=  45.0 or float(Pre_dose_Pulse_rate_value_pure) >= 100.5  :
+                            if float(Pre_dose_Pulse_rate_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['min'].iloc[0]) or \
+                                float(Pre_dose_Pulse_rate_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['max'].iloc[0])  :
                                 error = [subject, visit, 'Pre dose, Pulse rate', Pre_dose_Pulse_rate_form_field_instance,
                                          'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
                                           f"Pre dose, Pulse rate interpretation: {Pre_dose_Pulse_rate_disname} - Pre dose, Pulse rate Result: {Pre_dose_Pulse_rate_value_disname}", 'VS0540']
@@ -1658,7 +1707,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0460
                         if float(mins_15_post_dose_Pulse_rate_pure) == 1.0:
-                            if float(mins_15_post_dose_Pulse_rate_value_pure) >= 45.0 and float(mins_15_post_dose_Pulse_rate_value_pure) <= 100.5 :
+                            if float(mins_15_post_dose_Pulse_rate_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['min'].iloc[0]) and \
+                                float(mins_15_post_dose_Pulse_rate_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '15-mins post dose, Pulse rate', mins_15_post_dose_Pulse_rate_form_field_instance ,
@@ -1668,7 +1718,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0550
                         elif float(mins_15_post_dose_Pulse_rate_pure) == 2.0:
-                            if float(mins_15_post_dose_Pulse_rate_value_pure) <=  45.0 or float(mins_15_post_dose_Pulse_rate_value_pure) >= 100.5  :
+                            if float(mins_15_post_dose_Pulse_rate_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['min'].iloc[0]) or \
+                                float(mins_15_post_dose_Pulse_rate_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['max'].iloc[0])  :
                                 error = [subject, visit, '15-mins post dose, Pulse rate', mins_15_post_dose_Pulse_rate_form_field_instance ,
                                          'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
                                          f"15-mins post dose, Pulse rate Interpretation: {mins_15_post_dose_Pulse_rate_disname} - 15-mins post dose, Pulse rate Result: {mins_15_post_dose_Pulse_rate_value_disname}", 'VS0550']
@@ -1679,7 +1730,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0470
                         if float(mins_30_post_dose_Pulse_rate_pure) == 1.0:
-                            if float(mins_30_post_dose_Pulse_rate_value_pure) >= 45.0 and float(mins_30_post_dose_Pulse_rate_value_pure) <= 100.5 :
+                            if float(mins_30_post_dose_Pulse_rate_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['min'].iloc[0]) and \
+                                float(mins_30_post_dose_Pulse_rate_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '15-mins post dose, Pulse rate', mins_30_post_dose_Pulse_rate_form_field_instance,
@@ -1689,7 +1741,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0560
                         elif float(mins_30_post_dose_Pulse_rate_pure) == 2.0:
-                            if float(mins_30_post_dose_Pulse_rate_value_pure) <=  45.0 or float(mins_30_post_dose_Pulse_rate_value_pure) >= 100.5  :
+                            if float(mins_30_post_dose_Pulse_rate_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['min'].iloc[0]) or \
+                                float(mins_30_post_dose_Pulse_rate_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['max'].iloc[0])  :
                                 error = [subject, visit, '15-mins post dose, Pulse rate', mins_30_post_dose_Pulse_rate_form_field_instance ,
                                          'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
                                          f"15-mins post dose, Pulse rate Interpretation: {mins_30_post_dose_Pulse_rate_disname} - 15-mins post dose, Pulse rate Result: {mins_30_post_dose_Pulse_rate_value_disname}", 'VS0560']
@@ -1700,7 +1753,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0480
                         if float(mins_60_post_dose_Pulse_rate_pure) == 1.0:
-                            if float(mins_60_post_dose_Pulse_rate_value_pure) >= 45.0 and float(mins_60_post_dose_Pulse_rate_value_pure) <= 100.5 :
+                            if float(mins_60_post_dose_Pulse_rate_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['min'].iloc[0]) and \
+                                float(mins_60_post_dose_Pulse_rate_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '60-mins post dose, Pulse rate', mins_60_post_dose_Pulse_rate_form_field_instance ,
@@ -1710,7 +1764,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0570
                         elif float(mins_60_post_dose_Pulse_rate_pure) == 2.0:
-                            if float(mins_60_post_dose_Pulse_rate_value_pure) <=  45.0 or float(mins_60_post_dose_Pulse_rate_value_pure) >= 100.5  :
+                            if float(mins_60_post_dose_Pulse_rate_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['min'].iloc[0]) or \
+                                float(mins_60_post_dose_Pulse_rate_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['max'].iloc[0])  :
                                 error = [subject, visit, '60-mins post dose, Pulse rate', mins_60_post_dose_Pulse_rate_form_field_instance,
                                          'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
                                          f"60-mins post dose, Pulse rate Interpretation: {mins_60_post_dose_Pulse_rate_disname} - 60-mins post dose, Pulse rate Result: {mins_60_post_dose_Pulse_rate_value_disname}", 'VS0570']
@@ -1721,7 +1776,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0490
                         if float(hours_2_post_dose_Pulse_rate_pure) == 1.0:
-                            if float(hours_2_post_dose_Pulse_rate_value_pure) >= 45.0 and float(hours_2_post_dose_Pulse_rate_value_pure) <= 100.5 :
+                            if float(hours_2_post_dose_Pulse_rate_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['min'].iloc[0]) and \
+                                float(hours_2_post_dose_Pulse_rate_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '2-hours post dose, Pulse rate', hours_2_post_dose_Pulse_rate_form_field_instance ,
@@ -1731,7 +1787,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0580
                         elif float(hours_2_post_dose_Pulse_rate_pure) == 2.0:
-                            if float(hours_2_post_dose_Pulse_rate_value_pure) <=  45.0 or float(hours_2_post_dose_Pulse_rate_value_pure) >= 100.5  :
+                            if float(hours_2_post_dose_Pulse_rate_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['min'].iloc[0]) or \
+                                float(hours_2_post_dose_Pulse_rate_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['max'].iloc[0])  :
                                 error = [subject, visit, '2-hours post dose, Pulse rate', hours_2_post_dose_Pulse_rate_form_field_instance ,
                                          'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
                                          f"2-hours post dose, Pulse rate Interpretation: {hours_2_post_dose_Pulse_rate_disname} - 2-hours post dose, Pulse rate Result: {hours_2_post_dose_Pulse_rate_value_disname}", 'VS0580']
@@ -1742,7 +1799,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0490
                         if float(hours_2_post_dose_Pulse_rate_pure) == 1.0:
-                            if float(hours_2_post_dose_Pulse_rate_value_pure) >= 45.0 and float(hours_2_post_dose_Pulse_rate_value_pure) <= 100.5 :
+                            if float(hours_2_post_dose_Pulse_rate_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['min'].iloc[0]) and \
+                                float(hours_2_post_dose_Pulse_rate_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '2-hours post dose, Pulse rate', hours_2_post_dose_Pulse_rate_form_field_instance ,
@@ -1752,7 +1810,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0580
                         elif float(hours_2_post_dose_Pulse_rate_pure) == 2.0:
-                            if float(hours_2_post_dose_Pulse_rate_value_pure) <=  45.0 or float(hours_2_post_dose_Pulse_rate_value_pure) >= 100.5  :
+                            if float(hours_2_post_dose_Pulse_rate_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['min'].iloc[0]) or \
+                                float(hours_2_post_dose_Pulse_rate_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['max'].iloc[0])  :
                                 error = [subject, visit, '2-hours post dose, Pulse rate', hours_2_post_dose_Pulse_rate_form_field_instance ,
                                          'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
                                          f"2-hours post dose, Pulse rate Interpretation: {hours_2_post_dose_Pulse_rate_disname} - 2-hours post dose, Pulse rate Result: {hours_2_post_dose_Pulse_rate_value_disname}", 'VS0580']
@@ -1763,7 +1822,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0500
                         if float(hours_4_post_dose_Pulse_rate_pure) == 1.0:
-                            if float(hours_4_post_dose_Pulse_rate_value_pure) >= 45.0 and float(hours_4_post_dose_Pulse_rate_value_pure) <= 100.5 :
+                            if float(hours_4_post_dose_Pulse_rate_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['min'].iloc[0]) and \
+                                float(hours_4_post_dose_Pulse_rate_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '4-hours post dose, Pulse rate', hours_4_post_dose_Pulse_rate_form_field_instance ,
@@ -1773,7 +1833,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0590
                         elif float(hours_4_post_dose_Pulse_rate_pure) == 2.0:
-                            if float(hours_4_post_dose_Pulse_rate_value_pure) <=  45.0 or float(hours_4_post_dose_Pulse_rate_value_pure) >= 100.5  :
+                            if float(hours_4_post_dose_Pulse_rate_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['min'].iloc[0]) or \
+                                float(hours_4_post_dose_Pulse_rate_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['max'].iloc[0])  :
                                 error = [subject, visit, '4-hours post dose, Pulse rate', hours_4_post_dose_Pulse_rate_form_field_instance ,
                                          'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
                                          f"4-hours post dose, Pulse rate Interpretation: {hours_4_post_dose_Pulse_rate_disname} - 4-hours post dose, Pulse rate Result: {hours_4_post_dose_Pulse_rate_value_disname}", 'VS0590']
@@ -1784,7 +1845,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0510
                         if float(hours_8_post_dose_Pulse_rate_pure) == 1.0:
-                            if float(hours_8_post_dose_Pulse_rate_value_pure) >= 45.0 and float(hours_8_post_dose_Pulse_rate_value_pure) <= 100.5 :
+                            if float(hours_8_post_dose_Pulse_rate_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['min'].iloc[0]) and \
+                                float(hours_8_post_dose_Pulse_rate_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '8-hours post dose, Pulse rate', hours_8_post_dose_Pulse_rate_form_field_instance ,
@@ -1794,7 +1856,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0600
                         elif float(hours_8_post_dose_Pulse_rate_pure) == 2.0:
-                            if float(hours_8_post_dose_Pulse_rate_value_pure) <=  45.0 or float(hours_8_post_dose_Pulse_rate_value_pure) >= 100.5  :
+                            if float(hours_8_post_dose_Pulse_rate_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['min'].iloc[0]) or \
+                                float(hours_8_post_dose_Pulse_rate_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['max'].iloc[0])  :
                                 error = [subject, visit, '8-hours post dose, Pulse rate', hours_8_post_dose_Pulse_rate_form_field_instance ,
                                          'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
                                          f"8-hours post dose, Pulse rate Interpretation: {hours_8_post_dose_Pulse_rate_disname} - 8-hours post dose, Pulse rate Result: {hours_8_post_dose_Pulse_rate_value_disname}", 'VS0600']
@@ -1805,7 +1868,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0520
                         if float(hours_12_post_dose_Pulse_rate_pure) == 1.0:
-                            if float(hours_12_post_dose_Pulse_rate_value_pure) >= 45.0 and float(hours_12_post_dose_Pulse_rate_value_pure) <= 100.5 :
+                            if float(hours_12_post_dose_Pulse_rate_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['min'].iloc[0]) and \
+                                float(hours_12_post_dose_Pulse_rate_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '12-hours post dose, Pulse rate', hours_12_post_dose_Pulse_rate_form_field_instance ,
@@ -1815,7 +1879,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0610
                         elif float(hours_12_post_dose_Pulse_rate_pure) == 2.0:
-                            if float(hours_12_post_dose_Pulse_rate_value_pure) <=  45.0 or float(hours_12_post_dose_Pulse_rate_value_pure) >= 100.5  :
+                            if float(hours_12_post_dose_Pulse_rate_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['min'].iloc[0]) or \
+                                float(hours_12_post_dose_Pulse_rate_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['max'].iloc[0])  :
                                 error = [subject, visit, '12-hours post dose, Pulse rate', hours_12_post_dose_Pulse_rate_form_field_instance ,
                                          'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
                                          f"12-hours post dose, Pulse rate Interpretation: {hours_12_post_dose_Pulse_rate_disname} - 12-hours post dose, Pulse rate Result: {hours_12_post_dose_Pulse_rate_value_disname}", 'VS0610']
@@ -1827,7 +1892,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0620
                         if float(Undefined_Respiratory_rate_pure) == 1.0:
-                            if float(Undefined_Respiratory_rate_value_pure) >= 12.0 and float(Undefined_Respiratory_rate_value_pure) <= 18.0 :
+                            if float(Undefined_Respiratory_rate_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Respiratory rate")]['min'].iloc[0]) and \
+                                float(Undefined_Respiratory_rate_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Respiratory rate")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, 'Undefined, Respiratory rate', Undefined_Respiratory_rate_form_field_isntance ,
@@ -1837,9 +1903,10 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0710
                         elif float(Undefined_Respiratory_rate_pure) == 2.0:
-                            if float(Undefined_Respiratory_rate_value_pure) <=  12.0 or float(Undefined_Respiratory_rate_value_pure) >= 18.0  :
+                            if float(Undefined_Respiratory_rate_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Respiratory rate")]['min'].iloc[0]) or \
+                                float(Undefined_Respiratory_rate_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Respiratory rate")]['max'].iloc[0])  :
                                 error = [subject, visit, 'Undefined, Respiratory rate', Undefined_Respiratory_rate_form_field_isntance ,
-                                         'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', 
+                                         'The Respiratory rate is within expected range (12 to 18), the Interpretation should not be Abnormal.', 
                                          f"Undefined, Respiratory rate Interpretation: {Undefined_Respiratory_rate_disname} - Undefined, Respiratory rate Result: {Undefined_Respiratory_rate_value_disname}", 'VS0710']
                                 lista_revision.append(error)                     
                     except Exception as e:
@@ -1848,7 +1915,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0630
                         if float(Pre_dose_Respiratory_rate_pure) == 1.0:
-                            if float(Pre_dose_Respiratory_rate_value_pure) >= 12.0 and float(Pre_dose_Respiratory_rate_value_pure) <= 18.0 :
+                            if float(Pre_dose_Respiratory_rate_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Respiratory rate")]['min'].iloc[0]) and \
+                                float(Pre_dose_Respiratory_rate_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Respiratory rate")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, 'Pre dose, Respiratory rate', Pre_dose_Respiratory_rate_form_field_instance ,
@@ -1858,7 +1926,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0720
                         elif float(Pre_dose_Respiratory_rate_pure) == 2.0:
-                            if float(Pre_dose_Respiratory_rate_value_pure) <=  12.0 or float(Pre_dose_Respiratory_rate_value_pure) >= 18.0  :
+                            if float(Pre_dose_Respiratory_rate_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Respiratory rate")]['min'].iloc[0]) or \
+                                float(Pre_dose_Respiratory_rate_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Respiratory rate")]['max'].iloc[0])  :
                                 error = [subject, visit, 'Pre dose, Respiratory rate', Pre_dose_Respiratory_rate_form_field_instance ,
                                          'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', 
                                          f"Pre dose, Respiratory rate Interpretation: {Pre_dose_Respiratory_rate_pure} - Pre dose, Respiratory rate Result: {Pre_dose_Respiratory_rate_value_disname}", 'VS0720']
@@ -1869,7 +1938,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0640
                         if float(mins_15_post_dose_Respiratory_rate_pure) == 1.0:
-                            if float(mins_15_post_dose_Respiratory_rate_value_pure) >= 12.0 and float(mins_15_post_dose_Respiratory_rate_value_pure) <= 18.0 :
+                            if float(mins_15_post_dose_Respiratory_rate_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Respiratory rate")]['min'].iloc[0]) and \
+                                float(mins_15_post_dose_Respiratory_rate_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Respiratory rate")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '15-mins post dose, Respiratory rate', mins_15_post_dose_Respiratory_rate_form_field_instance ,
@@ -1879,7 +1949,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0730
                         elif float(mins_15_post_dose_Respiratory_rate_pure) == 2.0:
-                            if float(mins_15_post_dose_Respiratory_rate_value_pure) <=  12.0 or float(mins_15_post_dose_Respiratory_rate_value_pure) >= 18.0  :
+                            if float(mins_15_post_dose_Respiratory_rate_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Respiratory rate")]['min'].iloc[0]) or \
+                                float(mins_15_post_dose_Respiratory_rate_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Respiratory rate")]['max'].iloc[0])  :
                                 error = [subject, visit, '15-mins post dose, Respiratory rate', mins_15_post_dose_Respiratory_rate_form_field_instance ,
                                          'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', 
                                          f"15-mins post dose, Respiratory rate Interpretation: {mins_15_post_dose_Respiratory_rate_disname} - 15-mins post dose, Respiratory rate Result: {mins_15_post_dose_Respiratory_rate_value_disname}", 'VS0730']
@@ -1890,7 +1961,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0650
                         if float(mins_30_post_dose_Respiratory_rate_pure) == 1.0:
-                            if float(mins_30_post_dose_Respiratory_rate_value_pure) >= 12.0 and float(mins_30_post_dose_Respiratory_rate_value_pure) <= 18.0 :
+                            if float(mins_30_post_dose_Respiratory_rate_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Respiratory rate")]['min'].iloc[0]) and \
+                                float(mins_30_post_dose_Respiratory_rate_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Respiratory rate")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '30-mins post dose, Respiratory rate', mins_30_post_dose_Respiratory_rate_form_field_instance ,
@@ -1900,7 +1972,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0740
                         elif float(mins_30_post_dose_Respiratory_rate_pure) == 2.0:
-                            if float(mins_30_post_dose_Respiratory_rate_value_pure) <=  12.0 or float(mins_30_post_dose_Respiratory_rate_value_pure) >= 18.0  :
+                            if float(mins_30_post_dose_Respiratory_rate_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Respiratory rate")]['min'].iloc[0]) or \
+                                float(mins_30_post_dose_Respiratory_rate_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Respiratory rate")]['max'].iloc[0])  :
                                 error = [subject, visit, '30-mins post dose, Respiratory rate', mins_30_post_dose_Respiratory_rate_form_field_instance ,
                                          'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', 
                                          f"30-mins post dose, Respiratory rate Interpretation: {mins_30_post_dose_Respiratory_rate_disname} - 30-mins post dose, Respiratory rate Result: {mins_30_post_dose_Respiratory_rate_value_disname}", 'VS0740']
@@ -1911,7 +1984,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0660
                         if float(mins_60_post_dose_Respiratory_rate_pure) == 1.0:
-                            if float(mins_60_post_dose_Respiratory_rate_value_pure) >= 12.0 and float(mins_60_post_dose_Respiratory_rate_value_pure) <= 18.0 :
+                            if float(mins_60_post_dose_Respiratory_rate_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Respiratory rate")]['min'].iloc[0]) and \
+                                float(mins_60_post_dose_Respiratory_rate_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Respiratory rate")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '60-mins post dose, Respiratory rate', mins_60_post_dose_Respiratory_rate_form_field_instance ,
@@ -1921,7 +1995,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0750
                         elif float(mins_60_post_dose_Respiratory_rate_pure) == 2.0:
-                            if float(mins_60_post_dose_Respiratory_rate_value_pure) <=  12.0 or float(mins_60_post_dose_Respiratory_rate_value_pure) >= 18.0  :
+                            if float(mins_60_post_dose_Respiratory_rate_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Respiratory rate")]['min'].iloc[0]) or \
+                                float(mins_60_post_dose_Respiratory_rate_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Respiratory rate")]['max'].iloc[0])  :
                                 error = [subject, visit, '60-mins post dose, Respiratory rate', mins_60_post_dose_Respiratory_rate_form_field_instance ,
                                          'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', 
                                          f"60-mins post dose, Respiratory rate Interpretation: {mins_60_post_dose_Respiratory_rate_disname} - 60-mins post dose, Respiratory rate Result: {mins_60_post_dose_Respiratory_rate_value_disname}", 'VS0750']
@@ -1932,7 +2007,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0670
                         if float(hours_2_post_dose_Respiratory_rate_pure) == 1.0:
-                            if float(hours_2_post_dose_Respiratory_rate_value_pure) >= 12.0 and float(hours_2_post_dose_Respiratory_rate_value_pure) <= 18.0 :
+                            if float(hours_2_post_dose_Respiratory_rate_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Respiratory rate")]['min'].iloc[0]) and \
+                                float(hours_2_post_dose_Respiratory_rate_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Respiratory rate")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '2-hours post dose, Respiratory rate', hours_2_post_dose_Respiratory_rate_form_field_instance ,
@@ -1942,7 +2018,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0760
                         elif float(hours_2_post_dose_Respiratory_rate_pure) == 2.0:
-                            if float(hours_2_post_dose_Respiratory_rate_value_pure) <=  12.0 or float(hours_2_post_dose_Respiratory_rate_value_pure) >= 18.0  :
+                            if float(hours_2_post_dose_Respiratory_rate_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Respiratory rate")]['min'].iloc[0]) or \
+                                float(hours_2_post_dose_Respiratory_rate_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Respiratory rate")]['max'].iloc[0])  :
                                 error = [subject, visit, '2-hours post dose, Respiratory rate', hours_2_post_dose_Respiratory_rate_form_field_instance ,
                                          'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', 
                                          f"2-hours post dose, Respiratory rate Interpretation: {hours_2_post_dose_Respiratory_rate_disname} - 2-hours post dose, Respiratory rate Result: {hours_2_post_dose_Respiratory_rate_value_disname}", 'VS0760']
@@ -1953,7 +2030,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0680
                         if float(hours_4_post_dose_Respiratory_rate_pure) == 1.0:
-                            if float(hours_4_post_dose_Respiratory_rate_value_pure) >= 12.0 and float(hours_4_post_dose_Respiratory_rate_value_pure) <= 18.0 :
+                            if float(hours_4_post_dose_Respiratory_rate_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Respiratory rate")]['min'].iloc[0]) and \
+                                float(hours_4_post_dose_Respiratory_rate_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Respiratory rate")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '4-hours post dose, Respiratory rate', hours_4_post_dose_Respiratory_rate_form_field_instance ,
@@ -1963,7 +2041,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0770
                         elif float(hours_4_post_dose_Respiratory_rate_pure) == 2.0:
-                            if float(hours_4_post_dose_Respiratory_rate_value_pure) <=  12.0 or float(hours_4_post_dose_Respiratory_rate_value_pure) >= 18.0  :
+                            if float(hours_4_post_dose_Respiratory_rate_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Respiratory rate")]['min'].iloc[0]) or \
+                                float(hours_4_post_dose_Respiratory_rate_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Respiratory rate")]['max'].iloc[0])  :
                                 error = [subject, visit, '4-hours post dose, Respiratory rate', hours_4_post_dose_Respiratory_rate_form_field_instance ,
                                          'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', 
                                          f"4-hours post dose, Respiratory rate Interpretation: {hours_4_post_dose_Respiratory_rate_disname} - 4-hours post dose, Respiratory rate Result: {hours_4_post_dose_Respiratory_rate_value_disname}", 'VS0770']
@@ -1974,7 +2053,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0690
                         if float(hours_8_post_dose_Respiratory_rate_pure) == 1.0:
-                            if float(hours_8_post_dose_Respiratory_rate_value_pure) >= 12.0 and float(hours_8_post_dose_Respiratory_rate_value_pure) <= 18.0 :
+                            if float(hours_8_post_dose_Respiratory_rate_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Respiratory rate")]['min'].iloc[0]) and \
+                                float(hours_8_post_dose_Respiratory_rate_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Respiratory rate")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '8-hours post dose, Respiratory rate', hours_8_post_dose_Respiratory_rate_form_field_instance ,
@@ -1984,7 +2064,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0780
                         elif float(hours_8_post_dose_Respiratory_rate_pure) == 2.0:
-                            if float(hours_8_post_dose_Respiratory_rate_value_pure) <=  12.0 or float(hours_8_post_dose_Respiratory_rate_value_pure) >= 18.0  :
+                            if float(hours_8_post_dose_Respiratory_rate_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Respiratory rate")]['min'].iloc[0]) or \
+                                float(hours_8_post_dose_Respiratory_rate_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Respiratory rate")]['max'].iloc[0])  :
                                 error = [subject, visit, '8-hours post dose, Respiratory rate', hours_8_post_dose_Respiratory_rate_form_field_instance ,
                                          'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', 
                                          f"8-hours post dose, Respiratory rate Interpretation: {hours_8_post_dose_Respiratory_rate_disname} - 8-hours post dose, Respiratory rate Result: {hours_8_post_dose_Respiratory_rate_value_disname}", 'VS0780']
@@ -1995,7 +2076,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0700
                         if float(hours_12_post_dose_Respiratory_rate_pure) == 1.0:
-                            if float(hours_12_post_dose_Respiratory_rate_value_pure) >= 12.0 and float(hours_12_post_dose_Respiratory_rate_value_pure) <= 18.0 :
+                            if float(hours_12_post_dose_Respiratory_rate_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Respiratory rate")]['min'].iloc[0]) and \
+                                float(hours_12_post_dose_Respiratory_rate_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Respiratory rate")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '12-hours post dose, Respiratory rate', hours_12_post_dose_Respiratory_rate_form_field_instance ,
@@ -2005,7 +2087,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0790
                         elif float(hours_12_post_dose_Respiratory_rate_pure) == 2.0:
-                            if float(hours_12_post_dose_Respiratory_rate_value_pure) <=  12.0 or float(hours_12_post_dose_Respiratory_rate_value_pure) >= 18.0  :
+                            if float(hours_12_post_dose_Respiratory_rate_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Respiratory rate")]['min'].iloc[0]) or \
+                                float(hours_12_post_dose_Respiratory_rate_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Respiratory rate")]['max'].iloc[0])  :
                                 error = [subject, visit, '12-hours post dose, Respiratory rate', hours_12_post_dose_Respiratory_rate_form_field_instance ,
                                          'The Respiratory rate is not within expected range (12 to 18), therefore the Interpretation can not be Normal.', 
                                          f"12-hours post dose, Respiratory rate Interpretation: {hours_12_post_dose_Respiratory_rate_disname} - 12-hours post dose, Respiratory rate Result: {hours_12_post_dose_Respiratory_rate_value_disname}", 'VS0790']
@@ -2017,7 +2100,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0800
                         if float(Undefined_Systolic_Blood_Pressure_pure) == 1.0:
-                            if float(Undefined_Systolic_Blood_Pressure_value_pure) >= 100.0 and float(Undefined_Systolic_Blood_Pressure_value_pure) <= 140.0 :
+                            if float(Undefined_Systolic_Blood_Pressure_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Systolic Blood Pressure")]['min'].iloc[0]) and \
+                                float(Undefined_Systolic_Blood_Pressure_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Systolic Blood Pressure")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, 'Undefined, Systolic Blood Pressure', Undefined_Systolic_Blood_Pressure_form_field_instance ,
@@ -2027,7 +2111,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0890
                         elif float(Undefined_Systolic_Blood_Pressure_pure) == 2.0:
-                            if float(Undefined_Systolic_Blood_Pressure_value_pure) <=  100.0 or float(Undefined_Systolic_Blood_Pressure_value_pure) >= 140.0  :
+                            if float(Undefined_Systolic_Blood_Pressure_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Systolic Blood Pressure")]['min'].iloc[0]) or \
+                                float(Undefined_Systolic_Blood_Pressure_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Systolic Blood Pressure")]['max'].iloc[0])  :
                                 error = [subject, visit, 'Undefined, Systolic Blood Pressure', Undefined_Systolic_Blood_Pressure_form_field_instance ,
                                          'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', 
                                          f"Undefined, Systolic Blood Pressure Interpretation: {Undefined_Systolic_Blood_Pressure_disname} - Undefined, Systolic Blood Pressure Result: {Undefined_Systolic_Blood_Pressure_value_disname}", 'VS0890']
@@ -2044,7 +2129,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0890
                         if float(Pre_dose_Systolic_Blood_Pressure_pure) == 2.0:
-                            if float(Pre_dose_Systolic_Blood_Pressure_value_pure) <=  12.0 or float(Pre_dose_Systolic_Blood_Pressure_value_pure) >= 18.0  :
+                            if float(Pre_dose_Systolic_Blood_Pressure_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Systolic Blood Pressure")]['min'].iloc[0]) or \
+                                float(Pre_dose_Systolic_Blood_Pressure_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Systolic Blood Pressure")]['max'].iloc[0])  :
                                 error = [subject, visit, 'Pre dose, Systolic Blood Pressure', Pre_dose_Systolic_Blood_Pressure_form_field_instance ,
                                          'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', 
                                          f"Pre dose, Systolic Blood Pressure Interpretation: {Pre_dose_Systolic_Blood_Pressure_disname} - Pre dose, Systolic Blood Pressure Result: {Pre_dose_Systolic_Blood_Pressure_value_disname}", 'VS0890']
@@ -2055,7 +2141,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0820
                         if float(mins_15_post_dose_Systolic_Blood_Pressure_pure) == 1.0:
-                            if float(mins_15_post_dose_Systolic_Blood_Pressure_value_pure) >= 100.0 and float(mins_15_post_dose_Systolic_Blood_Pressure_value_pure) <= 140.0 :
+                            if float(mins_15_post_dose_Systolic_Blood_Pressure_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Systolic Blood Pressure")]['min'].iloc[0]) and \
+                                float(mins_15_post_dose_Systolic_Blood_Pressure_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Systolic Blood Pressure")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '15-mins post dose, Systolic Blood Pressure', mins_15_post_dose_Systolic_Blood_Pressure_form_field_instance ,
@@ -2065,7 +2152,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0910
                         elif float(mins_15_post_dose_Systolic_Blood_Pressure_pure) == 2.0:
-                            if float(mins_15_post_dose_Systolic_Blood_Pressure_value_pure) <=  100.0 or float(mins_15_post_dose_Systolic_Blood_Pressure_value_pure) >= 140.0  :
+                            if float(mins_15_post_dose_Systolic_Blood_Pressure_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Systolic Blood Pressure")]['min'].iloc[0]) or \
+                                float(mins_15_post_dose_Systolic_Blood_Pressure_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Systolic Blood Pressure")]['max'].iloc[0])  :
                                 error = [subject, visit, '15-mins post dose, Systolic Blood Pressure', mins_15_post_dose_Systolic_Blood_Pressure_form_field_instance ,
                                          'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', 
                                              f"15-mins post dose, Systolic Blood Pressure Interpretation: {mins_15_post_dose_Systolic_Blood_Pressure_disname} - 15-mins post dose, Systolic Blood Pressure Result: {mins_15_post_dose_Systolic_Blood_Pressure_value_disname}", 'VS0910']
@@ -2076,7 +2164,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0830
                         if float(mins_30_post_dose_Systolic_Blood_Pressure_pure) == 1.0:
-                            if float(mins_30_post_dose_Systolic_Blood_Pressure_value_pure) >= 100.0 and float(mins_30_post_dose_Systolic_Blood_Pressure_value_pure) <= 140.0 :
+                            if float(mins_30_post_dose_Systolic_Blood_Pressure_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Systolic Blood Pressure")]['min'].iloc[0]) and \
+                                float(mins_30_post_dose_Systolic_Blood_Pressure_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Systolic Blood Pressure")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '30-mins post dose, Systolic Blood Pressure', mins_30_post_dose_Systolic_Blood_Pressure_form_field_instance ,
@@ -2086,7 +2175,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0920
                         elif float(mins_30_post_dose_Systolic_Blood_Pressure_pure) == 2.0:
-                            if float(mins_30_post_dose_Systolic_Blood_Pressure_value_pure) <=  100.0 or float(mins_30_post_dose_Systolic_Blood_Pressure_value_pure) >= 140.0  :
+                            if float(mins_30_post_dose_Systolic_Blood_Pressure_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Systolic Blood Pressure")]['min'].iloc[0]) or \
+                                float(mins_30_post_dose_Systolic_Blood_Pressure_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Systolic Blood Pressure")]['max'].iloc[0])  :
                                 error = [subject, visit, '30-mins post dose, Systolic Blood Pressure', mins_30_post_dose_Systolic_Blood_Pressure_form_field_instance ,
                                          'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', 
                                             f"30-mins post dose, Systolic Blood Pressure Interpretation: {mins_30_post_dose_Systolic_Blood_Pressure_disname} - 30-mins post dose, Systolic Blood Pressure Result: {mins_30_post_dose_Systolic_Blood_Pressure_value_disname}", 'VS0920']
@@ -2097,7 +2187,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0840
                         if float(mins_60_post_dose_Systolic_Blood_Pressure_pure) == 1.0:
-                            if float(mins_60_post_dose_Systolic_Blood_Pressure_value_pure) >= 100.0 and float(mins_60_post_dose_Systolic_Blood_Pressure_value_pure) <= 140.0 :
+                            if float(mins_60_post_dose_Systolic_Blood_Pressure_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Systolic Blood Pressure")]['min'].iloc[0]) and \
+                                float(mins_60_post_dose_Systolic_Blood_Pressure_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Systolic Blood Pressure")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '60-mins post dose, Systolic Blood Pressure', mins_60_post_dose_Systolic_Blood_Pressure_form_field_instance ,
@@ -2107,9 +2198,10 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0930
                         elif float(mins_60_post_dose_Systolic_Blood_Pressure_pure) == 2.0:
-                            if float(mins_60_post_dose_Systolic_Blood_Pressure_value_pure) <=  100.0 or float(mins_60_post_dose_Systolic_Blood_Pressure_value_pure) >= 140.0  :
+                            if float(mins_60_post_dose_Systolic_Blood_Pressure_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Systolic Blood Pressure")]['min'].iloc[0]) or \
+                                float(mins_60_post_dose_Systolic_Blood_Pressure_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Systolic Blood Pressure")]['max'].iloc[0])  :
                                 error = [subject, visit, '60-mins post dose, Systolic Blood Pressure', mins_60_post_dose_Systolic_Blood_Pressure_form_field_instance ,
-                                         'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', 
+                                         'The Systolic Blood Pressure is within expected range (100 to 140), the Interpretation should not be Abnormal.', 
                                             f"60-mins post dose, Systolic Blood Pressure Interpretation: {mins_60_post_dose_Systolic_Blood_Pressure_disname} - 60-mins post dose, Systolic Blood Pressure Result: {mins_60_post_dose_Systolic_Blood_Pressure_value_disname}", 'VS0930']
                                 lista_revision.append(error)                     
                     except Exception as e:
@@ -2118,7 +2210,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0850
                         if float(hours_2_post_dose_Systolic_Blood_Pressure_pure) == 1.0:
-                            if float(hours_2_post_dose_Systolic_Blood_Pressure_value_pure) >= 100.0 and float(hours_2_post_dose_Systolic_Blood_Pressure_value_pure) <= 140.0 :
+                            if float(hours_2_post_dose_Systolic_Blood_Pressure_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Systolic Blood Pressure")]['min'].iloc[0]) and \
+                                float(hours_2_post_dose_Systolic_Blood_Pressure_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Systolic Blood Pressure")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '2-hours post dose, Systolic Blood Pressure', hours_2_post_dose_Systolic_Blood_Pressure_form_field_instance ,
@@ -2128,7 +2221,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0940
                         elif float(hours_2_post_dose_Systolic_Blood_Pressure_pure) == 2.0:
-                            if float(hours_2_post_dose_Systolic_Blood_Pressure_value_pure) <=  100.0 or float(hours_2_post_dose_Systolic_Blood_Pressure_value_pure) >= 140.0  :
+                            if float(hours_2_post_dose_Systolic_Blood_Pressure_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Systolic Blood Pressure")]['min'].iloc[0]) or \
+                                float(hours_2_post_dose_Systolic_Blood_Pressure_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Systolic Blood Pressure")]['max'].iloc[0])  :
                                 error = [subject, visit, '2-hours post dose, Systolic Blood Pressure', hours_2_post_dose_Systolic_Blood_Pressure_form_field_instance,
                                          'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', 
                                              f"2-hours post dose, Systolic Blood Pressure Interpretation: {hours_2_post_dose_Systolic_Blood_Pressure_disname} - 2-hours post dose, Systolic Blood Pressure Result: {hours_2_post_dose_Systolic_Blood_Pressure_value_empty}", 'VS0940']
@@ -2139,7 +2233,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0860
                         if float(hours_4_post_dose_Systolic_Blood_Pressure_pure) == 1.0:
-                            if float(hours_4_post_dose_Systolic_Blood_Pressure_value_pure) >= 100.0 and float(hours_4_post_dose_Systolic_Blood_Pressure_value_pure) <= 140.0 :
+                            if float(hours_4_post_dose_Systolic_Blood_Pressure_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Systolic Blood Pressure")]['min'].iloc[0]) and \
+                                float(hours_4_post_dose_Systolic_Blood_Pressure_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Systolic Blood Pressure")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '4-hours post dose, Systolic Blood Pressure', hours_4_post_dose_Systolic_Blood_Pressure_form_field_instance ,
@@ -2149,7 +2244,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0950
                         elif float(hours_4_post_dose_Systolic_Blood_Pressure_pure) == 2.0:
-                            if float(hours_4_post_dose_Systolic_Blood_Pressure_value_pure) <=  100.0 or float(hours_4_post_dose_Systolic_Blood_Pressure_value_pure) >= 140.0  :
+                            if float(hours_4_post_dose_Systolic_Blood_Pressure_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Systolic Blood Pressure")]['min'].iloc[0]) or \
+                                float(hours_4_post_dose_Systolic_Blood_Pressure_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Systolic Blood Pressure")]['max'].iloc[0])  :
                                 error = [subject, visit, '4-hours post dose, Systolic Blood Pressure', hours_4_post_dose_Systolic_Blood_Pressure_form_field_instance ,
                                          'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', 
                                             f"4-hours post dose, Systolic Blood Pressure Interpretation: {hours_4_post_dose_Systolic_Blood_Pressure_disname} - 4-hours post dose, Systolic Blood Pressure Result: {hours_4_post_dose_Systolic_Blood_Pressure_value_disname}", 'VS0950']
@@ -2160,7 +2256,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0870
                         if float(hours_8_post_dose_Systolic_Blood_Pressure_pure) == 1.0:
-                            if float(hours_8_post_dose_Systolic_Blood_Pressure_value_pure) >= 100.0 and float(hours_8_post_dose_Systolic_Blood_Pressure_value_pure) <= 140.0 :
+                            if float(hours_8_post_dose_Systolic_Blood_Pressure_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Systolic Blood Pressure")]['min'].iloc[0]) and \
+                                float(hours_8_post_dose_Systolic_Blood_Pressure_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Systolic Blood Pressure")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '8-hours post dose, Systolic Blood Pressure', hours_8_post_dose_Systolic_Blood_Pressure_form_field_instance ,
@@ -2170,7 +2267,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0960
                         elif float(hours_8_post_dose_Systolic_Blood_Pressure_pure) == 2.0:
-                            if float(hours_8_post_dose_Systolic_Blood_Pressure_value_pure) <=  100.0 or float(hours_8_post_dose_Systolic_Blood_Pressure_value_pure) >= 140.0  :
+                            if float(hours_8_post_dose_Systolic_Blood_Pressure_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Systolic Blood Pressure")]['min'].iloc[0]) or \
+                                float(hours_8_post_dose_Systolic_Blood_Pressure_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Systolic Blood Pressure")]['max'].iloc[0])  :
                                 error = [subject, visit, '8-hours post dose, Systolic Blood Pressure', hours_8_post_dose_Systolic_Blood_Pressure_form_field_instance ,
                                          'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', 
                                             f"8-hours post dose, Systolic Blood Pressure Interpretation: {hours_8_post_dose_Systolic_Blood_Pressure_disname} - 8-hours post dose, Systolic Blood Pressure Result: {hours_8_post_dose_Systolic_Blood_Pressure_value_disname}", 'VS0960']
@@ -2181,7 +2279,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                     try:
                         # Revision VS0880
                         if float(hours_12_post_dose_Systolic_Blood_Pressure_pure) == 1.0:
-                            if float(hours_12_post_dose_Systolic_Blood_Pressure_value_pure) >= 100.0 and float(hours_12_post_dose_Systolic_Blood_Pressure_value_pure) <= 140.0 :
+                            if float(hours_12_post_dose_Systolic_Blood_Pressure_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Systolic Blood Pressure")]['min'].iloc[0]) and \
+                                float(hours_12_post_dose_Systolic_Blood_Pressure_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Systolic Blood Pressure")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '12-hours post dose, Systolic Blood Pressure', hours_12_post_dose_Systolic_Blood_Pressure_form_field_instance ,
@@ -2191,7 +2290,8 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                         # Revision VS0970
                         elif float(hours_12_post_dose_Systolic_Blood_Pressure_pure) == 2.0:
-                            if float(hours_12_post_dose_Systolic_Blood_Pressure_value_pure) <=  100.0 or float(hours_12_post_dose_Systolic_Blood_Pressure_value_pure) >= 140.0  :
+                            if float(hours_12_post_dose_Systolic_Blood_Pressure_value_pure) <=  float(df_normal_ranges[(df_normal_ranges['field']== "Systolic Blood Pressure")]['min'].iloc[0]) or \
+                                float(hours_12_post_dose_Systolic_Blood_Pressure_value_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Systolic Blood Pressure")]['max'].iloc[0])  :
                                 error = [subject, visit, '12-hours post dose, Systolic Blood Pressure', hours_12_post_dose_Systolic_Blood_Pressure_form_field_instance ,
                                          'The Systolic Blood Pressure is not within expected range (100 to 140), therefore the Interpretation can not be Normal.', 
                                             f"12-hours post dose, Systolic Blood Pressure Interpretation: {hours_12_post_dose_Systolic_Blood_Pressure_disname} 12-hours post dose, Systolic Blood Pressure Result: {hours_12_post_dose_Systolic_Blood_Pressure_value_disname}", 'VS0970']
@@ -2218,7 +2318,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             
                         try:
                             dif = float((datetime.strptime(time_dosing_cpg_administration, '%H:%M') - datetime.strptime(predose_time_pure, '%H:%M')).total_seconds() / 60)
-                            if dif < 0.0 or dif > 60.0:
+                            if dif < 0.0 or dif > 90.0:
                                     
                                 error = [subject, visit, 'Pre dose, Time', predose_time_form_field_definition,
                                              'The time selected should be less than 60 min before the study treatment administration', 
@@ -2347,7 +2447,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                         try:
                             dif_M = float((datetime.strptime(time_dosing_miltefosine_administration, '%H:%M') - datetime.strptime(predose_time_pure, '%H:%M')).total_seconds() / 60)
                           
-                            if dif_M < 0.0 or dif_M > 60.0:
+                            if dif_M < 0.0 or dif_M > 90.0:
                                 
                                 error = [subject, visit, 'Pre dose, Time', predose_time_form_field_definition,
                                              'The time selected should be less than 60 min before the study treatment administration', 

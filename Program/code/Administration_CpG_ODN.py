@@ -250,7 +250,7 @@ def adminsitration_CpG_ODN(df_root, path_excel_writer, lista_instancias_abiertas
                                                     'If dosing is 0 and the reason for adjustment is "Adverse event" there should be an adverse event created where the action taken (CPG ODN 035) should be CT  dose reduced', \
                                                         dosing_event_disname, 'IMP0100']
                                 lista_revision.append(error)
-                    except:
+                    except Exception as e:
                          lista_logs.append(f'Revision IMP0100 --> {e} - Subject: {subject},  Visit: {visit} ') 
                                  
                                                   

@@ -209,7 +209,7 @@ def urinalysis(df_root, path_excel_writer, lista_instancias_abiertas):
                         except:
                             validador = math.nan
                         
-                        if math.isnan(float(validador)) or validador != '-' or validador != np.nan or  str(validador) != 'nan' or float(validador) !=0.0 or str(validador) != '':
+                        if  validador != '-' or validador != np.nan or  str(validador) != 'nan'  or str(validador) != '':
                             mi_cuenta += 1
                         else:
                             pass

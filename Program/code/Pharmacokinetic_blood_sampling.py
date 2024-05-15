@@ -331,10 +331,10 @@ def Pharmacokinetic_blood_sampling(df_root, path_excel_writer, lista_instancias_
                             
                         try:
                             dif = float((datetime.strptime(time_dosing_cpg_administration , '%H:%M') - datetime.strptime(Pre_dose_pure, '%H:%M')).total_seconds() / 60)
-                            if dif < 0.0 or dif > 60.0:
+                            if dif < 0.0 or dif > 90.0:
                                     
                                 error = [subject, visit, 'Pre dose, Time', Pre_dose_form_field_instance,\
-                                             'Pre dose Time is not within 60 minutes before the study treatment administration time.', \
+                                             'Pre dose Time is not within 90 minutes before the study treatment administration time.', \
                                                 f'Pre dose, Time: {Pre_dose_pure} - dose time administration{time_dosing_cpg_administration}', 'PK0060']
                                 lista_revision.append(error)
 

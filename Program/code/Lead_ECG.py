@@ -6,6 +6,7 @@ from log_writer import log_writer
 from revision_fechas import revision_fecha
 import warnings
 from openpyxl import load_workbook
+import os
 from openpyxl.utils.dataframe import dataframe_to_rows
 
 warnings.filterwarnings('ignore')
@@ -15,6 +16,14 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
     Esta funcion tiene como finalidad la revision de cada uno de los puntos 
     del edit check para el formulario de 12-Lead ECG
     '''
+
+    # Normals ranges file
+    script_directory = os.path.dirname(os.path.abspath(__file__)) if '__file__' in locals() else os.getcwd()
+    relative_folder_path = r"data\rangos_normales"
+    folder_path = os.path.join(script_directory.replace('\code', ''), relative_folder_path)
+    file = os.listdir(folder_path)
+    path = f"{folder_path}\{[x for x in file if '12_lead' in x][0]}" 
+    df_normal_ranges = pd.read_csv(path, sep=';')
 
     df= df_root[df_root['name']== '12-Lead ECG']
     lista_sujetos = df['Participante'].unique()
@@ -846,7 +855,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                     try: 
                         if float(Undefined_Interpretation_pure) == 1.0:
                             
-                            if float(Undefined_HR_bpm_pure) < 45.0 or float(Undefined_HR_bpm_pure) > 90.0 :
+                            if float(Undefined_HR_bpm_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Undefined, HR (bpm)")]['min'].iloc[0]) or\
+                                  float(Undefined_HR_bpm_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Undefined, HR (bpm)")]['max'].iloc[0]) :
                                 error = [subject, visit, 'Undefined, HR (bpm)', Undefined_Interpretation_form_field_instance ,
                                          'The HR is not within expected range (45 to 90), therefore the Interpretation can not be Normal.', 
                                          f"Undefined HR Interpretation: {Undefined_Interpretation_disname}  - Undefined HR: {Undefined_HR_bpm_disname}", 'LE0070']
@@ -858,7 +868,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                     # Revision LE0140
                     try: 
                         if float(Undefined_Interpretation_pure) == 1.0:
-                            if float(Undefined_RR_msec_pure) < 654.6 or float(Undefined_RR_msec_pure) > 1141.4 :
+                            if float(Undefined_RR_msec_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Undefined, RR (msec)")]['min'].iloc[0]) or\
+                                  float(Undefined_RR_msec_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Undefined, RR (msec)")]['max'].iloc[0]) :
                                 error = [subject, visit, 'Undefined, RR (msec)', Undefined_Interpretation_form_field_instance ,
                                          'The RR is not within expected range (654.6 to 1141.4), therefore the Interpretation can not be Normal.',
                                            f"Undefined RR Interpretation: {Undefined_Interpretation_disname} - Undefined RR Result: {Undefined_RR_msec_disname}", 'LE0140']
@@ -870,7 +881,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                     # Revision LE0210
                     try: 
                         if float(Undefined_Interpretation_pure) == 1.0:
-                            if float(Undefined_PR_msec_pure) < 120.0 or float(Undefined_PR_msec_pure) > 200.0 :
+                            if float(Undefined_PR_msec_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Undefined, PR (msec)")]['min'].iloc[0]) or\
+                                  float(Undefined_PR_msec_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Undefined, PR (msec)")]['max'].iloc[0]) :
                                 error = [subject, visit, 'Undefined, PR (msec)', Undefined_Interpretation_form_field_instance,
                                          'The PR is not within expected range (120 to 200), therefore the Interpretation can not be Normal.', 
                                          f"Undefined PR Interpretation: {Undefined_Interpretation_disname} - Undefinede PR Result: {Undefined_PR_msec_disname}", 'LE0210']
@@ -881,7 +893,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                     # Revision LE0280
                     try: 
                         if float(Undefined_Interpretation_pure) == 1.0:
-                            if float(Undefined_QRS_msec_pure) < 70.0 or float(Undefined_QRS_msec_pure) > 120.0 :
+                            if float(Undefined_QRS_msec_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Undefined, QRS (msec)")]['min'].iloc[0]) or\
+                                  float(Undefined_QRS_msec_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Undefined, QRS (msec)")]['max'].iloc[0]) :
                                 error = [subject, visit, 'Undefined, QRS (msec)', Undefined_Interpretation_form_field_instance ,
                                          'The QRS  is not within expected range (70 to 120), therefore the Interpretation can not be Normal.',
                                            f"Undefined QRS Interpretation: {Undefined_Interpretation_disname} - Undefined QRS result: {Undefined_QRS_msec_disname}", 'LE0280']
@@ -893,7 +906,7 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                     # Revision LE0350
                     try: 
                         if float(Undefined_Interpretation_pure) == 1.0:
-                            if float(Undefined_QT_msec_pure) > 500.0 :
+                            if float(Undefined_QT_msec_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Undefined, QT (msec)")]['max'].iloc[0]) :
                                 error = [subject, visit, 'Undefined, QT (msec)', Undefined_Interpretation_form_field_instance ,
                                          'The QT is not within expected range (below or equal to 500 msec), therefore the Interpretation can not be Normal.',
                                            f"Undefined QT Interpretation: {Undefined_Interpretation_disname}  - Undefined QT Result: {Undefined_QT_msec_disname}", 'LE0350']
@@ -905,7 +918,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                     #if math.isnan(float(Undefined_QTcF_msec_pure)) == False: 
                     if float(Undefined_Interpretation_pure) == 1.0:
                         try: 
-                            if float(Undefined_QTcF_msec_pure) >= 350.0 and float(Undefined_QTcF_msec_pure)  <= 450.0 :
+                            if float(Undefined_QTcF_msec_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Undefined, QTcF (msec)")]['min'].iloc[0]) and\
+                                  float(Undefined_QTcF_msec_pure)  <= float(df_normal_ranges[(df_normal_ranges['field']== "Undefined, QTcF (msec)")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, 'Undefined, QTcF (msec)', Undefined_Interpretation_pure ,
@@ -1001,7 +1015,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         
                         if float(Pre_dose_triplicate_1_Interpretation_pure) == 1.0:
                             
-                            if float(Pre_dose_triplicate_1_HR_bpm_pure) < 45.0 or float(Pre_dose_triplicate_1_HR_bpm_pure) > 90.0 :
+                            if float(Pre_dose_triplicate_1_HR_bpm_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Pre dose triplicate 1, HR (bpm)")]['min'].iloc[0]) or\
+                                  float(Pre_dose_triplicate_1_HR_bpm_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Pre dose triplicate 1, HR (bpm)")]['max'].iloc[0]) :
                                 error = [subject, visit, 'Pre dose triplicate 1, HR (bpm)', Pre_dose_triplicate_1_Interpretation_form_field_instance,
                                          'If the Interpretation is Normal, the range must be between 45 and 90', 
                                          f"Pre dose triplicate 1, HR Interpretation: {Pre_dose_triplicate_1_Interpretation_disname} - Pre dose triplicate 1, HR Result: {Pre_dose_triplicate_1_HR_bpm_disname}", 'LE0080']
@@ -1013,7 +1028,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                     # Revision LE0150
                     try: 
                         if float(Pre_dose_triplicate_1_Interpretation_pure) == 1.0:
-                            if float(Pre_dose_triplicate_1__RR_msec_pure) < 654.6 or float(Pre_dose_triplicate_1__RR_msec_pure) > 1141.4 :
+                            if float(Pre_dose_triplicate_1__RR_msec_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Pre dose triplicate 1, RR (msec)")]['min'].iloc[0]) or\
+                                  float(Pre_dose_triplicate_1__RR_msec_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Pre dose triplicate 1, RR (msec)")]['max'].iloc[0]) :
                                 error = [subject, visit, 'Pre dose triplicate 1, RR (msec)', Pre_dose_triplicate_1_Interpretation_form_field_instance,
                                          'The RR is not within expected range (654.6 to 1141.4), therefore the Interpretation can not be Normal.', 
                                          f"Pre dose triplicate 1, RR Interpretation: {Pre_dose_triplicate_1_Interpretation_disname} - Pre dose triplicate 1, RR Result: {Pre_dose_triplicate_1__RR_msec_disname}", 'LE0150']
@@ -1025,7 +1041,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                     # Revision LE0290
                     try: 
                         if float(Pre_dose_triplicate_1_Interpretation_pure) == 1.0:
-                            if float(Pre_dose_triplicate_1_QRS_msec_pure) < 70.0 or float(Pre_dose_triplicate_1_QRS_msec_pure) > 120.0 :
+                            if float(Pre_dose_triplicate_1_QRS_msec_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Pre dose triplicate 1, QRS (msec)")]['min'].iloc[0]) or\
+                                  float(Pre_dose_triplicate_1_QRS_msec_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Pre dose triplicate 1, QRS (msec)")]['max'].iloc[0]) :
                                 error = [subject, visit, 'Pre dose triplicate 1, QRS (msec)', Pre_dose_triplicate_1_Interpretation_form_field_instance ,
                                          'The QRS  is not within expected range (70 to 120), therefore the Interpretation can not be Normal.', 
                                          f"Pre dose triplicate 1, QRS Interpretation: {Pre_dose_triplicate_1_Interpretation_disname} - Pre dose triplicate 1, QRS Result: {Pre_dose_triplicate_1_QRS_msec_disname}", 'LE0290']
@@ -1037,7 +1054,7 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                     # Revision LE0360
                     try: 
                         if float(Pre_dose_triplicate_1_Interpretation_pure) == 1.0:
-                            if float(Pre_dose_triplicate_1_QT_msec_pure) > 500.0 :
+                            if float(Pre_dose_triplicate_1_QT_msec_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Pre dose triplicate 1, QT (msec)")]['max'].iloc[0]) :
                                 error = [subject, visit, 'Pre dose triplicate 1, QT (msec)', Pre_dose_triplicate_1_Interpretation_form_field_instance,
                                          'The QT is not within expected range (below or equal to 500 msec), therefore the Interpretation can not be Normal.', 
                                          f"Pre dose triplicate 1, QT Interpretation: {Pre_dose_triplicate_1_Interpretation_disname} - Pre dose triplicate 1, QT Result: {Pre_dose_triplicate_1_QT_msec_disname}", 'LE0360']
@@ -1049,7 +1066,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                     #if math.isnan(float(Pre_dose_triplicate_1_QTcF_msec_pure)) == False:
                     if float(Pre_dose_triplicate_1_Interpretation_pure) == 1.0:
                         try: 
-                            if float(Pre_dose_triplicate_1_QTcF_msec_pure) >= 350.0 and float(Pre_dose_triplicate_1_QTcF_msec_pure)  <= 450.0 :
+                            if float(Pre_dose_triplicate_1_QTcF_msec_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Pre dose triplicate 1, QTcF (msec)")]['min'].iloc[0]) and\
+                                  float(Pre_dose_triplicate_1_QTcF_msec_pure)  <= float(df_normal_ranges[(df_normal_ranges['field']== "Pre dose triplicate 1, QTcF (msec)")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, 'Pre dose triplicate 1, QTcF (msec)', Pre_dose_triplicate_1_Interpretation_form_field_instance ,
@@ -1119,7 +1137,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         
                         if float(Pre_dose_triplicate_2_Interpretation_pure) == 1.0:
                             
-                            if float(Pre_dose_triplicate_2_HR_bpm_pure) < 45.0 or float(Pre_dose_triplicate_2_HR_bpm_pure) > 90.0 :
+                            if float(Pre_dose_triplicate_2_HR_bpm_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Pre dose triplicate 2, HR (bpm)")]['min'].iloc[0]) or\
+                                  float(Pre_dose_triplicate_2_HR_bpm_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Pre dose triplicate 2, HR (bpm)")]['max'].iloc[0]) :
                                 error = [subject, visit, 'Pre dose triplicate 2, HR (bpm)', Pre_dose_triplicate_2_Interpretation_form_field_instance ,
                                          'If the Interpretation is Normal, the range must be between 45 and 90', 
                                          f"Pre dose triplicate 2, HR Interpretation: {Pre_dose_triplicate_2_Interpretation_disname} - Pre dose triplicate 2, HR Result: {Pre_dose_triplicate_2_HR_bpm_disname}", 'LE0090']
@@ -1131,7 +1150,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                     # Revision LE0160
                     try: 
                         if float(Pre_dose_triplicate_2_Interpretation_pure) == 1.0:
-                            if float(Pre_dose_triplicate_2_RR_msec_pure) < 654.6 or float(Pre_dose_triplicate_2_RR_msec_pure) > 1141.4 :
+                            if float(Pre_dose_triplicate_2_RR_msec_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Pre dose triplicate 2, RR (msec)")]['min'].iloc[0]) or\
+                                  float(Pre_dose_triplicate_2_RR_msec_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Pre dose triplicate 2, RR (msec)")]['max'].iloc[0]) :
                                 error = [subject, visit, 'Pre dose triplicate 2, RR (msec)', Pre_dose_triplicate_2_Interpretation_form_field_instance ,
                                          'The RR is not within expected range (654.6 to 1141.4), therefore the Interpretation can not be Normal.',
                                            f"Pre dose triplicate 2, RR Interpretation: {Pre_dose_triplicate_2_Interpretation_disname} - Pre dose triplicate 2, RR Result: {Pre_dose_triplicate_2_RR_msec_disname}", 'LE0160']
@@ -1144,7 +1164,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                     # Revision LE0230
                     try: 
                         if float(Pre_dose_triplicate_2_Interpretation_pure) == 1.0:
-                            if float(Pre_dose_triplicate_2_PR_msec_pure) < 120.0 or float(Pre_dose_triplicate_2_PR_msec_pure) > 200.0 :
+                            if float(Pre_dose_triplicate_2_PR_msec_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Pre dose triplicate 2, PR (msec)")]['min'].iloc[0]) or\
+                                  float(Pre_dose_triplicate_2_PR_msec_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Pre dose triplicate 2, PR (msec)")]['max'].iloc[0]) :
                                 error = [subject, visit, 'Pre dose triplicate 2, PR (msec)', Pre_dose_triplicate_2_Interpretation_form_field_instance ,
                                          'The PR is not within expected range (120 to 200), therefore the Interpretation can not be Normal.', 
                                          f"Pre dose triplicate 2, PR Interpretation: {Pre_dose_triplicate_2_Interpretation_disname} - Pre dose triplicate 2, PR Result: {Pre_dose_triplicate_2_PR_msec_pure}", 'LE0230']
@@ -1156,7 +1177,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                     # Revision LE0300
                     try: 
                         if float(Pre_dose_triplicate_2_Interpretation_pure) == 1.0:
-                            if float(Pre_dose_triplicate_2_QRS_msec_pure) < 70.0 or float(Pre_dose_triplicate_2_QRS_msec_pure) > 120.0 :
+                            if float(Pre_dose_triplicate_2_QRS_msec_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Pre dose triplicate 2, QRS (msec)")]['min'].iloc[0]) or\
+                                  float(Pre_dose_triplicate_2_QRS_msec_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Pre dose triplicate 2, QRS (msec)")]['max'].iloc[0]) :
                                 error = [subject, visit, 'Pre dose triplicate 2, QRS (msec)', Pre_dose_triplicate_2_Interpretation_form_field_instance ,
                                          'The QRS  is not within expected range (70 to 120), therefore the Interpretation can not be Normal.', 
                                          f"Pre dose triplicate 2, QRS: {Pre_dose_triplicate_2_Interpretation_disname} - Pre dose triplicate 2, QRS Result: {Pre_dose_triplicate_2_QRS_msec_disname}", 'LE0300']
@@ -1168,7 +1190,7 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                     # Revision LE0370
                     try: 
                         if float(Pre_dose_triplicate_2_Interpretation_pure) == 1.0:
-                            if float(Pre_dose_triplicate_2_QT_msec_pure) > 500.0 :
+                            if float(Pre_dose_triplicate_2_QT_msec_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Pre dose triplicate 2, QT (msec)")]['max'].iloc[0]) :
                                 error = [subject, visit, 'Pre dose triplicate 2, QT (msec)', Pre_dose_triplicate_2_Interpretation_form_field_instance ,
                                          'The QT is not within expected range (below or equal to 500 msec), therefore the Interpretation can not be Normal.', 
                                          f"Pre dose triplicate 2, QT Interpretation: {Pre_dose_triplicate_2_Interpretation_disname} - Pre dose triplicate 2, QT Result: {Pre_dose_triplicate_2_QT_msec_disname}", 'LE0370']
@@ -1180,7 +1202,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                     # Revision LE0460
                     if float(Pre_dose_triplicate_2_Interpretation_pure) == 1.0: 
                         try: 
-                            if float(Pre_dose_triplicate_2_QTcF_msec_pure) >= 350.0 and float(Pre_dose_triplicate_2_QTcF_msec_pure) <= 450.0 :
+                            if float(Pre_dose_triplicate_2_QTcF_msec_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Pre dose triplicate 2, QTcF (msec)")]['min'].iloc[0]) and\
+                                  float(Pre_dose_triplicate_2_QTcF_msec_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Pre dose triplicate 2, QTcF (msec)")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, 'Pre dose triplicate 2, QTcF (msec)', Pre_dose_triplicate_2_Interpretation_form_field_instance ,
@@ -1249,7 +1272,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         
                         if float(Pre_dose_triplicate_3_Interpretation_pure) == 1.0:
                             
-                            if float(Pre_dose_triplicate_3_HR_bpm_pure) < 45.0 or float(Pre_dose_triplicate_3_HR_bpm_pure) > 90.0 :
+                            if float(Pre_dose_triplicate_3_HR_bpm_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Pre dose triplicate 3, HR (bpm)")]['min'].iloc[0]) or\
+                                  float(Pre_dose_triplicate_3_HR_bpm_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Pre dose triplicate 3, HR (bpm)")]['max'].iloc[0]) :
                                 error = [subject, visit, 'Pre dose triplicate 3, HR (bpm)', Pre_dose_triplicate_3_Interpretation_form_field_instance ,
                                          'If the Interpretation is Normal, the range must be between 45 and 90', 
                                          f"Pre dose triplicate 3, HR Interpretation: {Pre_dose_triplicate_3_Interpretation_disname} - Pre dose triplicate 3, HR Result: {Pre_dose_triplicate_3_HR_bpm_disname}", 'LE00100']
@@ -1261,7 +1285,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                     # Revision LE0170
                     try: 
                         if float(Pre_dose_triplicate_3_Interpretation_pure) == 1.0:
-                            if float(Pre_dose_triplicate_3_RR_msec_pure) < 654.6 or float(Pre_dose_triplicate_3_RR_msec_pure) > 1141.4 :
+                            if float(Pre_dose_triplicate_3_RR_msec_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Pre dose triplicate 3, RR (msec)")]['min'].iloc[0]) or\
+                                  float(Pre_dose_triplicate_3_RR_msec_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Pre dose triplicate 3, RR (msec)")]['max'].iloc[0]) :
                                 error = [subject, visit, 'Pre dose triplicate 3, RR (msec)', Pre_dose_triplicate_3_Interpretation_form_field_instance ,
                                          'The RR is not within expected range (654.6 to 1141.4), therefore the Interpretation can not be Normal.', 
                                          f"Pre dose triplicate 3, RR Interpretation: {Pre_dose_triplicate_3_Interpretation_disname} - Pre dose triplicate 3, RR Result: {Pre_dose_triplicate_3_RR_msec_disname}", 'LE0170']
@@ -1274,7 +1299,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                     # Revision LE0240
                     try: 
                         if float(Pre_dose_triplicate_3_Interpretation_pure) == 1.0:
-                            if float(Pre_dose_triplicate_3_PR_msec_pure) < 120.0 or float(Pre_dose_triplicate_3_PR_msec_pure) > 200.0 :
+                            if float(Pre_dose_triplicate_3_PR_msec_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Pre dose triplicate 3, PR (msec)")]['min'].iloc[0]) or\
+                                  float(Pre_dose_triplicate_3_PR_msec_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Pre dose triplicate 3, PR (msec)")]['max'].iloc[0]) :
                                 error = [subject, visit, 'Pre dose triplicate 3, PR (msec)', Pre_dose_triplicate_3_Interpretation_form_field_instance,
                                          'The PR is not within expected range (120 to 200), therefore the Interpretation can not be Normal.', 
                                          f"Pre dose triplicate 3, PR Interpreation: {Pre_dose_triplicate_3_Interpretation_disname} - Pre dose triplicate 3, PR Result: {Pre_dose_triplicate_3_PR_msec_disname}", 'LE0240']
@@ -1286,7 +1312,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                     # Revision LE0310
                     try: 
                         if float(Pre_dose_triplicate_3_Interpretation_pure) == 1.0:
-                            if float(Pre_dose_triplicate_3_QRS_msec_pure) < 70.0 or float(Pre_dose_triplicate_3_QRS_msec_pure) > 120.0 :
+                            if float(Pre_dose_triplicate_3_QRS_msec_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Pre dose triplicate 3, QRS (msec)")]['min'].iloc[0]) or\
+                                  float(Pre_dose_triplicate_3_QRS_msec_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Pre dose triplicate 3, QRS (msec)")]['max'].iloc[0]) :
                                 error = [subject, visit, 'Pre dose triplicate 3, QRS (msec)', Pre_dose_triplicate_3_Interpretation_form_field_instance ,
                                          'The QRS  is not within expected range (70 to 120), therefore the Interpretation can not be Normal.', 
                                          f"Pre dose triplicate 3, QRS Interpretation: {Pre_dose_triplicate_3_Interpretation_disname} - Pre dose triplicate 3, QRS Result: {Pre_dose_triplicate_3_QRS_msec_disname}", 'LE0310']
@@ -1298,7 +1325,7 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                     # Revision LE0380
                     try: 
                         if float(Pre_dose_triplicate_3_Interpretation_pure) == 1.0:
-                            if float(Pre_dose_triplicate_3_QT_msec_pure) > 500.0 :
+                            if float(Pre_dose_triplicate_3_QT_msec_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Pre dose triplicate 3, QT (msec)")]['max'].iloc[0]) :
                                 error = [subject, visit, 'Pre dose triplicate 3, QT (msec)', Pre_dose_triplicate_3_Interpretation_form_field_instance ,
                                          'The QT is not within expected range (below or equal to 500 msec), therefore the Interpretation can not be Normal.', 
                                          f"Pre dose triplicate 3, QT Interpretation: {Pre_dose_triplicate_3_Interpretation_disname} - Pre dose triplicate 3, QT Result: {Pre_dose_triplicate_3_QT_msec_disname}", 'LE0380']
@@ -1311,7 +1338,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                     #if math.isnan(float(Pre_dose_triplicate_3_QTcF_msec_pure)) == False:
                     if float(Pre_dose_triplicate_3_Interpretation_pure) == 1.0:
                         try: 
-                            if float(Pre_dose_triplicate_3_QTcF_msec_pure) >= 350.0 and float(Pre_dose_triplicate_3_QTcF_msec_pure) <= 450.0 :
+                            if float(Pre_dose_triplicate_3_QTcF_msec_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "Pre dose triplicate 3, QTcF (msec)")]['min'].iloc[0]) and\
+                                  float(Pre_dose_triplicate_3_QTcF_msec_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Pre dose triplicate 3, QTcF (msec)")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, 'Pre dose triplicate 3, QTcF (msec)', Pre_dose_triplicate_3_Interpretation_form_field_instance ,
@@ -1379,7 +1407,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         
                         if float(min_15_post_dose_Interpretation_pure) == 1.0:
                             
-                            if float(min_15_post_dose_HR_bpm_pure) < 45.0 or float(min_15_post_dose_HR_bpm_pure) > 90.0 :
+                            if float(min_15_post_dose_HR_bpm_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "15-min post dose, HR (bpm)")]['min'].iloc[0]) or\
+                                  float(min_15_post_dose_HR_bpm_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "15-min post dose, HR (bpm)")]['max'].iloc[0]) :
                                 error = [subject, visit, '15-min post dose, HR (bpm)', min_15_post_dose_Interpretation_form_field_instance ,
                                          'If the Interpretation is Normal, the range must be between 45 and 90', 
                                          f"15-min post dose, HR Interpretation: {min_15_post_dose_Interpretation_disname} - 15-min post dose, HR Result:  {min_15_post_dose_HR_bpm_disname}", 'LE00110']
@@ -1391,7 +1420,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                     # Revision LE0180
                     try: 
                         if float(min_15_post_dose_Interpretation_pure) == 1.0:
-                            if float(min_15_post_dose_RR_msec_pure) < 654.6 or float(min_15_post_dose_RR_msec_pure) > 1141.4 :
+                            if float(min_15_post_dose_RR_msec_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "15-min post dose, RR (msec)")]['min'].iloc[0]) or\
+                                  float(min_15_post_dose_RR_msec_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "15-min post dose, RR (msec)")]['max'].iloc[0]) :
                                 error = [subject, visit, '15-min post dose, RR (msec)', min_15_post_dose_Interpretation_form_field_instance ,
                                          'The RR is not within expected range (654.6 to 1141.4), therefore the Interpretation can not be Normal.', 
                                          f"15-min post dose, RR Interpretation: {min_15_post_dose_Interpretation_disname} - 15-min post dose, RR Result: {min_15_post_dose_RR_msec_disname}", 'LE0180']
@@ -1404,7 +1434,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                     # Revision LE0250
                     try: 
                         if float(min_15_post_dose_Interpretation_pure) == 1.0:
-                            if float(min_15_post_dose_PR_msec_pure) < 120.0 or float(min_15_post_dose_PR_msec_pure) > 200.0 :
+                            if float(min_15_post_dose_PR_msec_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "15-min post dose, PR (msec)")]['min'].iloc[0]) or\
+                                  float(min_15_post_dose_PR_msec_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "15-min post dose, PR (msec)")]['max'].iloc[0]) :
                                 error = [subject, visit, '15-min post dose, PR (msec)', min_15_post_dose_Interpretation_form_field_instance ,
                                          'The PR is not within expected range (120 to 200), therefore the Interpretation can not be Normal.', 
                                          f"15-min post dose, PR Interpretation: {min_15_post_dose_Interpretation_disname} - 15-min post dose, PR Result: {min_15_post_dose_PR_msec_disname}", 'LE0250']
@@ -1428,8 +1459,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                     # Revision LE0390
                     try: 
                         if float(min_15_post_dose_Interpretation_pure) == 1.0:
-                            if float(min_15_post_dose_QT_msec_pure) > 500.0 :
-                                error = [subject, visit, '15-min post dose, QRS (msec)', min_15_post_dose_Interpretation_form_field_instance ,
+                            if float(min_15_post_dose_QT_msec_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "15-min post dose, QT (msec)")]['max'].iloc[0]) :
+                                error = [subject, visit, '15-min post dose, QT (msec)', min_15_post_dose_Interpretation_form_field_instance ,
                                          'The QT is not within expected range (below or equal to 500 msec), therefore the Interpretation can not be Normal.', 
                                          f"15-min post dose, QRS interpretation: {min_15_post_dose_Interpretation_disname} - 15-min post dose, QRS Result: {min_15_post_dose_QT_msec_disname}", 'LE0390']
                                 lista_revision.append(error)
@@ -1440,7 +1471,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                     # Revision LE0500
                     if float(min_15_post_dose_Interpretation_pure) == 1.0: 
                         try: 
-                            if float(min_15_post_dose_QTcF_msec_pure) >= 350.0 and float(min_15_post_dose_QTcF_msec_pure)  <= 450.0 :
+                            if float(min_15_post_dose_QTcF_msec_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "15-min post dose, QTcF (msec)")]['min'].iloc[0]) and\
+                                  float(min_15_post_dose_QTcF_msec_pure)  <= float(df_normal_ranges[(df_normal_ranges['field']== "15-min post dose, QTcF (msec)")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '15-min post dose, QTcF (msec)', min_15_post_dose_Interpretation_form_field_instance ,
@@ -1509,7 +1541,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         
                         if float(min_30_post_dose_Interpretation_pure) == 1.0:
                             
-                            if float(min_30_post_dose_HR_bpm_pure) < 45.0 or float(min_30_post_dose_HR_bpm_pure) > 90.0 :
+                            if float(min_30_post_dose_HR_bpm_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "30-min post dose, HR (bpm)")]['min'].iloc[0]) or\
+                                  float(min_30_post_dose_HR_bpm_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "30-min post dose, HR (bpm)")]['max'].iloc[0]) :
                                 error = [subject, visit, '30-min post dose, HR (bpm)', min_30_post_dose_Interpretation_form_field_instance,
                                          'If the Interpretation is Normal, the range must be between 45 and 90', 
                                          f"30-min post dose, HR Interpretation: {min_30_post_dose_Interpretation_disname} - 30-min post dose, HR Result: {min_30_post_dose_HR_bpm_disname}", 'LE00120']
@@ -1520,7 +1553,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                     # Revision LE0190
                     try: 
                         if float(min_30_post_dose_Interpretation_pure) == 1.0:
-                            if float(min_30_post_dose_RR_msec_pure) < 654.6 or float(min_30_post_dose_RR_msec_pure) > 1141.4 :
+                            if float(min_30_post_dose_RR_msec_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "30-min post dose, RR (msec)")]['min'].iloc[0]) or\
+                                  float(min_30_post_dose_RR_msec_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "30-min post dose, RR (msec)")]['max'].iloc[0]) :
                                 error = [subject, visit, '30-min post dose, RR (msec)', min_30_post_dose_Interpretation_form_field_instance ,
                                          'The RR is not within expected range (654.6 to 1141.4), therefore the Interpretation can not be Normal.', 
                                          f"30-min post dose, RR Interpretation: {min_30_post_dose_Interpretation_disname} - 30-min post dose, RR Result: {min_30_post_dose_RR_msec_disname}", 'LE0190']
@@ -1533,7 +1567,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                     # Revision LE0260
                     try: 
                         if float(min_30_post_dose_Interpretation_pure) == 1.0:
-                            if float(min_30_post_dose_PR_msec_pure) < 120.0 or float(min_30_post_dose_PR_msec_pure) > 200.0 :
+                            if float(min_30_post_dose_PR_msec_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "30-min post dose, PR (msec)")]['min'].iloc[0]) or\
+                                  float(min_30_post_dose_PR_msec_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "30-min post dose, PR (msec)")]['max'].iloc[0]) :
                                 error = [subject, visit, '30-min post dose, PR (msec)', min_30_post_dose_Interpretation_form_field_instance,
                                          'The PR is not within expected range (120 to 200), therefore the Interpretation can not be Normal.', 
                                          f"30-min post dose, PR Interpretation: {min_30_post_dose_Interpretation_disname} - 30-min post dose, PR Result: {min_30_post_dose_PR_msec_disname}", 'LE0260']
@@ -1545,7 +1580,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                     # Revision LE0330
                     try: 
                         if float(min_30_post_dose_Interpretation_pure) == 1.0:
-                            if float(min_30_post_dose_QRS_msec_pure) < 70.0 or float(min_30_post_dose_QRS_msec_pure) > 120.0 :
+                            if float(min_30_post_dose_QRS_msec_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "30-min post dose, QRS (msec)")]['min'].iloc[0]) or\
+                                  float(min_30_post_dose_QRS_msec_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "30-min post dose, QRS (msec)")]['max'].iloc[0]) :
                                 error = [subject, visit, '30-min post dose, QRS (msec)', min_30_post_dose_Interpretation_form_field_instance ,
                                          'The QRS  is not within expected range (70 to 120), therefore the Interpretation can not be Normal.', 
                                          f"30-min post dose, QRS Interpretation: {min_30_post_dose_Interpretation_disname} - 30-min post dose, QRS Result: {min_30_post_dose_QRS_msec_disname}", 'LE0330']
@@ -1557,8 +1593,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                     # Revision LE0400
                     try: 
                         if float(min_30_post_dose_Interpretation_pure) == 1.0:
-                            if float(min_30_post_dose_QT_msec_pure) > 500.0 :
-                                error = [subject, visit, '30-min post dose, QRS (msec)', min_30_post_dose_Interpretation_form_field_instance ,
+                            if float(min_30_post_dose_QT_msec_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "30-min post dose, QT (msec)")]['max'].iloc[0]):
+                                error = [subject, visit, '30-min post dose, QT (msec)', min_30_post_dose_Interpretation_form_field_instance ,
                                          'The QT is not within expected range (below or equal to 500 msec), therefore the Interpretation can not be Normal.', 
                                          f"30-min post dose, QRS Interpretation: {min_30_post_dose_Interpretation_disname} - 30-min post dose, QRS Result: {min_30_post_dose_QT_msec_disname}", 'LE0400']
                                 lista_revision.append(error)
@@ -1568,7 +1604,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                     # Revision LE0520
                     if float(min_30_post_dose_Interpretation_pure) == 1.0:
                         try: 
-                            if float(min_30_post_dose_QTcF_msec_pure) >= 350.0 and float(min_30_post_dose_QTcF_msec_pure) <= 450.0 :
+                            if float(min_30_post_dose_QTcF_msec_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "30-min post dose, QTcF (msec)")]['min'].iloc[0]) and\
+                                  float(min_30_post_dose_QTcF_msec_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "30-min post dose, QTcF (msec)")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '30-min post dose, QTcF (msec)', min_30_post_dose_Interpretation_form_field_instance ,
@@ -1638,7 +1675,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                         
                         if float(min_60_post_dose_Interpretation_pure) == 1.0:
                             
-                            if float(min_60_post_dose_HR_bpm_pure) < 45.0 or float(min_60_post_dose_HR_bpm_pure) > 90.0 :
+                            if float(min_60_post_dose_HR_bpm_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "60-min post dose, HR (bpm)")]['min'].iloc[0]) or\
+                                  float(min_60_post_dose_HR_bpm_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "60-min post dose, HR (bpm)")]['max'].iloc[0]) :
                                 error = [subject, visit, '60-min post dose, HR (bpm)', min_60_post_dose_Interpretation_form_field_instance,
                                          'If the Interpretation is Normal, the range must be between 45 and 90', 
                                          f"60-min post dose, HR Interpretation: {min_60_post_dose_Interpretation_disname} - 60-min post dose, HR Result: {min_60_post_dose_HR_bpm_disname}", 'LE00130']
@@ -1650,7 +1688,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                     # Revision LE0200
                     try: 
                         if float(min_60_post_dose_Interpretation_pure) == 1.0:
-                            if float(min_60_post_dose_RR_msec_pure) < 654.6 or float(min_60_post_dose_RR_msec_pure) > 1141.4 :
+                            if float(min_60_post_dose_RR_msec_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "60-min post dose, RR (msec)")]['min'].iloc[0]) or\
+                                  float(min_60_post_dose_RR_msec_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "60-min post dose, RR (msec)")]['max'].iloc[0]) :
                                 error = [subject, visit, '60-min post dose, RR (msec)', min_60_post_dose_Interpretation_form_field_instance,
                                          'The RR is not within expected range (654.6 to 1141.4), therefore the Interpretation can not be Normal.', 
                                          f"60-min post dose, RR Interpretation: {min_60_post_dose_Interpretation_disname} - 60-min post dose, RR Result: {min_60_post_dose_RR_msec_disname}", 'LE0200']
@@ -1663,7 +1702,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                     # Revision LE0270
                     try: 
                         if float(min_60_post_dose_Interpretation_pure) == 1.0:
-                            if float(min_60_post_dose_PR_msec_pure) < 120.0 or float(min_60_post_dose_PR_msec_pure) > 200.0 :
+                            if float(min_60_post_dose_PR_msec_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "60-min post dose, PR (msec)")]['min'].iloc[0]) or\
+                                  float(min_60_post_dose_PR_msec_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "60-min post dose, PR (msec)")]['max'].iloc[0]) :
                                 error = [subject, visit, '60-min post dose, PR (msec)', min_60_post_dose_Interpretation_form_field_instance ,
                                          'The PR is not within expected range (120 to 200), therefore the Interpretation can not be Normal.', 
                                          f"60-min post dose, PR interpretation: {min_60_post_dose_Interpretation_disname} - 60-min post dose, PR Result: {min_60_post_dose_PR_msec_disname}", 'LE0270']
@@ -1675,7 +1715,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                     # Revision LE0340
                     try: 
                         if float(min_60_post_dose_Interpretation_pure) == 1.0:
-                            if float(min_60_post_dose_QRS_msec_pure) < 70.0 or float(min_60_post_dose_QRS_msec_pure) > 120.0 :
+                            if float(min_60_post_dose_QRS_msec_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "60-min post dose, QRS (msec)")]['min'].iloc[0]) or\
+                                  float(min_60_post_dose_QRS_msec_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "60-min post dose, QRS (msec)")]['max'].iloc[0]) :
                                 error = [subject, visit, '60-min post dose, QRS (msec)', min_60_post_dose_Interpretation_form_field_instance ,
                                          'The QRS  is not within expected range (70 to 120), therefore the Interpretation can not be Normal.', 
                                          f"60-min post dose, QRS Interpretation: {min_60_post_dose_Interpretation_disname} - 60-min post dose, QRS Result: {min_60_post_dose_QRS_msec_disname}", 'LE0340']
@@ -1687,8 +1728,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                     # Revision LE0410
                     try: 
                         if float(min_60_post_dose_Interpretation_pure) == 1.0:
-                            if float(min_60_post_dose_QT_msec_pure) > 500.0 :
-                                error = [subject, visit, '60-min post dose, QRS (msec)', min_60_post_dose_Interpretation_form_field_instance,
+                            if float(min_60_post_dose_QT_msec_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "60-min post dose, QT (msec)")]['max'].iloc[0]) :
+                                error = [subject, visit, '60-min post dose, QT (msec)', min_60_post_dose_Interpretation_form_field_instance,
                                          'The QT is not within expected range (below or equal to 500 msec), therefore the Interpretation can not be Normal.', 
                                          f"60-min post dose, QRS Interpretation: {min_60_post_dose_Interpretation_disname} - 60-min post dose, QRS Result: {min_60_post_dose_QT_msec_disname}", 'LE0410']
                                 lista_revision.append(error)
@@ -1700,7 +1741,8 @@ def lead_ECG(df_root, path_excel_writer, lista_instancias_abiertas):
                     #if math.isnan(float(min_60_post_dose_QTcF_msec_pure)) == False:
                     if float(min_60_post_dose_Interpretation_pure) == 1.0:
                         try: 
-                            if float(min_60_post_dose_QTcF_msec_pure) >= 350.0 and float(min_60_post_dose_QTcF_msec_pure)  <= 450.0 :
+                            if float(min_60_post_dose_QTcF_msec_pure) >= float(df_normal_ranges[(df_normal_ranges['field']== "60-min post dose, QTcF (msec)")]['min'].iloc[0]) and\
+                                  float(min_60_post_dose_QTcF_msec_pure)  <= float(df_normal_ranges[(df_normal_ranges['field']== "60-min post dose, QTcF (msec)")]['max'].iloc[0]) :
                                 pass
                             else:
                                 error = [subject, visit, '60-min post dose, QTcF (msec)', min_60_post_dose_Interpretation_form_field_instance ,
