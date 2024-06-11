@@ -86,9 +86,15 @@ def immunoassay(df_root, path_excel_writer, lista_instancias_abiertas):
                 subject = row['Subject']
                 visit = row['Visit']
 
-                was_DV_performed = row['was_DV_performed']
-                was_DV_performed_pure = was_DV_performed.split('|')[0]
-                was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
+
+                if visit != 'Unscheduled Visits':
+                    was_DV_performed = row['was_DV_performed']
+                    was_DV_performed_pure = was_DV_performed.split('|')[0]
+                    was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
+                else:
+                    was_DV_performed_pure='unsch'
+                    was_DV_performed_form_field_instance = 'Empty'
+                
    
                 date_of_visit = row['Date_of_visit']
                 date_inform_consent = row['Informed_consent_date']
@@ -168,9 +174,10 @@ def immunoassay(df_root, path_excel_writer, lista_instancias_abiertas):
                     # -----------------------------------------------------------------------------------------------------------------
 
                     # Revision GE0070
-                    if float(was_DV_performed_pure) !=  1.0:
-                        error = [subject, visit, 'Visit Pages', was_DV_performed_form_field_instance , 'This Form will be disabled because the visit was not done', was_DV_performed_pure, 'GE0070']
-                        lista_revision.append(error)
+                    if str(was_DV_performed_pure) !=  'unsch':
+                        if float(was_DV_performed_pure) !=  1.0:
+                            error = [subject, visit, 'Visit Pages', was_DV_performed_form_field_instance , 'This Form will be disabled because the visit was not done', was_DV_performed_pure, 'GE0070']
+                            lista_revision.append(error)
 
                     if date_collected_pure == '':
                         pass

@@ -1046,7 +1046,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer, list
                             if float(Urea_BUN_result_pure) >  float(df_normal_ranges[(df_normal_ranges['field']== "Urea (BUN)")]['min'].iloc[0]) and\
                                   float(Urea_BUN_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Urea (BUN)")]['max'].iloc[0]):
                                 error = [subject, visit, 'Urea (BUN), Out of normal range?', Urea_BUN_out_normal_form_field_instance ,
-                                             'According to the result, the value is not out of range, please review. (18.84 - 42.80)', 
+                                             'According to the result, the value is not out of range, please review. (12.84 - 42.80)', 
                                              f'Urea BUN Out Normal: {Urea_BUN_out_normal_disname} - Urea BUN Result: {Urea_BUN_result_pure}', 'LBC0410']
                                 lista_revision.append(error)
 
@@ -1056,7 +1056,7 @@ def clinical_laboratory_test_clinical_chemistry(df_root, path_excel_writer, list
                             if float(Urea_BUN_result_pure) < float(df_normal_ranges[(df_normal_ranges['field']== "Urea (BUN)")]['min'].iloc[0]) or\
                                   float(Urea_BUN_result_pure) > float(df_normal_ranges[(df_normal_ranges['field']== "Urea (BUN)")]['max'].iloc[0]):
                                 error = [subject, visit, 'Urea (BUN), Out of normal range?', Urea_BUN_out_normal_form_field_instance ,
-                                             'According to the result, the value is out of range, please review. (18.84 - 42.80)', 
+                                             'According to the result, the value is out of range, please review. (12.84 - 42.80)', 
                                              f'Urea BUN Out Normal: {Urea_BUN_out_normal_disname} - Urea BUN Result: {Urea_BUN_result_pure}', 'LBC0210']
                                 lista_revision.append(error)
 

@@ -43,6 +43,8 @@ def urinary_drug_screen(df_root, path_excel_writer, lista_instancias_abiertas):
     df_visit_done['Valor_completo'] = df_visit_done['Valor'].astype(str) + '|' + df_visit_done['FormFieldInstance Id'].astype(str)
     df_visit_done = df_visit_done[['Visit','Participante','Valor_completo']]
     df_visit_done = df_visit_done.rename(columns={'Participante':'Subject', 'Valor_completo':'was_DV_performed'})
+    # print(df_visit_done)
+    # print('------------------')
 
     warnings.filterwarnings('ignore')
 
@@ -78,9 +80,13 @@ def urinary_drug_screen(df_root, path_excel_writer, lista_instancias_abiertas):
                 subject = row['Subject']
                 visit = row['Visit']
 
-                was_DV_performed = row['was_DV_performed']
-                was_DV_performed_pure = was_DV_performed.split('|')[0]
-                was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
+                if visit != 'Unscheduled Visits':
+                    was_DV_performed = row['was_DV_performed']
+                    was_DV_performed_pure = was_DV_performed.split('|')[0]
+                    was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
+                else:
+                    was_DV_performed_pure='unsch'
+                    was_DV_performed_form_field_instance = 'Empty'
                 
                 date_of_visit = row['Date_of_visit']
                 date_inform_consent = row['Informed_consent_date']
@@ -127,9 +133,10 @@ def urinary_drug_screen(df_root, path_excel_writer, lista_instancias_abiertas):
                     #----------------------------------------------------------------------------------------------
 
                     # Revision GE0070
-                    if float(was_DV_performed_pure) !=  1.0:
-                        error = [subject, visit, 'Visit Pages', was_DV_performed_form_field_instance , 'This Form will be disabled because the visit was not done', was_DV_performed_pure, 'GE0070']
-                        lista_revision.append(error)
+                    if str(was_DV_performed_pure) !=  'unsch':
+                        if float(was_DV_performed_pure) !=  1.0 :
+                            error = [subject, visit, 'Visit Pages', was_DV_performed_form_field_instance , 'This Form will be disabled because the visit was not done', was_DV_performed_pure, 'GE0070']
+                            lista_revision.append(error)
 
                     if date_of_test_pure == '':
                         pass
@@ -175,21 +182,22 @@ def urinary_drug_screen(df_root, path_excel_writer, lista_instancias_abiertas):
                             lista_logs.append(f'Revision UD0030--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision UD0040
-                    if date_of_test_pure != '':
-                        try:
-                            date_format = '%d-%b-%Y'
-                            date_of_test_f = datetime.strptime(date_of_test_pure, date_format)
-                            date_of_visit_f = datetime.strptime(date_of_visit, date_format)
+                    if str(was_DV_performed_pure) !=  'unsch':
+                        if date_of_test_pure != '':
+                            try:
+                                date_format = '%d-%b-%Y'
+                                date_of_test_f = datetime.strptime(date_of_test_pure, date_format)
+                                date_of_visit_f = datetime.strptime(date_of_visit, date_format)
 
-                            if date_of_test_f != date_of_visit_f:
-                                error = [subject, visit, 'Date of test performed', date_of_test_form_field_isntance,\
-                                        'The date must be the same as the date of visit date', \
-                                            f'{date_of_test_pure} - {date_of_visit}', 'UD0040']
-                                lista_revision.append(error)
-                            else:
-                                pass
-                        except Exception as e:
-                            lista_logs.append(f'Revision UD0040--> {e} - Subject: {subject},  Visit: {visit} ')
+                                if date_of_test_f != date_of_visit_f:
+                                    error = [subject, visit, 'Date of test performed', date_of_test_form_field_isntance,\
+                                            'The date must be the same as the date of visit date', \
+                                                f'{date_of_test_pure} - {date_of_visit}', 'UD0040']
+                                    lista_revision.append(error)
+                                else:
+                                    pass
+                            except Exception as e:
+                                lista_logs.append(f'Revision UD0040--> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision UD0050
                     if date_of_test_pure != '':
