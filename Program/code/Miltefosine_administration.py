@@ -315,7 +315,8 @@ def miltefosine_administration(df_root, path_excel_writer, lista_instancias_abie
                                 error =  [subject, visit, 'Date of dosing', date_dosing_form_field_instance, \
                                             'The date must not be between the D1 and the D28 date', date_dosing_disname, 'ECML0020']
                                 lista_revision.append(error)
-                            
+                            #25-OCT-2023
+
                         
                     except Exception as e:
                             lista_logs.append(f'Revision ECML0020 --> {e} - Subject: {subject},  Visit: {visit} ')
@@ -455,15 +456,16 @@ def miltefosine_administration(df_root, path_excel_writer, lista_instancias_abie
                     
                     # Revision ECML0100
                     try:
-                        if float(dose_mg_pure) == 0.0:
-                            if float(reason_adjustment_pure) == 1.0:
-                                if float(action_taken_miltefosine) == 2.0:
-                                    pass
-                                else:
-                                    error = [subject, visit, 'Dosing Event', dosing_event_form_field_instance,\
-                                             'If dosing is 0 and the reason for adjustment is "Adverse event" there should be an adverse event created where the action taken (Miltefosine) should be CT  dose reduced', \
-                                                 dosing_event_disname, 'ECML0100']
-                                    lista_revision.append(error)
+                        if dose_mg != '' and reason_adjustment_pure != '' and action_taken_miltefosine!= '':
+                            if float(dose_mg_pure) == 0.0:
+                                if float(reason_adjustment_pure) == 1.0:
+                                    if float(action_taken_miltefosine) == 2.0:
+                                        pass
+                                    else:
+                                        error = [subject, visit, 'Dosing Event', dosing_event_form_field_instance,\
+                                                'If dosing is 0 and the reason for adjustment is "Adverse event" there should be an adverse event created where the action taken (Miltefosine) should be CT  dose reduced', \
+                                                    dosing_event_disname, 'ECML0100']
+                                        lista_revision.append(error)
                     except Exception as e:
                         lista_logs.append(f'Revision ECML0100 --> {e} - Subject: {subject},  Visit: {visit} ')
                     

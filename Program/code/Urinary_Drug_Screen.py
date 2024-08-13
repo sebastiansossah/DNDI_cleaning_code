@@ -66,10 +66,13 @@ def urinary_drug_screen(df_root, path_excel_writer, lista_instancias_abiertas):
             pru['Subject'] = sujeto
             pru['Visit'] = visita
             pru['status'] = pru_1['activityState'].unique()
-            pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
+
             pru = pru.merge(df_informed, on=['Subject'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
-            pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
+
+            if visita != 'Unscheduled Visits':
+                pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
+                pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
 
             for index, row in pru.iterrows():
 
@@ -80,15 +83,15 @@ def urinary_drug_screen(df_root, path_excel_writer, lista_instancias_abiertas):
                 subject = row['Subject']
                 visit = row['Visit']
 
-                if visit != 'Unscheduled Visits':
+                if visita == 'Unscheduled Visits':
+                    was_DV_performed_pure = 1.0
+                    date_of_visit = ''
+                else:
                     was_DV_performed = row['was_DV_performed']
                     was_DV_performed_pure = was_DV_performed.split('|')[0]
                     was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
-                else:
-                    was_DV_performed_pure='unsch'
-                    was_DV_performed_form_field_instance = 'Empty'
+                    date_of_visit = row['Date_of_visit']
                 
-                date_of_visit = row['Date_of_visit']
                 date_inform_consent = row['Informed_consent_date']
                 end_study_date = row['end_study_date']
 
@@ -171,6 +174,7 @@ def urinary_drug_screen(df_root, path_excel_writer, lista_instancias_abiertas):
                     if check_below_trace_pure != '':
                         try:
                             lis_check_below = check_below_trace_pure.split(',')
+ 
                             if len(lis_check_below) > 1:
                                 for i in lis_check_below:
                                     if float(i) == 0.0:
@@ -183,7 +187,7 @@ def urinary_drug_screen(df_root, path_excel_writer, lista_instancias_abiertas):
 
                     # Revision UD0040
                     if str(was_DV_performed_pure) !=  'unsch':
-                        if date_of_test_pure != '':
+                        if date_of_test_pure != '' and date_of_visit!='':
                             try:
                                 date_format = '%d-%b-%Y'
                                 date_of_test_f = datetime.strptime(date_of_test_pure, date_format)

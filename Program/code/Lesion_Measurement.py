@@ -63,27 +63,35 @@ def lesion_measurement(df_root, path_excel_writer, lista_instancias_abiertas):
             pru['Subject'] = sujeto
             pru['Visit'] = visita
             pru['status'] = pru_1['activityState'].unique()
-            pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_informed, on=['Subject'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
-            pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
-            
+
+            if visita != 'Unscheduled Visits':
+                pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
+                pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
+
             for index, row in pru.iterrows():
 
                 if index != 0:
                     lista_logs.append('Duplicados en la data, revisar subdataset')
-                    
+                    print(pru)
+                    print('-----------------')
+
                 status = row['status']
                 subject = row['Subject']
                 visit = row['Visit']
 
-                date_of_visit = row['Date_of_visit']
                 date_inform_consent = row['Informed_consent_date']
                 end_study_date = row['end_study_date']
 
-                was_DV_performed = row['was_DV_performed']
-                was_DV_performed_pure = was_DV_performed.split('|')[0]
-                was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
+                if visita == 'Unscheduled Visits':
+                    was_DV_performed_pure = 1.0
+                    date_of_visit = ''
+                else:
+                    was_DV_performed = row['was_DV_performed']
+                    was_DV_performed_pure = was_DV_performed.split('|')[0]
+                    was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
+                    date_of_visit = row['Date_of_visit']
    
                 if status != '':
                     try:
@@ -213,7 +221,7 @@ def lesion_measurement(df_root, path_excel_writer, lista_instancias_abiertas):
 
 
                     # Revision LM0030
-                    if Date_of_assessment_performed_pure != '':
+                    if Date_of_assessment_performed_pure != '' and date_of_visit!='':
                         try:
                             date_format = '%d-%b-%Y'
                             date_of_test_f = datetime.strptime(Date_of_assessment_performed_pure, date_format)
@@ -274,15 +282,12 @@ def lesion_measurement(df_root, path_excel_writer, lista_instancias_abiertas):
                     
                     mi_cuenta= 0
                     for validador_raw in lista_validacion:
-                        try: 
+                        try:    
                             validador = row[validador_raw].split('|')[0]
                         except:
-                            validador = math.nan
-                        
-                        if  validador != '-' or validador != np.nan or  str(validador) != 'nan'  or str(validador) != '':
+                            validador=''
+                        if validador!='':
                             mi_cuenta+=1
-                        else:
-                            pass
                     
                     # Revision LM0060
                     try:

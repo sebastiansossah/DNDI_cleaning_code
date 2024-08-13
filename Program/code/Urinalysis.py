@@ -204,16 +204,12 @@ def urinalysis(df_root, path_excel_writer, lista_instancias_abiertas):
                     mi_cuenta= 0
 
                     for validador_raw in lista_validacion:
-                        try: 
+                        try:    
                             validador = row[validador_raw].split('|')[0]
                         except:
-                            validador = math.nan
-                        
-                        if  validador != '-' or validador != np.nan or  str(validador) != 'nan'  or str(validador) != '':
-                            mi_cuenta += 1
-                        else:
-                            pass
-                        
+                            validador=''
+                        if validador!='':
+                            mi_cuenta+=1
                     # Revision UR0060
                     try:
                         if float(urine_sample_collected_pure) == 1.0: 

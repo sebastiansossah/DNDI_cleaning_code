@@ -63,13 +63,13 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
     df_time_dosing = df_time_dosing.rename(columns={'Participante':'Subject', 'Valor':'date_ex_to_join'})
 
     df_time_milteosine1 = df_root[df_root['name']== 'Miltefosine Administration'].sort_values(by='FormFieldInstance Id')
-    df_time_milteosine1 = df_time_milteosine1[(df_time_milteosine1['Campo']=='Date of dosing') | (df_time_milteosine1['Campo']=='Time of Dosing')]
-    df_time_milteosine = df_time_milteosine1[df_time_milteosine1['Campo']=='Date of dosing']
-    df_time_milteosine['time_dosing_miltefosine_administration1'] =  df_time_milteosine1[df_time_milteosine1['FormFieldInstance Id'].isin(df_time_milteosine['FormFieldInstance Id'] + 1) & (df_time_milteosine1['Campo'] == 'Time of Dosing')]['Valor'].values
-    df_time_milteosine = df_time_milteosine[df_time_milteosine['time_dosing_miltefosine_administration1'].str.split(':').str[0] != '00']
-    df_time_milteosine['time_dosing_miltefosine_administration'] = df_time_milteosine.groupby(['Participante', 'Valor'])['time_dosing_miltefosine_administration1'].transform(lambda x: x.min())
-    df_time_milteosine =df_time_milteosine[['Participante','Valor', 'time_dosing_miltefosine_administration']].drop_duplicates()
-    df_time_milteosine = df_time_milteosine.rename(columns={'Participante':'Subject', 'Valor':'date_ex_to_join'})
+    df_time_milteosine1 = df_time_milteosine1[(df_time_milteosine1['Campo']=='Date of dosing') | (df_time_milteosine1['Campo']=='Time of Dosing') | (df_time_milteosine1['Campo']=='Dose (mg)')]
+    df_time_milteosine = df_time_milteosine1[df_time_milteosine1['Campo']=='Time of Dosing']
+    df_time_milteosine['date_ex_to_join'] =  df_time_milteosine1[df_time_milteosine1['FormFieldInstance Id'].isin(df_time_milteosine['FormFieldInstance Id'] - 1) & (df_time_milteosine1['Campo'] == 'Date of dosing')]['Valor'].values
+    df_time_milteosine = df_time_milteosine[df_time_milteosine['Valor'].str.split(':').str[0] != '00']
+    df_time_milteosine['time_dosing_miltefosine_administration'] = df_time_milteosine.groupby(['Participante', 'date_ex_to_join'])['Valor'].transform(lambda x: x.min())
+    df_time_milteosine =df_time_milteosine[['Participante','date_ex_to_join', 'time_dosing_miltefosine_administration']].drop_duplicates()
+    df_time_milteosine = df_time_milteosine.rename(columns={'Participante':'Subject'})
 
 
 
@@ -97,10 +97,13 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
             except:
                 pru['date_ex_to_join'] = 'Nothing to join'
 
-            pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_informed, on=['Subject'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
-            pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
+
+            if visita != 'Unscheduled Visits':
+                pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
+                pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
+
             pru = pru.merge(df_time_dosing, on=['Subject', 'date_ex_to_join'], how='left')
             pru = pru.merge(df_time_milteosine, on=['Subject', 'date_ex_to_join'], how='left')
             # if sujeto =='011002':
@@ -111,22 +114,28 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
 
                 if index != 0:
                     lista_logs.append('Duplicados en la data, revisar subdataset')
+                    print(pru)
+                    print('---------------------------------------')
                     
                 status = row['status']
                 subject = row['Subject']
                 visit = row['Visit']
 
-                date_of_visit = row['Date_of_visit']
+                
                 date_inform_consent = row['Informed_consent_date']
                 end_study_date = row['end_study_date']
                 time_dosing_cpg_administration = row['time_dosing_cpg_administration']
                 time_dosing_miltefosine_administration = row['time_dosing_miltefosine_administration']
 
                 
-
-                was_DV_performed = row['was_DV_performed']
-                was_DV_performed_pure = was_DV_performed.split('|')[0]
-                was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
+                if visita == 'Unscheduled Visits':
+                    was_DV_performed_pure = 1.0
+                    date_of_visit = ''
+                else:
+                    was_DV_performed = row['was_DV_performed']
+                    was_DV_performed_pure = was_DV_performed.split('|')[0]
+                    was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
+                    date_of_visit = row['Date_of_visit']
 
                 
                 if status != '':
@@ -1161,7 +1170,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision VS0020
-                    if date_assesment_pure != '':
+                    if date_assesment_pure != '' and date_of_visit != '':
                         try:
                             date_format = '%d-%b-%Y'
                             date_of_test_f = datetime.strptime(date_assesment_pure, date_format)
@@ -1666,7 +1675,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                 pass
                             else:
                                 error = [subject, visit, 'Undefined, Pulse rate', Undefined_Pulse_rate_form_field_instance ,
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                         'The Pulse rate is not within expected0 range (45 to 90), therefore the Interpretation can not be Normal.', 
                                          f"Undefined, Pulse rate Interpretation: {Undefined_Pulse_rate_disname} - Undefined, Pulse rate Result: {Undefined_Pulse_rate_value_disname}", 'VS0440']
                                 lista_revision.append(error)
 
@@ -1675,7 +1684,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(Undefined_Pulse_rate_value_pure) >=  float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['min'].iloc[0]) and \
                                 float(Undefined_Pulse_rate_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['max'].iloc[0])  :
                                 error = [subject, visit, 'Undefined, Pulse rate', Undefined_Pulse_rate_form_field_instance,
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                         'The Pulse rate is not within expected range (45 to 90), therefore the Interpretation can not be Normal.', 
                                          f"Undefined, Pulse rate Interpretation: {Undefined_Pulse_rate_disname} - Undefined, Pulse rate Result: {Undefined_Pulse_rate_value_disname}", 'VS0530']
                                 lista_revision.append(error)                     
                     except Exception as e:
@@ -1689,7 +1698,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                 pass
                             else:
                                 error = [subject, visit, 'Pre dose, Pulse rate', Pre_dose_Pulse_rate_form_field_instance ,
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                         'The Pulse rate is not within expected range (45 to 90), therefore the Interpretation can not be Normal.', 
                                          f"Pre dose, Pulse rate interpretation: {Pre_dose_Pulse_rate_disname} - Pre dose, Pulse rate Result: {Pre_dose_Pulse_rate_value_disname}", 'VS0450']
                                 lista_revision.append(error)
 
@@ -1698,7 +1707,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(Pre_dose_Pulse_rate_value_pure) >=  float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['min'].iloc[0]) and \
                                 float(Pre_dose_Pulse_rate_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['max'].iloc[0])  :
                                 error = [subject, visit, 'Pre dose, Pulse rate', Pre_dose_Pulse_rate_form_field_instance,
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                         'The Pulse rate is not within expected range (45 to 90), therefore the Interpretation can not be Normal.', 
                                           f"Pre dose, Pulse rate interpretation: {Pre_dose_Pulse_rate_disname} - Pre dose, Pulse rate Result: {Pre_dose_Pulse_rate_value_disname}", 'VS0540']
                                 lista_revision.append(error)                     
                     except Exception as e:
@@ -1712,7 +1721,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                 pass
                             else:
                                 error = [subject, visit, '15-mins post dose, Pulse rate', mins_15_post_dose_Pulse_rate_form_field_instance ,
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                         'The Pulse rate is not within expected range (45 to 90), therefore the Interpretation can not be Normal.', 
                                          f"15-mins post dose, Pulse rate Interpretation: {mins_15_post_dose_Pulse_rate_disname} - 15-mins post dose, Pulse rate Result: {mins_15_post_dose_Pulse_rate_value_disname}", 'VS0460']
                                 lista_revision.append(error)
 
@@ -1721,7 +1730,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(mins_15_post_dose_Pulse_rate_value_pure) >=  float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['min'].iloc[0]) and \
                                 float(mins_15_post_dose_Pulse_rate_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['max'].iloc[0])  :
                                 error = [subject, visit, '15-mins post dose, Pulse rate', mins_15_post_dose_Pulse_rate_form_field_instance ,
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                         'The Pulse rate is not within expected range (45 to 90), therefore the Interpretation can not be Normal.', 
                                          f"15-mins post dose, Pulse rate Interpretation: {mins_15_post_dose_Pulse_rate_disname} - 15-mins post dose, Pulse rate Result: {mins_15_post_dose_Pulse_rate_value_disname}", 'VS0550']
                                 lista_revision.append(error)                     
                     except Exception as e:
@@ -1735,7 +1744,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                 pass
                             else:
                                 error = [subject, visit, '15-mins post dose, Pulse rate', mins_30_post_dose_Pulse_rate_form_field_instance,
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                         'The Pulse rate is not within expected range (45 to 90), therefore the Interpretation can not be Normal.', 
                                          f"15-mins post dose, Pulse rate Interpretation: {mins_30_post_dose_Pulse_rate_disname} - 15-mins post dose, Pulse rate Result: {mins_30_post_dose_Pulse_rate_value_disname}", 'VS0470']
                                 lista_revision.append(error)
 
@@ -1744,7 +1753,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(mins_30_post_dose_Pulse_rate_value_pure) >=  float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['min'].iloc[0]) and \
                                 float(mins_30_post_dose_Pulse_rate_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['max'].iloc[0])  :
                                 error = [subject, visit, '15-mins post dose, Pulse rate', mins_30_post_dose_Pulse_rate_form_field_instance ,
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                         'The Pulse rate is not within expected range (45 to 90), therefore the Interpretation can not be Normal.', 
                                          f"15-mins post dose, Pulse rate Interpretation: {mins_30_post_dose_Pulse_rate_disname} - 15-mins post dose, Pulse rate Result: {mins_30_post_dose_Pulse_rate_value_disname}", 'VS0560']
                                 lista_revision.append(error)                     
                     except Exception as e:
@@ -1758,7 +1767,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                 pass
                             else:
                                 error = [subject, visit, '60-mins post dose, Pulse rate', mins_60_post_dose_Pulse_rate_form_field_instance ,
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                         'The Pulse rate is not within expected range (45 to 90), therefore the Interpretation can not be Normal.', 
                                          f"60-mins post dose, Pulse rate Interpretation: {mins_60_post_dose_Pulse_rate_disname} - 60-mins post dose, Pulse rate Result: {mins_60_post_dose_Pulse_rate_value_disname}", 'VS0480']
                                 lista_revision.append(error)
 
@@ -1767,7 +1776,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(mins_60_post_dose_Pulse_rate_value_pure) >=  float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['min'].iloc[0]) and \
                                 float(mins_60_post_dose_Pulse_rate_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['max'].iloc[0])  :
                                 error = [subject, visit, '60-mins post dose, Pulse rate', mins_60_post_dose_Pulse_rate_form_field_instance,
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                         'The Pulse rate is not within expected range (45 to 90), therefore the Interpretation can not be Normal.', 
                                          f"60-mins post dose, Pulse rate Interpretation: {mins_60_post_dose_Pulse_rate_disname} - 60-mins post dose, Pulse rate Result: {mins_60_post_dose_Pulse_rate_value_disname}", 'VS0570']
                                 lista_revision.append(error)                     
                     except Exception as e:
@@ -1781,7 +1790,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                 pass
                             else:
                                 error = [subject, visit, '2-hours post dose, Pulse rate', hours_2_post_dose_Pulse_rate_form_field_instance ,
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                         'The Pulse rate is not within expected range (45 to 90), therefore the Interpretation can not be Normal.', 
                                          f"2-hours post dose, Pulse rate Interpretation: {hours_2_post_dose_Pulse_rate_disname} - 2-hours post dose, Pulse rate Result: {hours_2_post_dose_Pulse_rate_value_disname}", 'VS0490']
                                 lista_revision.append(error)
 
@@ -1790,7 +1799,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(hours_2_post_dose_Pulse_rate_value_pure) >=  float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['min'].iloc[0]) and \
                                 float(hours_2_post_dose_Pulse_rate_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['max'].iloc[0])  :
                                 error = [subject, visit, '2-hours post dose, Pulse rate', hours_2_post_dose_Pulse_rate_form_field_instance ,
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                         'The Pulse rate is not within expected range (45 to 90), therefore the Interpretation can not be Normal.', 
                                          f"2-hours post dose, Pulse rate Interpretation: {hours_2_post_dose_Pulse_rate_disname} - 2-hours post dose, Pulse rate Result: {hours_2_post_dose_Pulse_rate_value_disname}", 'VS0580']
                                 lista_revision.append(error)                     
                     except Exception as e:
@@ -1804,7 +1813,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                 pass
                             else:
                                 error = [subject, visit, '2-hours post dose, Pulse rate', hours_2_post_dose_Pulse_rate_form_field_instance ,
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                         'The Pulse rate is not within expected range (45 to 90), therefore the Interpretation can not be Normal.', 
                                          f"2-hours post dose, Pulse rate Interpretation: {hours_2_post_dose_Pulse_rate_disname} - 2-hours post dose, Pulse rate Result: {hours_2_post_dose_Pulse_rate_value_disname}", 'VS0490']
                                 lista_revision.append(error)
 
@@ -1813,7 +1822,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(hours_2_post_dose_Pulse_rate_value_pure) >=  float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['min'].iloc[0]) and \
                                 float(hours_2_post_dose_Pulse_rate_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['max'].iloc[0])  :
                                 error = [subject, visit, '2-hours post dose, Pulse rate', hours_2_post_dose_Pulse_rate_form_field_instance ,
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                         'The Pulse rate is not within expected range (45 to 90), therefore the Interpretation can not be Normal.', 
                                          f"2-hours post dose, Pulse rate Interpretation: {hours_2_post_dose_Pulse_rate_disname} - 2-hours post dose, Pulse rate Result: {hours_2_post_dose_Pulse_rate_value_disname}", 'VS0580']
                                 lista_revision.append(error)                     
                     except Exception as e:
@@ -1827,7 +1836,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                 pass
                             else:
                                 error = [subject, visit, '4-hours post dose, Pulse rate', hours_4_post_dose_Pulse_rate_form_field_instance ,
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                         'The Pulse rate is not within expected range (45 to 90), therefore the Interpretation can not be Normal.', 
                                          f"4-hours post dose, Pulse rate Interpretation: {hours_4_post_dose_Pulse_rate_disname} - 4-hours post dose, Pulse rate Result: {hours_4_post_dose_Pulse_rate_value_disname}", 'VS0500']
                                 lista_revision.append(error)
 
@@ -1836,7 +1845,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(hours_4_post_dose_Pulse_rate_value_pure) >=  float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['min'].iloc[0]) and \
                                 float(hours_4_post_dose_Pulse_rate_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['max'].iloc[0])  :
                                 error = [subject, visit, '4-hours post dose, Pulse rate', hours_4_post_dose_Pulse_rate_form_field_instance ,
-                                         '	The Pulse rate is within expected range (45 to 100), the Interpretation should not be Abnormal.', 
+                                         '	The Pulse rate is within expected range (45 to 90), the Interpretation should not be Abnormal.', 
                                          f"4-hours post dose, Pulse rate Interpretation: {hours_4_post_dose_Pulse_rate_disname} - 4-hours post dose, Pulse rate Result: {hours_4_post_dose_Pulse_rate_value_disname}", 'VS0590']
                                 lista_revision.append(error)                     
                     except Exception as e:
@@ -1850,7 +1859,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                 pass
                             else:
                                 error = [subject, visit, '8-hours post dose, Pulse rate', hours_8_post_dose_Pulse_rate_form_field_instance ,
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                         'The Pulse rate is not within expected range (45 to 90), therefore the Interpretation can not be Normal.', 
                                          f"8-hours post dose, Pulse rate Interpretation: {hours_8_post_dose_Pulse_rate_disname} - 8-hours post dose, Pulse rate Result: {hours_8_post_dose_Pulse_rate_value_disname}", 'VS0510']
                                 lista_revision.append(error)
 
@@ -1859,7 +1868,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(hours_8_post_dose_Pulse_rate_value_pure) >=  float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['min'].iloc[0]) and \
                                 float(hours_8_post_dose_Pulse_rate_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['max'].iloc[0])  :
                                 error = [subject, visit, '8-hours post dose, Pulse rate', hours_8_post_dose_Pulse_rate_form_field_instance ,
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                         'The Pulse rate is not within expected range (45 to 90), therefore the Interpretation can not be Normal.', 
                                          f"8-hours post dose, Pulse rate Interpretation: {hours_8_post_dose_Pulse_rate_disname} - 8-hours post dose, Pulse rate Result: {hours_8_post_dose_Pulse_rate_value_disname}", 'VS0600']
                                 lista_revision.append(error)                     
                     except Exception as e:
@@ -1873,7 +1882,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                                 pass
                             else:
                                 error = [subject, visit, '12-hours post dose, Pulse rate', hours_12_post_dose_Pulse_rate_form_field_instance ,
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                         'The Pulse rate is not within expected range (45 to 90), therefore the Interpretation can not be Normal.', 
                                          f"12-hours post dose, Pulse rate Interpretation: {hours_12_post_dose_Pulse_rate_disname} - 12-hours post dose, Pulse rate Result: {hours_12_post_dose_Pulse_rate_value_disname}", 'VS0520']
                                 lista_revision.append(error)
 
@@ -1882,7 +1891,7 @@ def vital_signs(df_root, path_excel_writer, lista_instancias_abiertas):
                             if float(hours_12_post_dose_Pulse_rate_value_pure) >=  float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['min'].iloc[0]) and \
                                 float(hours_12_post_dose_Pulse_rate_value_pure) <= float(df_normal_ranges[(df_normal_ranges['field']== "Pulse rate")]['max'].iloc[0])  :
                                 error = [subject, visit, '12-hours post dose, Pulse rate', hours_12_post_dose_Pulse_rate_form_field_instance ,
-                                         'The Pulse rate is not within expected range (45 to 100), therefore the Interpretation can not be Normal.', 
+                                         'The Pulse rate is not within expected range (45 to 90), therefore the Interpretation can not be Normal.', 
                                          f"12-hours post dose, Pulse rate Interpretation: {hours_12_post_dose_Pulse_rate_disname} - 12-hours post dose, Pulse rate Result: {hours_12_post_dose_Pulse_rate_value_disname}", 'VS0610']
                                 lista_revision.append(error)                     
                     except Exception as e:

@@ -246,10 +246,10 @@ def adverse_events(df_root, path_excel_writer, lista_instancias_abiertas):
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
             pru = pru.merge(df_end_study_general_primary_reason, on=['Subject'], how='left')
             pru = pru.merge(df_end_study_general_early, on=['Subject'], how='left')
-            # if sujeto == '011002':
-            #     print(pru)
-            #     print('----------------------')
+
         
+
+
 
             for index, row in pru.iterrows():
 
@@ -496,7 +496,7 @@ def adverse_events(df_root, path_excel_writer, lista_instancias_abiertas):
 
                     # Revision AE0010
                     try:
-                        if float(adverse_event_id_pure) in adverse_events_id_review:
+                        if adverse_event_id_pure in adverse_events_id_review:
                             error = [subject, visit, 'Adverse Event ID', adverse_event_id_form_field_instance, \
                                                 'This value should be unique, it can not be repeated', \
                                                     adverse_event_id_disname, 'AE0010']
@@ -508,15 +508,17 @@ def adverse_events(df_root, path_excel_writer, lista_instancias_abiertas):
                     
                     # Revision AE0020
                     try:
-                        tuple_to_compare = (adverse_events_reported_term_pure, start_date_pure, end_date_pure)
-
-                        if tuple_to_compare in list_of_tuples_adverse_id:
-                            error =  [subject, visit, 'Adverse Event Reported Term', adverse_events_reported_term_form_field_instance, \
-                                        'There are two adverse events that have the same term, and the dates overlap', \
-                                            adverse_events_reported_term_pure, 'AE0020']
-                            lista_revision.append(error)
-                        else:
-                            list_of_tuples_adverse_id.append(tuple_to_compare)
+ 
+                        if adverse_events_reported_term_pure!='':
+                            tuple_to_compare = (adverse_events_reported_term_pure, start_date_pure, end_date_pure)
+        
+                            if tuple_to_compare in list_of_tuples_adverse_id:
+                                error =  [subject, visit, 'Adverse Event Reported Term', adverse_events_reported_term_form_field_instance, \
+                                            'There are two adverse events that have the same term, and the dates overlap', \
+                                                adverse_events_reported_term_pure, 'AE0020']
+                                lista_revision.append(error)
+                            else:
+                                list_of_tuples_adverse_id.append(tuple_to_compare)
                     except Exception as e:
                         lista_logs.append(f'Revision AE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
                     
@@ -1006,7 +1008,7 @@ def adverse_events(df_root, path_excel_writer, lista_instancias_abiertas):
 
 if __name__ == '__main__':
     path_excel = r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\Program\output\prueba.xlsx"
-    df_root = pd.read_excel(r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\Program\data\88781e53-0c6e-42bc-8d84-c01f1015cb4f.xlsx")
+    df_root = pd.read_excel(r"C:\Users\sebastian sossa\Documents\integraIT\projects_integrait\DNDI\Program\data\detailed_dummy_data_for_edit_check.xlsx")
     df_root.rename(columns = {'Instancia':'FormFieldInstance Id'}, inplace = True)
-    adverse_events(df_root, path_excel ) 
+    adverse_events(df_root, path_excel, [] ) 
 

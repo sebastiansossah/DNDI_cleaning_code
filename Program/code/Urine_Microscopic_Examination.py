@@ -39,8 +39,7 @@ def urine_microscopic_examination(df_root, path_excel_writer, lista_instancias_a
             pru['Subject'] = sujeto
             pru['Visit'] = visita
             pru['status'] = pru_1['activityState'].unique()
-            # print(pru)
-            # print('--------------------------------------------')
+
 
             for index, row in pru.iterrows():
                 
@@ -62,8 +61,10 @@ def urine_microscopic_examination(df_root, path_excel_writer, lista_instancias_a
                         was_performed_pure = math.nan
                         was_performed_form_field_instance  = 'This field does not have any data'
                         was_performed_disname = 'Empty'
-
-
+                    
+                    # if float(was_performed_pure)==1.0:
+                    #     print(pru)
+                    #     print('--------------------------------------------')
                     # ------------------------------------------------------- 
 
                     lista_validacion = [
@@ -76,22 +77,20 @@ def urine_microscopic_examination(df_root, path_excel_writer, lista_instancias_a
                     ]
                     mi_cuenta= 0
                     for validador_raw in lista_validacion:
-                        try: 
+                        
+
+                        try:    
                             validador = row[validador_raw].split('|')[0]
                         except:
-                            validador = ''
-
-                        if str(validador) != '':
+                            validador=''
+                        if validador!='':
                             mi_cuenta+=1
-                        else:
-                            pass
-                    
+
+                    #print(mi_cuenta)
                     # Revision URM0010
                     try:
                         if float(was_performed_pure) == 1.0: 
-                            if mi_cuenta != 0:
-                                pass
-                            else:
+                            if mi_cuenta<1:
                                 error = [subject, visit, 'Was the urine microscopic examination performed?', was_performed_form_field_instance,\
                                          'If Urine Sample Collected is checked as "Yes", not all laboratory tests can be "not done"', \
                                             was_performed_disname, 'URM0010']

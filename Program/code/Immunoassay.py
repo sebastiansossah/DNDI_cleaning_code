@@ -60,26 +60,42 @@ def immunoassay(df_root, path_excel_writer, lista_instancias_abiertas):
     # fecha_inicio = datetime.strptime('19-06-2023', "%d-%m-%Y")
     # fecha_fin =  datetime.strptime('31-10-2023', "%d-%m-%Y")
 
+
     for sujeto in lista_sujetos:
         sujeto_principal = df[df['Participante']==sujeto]
+        sujeto_principal = sujeto_principal.sort_values(by=['FormFieldInstance Id'], ascending=True)
+        sujeto_principal = sujeto_principal.reset_index(drop=True)
 
-        for visita in sujeto_principal.Visit.unique():
-            pru_1 = sujeto_principal[sujeto_principal['Visit']==visita]
+        adverse_events_id_review = []
+        list_of_tuples_adverse_id = []
+
+        # Los formularios que estan clasificados como unscheduled, no se pueden iterar con la visita, 
+        # por lo que usamos el siguiente codigo para realizar la particion
+
+        date_indices = sujeto_principal.index[sujeto_principal['Campo'] == 'Blood Sample Collected'].tolist()
+        subdatasets = [sujeto_principal.iloc[start:end] for start, end in zip(date_indices, date_indices[1:] + [None])]
+
+        for subdataset in subdatasets:
+
+            pru_1 = subdataset
             pru = pru_1
             pru = pru[['Campo', 'Value_id']].T
             new_columns = pru.iloc[0]
             pru = pru[1:].set_axis(new_columns, axis=1)
             pru['Subject'] = sujeto
-            pru['Visit'] = visita
+            pru['Visit'] = 'unscheduled'
             pru['status'] = pru_1['activityState'].unique()
             pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_informed, on=['Subject'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
             pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
-
+            # print(pru)
+            # print('----------------')
+            
             for index, row in pru.iterrows():
 
                 if index != 0:
+
                     lista_logs.append('Duplicados en la data, revisar subdataset')
                     
                 status = row['status']
@@ -87,7 +103,7 @@ def immunoassay(df_root, path_excel_writer, lista_instancias_abiertas):
                 visit = row['Visit']
 
 
-                if visit != 'Unscheduled Visits':
+                if visit != 'unscheduled':
                     was_DV_performed = row['was_DV_performed']
                     was_DV_performed_pure = was_DV_performed.split('|')[0]
                     was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
@@ -137,9 +153,10 @@ def immunoassay(df_root, path_excel_writer, lista_instancias_abiertas):
                         TSH_form_field_instance = TSH.split('|')[1]
                         TSH_disname = TSH.split('|')[0] 
                     except Exception as e:
-                        TSH_pure = math.nan  
+                        TSH_pure = ''
                         TSH_form_field_instance = 'This field does not have any data'
                         TSH_disname = 'Empty'
+                    
 
                     try:
                         TSH_specify = row['TSH, If abnormal, Specify']
@@ -195,7 +212,7 @@ def immunoassay(df_root, path_excel_writer, lista_instancias_abiertas):
                             lista_logs.append(f'Revision GE0020 --> {e} - Subject: {subject},  Visit: {visit} ')
 
                     # Revision IM0010
-                    if date_collected_pure != '':
+                    if date_collected_pure != '' and str(date_of_visit) != 'nan':
                         try:
                             date_format = '%d-%b-%Y'
                             date_collected_f = datetime.strptime(date_collected_pure, date_format)
@@ -244,13 +261,14 @@ def immunoassay(df_root, path_excel_writer, lista_instancias_abiertas):
 
                     # Revision IM0050
                     try:
-                        if float(blood_sample_collected_pure) == 1.0 and float(TSH_pure) == 0.0:
-                            error = [subject, visit, 'TSH', TSH_form_field_instance, \
-                                     'It does not seem right that the TSH was not done but the sample was collected, please review', \
-                                        f'Blood sample collected: {blood_sample_collected_disname} - TSH: {TSH_disname}', 'IM0050']
-                            lista_revision.append(error)
-                        else:
-                            pass
+                        if float(blood_sample_collected_pure) == 1.0:
+                            if  float(TSH_result_pure) == 0.0 or str(TSH_result_pure) =='' or str(TSH_result_pure) == float('nan'):
+                                error = [subject, visit, 'TSH', TSH_form_field_instance, \
+                                        'It does not seem right that the TSH was not done but the sample was collected, please review', \
+                                            f'Blood sample collected: {blood_sample_collected_disname} - TSH: {TSH_disname}', 'IM0050']
+                                lista_revision.append(error)
+                            else:
+                                pass
                     except Exception as e:
                         lista_logs.append(f'Revision IM0050--> {e} - Subject: {subject},  Visit: {visit} ')
 

@@ -32,7 +32,7 @@ def pregnancy_test(df_root, path_excel_writer, lista_instancias_abiertas):
     df_demographic = df_root[df_root['name']=='Demographics']
     df_demographic = df_demographic[['Visit','Participante', 'Campo', 'Valor']]
     df_demographic = df_demographic[df_demographic['Campo']=='Gender']
-    df_demographic = df_demographic[['Visit','Participante','Valor']]
+    df_demographic = df_demographic[['Participante','Valor']].drop_duplicates()
     df_demographic = df_demographic.rename(columns={'Participante':'Subject', 'Valor':'Genero'})
 
     df_visit_date = df_root[df_root['name']=='Date of visit']
@@ -79,7 +79,7 @@ def pregnancy_test(df_root, path_excel_writer, lista_instancias_abiertas):
             pru['Visit'] = visita
             pru['status'] = pru_1['activityState'].unique()
             pru = pru.merge(df_child_bearing, on=['Subject', 'Visit'], how='left')
-            pru = pru.merge(df_demographic, on=['Subject', 'Visit'], how='left')
+            pru = pru.merge(df_demographic, on=['Subject'], how='left')
             pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_informed, on=['Subject'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')

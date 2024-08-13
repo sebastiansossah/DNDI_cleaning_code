@@ -54,13 +54,14 @@ def physical_examination(df_root, path_excel_writer, lista_instancias_abiertas):
     df_time_dosing = df_time_dosing.rename(columns={'Participante':'Subject', 'Valor':'date_ex_to_join'})
 
     df_time_milteosine1 = df_root[df_root['name']== 'Miltefosine Administration'].sort_values(by='FormFieldInstance Id')
-    df_time_milteosine1 = df_time_milteosine1[(df_time_milteosine1['Campo']=='Date of dosing') | (df_time_milteosine1['Campo']=='Time of Dosing')]
-    df_time_milteosine = df_time_milteosine1[df_time_milteosine1['Campo']=='Date of dosing']
-    df_time_milteosine['time_dosing_miltefosine_administration1'] =  df_time_milteosine1[df_time_milteosine1['FormFieldInstance Id'].isin(df_time_milteosine['FormFieldInstance Id'] + 1) & (df_time_milteosine1['Campo'] == 'Time of Dosing')]['Valor'].values
-    df_time_milteosine = df_time_milteosine[df_time_milteosine['time_dosing_miltefosine_administration1'].str.split(':').str[0] != '00']
-    df_time_milteosine['time_dosing_miltefosine_administration'] = df_time_milteosine.groupby(['Participante', 'Valor'])['time_dosing_miltefosine_administration1'].transform(lambda x: x.min())
-    df_time_milteosine =df_time_milteosine[['Participante','Valor', 'time_dosing_miltefosine_administration']].drop_duplicates()
-    df_time_milteosine = df_time_milteosine.rename(columns={'Participante':'Subject', 'Valor':'date_ex_to_join'})
+    df_time_milteosine1 = df_time_milteosine1[(df_time_milteosine1['Campo']=='Date of dosing') | (df_time_milteosine1['Campo']=='Time of Dosing') | (df_time_milteosine1['Campo']=='Dose (mg)')]
+    df_time_milteosine = df_time_milteosine1[df_time_milteosine1['Campo']=='Time of Dosing']
+    df_time_milteosine['date_ex_to_join'] =  df_time_milteosine1[df_time_milteosine1['FormFieldInstance Id'].isin(df_time_milteosine['FormFieldInstance Id'] - 1) & (df_time_milteosine1['Campo'] == 'Date of dosing')]['Valor'].values
+    df_time_milteosine = df_time_milteosine[df_time_milteosine['Valor'].str.split(':').str[0] != '00']
+    df_time_milteosine['time_dosing_miltefosine_administration'] = df_time_milteosine.groupby(['Participante', 'date_ex_to_join'])['Valor'].transform(lambda x: x.min())
+    df_time_milteosine =df_time_milteosine[['Participante','date_ex_to_join', 'time_dosing_miltefosine_administration']].drop_duplicates()
+    df_time_milteosine = df_time_milteosine.rename(columns={'Participante':'Subject'})
+
 
     lista_revision = []
     lista_logs = ['Physical Examination']
@@ -81,34 +82,45 @@ def physical_examination(df_root, path_excel_writer, lista_instancias_abiertas):
             pru['Visit'] = visita
             pru['status'] = pru_1['activityState'].unique()
             pru['date_ex_to_join'] = pru['Date of examination performed'].str.split('|',expand= True)[0]
-            pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
+            
             pru = pru.merge(df_informed, on=['Subject'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
-            pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
+            if visita != 'Unscheduled Visits':
+                pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
+                pru = pru.merge(df_visit_date, on=['Subject', 'Visit'], how='left')
+
             pru = pru.merge(df_time_dosing, on=['Subject', 'date_ex_to_join'], how='left')
             pru = pru.merge(df_time_milteosine, on=['Subject', 'date_ex_to_join'], how='left')
-            # print(pru)
-            # print('----------------------')
+            # if sujeto =='011002':
+
+
 
             for index, row in pru.iterrows():
 
                 if index != 0:
                     lista_logs.append('Duplicados en la data, revisar subdataset')
+                    print(pru)
+                    print('---------------------')
                     
                 status = row['status']
                 subject = row['Subject']
                 visit = row['Visit']
 
-                date_of_visit = row['Date_of_visit']
                 date_inform_consent = row['Informed_consent_date']
                 end_study_date = row['end_study_date']
 
                 time_dosing_cpg_administration = row['time_dosing_cpg_administration']
                 time_dosing_miltefosine_administration = row['time_dosing_miltefosine_administration']
-
-                was_DV_performed = row['was_DV_performed']
-                was_DV_performed_pure = was_DV_performed.split('|')[0]
-                was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
+        
+                
+                if visita == 'Unscheduled Visits':
+                    was_DV_performed_pure = 1.0
+                    date_of_visit = ''
+                else:
+                    was_DV_performed = row['was_DV_performed']
+                    was_DV_performed_pure = was_DV_performed.split('|')[0]
+                    was_DV_performed_form_field_instance = was_DV_performed.split('|')[1]
+                    date_of_visit = row['Date_of_visit']
                 
                 if status != '':
                     try:
@@ -255,7 +267,7 @@ def physical_examination(df_root, path_excel_writer, lista_instancias_abiertas):
 
 
                     # Revision PE0020
-                    if date_examination_performed != '':
+                    if date_examination_performed != '' and date_of_visit != '':
                         try:
                             date_format = '%d-%b-%Y'
                             date_of_test_f = datetime.strptime(date_examination_performed_pure, date_format)
@@ -499,7 +511,7 @@ def physical_examination(df_root, path_excel_writer, lista_instancias_abiertas):
                             try:
                                 dif = float((datetime.strptime(time_dosing_cpg_administration, '%H:%M') - datetime.strptime(predose_clinical_time_pure, '%H:%M')).total_seconds() / 60)
                                 if dif < 0.0 or dif > 90.0:
-                                    print(dif)
+                                    #print(dif)
                                     error = [subject, visit, 'Pre dose, Time', predose_clinical_time_form_field_instnance,\
                                              'The time selected should be less than 90 min before the study treatment administration', \
                                                 f'Pre dose, Time: {predose_clinical_time_pure} - dose time administration: {time_dosing_cpg_administration}', 'PE0120']
@@ -560,7 +572,7 @@ def physical_examination(df_root, path_excel_writer, lista_instancias_abiertas):
                                 dif_M = float((datetime.strptime(time_dosing_miltefosine_administration, '%H:%M') - datetime.strptime(predose_clinical_time_pure, '%H:%M')).total_seconds() / 60)
                                 
                                 if dif_M < 0.0 or dif_M > 90.0:
-                                    print(dif_M)
+                                    # print(dif_M)
                                     error = [subject, visit, 'Pre dose, Time', predose_clinical_time_form_field_instnance,\
                                              'The time selected should be less than 60 min before the study treatment administration', \
                                                 f'Pre dose, Time: {predose_clinical_time_pure} - dose time administration: {time_dosing_miltefosine_administration}', 'PE0120']

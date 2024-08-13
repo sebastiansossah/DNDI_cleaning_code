@@ -52,13 +52,13 @@ def mRNA_markers(df_root, path_excel_writer, lista_instancias_abiertas):
     df_time_dosing = df_time_dosing.rename(columns={'Participante':'Subject', 'Valor':'date_ex_to_join'})
 
     df_time_milteosine1 = df_root[df_root['name']== 'Miltefosine Administration'].sort_values(by='FormFieldInstance Id')
-    df_time_milteosine1 = df_time_milteosine1[(df_time_milteosine1['Campo']=='Date of dosing') | (df_time_milteosine1['Campo']=='Time of Dosing')]
-    df_time_milteosine = df_time_milteosine1[df_time_milteosine1['Campo']=='Date of dosing']
-    df_time_milteosine['time_dosing_miltefosine_administration1'] =  df_time_milteosine1[df_time_milteosine1['FormFieldInstance Id'].isin(df_time_milteosine['FormFieldInstance Id'] + 1) & (df_time_milteosine1['Campo'] == 'Time of Dosing')]['Valor'].values
-    df_time_milteosine = df_time_milteosine[df_time_milteosine['time_dosing_miltefosine_administration1'].str.split(':').str[0] != '00']
-    df_time_milteosine['time_dosing_miltefosine_administration'] = df_time_milteosine.groupby(['Participante', 'Valor'])['time_dosing_miltefosine_administration1'].transform(lambda x: x.min())
-    df_time_milteosine =df_time_milteosine[['Participante','Valor', 'time_dosing_miltefosine_administration']].drop_duplicates()
-    df_time_milteosine = df_time_milteosine.rename(columns={'Participante':'Subject', 'Valor':'date_ex_to_join'})
+    df_time_milteosine1 = df_time_milteosine1[(df_time_milteosine1['Campo']=='Date of dosing') | (df_time_milteosine1['Campo']=='Time of Dosing') | (df_time_milteosine1['Campo']=='Dose (mg)')]
+    df_time_milteosine = df_time_milteosine1[df_time_milteosine1['Campo']=='Time of Dosing']
+    df_time_milteosine['date_ex_to_join'] =  df_time_milteosine1[df_time_milteosine1['FormFieldInstance Id'].isin(df_time_milteosine['FormFieldInstance Id'] - 1) & (df_time_milteosine1['Campo'] == 'Date of dosing')]['Valor'].values
+    df_time_milteosine = df_time_milteosine[df_time_milteosine['Valor'].str.split(':').str[0] != '00']
+    df_time_milteosine['time_dosing_miltefosine_administration'] = df_time_milteosine.groupby(['Participante', 'date_ex_to_join'])['Valor'].transform(lambda x: x.min())
+    df_time_milteosine =df_time_milteosine[['Participante','date_ex_to_join', 'time_dosing_miltefosine_administration']].drop_duplicates()
+    df_time_milteosine = df_time_milteosine.rename(columns={'Participante':'Subject'})
 
 
     lista_logs = ['mRNA Markers']
@@ -88,6 +88,8 @@ def mRNA_markers(df_root, path_excel_writer, lista_instancias_abiertas):
             pru = pru.merge(df_time_dosing, on=['Subject', 'date_ex_to_join'], how='left')
             pru = pru.merge(df_time_milteosine, on=['Subject', 'date_ex_to_join'], how='left')
             # if sujeto =='011002':
+            # print(pru)
+            # print('---------------------')
 
 
             for index, row in pru.iterrows():
@@ -282,25 +284,25 @@ def mRNA_markers(df_root, path_excel_writer, lista_instancias_abiertas):
                         'Pre-dose, Time',
                         '04-hours post dose, Time',
                         '12-hours post dose, Time',
-                    ]
-                    cuenta_validar = 0
-                        
+                    ] 
+                    mi_cuenta= 0
                     for validador_raw in lista_validacion:
-                        try: 
+                        
+
+                        try:    
                             validador = row[validador_raw].split('|')[0]
                         except:
-                            validador = math.nan
-       
-                        if validador == '':
-                            pass
-                        else:
-                            cuenta_validar += 1
+                            validador=''
+                        if validador!='':
+                            mi_cuenta+=1
+
+
                     
                     # Revision MR0050
                     if visit in ['D1', 'D15' , 'D29']:
                         try:
                             if float(Was_blood_sample_collected_pure) == 1.0:
-                                if cuenta_validar > 0:
+                                if mi_cuenta > 0:
                                     pass
                                 else:
                                     error = [subject, visit, 'Was blood sample collected?', Was_blood_sample_collected_form_field_instance ,\

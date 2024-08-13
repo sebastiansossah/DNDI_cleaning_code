@@ -131,35 +131,39 @@ def date_of_visit(df_root, path_excel_writer, lista_instancias_abiertas):
         # Codigo para verificar si las fechas de las visitas, son mayores consecutivamente -> VS0020
         lista_valores_diccionario_visitas = list(visit_dictionary.values())
         lista_keys_diccionario_visitas = list(visit_dictionary.keys())
+        # print(lista_valores_diccionario_visitas)
+        # print(lista_keys_diccionario_visitas)
 
         for i in range(len(lista_valores_diccionario_visitas)):
 
-            if  lista_valores_diccionario_visitas[i].split('|')[0] == 0:
-                pass
-            elif lista_valores_diccionario_visitas[i].split('|')[0] == '' :
-                break
+            # if  lista_valores_diccionario_visitas[i].split('|')[0] == 0:
+            #     pass
+            # elif lista_valores_diccionario_visitas[i].split('|')[0] == '' :
+            #     break
 
-            elif lista_valores_diccionario_visitas[i] == 'D-1' :
-                    if datetime.strptime(lista_valores_diccionario_visitas[i].split('|')[0], '%d-%b-%Y')  < datetime.strptime(lista_valores_diccionario_visitas[i-1].split('|')[0], '%d-%b-%Y'):
-                        error = [sujeto, lista_keys_diccionario_visitas[i], 'Visit Date', lista_valores_diccionario_visitas[i].split('|')[1] ,'Visit date must be greater than the previous visit date', \
-                                  lista_valores_diccionario_visitas[i].split('|')[0], 'VS0020']
-                        lista_revision.append(error)
-                    else:
-                        pass
+            # elif lista_keys_diccionario_visitas[i] =='Screening Visit' :# 'D-1' :
+            #         # if datetime.strptime(lista_valores_diccionario_visitas[i].split('|')[0], '%d-%b-%Y')  < datetime.strptime(lista_valores_diccionario_visitas[i-1].split('|')[0], '%d-%b-%Y'):
+            #         #     error = [sujeto, lista_keys_diccionario_visitas[i], 'Visit Date', lista_valores_diccionario_visitas[i].split('|')[1] ,'Visit date must be greater than the previous visit date', \
+            #         #               lista_valores_diccionario_visitas[i].split('|')[0], 'VS0020']
+            #         #     lista_revision.append(error)
+            #         # else:
+            #            pass
 
-            else:
+            #else:
                 try:
-                    if lista_valores_diccionario_visitas[i-1].split('|')[0] != '':
+                    if lista_valores_diccionario_visitas[i].split('|')[0] != '' and lista_valores_diccionario_visitas[i-1].split('|')[0] != '':
                         if datetime.strptime(lista_valores_diccionario_visitas[i].split('|')[0], '%d-%b-%Y')  <= datetime.strptime(lista_valores_diccionario_visitas[i-1].split('|')[0], '%d-%b-%Y'):
+                            #print(datetime.strptime(lista_valores_diccionario_visitas[i].split('|')[0], '%d-%b-%Y') ,  datetime.strptime(lista_valores_diccionario_visitas[i-1].split('|')[0], '%d-%b-%Y'))
+
                             error = [sujeto, lista_keys_diccionario_visitas[i], 'Visit Date', lista_valores_diccionario_visitas[i].split('|')[1] ,'Visit date must be greater than the previous visit date' , \
                                     lista_valores_diccionario_visitas[i].split('|')[0], 'VS0020']
                             lista_revision.append(error)
+
                         else:
                             pass
                 except Exception as e:
                     lista_logs.append(f'Revision VS0020 --> {e} - Subject: {subject},  Visit: {visit}  ')
                     
-    
     excel_writer = load_workbook(path_excel_writer)
     column_names = ['Subject', 'Visit', 'Field', 'Form Field Instance ID' ,'Standard Error Message', 'Value', 'Check Number']
     date_of_visit_output = pd.DataFrame(lista_revision, columns=column_names)

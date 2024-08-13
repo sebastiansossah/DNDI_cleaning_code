@@ -16,7 +16,7 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer, lista_instancias_
     '''
 
 
-    df= df_root[df_root['name']== 'Pharmacodynamic Blood Sampling (PD) -Cytokines/Chemokines']
+    df= df_root[df_root['name']== 'Pharmacodynamic Blood Sampling (PD) -Cytokines-Chemokines']
     lista_sujetos = df['Participante'].unique()
     df = df[['name', 'Visit', 'activityState', 'Participante', 'Estado del Participante', 'Campo', 'Valor', 'FormFieldInstance Id', 'displayName']]
     df['Value_id'] = df['Valor'].astype(str) + '|' + df['FormFieldInstance Id'].astype(str)  + '|' + df['displayName'].astype(str)
@@ -53,13 +53,13 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer, lista_instancias_
     df_time_dosing = df_time_dosing.rename(columns={'Participante':'Subject', 'Valor':'date_ex_to_join'})
 
     df_time_milteosine1 = df_root[df_root['name']== 'Miltefosine Administration'].sort_values(by='FormFieldInstance Id')
-    df_time_milteosine1 = df_time_milteosine1[(df_time_milteosine1['Campo']=='Date of dosing') | (df_time_milteosine1['Campo']=='Time of Dosing')]
-    df_time_milteosine = df_time_milteosine1[df_time_milteosine1['Campo']=='Date of dosing']
-    df_time_milteosine['time_dosing_miltefosine_administration1'] =  df_time_milteosine1[df_time_milteosine1['FormFieldInstance Id'].isin(df_time_milteosine['FormFieldInstance Id'] + 1) & (df_time_milteosine1['Campo'] == 'Time of Dosing')]['Valor'].values
-    df_time_milteosine = df_time_milteosine[df_time_milteosine['time_dosing_miltefosine_administration1'].str.split(':').str[0] != '00']
-    df_time_milteosine['time_dosing_miltefosine_administration'] = df_time_milteosine.groupby(['Participante', 'Valor'])['time_dosing_miltefosine_administration1'].transform(lambda x: x.min())
-    df_time_milteosine =df_time_milteosine[['Participante','Valor', 'time_dosing_miltefosine_administration']].drop_duplicates()
-    df_time_milteosine = df_time_milteosine.rename(columns={'Participante':'Subject', 'Valor':'date_ex_to_join'})
+    df_time_milteosine1 = df_time_milteosine1[(df_time_milteosine1['Campo']=='Date of dosing') | (df_time_milteosine1['Campo']=='Time of Dosing') | (df_time_milteosine1['Campo']=='Dose (mg)')]
+    df_time_milteosine = df_time_milteosine1[df_time_milteosine1['Campo']=='Time of Dosing']
+    df_time_milteosine['date_ex_to_join'] =  df_time_milteosine1[df_time_milteosine1['FormFieldInstance Id'].isin(df_time_milteosine['FormFieldInstance Id'] - 1) & (df_time_milteosine1['Campo'] == 'Date of dosing')]['Valor'].values
+    df_time_milteosine = df_time_milteosine[df_time_milteosine['Valor'].str.split(':').str[0] != '00']
+    df_time_milteosine['time_dosing_miltefosine_administration'] = df_time_milteosine.groupby(['Participante', 'date_ex_to_join'])['Valor'].transform(lambda x: x.min())
+    df_time_milteosine =df_time_milteosine[['Participante','date_ex_to_join', 'time_dosing_miltefosine_administration']].drop_duplicates()
+    df_time_milteosine = df_time_milteosine.rename(columns={'Participante':'Subject'})
 
 
     lista_logs = ['Pharmacodynamic Blood Sampling (PD) -Cytokines/Chemokines']
@@ -92,7 +92,8 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer, lista_instancias_
             pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_time_dosing, on=['Subject', 'date_ex_to_join'], how='left')
             pru = pru.merge(df_time_milteosine, on=['Subject', 'date_ex_to_join'], how='left')
-            # if sujeto =='011002':
+            # print(pru)
+            # print('------------')
 
 
             for index, row in pru.iterrows():
@@ -263,25 +264,23 @@ def pharmacodynamic_blood_sampling(df_root, path_excel_writer, lista_instancias_
                         '8h, Time',
                     ]
 
-                    cuenta_validar = 0
+                    mi_cuenta = 0
                         
+
                     for validador_raw in lista_validacion:
-                        try: 
+                        try:    
                             validador = row[validador_raw].split('|')[0]
                         except:
-                            validador = ''
-       
-                        if validador == '':
-                            pass
-                        else:
-                            cuenta_validar += 1
+                            validador=''
+                        if validador!='':
+                            mi_cuenta+=1
                             
                     
                     if visit in ['D1', 'D15' , 'D29']:
                         # Revision PD0050
                         try:
                             if float(Was_blood_sample_collected_pure) == 1.0:
-                                if cuenta_validar > 0:
+                                if mi_cuenta > 0:
                                     pass
                                 else:
                                     error = [subject, visit, 'Was blood sample collected?', Was_blood_sample_collected_form_field_instance ,\

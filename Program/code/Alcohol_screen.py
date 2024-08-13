@@ -69,6 +69,8 @@ def alcohol_screen(df_root, path_excel_writer, lista_instancias_abiertas):
             pru = pru.merge(df_informed, on=['Subject'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
             pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
+            # print(pru)
+            # print('-------------')
 
             for index, row in pru.iterrows():
 

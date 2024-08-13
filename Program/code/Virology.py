@@ -67,7 +67,8 @@ def virology(df_root, path_excel_writer, lista_instancias_abiertas):
             pru = pru.merge(df_informed, on=['Subject'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
             pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
-
+            # print(pru)
+            # print('------------------------')
             for index, row in pru.iterrows():
 
                 if index != 0:
@@ -209,21 +210,18 @@ def virology(df_root, path_excel_writer, lista_instancias_abiertas):
 
 
                     lista_validacion = [
-                        'HIV-1',
+                        'HIV-1', 
                         'HIV-2',
                         'HbsAg (Hepatitis B surface antigen)']
                     
                     mi_cuenta= 0
                     for validador_raw in lista_validacion:
-                        try: 
+                        try:    
                             validador = row[validador_raw].split('|')[0]
                         except:
-                            validador = math.nan
-                        
-                        if math.isnan(float(validador)) or validador != '-' or validador != np.nan or  str(validador) != 'nan' or float(validador) !=0.0 or str(validador) != '':
+                            validador=''
+                        if validador!='':
                             mi_cuenta+=1
-                        else:
-                            pass
                     
                     # Revision VR0050
                     try:

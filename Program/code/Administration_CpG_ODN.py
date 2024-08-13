@@ -133,6 +133,14 @@ def adminsitration_CpG_ODN(df_root, path_excel_writer, lista_instancias_abiertas
                     except:
                         dose_mg_pure = math.nan
                         dose_mg_form_field_instance = 'This field doesnt have any data'
+                    
+                    try:
+                        number_injection = row['Injection site / Number of injection']
+                        number_injection_pure = number_injection.split('|')[0]
+                        number_injection_form_field_instance = number_injection.split('|')[1]
+                    except:
+                        number_injection_pure = math.nan
+                        number_injection_form_field_instance = 'This field doesnt have any data'
                          
                     
                     # ---------------------------------------------------------------------------------------
@@ -203,12 +211,18 @@ def adminsitration_CpG_ODN(df_root, path_excel_writer, lista_instancias_abiertas
                                 date_dosing_list_review.append(date_dosing_pure)
                         except Exception as e:
                                 lista_logs.append(f'Revision IMP0060 --> {e} - Subject: {subject},  Visit: {visit} ')
-                    
-                    # # Revision IMP0070
-                    # try:
-                         
 
-
+  
+                    # Revision IMP0070
+                    try: 
+                        if float(number_injection_pure) < 1.0 or float(number_injection_pure) > 3.0: 
+                            
+                            error = [subject, visit, 'Injection site / Number of injection', number_injection_form_field_instance, \
+                                            'The number of injection should be between 1 and 3', \
+                                                number_injection_pure, 'IMP0070']
+                            lista_revision.append(error)
+                    except Exception as e:
+                         lista_logs.append(f'Revision IMP0070 --> {e} - Subject: {subject},  Visit: {visit} ')                  
 
 
                     # Revision IMP0080

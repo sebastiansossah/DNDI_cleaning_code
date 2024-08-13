@@ -42,6 +42,7 @@ def end_of_study(df_root, path_excel_writer, lista_instancias_abiertas):
     df_adverse_event = df_adverse_event[['Visit','Participante', 'Campo', 'Valor', 'Variable' ]]
     df_adverse_event = df_adverse_event[df_adverse_event['Variable'] == 'AENO']
     df_adverse_event = df_adverse_event[['Participante', 'Valor']]
+    df_adverse_event = df_adverse_event[df_adverse_event['Valor'].isin([3,3.0,'3','3.0'])]
     df_adverse_event = df_adverse_event.rename(columns={'Participante':'Subject', 'Valor':'adverse_event_id'})
 
     df_miltefosine_administration = df_root[df_root['name']== 'Miltefosine Administration']
