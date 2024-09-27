@@ -84,7 +84,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer, lista_instan
             pru = pru.merge(df_demographic, on=['Subject'], how='left')
             pru = pru.merge(df_end_study_general, on=['Subject'], how='left')
             pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
-            # print(pru)
+            # print(pru.columns)
             # print('----------------')
 
 
@@ -519,7 +519,7 @@ def clinical_laboratory_test_hematology(df_root, path_excel_writer, lista_instan
                         WBC_out_normal_disname = 'Empty'
 
                     try:
-                        WBC_result =row['White blood Cell count (WBC), Result  (g/dL)']
+                        WBC_result =row['White blood Cell count (WBC), Result (x10^3/uL)']  
                         WBC_result_pure = WBC_result.split('|')[0]
                         WBC_result_form_field_instance = WBC_result.split('|')[1]
                         WBC_result_disname = WBC_result.split('|')[0]

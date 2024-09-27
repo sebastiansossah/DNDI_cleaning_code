@@ -75,7 +75,8 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer, lista_instanc
             pru = pru.merge(df_demographic_age_month, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_demographic_age_year, on=['Subject', 'Visit'], how='left')
             pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
-
+            # print(pru)
+            # print('--------------------')
             lista_other_names = []
 
             for index, row in pru.iterrows():
@@ -349,18 +350,18 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer, lista_instanc
                             lista_logs.append(f'Revision CL0090--> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision CL0100
-                    if date_diagnosis_pure == '':
+                    if date_confirmed_diagnosis_pure == '':
                         pass
                     else:
                         try:
                             date_format = '%d-%b-%Y'
                             date_birth_cured = f'01-{month_birth}-{year_birth}'
                             date_birth_format = datetime.strptime(date_birth_cured, '%d-%m-%Y')
-                            date_diagnosis_f = datetime.strptime(date_diagnosis_pure, date_format)
+                            date_diagnosis_f = datetime.strptime(date_confirmed_diagnosis_pure, date_format)
 
                             if date_diagnosis_f <  date_birth_format:
-                                error = [subject, visit, 'History of Leishmaniasis Details - Date of Diagnosis', date_diagnosis_form_field_instance,\
-                                        'The year and month of  Date of Diagnosis taken must be equal or after the month and year of birth in DEMOGRAPHIC' , date_diagnosis_disname, 'CL0100']
+                                error = [subject, visit, 'History of Leishmaniasis Details - Date of Diagnosis', date_confirmed_diagnosis_form_field_instance,\
+                                        'The year and month of  Date of Diagnosis taken must be equal or after the month and year of birth in DEMOGRAPHIC' , date_confirmed_diagnosis_pure, 'CL0100']
                                 lista_revision.append(error)
                             else:
                                 pass
@@ -369,17 +370,17 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer, lista_instanc
 
 
                     # Revision CL0110
-                    if date_diagnosis_pure == '':
+                    if date_confirmed_diagnosis_pure == '':
                         pass
                     else:
                         try:
                             date_format = '%d-%b-%Y'
-                            date_diagnosis_f = datetime.strptime(date_format(date_diagnosis_pure), date_format)
+                            date_diagnosis_f = datetime.strptime(date_format(date_confirmed_diagnosis_pure), date_format)
                             date_inform_consent_f = datetime.strptime(date_inform_consent, date_format)
 
                             if date_diagnosis_f < date_inform_consent_f:
-                                error = [subject, visit, 'Date of Diagnosis', date_diagnosis_form_field_instance ,'The Date of Diagnosis should be before the informed consent date', \
-                                        f'{date_diagnosis_disname} - {date_inform_consent}', 'CL0110']
+                                error = [subject, visit, 'Date of Diagnosis', date_confirmed_diagnosis_form_field_instance ,'The Date of Diagnosis should be before the informed consent date', \
+                                        f'{date_confirmed_diagnosis_pure} - {date_inform_consent}', 'CL0110']
                                 lista_revision.append(error)
                             else:
                                 pass
@@ -387,13 +388,13 @@ def history_of_cutaneous_leishmaniasis(df_root, path_excel_writer, lista_instanc
                             lista_logs.append(f'Revision CL0110--> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision CL0120
-                    if date_diagnosis_pure != '':
+                    if date_confirmed_diagnosis_pure != '':
                         try:
-                            if date_diagnosis_pure in lista_date_diagnosis:
+                            if date_confirmed_diagnosis_pure in lista_date_diagnosis:
                                 error = [subject, visit, 'Date of Diagnosis', date_diagnosis_form_field_instance, 'The Date of Diagnosis should not be repeated', date_diagnosis_disname, 'CL0120']
                                 lista_revision.append(error)
                             else:
-                                lista_date_diagnosis.append(date_diagnosis_pure)
+                                lista_date_diagnosis.append(date_confirmed_diagnosis_pure)
                         except Exception as e:
                             lista_logs.append(f'Revision CL0120--> {e} - Subject: {subject},  Visit: {visit} ')
 

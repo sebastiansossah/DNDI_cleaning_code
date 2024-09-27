@@ -330,16 +330,14 @@ def clinical_laboratory_test_coagulation(df_root, path_excel_writer, lista_insta
                         'aPTT, Result (Seconds)'
                     ]
                     mi_cuenta= 0
+
                     for validador_raw in lista_validacion:
-                        try:
+                        try:    
                             validador = row[validador_raw].split('|')[0]
                         except:
-                            validador = math.nan
-                        
-                        if  validador != '-' or validador != np.nan or  str(validador) != 'nan' or  str(validador) != '':
+                            validador=''
+                        if validador!='':
                             mi_cuenta+=1
-                        else:
-                            pass
                     
                     # Revision LBO0060
                     try:

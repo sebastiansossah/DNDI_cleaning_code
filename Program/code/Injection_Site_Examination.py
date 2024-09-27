@@ -352,17 +352,14 @@ def injection_site_examination(df_root, path_excel_writer, lista_instancias_abie
                                         '8-hours post dose, Provide the reason']
                     
                     mi_cuenta= 0
+
                     for validador_raw in lista_validacion:
-                        try:
+                        try:    
                             validador = row[validador_raw].split('|')[0]
                         except:
-                            validador = math.nan
-
-                        
-                        if validador != '-' or validador != np.nan or  str(validador) != 'nan' or str(validador) != '':
+                            validador=''
+                        if validador!='':
                             mi_cuenta+=1
-                        else:
-                            pass
 
                     # ----------------------------------------------------------------------
                     # Revision IS0050

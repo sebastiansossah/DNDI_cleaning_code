@@ -247,7 +247,8 @@ def adverse_events(df_root, path_excel_writer, lista_instancias_abiertas):
             pru = pru.merge(df_end_study_general_primary_reason, on=['Subject'], how='left')
             pru = pru.merge(df_end_study_general_early, on=['Subject'], how='left')
 
-        
+            # print(pru)
+            # print('----------------------')
 
 
 

@@ -131,10 +131,10 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer, 
                     try:
                         alanine_aminotransferase_result = row['Alanine Aminotransferase (ALT), Result (U/L)']
                         alanine_aminotransferase_result_pure = alanine_aminotransferase_result.split('|')[0]
-                        alanine_aminotransferase_result_form_field_instance = alanine_aminotransferase_result.splti('|')[1]
-                        alanine_aminotransferase_result_disname = alanine_aminotransferase_result.splti('|')[0]
+                        alanine_aminotransferase_result_form_field_instance = alanine_aminotransferase_result.split('|')[1]
+                        alanine_aminotransferase_result_disname = alanine_aminotransferase_result.split('|')[0]
                     except Exception as e:
-                        alanine_aminotransferase_result_pure = math.nan
+                        alanine_aminotransferase_result_pure =  math.nan
                         alanine_aminotransferase_result_form_field_instance = 'This field does not have any data'
                         alanine_aminotransferase_result_disname = 'Empty'
 
@@ -317,9 +317,11 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer, 
                         lista_logs.append(f'Revision LBD0050--> {e} - Subject: {subject},  Visit: {visit} ')
                     
                     # Revision LBD0060
+                    # print(float(df_normal_ranges[(df_normal_ranges['field']== "Alanine Aminotransferase (ALT), Result (U/L)") & (df_normal_ranges['gender']== 1)]['min'].iloc[0]), float(df_normal_ranges[(df_normal_ranges['field']== "Alanine Aminotransferase (ALT), Result (U/L)") & (df_normal_ranges['gender']== 1)]['max'].iloc[0]))
+                    # print(alanine_aminotransferase_result_pure, alanine_aminotransferase_out_normal_pure)
                     try:
                         if float(alanine_aminotransferase_out_normal_pure) == 1.0:
-
+                            
                             # if genero == 1.0:
                             #     if float(alanine_aminotransferase_result_pure) > 0.0 and \
                             #     float(alanine_aminotransferase_result_pure) < 45.0:
@@ -455,18 +457,15 @@ def clinical_laboratory_test_clinical_chemistry_D_1(df_root, path_excel_writer, 
                         'Creatine Kinase (CK), Result (U/L)',
                     ]
 
-
                     mi_cuenta= 0
+
                     for validador_raw in lista_validacion:
-                        try:
+                        try:    
                             validador = row[validador_raw].split('|')[0]
                         except:
-                            validador = math.nan
-     
-                        if validador != '-' or validador != np.nan or  str(validador) != 'nan' or str(validador) != '':
+                            validador=''
+                        if validador!='':
                             mi_cuenta+=1
-                        else:
-                            pass
 
                     
                     # Revision LBD0130

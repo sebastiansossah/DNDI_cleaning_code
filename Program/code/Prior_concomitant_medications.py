@@ -339,12 +339,13 @@ def prior_concomitant_medication(df_root, path_excel_writer, lista_instancias_ab
                             list_of_tuples_name_medication_dates.append(tuple_to_compare)
                     except Exception as e:
                         lista_logs.append(f'Revision CM0020 --> {e} - Subject: {subject},  Visit: {visit} ')
-                    
+                    # print(subject, tuple_to_compare)
+
                     # Revision CM0040
                     if adverse_event_id_pure != '':
                         try:
-                            if adverse_event_id_from_table != '-' or adverse_event_id_from_table != np.nan or  \
-                                str(adverse_event_id_from_table) != 'nan' or float(adverse_event_id_from_table) !=0.0 or str(adverse_event_id_from_table) != '':
+                            if adverse_event_id_from_table != np.nan and  \
+                                str(adverse_event_id_from_table) != 'nan' :
                                 pass
                             else:
                                 error = [subject, visit, 'Adverse Event ID', adverse_event_id_form_field_instance, \
@@ -364,15 +365,16 @@ def prior_concomitant_medication(df_root, path_excel_writer, lista_instancias_ab
                             contador_para_validar +=1
                         if end_date_pure != '':
                             contador_para_validar +=1
-
+                    # print(contador_para_validar)
                     # Revision CM0050
+                    # print(adverse_event_start_date, adverse_event_end_date)
                     try:
                         if contador_para_validar ==0:
                             pass
                         elif contador_para_validar == 1:
 
-                            if adverse_event_start_date != '-' or adverse_event_start_date != np.nan \
-                                or str(adverse_event_start_date) != 'nan' or float(adverse_event_start_date) !=0.0 or str(adverse_event_start_date) != '':
+                            if adverse_event_start_date != np.nan \
+                                and str(adverse_event_start_date) != 'nan' :
                                 pass
                             else:
                                 error = [subject, visit, 'Adverse Event ID', adverse_event_id_form_field_instance, 'The start and end dates of medication do not correspond to the Indication AE ID start and end date.', \
@@ -380,11 +382,11 @@ def prior_concomitant_medication(df_root, path_excel_writer, lista_instancias_ab
                                 lista_revision.append(error)
 
                         elif contador_para_validar == 2:
-                            if adverse_event_start_date != '-' or adverse_event_start_date != np.nan \
-                                or str(adverse_event_start_date) != 'nan' or float(adverse_event_start_date) !=0.0 or str(adverse_event_start_date) != '':
+                            if adverse_event_start_date != np.nan \
+                                and str(adverse_event_start_date) != 'nan':
 
-                                if adverse_event_end_date != '-' or adverse_event_end_date != np.nan \
-                                    or str(adverse_event_end_date) != 'nan' or float(adverse_event_end_date) !=0.0 or str(adverse_event_end_date) != '':
+                                if  adverse_event_end_date != np.nan \
+                                    and str(adverse_event_end_date) != 'nan':
                                     pass
                                 else:
                                     error = [subject, visit, 'Adverse Event ID', adverse_event_id_form_field_instance, \

@@ -184,8 +184,8 @@ def eligibility(df_root, path_excel_writer, lista_instancias_abiertas):
             pru = pru.merge(df_visit_done, on=['Subject', 'Visit'], how='left')
 
             # if sujeto == '011001':
-            #     print(pru)
-            #     print('-------------------')
+            # print(pru)
+            # print('-------------------')
 
 
 

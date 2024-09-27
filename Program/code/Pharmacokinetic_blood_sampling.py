@@ -244,10 +244,11 @@ def Pharmacokinetic_blood_sampling(df_root, path_excel_writer, lista_instancias_
                             date_format = '%d-%b-%Y'
                             date_of_test_f = datetime.strptime(Date_of_blood_sample_collected_pure, date_format)
                             date_of_visit_f = datetime.strptime(date_of_visit, date_format)
-
+                          
                             if date_of_test_f != date_of_visit_f:
+                                # print(date_of_test_f, date_of_visit_f)
                                 error = [subject, visit, 'Date of blood sample collected', Date_of_blood_sample_collected_form_field_instance ,\
-                                        'The date should be the same as the visit date in the "Date of Visit" form' , f'{Date_of_blood_sample_collected_disname} - {date_of_visit}', 'PK0010']
+                                        'The date should be the same as the visit date in the "Date of Visit" form' , f'{Date_of_blood_sample_collected_pure} - {date_of_visit}', 'PK0010']
                                 lista_revision.append(error)
                             else:
                                 pass
@@ -299,24 +300,22 @@ def Pharmacokinetic_blood_sampling(df_root, path_excel_writer, lista_instancias_
                             '75-min post dose, Time',
                     ]
 
-                    cuenta_validar = 0
-
+                    mi_cuenta= 0
                     for validador_raw in lista_validacion:
-                        try: 
+                        
+
+                        try:    
                             validador = row[validador_raw].split('|')[0]
                         except:
-                            validador = ''
-       
-                        if validador == '':
-                            pass
-                        else:
-                            cuenta_validar +=1
+                            validador=''
+                        if validador!='':
+                            mi_cuenta+=1
                             
 
                     # Revision PK0050
                     try:
                         if float(Was_any_pharmacokinetic_blood_sample_collected_pure) == 1.0:
-                            if cuenta_validar > 0:
+                            if mi_cuenta > 0:
                                 pass
                             else:
                                 error = [subject, visit, 'Was blood sample collected?', Was_any_pharmacokinetic_blood_sample_collected_form_field_instance ,\
